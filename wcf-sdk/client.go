@@ -523,41 +523,18 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 	return recv.GetStatus()
 }
 
-// 异步处理接的消息
-func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
-	socket, err := pair1.NewSocket()
-	if err != nil {
-		return err
-	}
-	// dial to server
-	parts := strings.Split(c.server, ":")
-	port, _ := strconv.Atoi(parts[2])
-	server := parts[0] + ":" + parts[1] + ":" + strconv.Itoa(port+1)
-	err = socket.Dial(server)
-	if err != nil {
-		return err
-	}
-	// loop for receiving msg
-	defer socket.Close()
-	socket.SetOption(mangos.OptionRecvDeadline, 2000)
-	socket.SetOption(mangos.OptionSendDeadline, 2000)
-	for c.IsReceivingMsg {
-		if recv, err := socket.Recv(); err == nil {
-			resp := &Response{}
-			proto.Unmarshal(recv, resp)
-			go f(resp.GetWxmsg())
-		} else {
-			return err
-		}
-	}
-	return err
-}
-
-// 允许接收消息
-func (c *Client) EnableReceivingMsg() int32 {
+// 开启接收消息
+// Args:
+//
+//	pyq bool: 是否接收朋友圈消息
+//
+// Returns:
+//
+//	int32: 0 为成功，其他失败
+func (c *Client) EnableReceivingMsg(pyq bool) int32 {
 	req := genFunReq(Functions_FUNC_ENABLE_RECV_TXT)
 	req.Msg = &Request_Flag{
-		Flag: true,
+		Flag: pyq,
 	}
 	recv := c.Call(req.build())
 	c.IsReceivingMsg = true
@@ -570,4 +547,35 @@ func (c *Client) DisableReceivingMsg() int32 {
 	recv := c.Call(req.build())
 	c.IsReceivingMsg = false
 	return recv.GetStatus()
+}
+
+// 异步处理消息
+func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
+	socket, err := pair1.NewSocket()
+	if err != nil {
+		return err
+	}
+	// dial to server
+	parts := strings.Split(c.server, ":")
+	port, _ := strconv.Atoi(parts[2])
+	server := parts[0] + ":" + parts[1] + ":" + strconv.Itoa(port+1)
+	if err = socket.Dial(server); err != nil {
+		return err
+	}
+	// loop for receiving msg
+	defer socket.Close()
+	socket.SetOption(mangos.OptionRecvDeadline, 2000)
+	socket.SetOption(mangos.OptionSendDeadline, 2000)
+	for c.IsReceivingMsg {
+		logman.Info("receiving msg: waiting")
+		if recv, err := socket.Recv(); err == nil {
+			resp := &Response{}
+			proto.Unmarshal(recv, resp)
+			go f(resp.GetWxmsg())
+		} else {
+			logman.Info("receiving msg", "error", err)
+			return err
+		}
+	}
+	return err
 }

@@ -351,6 +351,68 @@
                 }
             }
         },
+        "/api/enable_receiving_msg": {
+            "get": {
+                "summary": "开启消息接收",
+                "description": "开启消息接收",
+                "operationId": "enable_receiving_msg__get",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Response Enable Receiving Msg  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/disable_receiving_msg": {
+            "get": {
+                "summary": "关闭消息接收",
+                "description": "关闭消息接收",
+                "operationId": "disable_receiving_msgg__get",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Response Disable Receiving Msg  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/send_txt": {
             "post": {
                 "summary": "发送文本消息",
@@ -740,52 +802,6 @@
                     }
                 }
             }
-        },
-        "/api/msg_cb": {
-            "post": {
-                "tags": [
-                    "其他"
-                ],
-                "summary": "接收消息回调样例",
-                "description": "示例回调方法，简单打印消息",
-                "operationId": "msg_cb_msg_cb_post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Msg"
-                                    }
-                                ],
-                                "title": "Msg",
-                                "description": "微信消息"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -991,79 +1007,6 @@
                 },
                 "type": "object",
                 "title": "HTTPValidationError"
-            },
-            "Msg": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "title": "Id"
-                    },
-                    "ts": {
-                        "type": "integer",
-                        "title": "Ts"
-                    },
-                    "sign": {
-                        "type": "string",
-                        "title": "Sign"
-                    },
-                    "type": {
-                        "type": "integer",
-                        "title": "Type"
-                    },
-                    "xml": {
-                        "type": "string",
-                        "title": "Xml"
-                    },
-                    "sender": {
-                        "type": "string",
-                        "title": "Sender"
-                    },
-                    "roomid": {
-                        "type": "string",
-                        "title": "Roomid"
-                    },
-                    "content": {
-                        "type": "string",
-                        "title": "Content"
-                    },
-                    "thumb": {
-                        "type": "string",
-                        "title": "Thumb"
-                    },
-                    "extra": {
-                        "type": "string",
-                        "title": "Extra"
-                    },
-                    "is_at": {
-                        "type": "boolean",
-                        "title": "Is At"
-                    },
-                    "is_self": {
-                        "type": "boolean",
-                        "title": "Is Self"
-                    },
-                    "is_group": {
-                        "type": "boolean",
-                        "title": "Is Group"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "ts",
-                    "sign",
-                    "type",
-                    "xml",
-                    "sender",
-                    "roomid",
-                    "content",
-                    "thumb",
-                    "extra",
-                    "is_at",
-                    "is_self",
-                    "is_group"
-                ],
-                "title": "Msg"
             },
             "ValidationError": {
                 "properties": {

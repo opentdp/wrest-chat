@@ -20,11 +20,6 @@ func initWCF() {
 		panic(err)
 	}
 
-	wc.EnableReceivingMsg()
-	wc.OnReceivingMsg(func(msg *wcf.WxMsg) {
-		logman.Info("OnReceivingMsg", msg)
-	})
-
 }
 
 func isLogin(c *gin.Context) {
@@ -170,5 +165,29 @@ func dbSqlQuery(c *gin.Context) {
 	}
 
 	c.Set("Payload", wc.DbSqlQueryMap(req.Db, req.Sql))
+
+}
+
+func enableReceivingMsg(c *gin.Context) {
+
+	status := wc.EnableReceivingMsg(true)
+
+	go wc.OnReceivingMsg(func(msg *wcf.WxMsg) {
+		logman.Info("OnReceivingMsg", msg)
+	})
+
+	c.Set("Payload", gin.H{
+		"status": status,
+	})
+
+}
+
+func disableReceivingMsg(c *gin.Context) {
+
+	status := wc.DisableReceivingMsg()
+
+	c.Set("Payload", gin.H{
+		"status": status,
+	})
 
 }
