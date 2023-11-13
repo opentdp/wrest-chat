@@ -169,13 +169,13 @@ func (c *Client) ExecDbQuery(db, sql string) []*DbRow {
 //
 // Args:
 //
-//	msg (str): 要发送的消息，换行使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
-//	receiver (str): 消息接收人，wxid 或者 roomid
-//	aters (str): 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`
+//	msg string: 要发送的消息，换行使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
+//	receiver string: 消息接收人，wxid 或者 roomid
+//	aters string: 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`
 //
 // Returns:
 //
-//	int: 0 为成功，其他失败
+//	int32: 0 为成功，其他失败
 func (c *Client) SendTxt(msg string, receiver string, ates []string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_TXT)
 	req.Msg = &Request_Txt{
@@ -193,12 +193,12 @@ func (c *Client) SendTxt(msg string, receiver string, ates []string) int32 {
 //
 // Args:
 //
-//	path (str): 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg` 或 `https://raw.githubusercontent.com/lich0821/WeChatFerry/master/assets/TEQuant.jpg`
-//	receiver (str): 消息接收人，wxid 或者 roomid
+//	path string: 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg`
+//	receiver string: 消息接收人，wxid 或者 roomid
 //
 // Returns:
 //
-//	int: 0 为成功，其他失败
+//	int32: 0 为成功，其他失败
 func (c *Client) SendIMG(path string, receiver string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_IMG)
 	req.Msg = &Request_File{
@@ -215,12 +215,12 @@ func (c *Client) SendIMG(path string, receiver string) int32 {
 //
 // Args:
 //
-//	path (str): 本地文件路径，如：`C:/Projs/WeChatRobot/README.MD` 或 `https://raw.githubusercontent.com/lich0821/WeChatFerry/master/README.MD`
-//	receiver (str): 消息接收人，wxid 或者 roomid
+//	path string: 本地文件路径，如：`C:/Projs/WeChatRobot/README.MD`
+//	receiver string: 消息接收人，wxid 或者 roomid
 //
 // Returns:
 //
-//	int: 0 为成功，其他失败
+//	int32: 0 为成功，其他失败
 func (c *Client) SendFile(path string, receiver string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_FILE)
 	req.Msg = &Request_File{
@@ -237,14 +237,14 @@ func (c *Client) SendFile(path string, receiver string) int32 {
 //
 // Args:
 //
-//	receiver (str): 消息接收人，wxid 或者 roomid
-//	xml (str): xml 内容
-//	type (int): xml 类型，如：0x21 为小程序
-//	path (str): 封面图片路径
+//	receiver string: 消息接收人，wxid 或者 roomid
+//	xml string: xml 内容
+//	type int32: xml 类型，如：0x21 为小程序
+//	path string: 封面图片路径
 //
 // Returns:
 //
-//	int: 0 为成功，其他失败
+//	int32: 0 为成功，其他失败
 func (c *Client) SendXml(path, content, receiver string, Type int32) int32 {
 	req := genFunReq(Functions_FUNC_SEND_XML)
 	req.Msg = &Request_Xml{
@@ -263,12 +263,12 @@ func (c *Client) SendXml(path, content, receiver string, Type int32) int32 {
 //
 // Args:
 //
-//	path (str): 本地表情路径，如：`C:/Projs/WeChatRobot/emo.gif`
-//	receiver (str): 消息接收人，wxid 或者 roomid
+//	path string: 本地表情路径，如：`C:/Projs/WeChatRobot/emo.gif`
+//	receiver string: 消息接收人，wxid 或者 roomid
 //
 // Returns:
 //
-//	int: 0 为成功，其他失败
+//	int32: 0 为成功，其他失败
 func (c *Client) SendEmotion(path, receiver string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_EMOTION)
 	req.Msg = &Request_File{
@@ -285,13 +285,13 @@ func (c *Client) SendEmotion(path, receiver string) int32 {
 //
 // Args:
 //
-//	v3 (str): 加密用户名 (好友申请消息里 v3 开头的字符串)
-//	v4 (str): Ticket (好友申请消息里 v4 开头的字符串)
+//	v3 string: 加密用户名 (好友申请消息里 v3 开头的字符串)
+//	v4 string: Ticket (好友申请消息里 v4 开头的字符串)
 //	scene: 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
 //
 // Returns:
 //
-//	int: 1 为成功，其他失败
+//	int32: 1 为成功，其他失败
 func (c *Client) AcceptNewFriend(v3, v4 string, scene int32) int32 {
 	req := genFunReq(Functions_FUNC_ACCEPT_FRIEND)
 	req.Msg = &Request_V{
@@ -309,13 +309,13 @@ func (c *Client) AcceptNewFriend(v3, v4 string, scene int32) int32 {
 //
 // Args:
 //
-//	wxid (str): 转账消息里的发送人 wxid
-//	transferid (str): 转账消息里的 transferid
-//	transactionid (str): 转账消息里的 transactionid
+//	wxid string: 转账消息里的发送人 wxid
+//	transferid string: 转账消息里的 transferid
+//	transactionid string: 转账消息里的 transactionid
 //
 // Returns:
 //
-//	int: 1 为成功，其他失败
+//	int32: 1 为成功，其他失败
 func (c *Client) ReceiveTransfer(wxid, tfid, taid string) int32 {
 	req := genFunReq(Functions_FUNC_RECV_TRANSFER)
 	req.Msg = &Request_Tf{
@@ -333,11 +333,11 @@ func (c *Client) ReceiveTransfer(wxid, tfid, taid string) int32 {
 //
 // Args:
 //
-//	id (int): 开始 id，0 为最新页
+//	id int32: 开始 id，0 为最新页
 //
 // Returns:
 //
-//	int: 1 为成功，其他失败
+//	int32: 1 为成功，其他失败
 func (c *Client) RefreshPyq(id uint64) int32 {
 	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
 	req.Msg = &Request_Ui64{
@@ -351,12 +351,12 @@ func (c *Client) RefreshPyq(id uint64) int32 {
 //
 // Args:
 //
-//	roomid (str): 待加群的 id
-//	wxids (str): 要加到群里的 wxid，多个用逗号分隔
+//	roomid string: 待加群的 id
+//	wxids string: 要加到群里的 wxid，多个用逗号分隔
 //
 // Returns:
 //
-//	int: 1 为成功，其他失败
+//	int32: 1 为成功，其他失败
 func (c *Client) AddChatRoomMembers(roomId string, wxIds []string) int32 {
 	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
 	req.Msg = &Request_M{
@@ -373,12 +373,12 @@ func (c *Client) AddChatRoomMembers(roomId string, wxIds []string) int32 {
 //
 // Args:
 //
-//	roomid (str): 群的 id
-//	wxids (str): 要删除成员的 wxid，多个用逗号分隔
+//	roomid string: 群的 id
+//	wxids string: 要删除成员的 wxid，多个用逗号分隔
 //
 // Returns:
 //
-//	int: 1 为成功，其他失败
+//	int32: 1 为成功，其他失败
 func (c *Client) DelChatRoomMembers(roomId string, wxIds []string) int32 {
 	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
 	req.Msg = &Request_M{
@@ -395,11 +395,11 @@ func (c *Client) DelChatRoomMembers(roomId string, wxIds []string) int32 {
 //
 // Args:
 //
-//	roomid (str): 群的 id
+//	roomid string: 群的 id
 //
 // Returns:
 //
-//	Dict: 群成员列表: {wxid1: 昵称1, wxid2: 昵称2, ...}
+//	[]*RpcContact: 群成员列表
 func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
 	members := []*RpcContact{}
 	// get user data
@@ -435,12 +435,12 @@ func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
 //
 // Args:
 //
-//	wxid (str): wxid
-//	roomid (str): 群的 id
+//	wxid string: wxid
+//	roomid string: 群的 id
 //
 // Returns:
 //
-//	str: 群成员昵称
+//	string: 群成员昵称
 func (c *Client) GetNickNameInChatRoom(wxid, roomId string) string {
 	// get user data
 	nickName := ""
@@ -473,12 +473,12 @@ func (c *Client) GetNickNameInChatRoom(wxid, roomId string) string {
 //
 // Args:
 //
-//	src (str): 加密的图片路径
-//	dst (str): 解密的图片路径
+//	src string: 加密的图片路径
+//	dst string: 解密的图片路径
 //
 // Returns:
 //
-//	bool: 是否成功
+//	int32: 是否成功
 func (c *Client) DecryptImage(src, dst string) int32 {
 	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
 	req.Msg = &Request_Dec{
