@@ -416,7 +416,7 @@
         "/api/send_txt": {
             "post": {
                 "summary": "发送文本消息",
-                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg string: 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver string: 消息接收人，wxid 或者 roomid\n    aters array: 要 @ 的 wxid 列表，`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
+                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg string: 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver string: 消息接收人，wxid 或者 roomid\n    aters string: 要 @ 的 wxid 列表，多人用`,`分割，，`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
                 "operationId": "send_txt_txt_post",
                 "requestBody": {
                     "content": {
@@ -585,7 +585,7 @@
                 }
             }
         },
-        "/new-friend": {
+        "/api/accept_new_friend": {
             "post": {
                 "summary": "通过好友申请",
                 "description": "通过好友申请\n\nArgs:\n    v3 string: 加密用户名 (好友申请消息里 v3 开头的字符串)\n    v4 string: Ticket (好友申请消息里 v4 开头的字符串)\n    scene: 申请方式 (好友申请消息里的 scene)\n\nReturns:\n    int: 1 为成功，其他失败",
@@ -629,7 +629,51 @@
                 }
             }
         },
-        "/chatroom-member": {
+        "/api/receive_transfer": {
+            "post": {
+                "summary": "接收转账",
+                "description": "接收转账\n\nArgs:\n    wxid string: 转账消息里的发送人 wxid\n    transferid string: 转账消息里的 transferid\n    transactionid string: 转账消息里的 transactionid\n\nReturns:\n    int: 1 为成功，其他失败",
+                "operationId": "receive_transfer_transfer_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Body_receive_transfer_transfer_post"
+                                    }
+                                ],
+                                "title": "Body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Response Receive Transfer Transfer Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/add_chatroom_members": {
             "post": {
                 "summary": "添加群成员",
                 "description": "添加群成员\n\nArgs:\n    roomid string: 待加群的 id\n    wxids string: 要加到群里的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
@@ -671,8 +715,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/api/del_chatroom_members": {
+            "post": {
                 "summary": "删除群成员",
                 "description": "删除群成员\n\nArgs:\n    roomid string: 群的 id\n    wxids string: 要删除的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "del_chatroom_members_chatroom_member_delete",
@@ -698,50 +744,6 @@
                                 "schema": {
                                     "type": "object",
                                     "title": "Response Del Chatroom Members Chatroom Member Delete"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/transfer": {
-            "post": {
-                "summary": "接收转账",
-                "description": "接收转账\n\nArgs:\n    wxid string: 转账消息里的发送人 wxid\n    transferid string: 转账消息里的 transferid\n    transactionid string: 转账消息里的 transactionid\n\nReturns:\n    int: 1 为成功，其他失败",
-                "operationId": "receive_transfer_transfer_post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Body_receive_transfer_transfer_post"
-                                    }
-                                ],
-                                "title": "Body"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "title": "Response Receive Transfer Transfer Post"
                                 }
                             }
                         }
@@ -976,17 +978,10 @@
                         "default": "filehelper"
                     },
                     "aters": {
-                        "items": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                }
-                            ]
-                        },
-                        "type": "array",
+                        "type": "string",
                         "title": "Aters",
-                        "description": "要 @ 的 wxid 列表，@所有人 用 notify@all",
-                        "default": []
+                        "description": "要 @ 的 wxid 列表，多人用`,`分割，@所有人 用 notify@all",
+                        "default": ""
                     }
                 },
                 "type": "object",

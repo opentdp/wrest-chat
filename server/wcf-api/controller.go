@@ -99,15 +99,9 @@ func getAliasInChatRoom(c *gin.Context) {
 
 }
 
-type sendTxtReqeust struct {
-	Msg      string   `json:"msg"`
-	Receiver string   `json:"receiver"`
-	Aters    []string `json:"aters"`
-}
-
 func sendTxt(c *gin.Context) {
 
-	var req sendTxtReqeust
+	var req wcf.TextMsg
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Payload", err)
 		return
@@ -117,14 +111,9 @@ func sendTxt(c *gin.Context) {
 
 }
 
-type SendImgRequest struct {
-	Path     string `json:"path"`
-	Receiver string `json:"receiver"`
-}
-
 func sendImg(c *gin.Context) {
 
-	var req SendImgRequest
+	var req wcf.PathMsg
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Payload", err)
 		return
@@ -134,14 +123,9 @@ func sendImg(c *gin.Context) {
 
 }
 
-type SendFileRequest struct {
-	Path     string `json:"path"`
-	Receiver string `json:"receiver"`
-}
-
 func sendFile(c *gin.Context) {
 
-	var req SendFileRequest
+	var req wcf.PathMsg
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Payload", err)
 		return
@@ -151,20 +135,68 @@ func sendFile(c *gin.Context) {
 
 }
 
-type DbSqlRequest struct {
+type DbSqlQueryRequest struct {
 	Db  string `json:"db"`
 	Sql string `json:"sql"`
 }
 
 func dbSqlQuery(c *gin.Context) {
 
-	var req DbSqlRequest
+	var req DbSqlQueryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Payload", err)
 		return
 	}
 
 	c.Set("Payload", wc.DbSqlQueryMap(req.Db, req.Sql))
+
+}
+
+func acceptNewFriend(c *gin.Context) {
+
+	var req wcf.Verification
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.AcceptNewFriend(req.V3, req.V4, req.Scene))
+
+}
+
+func receiveTransfer(c *gin.Context) {
+
+	var req wcf.Transfer
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid))
+
+}
+
+func addChatRoomMembers(c *gin.Context) {
+
+	var req wcf.AddMembers
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.AddChatRoomMembers(req.Roomid, req.Wxids))
+
+}
+
+func delChatRoomMembers(c *gin.Context) {
+
+	var req wcf.AddMembers
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.DelChatRoomMembers(req.Roomid, req.Wxids))
 
 }
 

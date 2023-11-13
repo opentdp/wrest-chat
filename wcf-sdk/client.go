@@ -208,13 +208,13 @@ func (c *Client) DbSqlQueryMap(db, sql string) map[string]any {
 // Returns:
 //
 //	int32: 0 为成功，其他失败
-func (c *Client) SendTxt(msg string, receiver string, ates []string) int32 {
+func (c *Client) SendTxt(msg string, receiver string, ates string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_TXT)
 	req.Msg = &Request_Txt{
 		Txt: &TextMsg{
 			Msg:      msg,
 			Receiver: receiver,
-			Aters:    strings.Join(ates, ","),
+			Aters:    ates,
 		},
 	}
 	recv := c.Call(req.build())
@@ -389,12 +389,12 @@ func (c *Client) RefreshPyq(id uint64) int32 {
 // Returns:
 //
 //	int32: 1 为成功，其他失败
-func (c *Client) AddChatRoomMembers(roomId string, wxIds []string) int32 {
+func (c *Client) AddChatRoomMembers(roomId string, wxIds string) int32 {
 	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
 	req.Msg = &Request_M{
 		M: &AddMembers{
 			Roomid: roomId,
-			Wxids:  strings.Join(wxIds, ","),
+			Wxids:  wxIds,
 		},
 	}
 	recv := c.Call(req.build())
@@ -411,12 +411,12 @@ func (c *Client) AddChatRoomMembers(roomId string, wxIds []string) int32 {
 // Returns:
 //
 //	int32: 1 为成功，其他失败
-func (c *Client) DelChatRoomMembers(roomId string, wxIds []string) int32 {
+func (c *Client) DelChatRoomMembers(roomId string, wxIds string) int32 {
 	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
 	req.Msg = &Request_M{
 		M: &AddMembers{
 			Roomid: roomId,
-			Wxids:  strings.Join(wxIds, ","),
+			Wxids:  wxIds,
 		},
 	}
 	recv := c.Call(req.build())
