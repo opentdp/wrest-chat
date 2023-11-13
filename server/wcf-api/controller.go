@@ -83,3 +83,11 @@ func getChatRoomMembers(c *gin.Context) {
 	c.Set("Payload", wc.GetChatRoomMembers(roomid))
 
 }
+
+func getAliasInChatRoom(c *gin.Context) {
+
+	wxid := c.Param("wxid")
+	roomid := c.Param("roomid")
+	c.Set("Payload", wc.GetAliasInChatRoom(wxid, roomid))
+
+}

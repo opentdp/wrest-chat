@@ -18,5 +18,6 @@ func Route(rg *gin.RouterGroup) {
 	rg.GET("db_tables/:db", getDbTables)
 	rg.GET("refresh_pyq/:id", refreshPyq)
 	rg.GET("chatroom_members/:roomid", getChatRoomMembers)
+	rg.GET("alias_in_chatroom/:wxid/:roomid", getAliasInChatRoom)
 
 }

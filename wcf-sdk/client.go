@@ -441,7 +441,7 @@ func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
 // Returns:
 //
 //	string: 群成员昵称
-func (c *Client) GetNickNameInChatRoom(wxid, roomId string) string {
+func (c *Client) GetAliasInChatRoom(wxid, roomId string) string {
 	// get user data
 	nickName := ""
 	userRds := c.ExecDbQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")

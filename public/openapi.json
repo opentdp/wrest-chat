@@ -1,8 +1,8 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "WeChat HTTP API",
-        "description": "Build by <a href='https://www.rehiy.com'>Rehiy</a> , thanks for <a href='https://github.com/lich0821/WeChatFerry'>WeChatFerry</a>",
+        "title": "WeChat Rest API",
+        "description": "Github Repo <a href='https://github.com/rehiy/wechat-rest-api'>wechat-rest-api</a>",
         "version": "0.1.0"
     },
     "paths": {
@@ -321,7 +321,7 @@
                 }
             }
         },
-        "/alias-in-chatroom/": {
+        "/api/alias_in_chatroom/{wxid}/{roomid}": {
             "get": {
                 "summary": "获取群成员名片",
                 "description": "获取群成员名片\n\nArgs:\n    roomid (str): 群的 id\n    wxid (str): wxid\n\nReturns:\n    str: 名片",
@@ -329,7 +329,7 @@
                 "parameters": [
                     {
                         "name": "wxid",
-                        "in": "query",
+                        "in": "path",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -341,7 +341,7 @@
                     },
                     {
                         "name": "roomid",
-                        "in": "query",
+                        "in": "path",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -420,7 +420,7 @@
         "/image": {
             "post": {
                 "summary": "发送图片消息",
-                "description": "发送图片，非线程安全\n\nArgs:\n    path (str): 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg` 或 `https://raw.githubusercontent.com/lich0821/WeChatRobot/master/TEQuant.jpeg`\n    receiver (str): 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
+                "description": "发送图片，非线程安全\n\nArgs:\n    path (str): 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg`\n    receiver (str): 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
                 "operationId": "send_image_image_post",
                 "requestBody": {
                     "content": {
@@ -507,7 +507,7 @@
         },
         "/sql": {
             "post": {
-                "summary": "执行 SQL，如果数据量大注意分页，以免 OOM",
+                "summary": "执行 SQL 查询，如果数据量大注意分页，以免 OOM",
                 "description": "执行 SQL，如果数据量大注意分页，以免 OOM\n\nArgs:\n    db (str): 要查询的数据库\n    sql (str): 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
                 "operationId": "query_sql_sql_post",
                 "requestBody": {
