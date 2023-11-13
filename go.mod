@@ -1,4 +1,4 @@
-module wechat-http-api
+module github.com/rehiy/wechat-rest-api
 
 go 1.21.3
 
