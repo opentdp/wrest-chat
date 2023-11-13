@@ -6,52 +6,6 @@
         "version": "0.1.0"
     },
     "paths": {
-        "/api/msg_cb": {
-            "post": {
-                "tags": [
-                    "示例"
-                ],
-                "summary": "接收消息回调样例",
-                "description": "示例回调方法，简单打印消息",
-                "operationId": "msg_cb_msg_cb_post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Msg"
-                                    }
-                                ],
-                                "title": "Msg",
-                                "description": "微信消息"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/is_login": {
             "get": {
                 "summary": "获取登录状态",
@@ -397,16 +351,16 @@
                 }
             }
         },
-        "/text": {
+        "/api/send_txt": {
             "post": {
                 "summary": "发送文本消息",
-                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg (str): 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver (str): 消息接收人，wxid 或者 roomid\n    aters (str): 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
-                "operationId": "send_text_text_post",
+                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg (str): 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver (str): 消息接收人，wxid 或者 roomid\n    aters (arr): 要 @ 的 wxid 列表，`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
+                "operationId": "send_txt_txt_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Body_send_text_text_post"
+                                "$ref": "#/components/schemas/Body_send_txt_txt_post"
                             }
                         }
                     },
@@ -786,6 +740,52 @@
                     }
                 }
             }
+        },
+        "/api/msg_cb": {
+            "post": {
+                "tags": [
+                    "其他"
+                ],
+                "summary": "接收消息回调样例",
+                "description": "示例回调方法，简单打印消息",
+                "operationId": "msg_cb_msg_cb_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Msg"
+                                    }
+                                ],
+                                "title": "Msg",
+                                "description": "微信消息"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -946,7 +946,7 @@
                 "type": "object",
                 "title": "Body_send_image_image_post"
             },
-            "Body_send_text_text_post": {
+            "Body_send_txt_txt_post": {
                 "properties": {
                     "msg": {
                         "type": "string",
@@ -960,9 +960,16 @@
                         "default": "filehelper"
                     },
                     "aters": {
-                        "type": "string",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "type": "array",
                         "title": "Aters",
-                        "description": "要 @ 的 wxid，多个用逗号分隔；@所有人 用 notify@all",
+                        "description": "要 @ 的 wxid 列表，@所有人 用 notify@all",
                         "default": ""
                     }
                 },
@@ -970,7 +977,7 @@
                 "required": [
                     "msg"
                 ],
-                "title": "Body_send_text_text_post"
+                "title": "Body_send_txt_txt_post"
             },
             "HTTPValidationError": {
                 "properties": {

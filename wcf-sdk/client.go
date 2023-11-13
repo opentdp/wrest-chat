@@ -210,7 +210,7 @@ func (c *Client) SendTxt(msg string, receiver string, ates []string) int32 {
 // Returns:
 //
 //	int32: 0 为成功，其他失败
-func (c *Client) SendIMG(path string, receiver string) int32 {
+func (c *Client) SendImg(path string, receiver string) int32 {
 	req := genFunReq(Functions_FUNC_SEND_IMG)
 	req.Msg = &Request_File{
 		File: &PathMsg{

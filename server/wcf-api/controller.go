@@ -97,3 +97,21 @@ func getAliasInChatRoom(c *gin.Context) {
 	c.Set("Payload", wc.GetAliasInChatRoom(wxid, roomid))
 
 }
+
+type sendTxtReqeust struct {
+	Msg      string   `json:"msg"`
+	Receiver string   `json:"receiver"`
+	Aters    []string `json:"aters"`
+}
+
+func sendTxt(c *gin.Context) {
+
+	var req sendTxtReqeust
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.SendTxt(req.Msg, req.Receiver, req.Aters))
+
+}
