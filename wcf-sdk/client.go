@@ -176,6 +176,26 @@ func (c *Client) DbSqlQuery(db, sql string) []*DbRow {
 	return recv.GetRows().GetRows()
 }
 
+// 执行 SQL 查询，如果数据量大注意分页
+// Args:
+//
+//	db string: 要查询的数据库
+//	sql string: 要执行的 SQL
+//
+// Returns:
+//
+//	[]*DbRow: 查询结果
+func (c *Client) DbSqlQueryMap(db, sql string) map[string]any {
+	rows := c.DbSqlQuery(db, sql)
+	res := map[string]any{}
+	for _, row := range rows {
+		for _, field := range row.Fields {
+			res[field.Column] = field.Content
+		}
+	}
+	return res
+}
+
 // 发送文本消息
 //
 // Args:
