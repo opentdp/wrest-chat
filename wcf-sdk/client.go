@@ -101,7 +101,7 @@ func (c *Client) GetContacts() []*RpcContact {
 }
 
 // 获取好友列表
-func (c *Client) getFriends() []*RpcContact {
+func (c *Client) GetFriends() []*RpcContact {
 	notFriends := map[string]string{
 		"mphelper":    "公众平台助手",
 		"fmessage":    "朋友推荐消息",
