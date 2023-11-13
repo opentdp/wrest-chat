@@ -117,7 +117,7 @@ func sendTxt(c *gin.Context) {
 }
 
 type SendImgRequest struct {
-	Img      string `json:"img"`
+	Path     string `json:"path"`
 	Receiver string `json:"receiver"`
 }
 
@@ -129,12 +129,12 @@ func sendImg(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.SendImg(req.Img, req.Receiver))
+	c.Set("Payload", wc.SendImg(req.Path, req.Receiver))
 
 }
 
 type SendFileRequest struct {
-	File     string `json:"file"`
+	Path     string `json:"path"`
 	Receiver string `json:"receiver"`
 }
 
@@ -146,6 +146,6 @@ func sendFile(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.SendFile(req.File, req.Receiver))
+	c.Set("Payload", wc.SendFile(req.Path, req.Receiver))
 
 }
