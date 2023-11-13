@@ -149,3 +149,20 @@ func sendFile(c *gin.Context) {
 	c.Set("Payload", wc.SendFile(req.Path, req.Receiver))
 
 }
+
+type DbSqlRequest struct {
+	Db  string `json:"db"`
+	Sql string `json:"sql"`
+}
+
+func dbSqlQuery(c *gin.Context) {
+
+	var req DbSqlRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.DbSqlQuery(req.Db, req.Sql))
+
+}

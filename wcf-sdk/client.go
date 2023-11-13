@@ -164,7 +164,7 @@ func (c *Client) GetDbTables(db string) []*DbTable {
 // Returns:
 //
 //	[]*DbRow: 查询结果
-func (c *Client) ExecDbQuery(db, sql string) []*DbRow {
+func (c *Client) DbSqlQuery(db, sql string) []*DbRow {
 	req := genFunReq(Functions_FUNC_EXEC_DB_QUERY)
 	req.Msg = &Request_Query{
 		Query: &DbQuery{
@@ -414,14 +414,14 @@ func (c *Client) DelChatRoomMembers(roomId string, wxIds []string) int32 {
 func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
 	members := []*RpcContact{}
 	// get user data
-	userRds := c.ExecDbQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
+	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
 	userMap := map[string]string{}
 	for _, user := range userRds {
 		wxid := string(user.Fields[0].Content)
 		userMap[wxid] = string(user.Fields[1].Content)
 	}
 	// get room data
-	roomRds := c.ExecDbQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
 	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
 		return members
 	}
@@ -455,12 +455,12 @@ func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
 func (c *Client) GetAliasInChatRoom(wxid, roomId string) string {
 	// get user data
 	nickName := ""
-	userRds := c.ExecDbQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
+	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
 	if len(userRds) > 0 && len(userRds[0].Fields) > 0 {
 		nickName = string(userRds[0].Fields[0].Content)
 	}
 	// get room data
-	roomRds := c.ExecDbQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
 	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
 		return nickName
 	}

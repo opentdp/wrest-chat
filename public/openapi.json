@@ -479,18 +479,18 @@
                 }
             }
         },
-        "/sql": {
+        "/api/db_sql_query": {
             "post": {
-                "summary": "执行 SQL 查询，如果数据量大注意分页，以免 OOM",
-                "description": "执行 SQL，如果数据量大注意分页，以免 OOM\n\nArgs:\n    db string: 要查询的数据库\n    sql string: 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
-                "operationId": "query_sql_sql_post",
+                "summary": "执行 SQL 查询，如果数据量大注意分页",
+                "description": "执行 SQL，如果数据量大注意分页\n\nArgs:\n    db string: 要查询的数据库\n    sql string: 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
+                "operationId": "db_sql_query_sql_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/Body_query_sql_sql_post"
+                                        "$ref": "#/components/schemas/Body_db_sql_query_sql_post"
                                     }
                                 ],
                                 "title": "Body"
@@ -868,7 +868,7 @@
                 "type": "object",
                 "title": "Body_del_chatroom_members_chatroom_member_delete"
             },
-            "Body_query_sql_sql_post": {
+            "Body_db_sql_query_sql_post": {
                 "properties": {
                     "db": {
                         "type": "string",
@@ -884,7 +884,7 @@
                     }
                 },
                 "type": "object",
-                "title": "Body_query_sql_sql_post"
+                "title": "Body_db_sql_query_sql_post"
             },
             "Body_receive_transfer_transfer_post": {
                 "properties": {

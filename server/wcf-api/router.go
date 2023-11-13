@@ -24,5 +24,6 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("send_txt", sendTxt)
 	rg.POST("send_img", sendImg)
 	rg.POST("send_file", sendFile)
+	rg.POST("db_sql_query", dbSqlQuery)
 
 }
