@@ -149,7 +149,7 @@
         "/api/db_tables/{db}": {
             "get": {
                 "summary": "获取 db 中所有表",
-                "description": "获取 db 中所有表\n\nArgs:\n    db (str): 数据库名（可通过 `get_dbs` 查询）\n\nReturns:\n    List[dict]: `db` 下的所有表名及对应建表语句",
+                "description": "获取 db 中所有表\n\nArgs:\n    db string: 数据库名（可通过 `get_dbs` 查询）\n\nReturns:\n    List[dict]: `db` 下的所有表名及对应建表语句",
                 "operationId": "get_tables__db__tables_get",
                 "parameters": [
                     {
@@ -190,7 +190,7 @@
         "/api/refresh_pyq/{id}": {
             "get": {
                 "summary": "刷新朋友圈（数据从消息回调中查看）",
-                "description": "刷新朋友圈\n\nArgs:\n    id (int): 开始 id，0 为最新页\n\nReturns:\n    int: 1 为成功，其他失败",
+                "description": "刷新朋友圈\n\nArgs:\n    id int32: 开始 id，0 为最新页\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "refresh_pyq_pyq__get",
                 "parameters": [
                     {
@@ -254,7 +254,7 @@
         "/api/chatroom_members/{roomid}": {
             "get": {
                 "summary": "获取群成员",
-                "description": "获取群成员\n\nArgs:\n    roomid (str): 群的 id\n\nReturns:\n    List[dict]: 群成员列表",
+                "description": "获取群成员\n\nArgs:\n    roomid string: 群的 id\n\nReturns:\n    List[dict]: 群成员列表",
                 "operationId": "get_chatroom_members_chatroom_member__get",
                 "parameters": [
                     {
@@ -298,7 +298,7 @@
         "/api/alias_in_chatroom/{wxid}/{roomid}": {
             "get": {
                 "summary": "获取群成员名片",
-                "description": "获取群成员名片\n\nArgs:\n    roomid (str): 群的 id\n    wxid (str): wxid\n\nReturns:\n    str: 名片",
+                "description": "获取群成员名片\n\nArgs:\n    roomid string: 群的 id\n    wxid string: wxid\n\nReturns:\n    str: 名片",
                 "operationId": "get_alias_in_chatroom_alias_in_chatroom__get",
                 "parameters": [
                     {
@@ -354,7 +354,7 @@
         "/api/send_txt": {
             "post": {
                 "summary": "发送文本消息",
-                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg (str): 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver (str): 消息接收人，wxid 或者 roomid\n    aters (arr): 要 @ 的 wxid 列表，`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
+                "description": "发送文本消息，可参考：https://github.com/lich0821/WeChatRobot/blob/master/robot.py 里 sendTextMsg\n\nArgs:\n    msg string: 要发送的消息，换行使用 `\\n`；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @\n    receiver string: 消息接收人，wxid 或者 roomid\n    aters array: 要 @ 的 wxid 列表，`@所有人` 只需要 `notify@all`\n\nReturns:\n    int: 0 为成功，其他失败",
                 "operationId": "send_txt_txt_post",
                 "requestBody": {
                     "content": {
@@ -391,10 +391,10 @@
                 }
             }
         },
-        "/image": {
+        "/api/send_img": {
             "post": {
                 "summary": "发送图片消息",
-                "description": "发送图片，非线程安全\n\nArgs:\n    path (str): 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg`\n    receiver (str): 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
+                "description": "发送图片，非线程安全\n\nArgs:\n    path string: 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg`\n    receiver string: 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
                 "operationId": "send_image_image_post",
                 "requestBody": {
                     "content": {
@@ -435,10 +435,10 @@
                 }
             }
         },
-        "/file": {
+        "/api/send_file": {
             "post": {
                 "summary": "发送文件消息",
-                "description": "发送文件\n\nArgs:\n    path (str): 本地文件路径，如：`C:/Projs/WeChatRobot/README.MD`\n    receiver (str): 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
+                "description": "发送文件\n\nArgs:\n    path string: 本地文件路径，如：`C:/Projs/WeChatRobot/README.MD`\n    receiver string: 消息接收人，wxid 或者 roomid\n\nReturns:\n    int: 0 为成功，其他失败",
                 "operationId": "send_file_file_post",
                 "requestBody": {
                     "content": {
@@ -482,7 +482,7 @@
         "/sql": {
             "post": {
                 "summary": "执行 SQL 查询，如果数据量大注意分页，以免 OOM",
-                "description": "执行 SQL，如果数据量大注意分页，以免 OOM\n\nArgs:\n    db (str): 要查询的数据库\n    sql (str): 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
+                "description": "执行 SQL，如果数据量大注意分页，以免 OOM\n\nArgs:\n    db string: 要查询的数据库\n    sql string: 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
                 "operationId": "query_sql_sql_post",
                 "requestBody": {
                     "content": {
@@ -526,7 +526,7 @@
         "/new-friend": {
             "post": {
                 "summary": "通过好友申请",
-                "description": "通过好友申请\n\nArgs:\n    v3 (str): 加密用户名 (好友申请消息里 v3 开头的字符串)\n    v4 (str): Ticket (好友申请消息里 v4 开头的字符串)\n    scene: 申请方式 (好友申请消息里的 scene)\n\nReturns:\n    int: 1 为成功，其他失败",
+                "description": "通过好友申请\n\nArgs:\n    v3 string: 加密用户名 (好友申请消息里 v3 开头的字符串)\n    v4 string: Ticket (好友申请消息里 v4 开头的字符串)\n    scene: 申请方式 (好友申请消息里的 scene)\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "accept_new_friend_new_friend_post",
                 "requestBody": {
                     "content": {
@@ -570,7 +570,7 @@
         "/chatroom-member": {
             "post": {
                 "summary": "添加群成员",
-                "description": "添加群成员\n\nArgs:\n    roomid (str): 待加群的 id\n    wxids (str): 要加到群里的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
+                "description": "添加群成员\n\nArgs:\n    roomid string: 待加群的 id\n    wxids string: 要加到群里的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "add_chatroom_members_chatroom_member_post",
                 "requestBody": {
                     "content": {
@@ -612,7 +612,7 @@
             },
             "delete": {
                 "summary": "删除群成员",
-                "description": "删除群成员\n\nArgs:\n    roomid (str): 群的 id\n    wxids (str): 要删除的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
+                "description": "删除群成员\n\nArgs:\n    roomid string: 群的 id\n    wxids string: 要删除的 wxid，多个用逗号分隔\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "del_chatroom_members_chatroom_member_delete",
                 "requestBody": {
                     "content": {
@@ -656,7 +656,7 @@
         "/transfer": {
             "post": {
                 "summary": "接收转账",
-                "description": "接收转账\n\nArgs:\n    wxid (str): 转账消息里的发送人 wxid\n    transferid (str): 转账消息里的 transferid\n    transactionid (str): 转账消息里的 transactionid\n\nReturns:\n    int: 1 为成功，其他失败",
+                "description": "接收转账\n\nArgs:\n    wxid string: 转账消息里的发送人 wxid\n    transferid string: 转账消息里的 transferid\n    transactionid string: 转账消息里的 transactionid\n\nReturns:\n    int: 1 为成功，其他失败",
                 "operationId": "receive_transfer_transfer_post",
                 "requestBody": {
                     "content": {
@@ -700,7 +700,7 @@
         "/dec-image": {
             "post": {
                 "summary": "解密图片",
-                "description": "解密图片:\n\nArgs:\n    src (str): 加密的图片路径\n    dst (str): 解密的图片路径\n\nReturns:\n    bool: 是否成功",
+                "description": "解密图片:\n\nArgs:\n    src string: 加密的图片路径\n    dst string: 解密的图片路径\n\nReturns:\n    bool: 是否成功",
                 "operationId": "decrypt_image_dec_image_post",
                 "requestBody": {
                     "content": {
@@ -970,7 +970,7 @@
                         "type": "array",
                         "title": "Aters",
                         "description": "要 @ 的 wxid 列表，@所有人 用 notify@all",
-                        "default": ""
+                        "default": []
                     }
                 },
                 "type": "object",

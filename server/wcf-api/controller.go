@@ -115,3 +115,37 @@ func sendTxt(c *gin.Context) {
 	c.Set("Payload", wc.SendTxt(req.Msg, req.Receiver, req.Aters))
 
 }
+
+type SendImgRequest struct {
+	Img      string `json:"img"`
+	Receiver string `json:"receiver"`
+}
+
+func sendImg(c *gin.Context) {
+
+	var req SendImgRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.SendImg(req.Img, req.Receiver))
+
+}
+
+type SendFileRequest struct {
+	File     string `json:"file"`
+	Receiver string `json:"receiver"`
+}
+
+func sendFile(c *gin.Context) {
+
+	var req SendFileRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.SendFile(req.File, req.Receiver))
+
+}

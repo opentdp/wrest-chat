@@ -22,5 +22,7 @@ func Route(rg *gin.RouterGroup) {
 	rg.GET("alias_in_chatroom/:wxid/:roomid", getAliasInChatRoom)
 
 	rg.POST("send_txt", sendTxt)
+	rg.POST("send_img", sendImg)
+	rg.POST("send_file", sendFile)
 
 }
