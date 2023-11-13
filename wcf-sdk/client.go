@@ -120,6 +120,17 @@ func (c *Client) GetFriends() []*RpcContact {
 	return friends
 }
 
+// 获取群聊列表
+func (c *Client) GetChatRooms() []*RpcContact {
+	chatrooms := []*RpcContact{}
+	for _, cnt := range c.GetContacts() {
+		if strings.HasSuffix(cnt.Wxid, "@chatroom") {
+			chatrooms = append(chatrooms, cnt)
+		}
+	}
+	return chatrooms
+}
+
 // 获取所有数据库
 func (c *Client) GetDbNames() []string {
 	req := genFunReq(Functions_FUNC_GET_DB_NAMES)

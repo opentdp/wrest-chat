@@ -277,6 +277,26 @@
                 }
             }
         },
+        "/api/chatrooms": {
+            "get": {
+                "summary": "获取群聊列表",
+                "description": "获取群聊列表",
+                "operationId": "get_chatrooms_chatrooms_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Response Get ChatRooms ChatRooms Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/chatroom_members/{roomid}": {
             "get": {
                 "summary": "获取群成员",

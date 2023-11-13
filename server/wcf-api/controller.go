@@ -77,6 +77,12 @@ func refreshPyq(c *gin.Context) {
 
 }
 
+func getChatRooms(c *gin.Context) {
+
+	c.Set("Payload", wc.GetChatRooms())
+
+}
+
 func getChatRoomMembers(c *gin.Context) {
 
 	roomid := c.Param("roomid")
