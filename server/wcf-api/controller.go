@@ -2,6 +2,7 @@ package wcf
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/opentdp/go-helper/logman"
 	"github.com/spf13/cast"
 
 	"github.com/rehiy/wechat-rest-api/config"
@@ -18,6 +19,11 @@ func initWCF() {
 	if err != nil {
 		panic(err)
 	}
+
+	wc.EnableReceivingMsg()
+	wc.OnReceivingMsg(func(msg *wcf.WxMsg) {
+		logman.Info("OnReceivingMsg", msg)
+	})
 
 }
 

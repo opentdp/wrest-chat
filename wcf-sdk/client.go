@@ -503,14 +503,14 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 }
 
 // 异步处理接的消息
-func (c *Client) OnReceivingMsg(addr string, f func(msg *WxMsg)) error {
+func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
 	socket, err := pair1.NewSocket()
 	if err != nil {
 		return err
 	}
 	socket.SetOption(mangos.OptionRecvDeadline, 2000)
 	socket.SetOption(mangos.OptionSendDeadline, 2000)
-	if err = socket.Dial(addr); err != nil {
+	if err = socket.Dial(c.server); err != nil {
 		return err
 	}
 	defer socket.Close()
