@@ -169,6 +169,6 @@ func dbSqlQuery(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.DbSqlQuery(req.Db, req.Sql))
+	c.Set("Payload", wc.DbSqlQueryMap(req.Db, req.Sql))
 
 }
