@@ -1,6 +1,7 @@
 package wcf
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/opentdp/go-helper/logman"
@@ -528,12 +529,18 @@ func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
 	if err != nil {
 		return err
 	}
-	socket.SetOption(mangos.OptionRecvDeadline, 2000)
-	socket.SetOption(mangos.OptionSendDeadline, 2000)
-	if err = socket.Dial(c.server); err != nil {
+	// dial to server
+	parts := strings.Split(c.server, ":")
+	port, _ := strconv.Atoi(parts[2])
+	server := parts[0] + ":" + parts[1] + ":" + strconv.Itoa(port+1)
+	err = socket.Dial(server)
+	if err != nil {
 		return err
 	}
+	// loop for receiving msg
 	defer socket.Close()
+	socket.SetOption(mangos.OptionRecvDeadline, 2000)
+	socket.SetOption(mangos.OptionSendDeadline, 2000)
 	for c.IsReceivingMsg {
 		if recv, err := socket.Recv(); err == nil {
 			resp := &Response{}
