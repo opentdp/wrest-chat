@@ -32,6 +32,7 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("receive_transfer", receiveTransfer)
 
 	rg.GET("refresh_pyq/:id", refreshPyq)
+	rg.POST("decrypt_image", decryptImage)
 
 	rg.GET("enable_receiving_msg", enableReceivingMsg)
 	rg.GET("disable_receiving_msg", disableReceivingMsg)

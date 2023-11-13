@@ -200,6 +200,18 @@ func delChatRoomMembers(c *gin.Context) {
 
 }
 
+func decryptImage(c *gin.Context) {
+
+	var req wcf.DecPath
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	c.Set("Payload", wc.DecryptImage(req.Src, req.Dst))
+
+}
+
 func enableReceivingMsg(c *gin.Context) {
 
 	status := wc.EnableReceivingMsg(true)

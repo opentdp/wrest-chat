@@ -761,7 +761,7 @@
                 }
             }
         },
-        "/dec-image": {
+        "/api/decrypt_image": {
             "post": {
                 "summary": "解密图片",
                 "description": "解密图片:\n\nArgs:\n    src string: 加密的图片路径\n    dst string: 解密的图片路径\n\nReturns:\n    bool: 是否成功",
