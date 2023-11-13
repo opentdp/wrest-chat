@@ -2,6 +2,26 @@
 
 WCF客户端go语言版，用于访问RCP服务，实现和微信进程的远程交互。
 
+## 调用方式
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rehiy/wechat-rest-api/wcf-sdk"
+)
+
+func main() {
+	wc, err := wcf.NewWCF(config.Wcf.Address)
+	if err != nil {
+		panic(err)
+	}
+
+    fmt.Println(c.IsLogin())
+}
+```
+
 ## 生成pb文件
 
 ```shell
