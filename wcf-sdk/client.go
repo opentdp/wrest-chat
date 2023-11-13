@@ -338,7 +338,7 @@ func (c *Client) ReceiveTransfer(wxid, tfid, taid string) int32 {
 // Returns:
 //
 //	int: 1 为成功，其他失败
-func (c *Client) RefreshPYQ(id uint64) int32 {
+func (c *Client) RefreshPyq(id uint64) int32 {
 	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
 	req.Msg = &Request_Ui64{
 		Ui64: id,

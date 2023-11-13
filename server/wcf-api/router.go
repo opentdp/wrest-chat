@@ -9,14 +9,14 @@ func Route(rg *gin.RouterGroup) {
 	go initWCF()
 
 	rg.GET("is_login", isLogin)
-	rg.GET("wxid", wxid)
-	rg.GET("user_info", userInfo)
-	rg.GET("msg_types", msgTypes)
-	rg.GET("contacts", contacts)
-	rg.GET("friends", friends)
-	rg.GET("db_names", dbNames)
-	rg.GET("db_tables/:tab", dbTables)
-	rg.GET("pyq_refresh/:id", pyqRefresh)
-	rg.GET("chatroom_members/:roomid", chatroomMembers)
+	rg.GET("self_wxid", getSelfWxid)
+	rg.GET("user_info", getUserInfo)
+	rg.GET("msg_types", getMsgTypes)
+	rg.GET("contacts", getContacts)
+	rg.GET("friends", getFriends)
+	rg.GET("db_names", getDbNames)
+	rg.GET("db_tables/:db", getDbTables)
+	rg.GET("refresh_pyq/:id", refreshPyq)
+	rg.GET("chatroom_members/:roomid", getChatRoomMembers)
 
 }

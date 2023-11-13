@@ -1,8 +1,6 @@
 package wcf
 
 import (
-	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 
@@ -29,74 +27,57 @@ func isLogin(c *gin.Context) {
 
 }
 
-func wxid(c *gin.Context) {
+func getSelfWxid(c *gin.Context) {
 
 	c.Set("Payload", wc.GetSelfWxid())
 
 }
 
-func userInfo(c *gin.Context) {
+func getUserInfo(c *gin.Context) {
 
 	c.Set("Payload", wc.GetUserInfo())
 
 }
 
-func msgTypes(c *gin.Context) {
+func getMsgTypes(c *gin.Context) {
 
 	c.Set("Payload", wc.GetMsgTypes())
 
 }
 
-func contacts(c *gin.Context) {
+func getContacts(c *gin.Context) {
 
 	c.Set("Payload", wc.GetContacts())
 
 }
 
-func friends(c *gin.Context) {
+func getFriends(c *gin.Context) {
 
-	notFriends := map[string]string{
-		"mphelper":    "公众平台助手",
-		"fmessage":    "朋友推荐消息",
-		"medianote":   "语音记事本",
-		"floatbottle": "漂流瓶",
-		"filehelper":  "文件传输助手",
-		"newsapp":     "新闻",
-	}
-
-	result := []*wcf.RpcContact{}
-	for _, cnt := range wc.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") || strings.HasPrefix(cnt.Wxid, "gh_") || notFriends[cnt.Wxid] != "" {
-			continue
-		}
-		result = append(result, cnt)
-	}
-
-	c.Set("Payload", result)
+	c.Set("Payload", wc.GetFriends())
 
 }
 
-func dbNames(c *gin.Context) {
+func getDbNames(c *gin.Context) {
 
 	c.Set("Payload", wc.GetDbNames())
 
 }
 
-func dbTables(c *gin.Context) {
+func getDbTables(c *gin.Context) {
 
-	tab := c.Param("tab")
-	c.Set("Payload", wc.GetDbTables(tab))
+	db := c.Param("db")
+	c.Set("Payload", wc.GetDbTables(db))
 
 }
 
-func pyqRefresh(c *gin.Context) {
+func refreshPyq(c *gin.Context) {
 
 	id := cast.ToUint64(c.Param("id"))
-	c.Set("Payload", wc.RefreshPYQ(id))
+	c.Set("Payload", wc.RefreshPyq(id))
 
 }
 
-func chatroomMembers(c *gin.Context) {
+func getChatRoomMembers(c *gin.Context) {
 
 	roomid := c.Param("roomid")
 	c.Set("Payload", wc.GetChatRoomMembers(roomid))
