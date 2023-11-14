@@ -9,7 +9,7 @@ package main
 
 import (
     "fmt"
-    "github.com/rehiy/wechat-rest-api/wcf-sdk"
+    "github.com/opentdp/wechat-rest/wcf-sdk"
 )
 
 func main() {

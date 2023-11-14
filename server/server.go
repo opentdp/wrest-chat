@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/opentdp/go-helper/httpd"
 
-	"github.com/rehiy/wechat-rest-api/config"
-	"github.com/rehiy/wechat-rest-api/server/midware"
-	"github.com/rehiy/wechat-rest-api/server/wcf-api"
+	"github.com/opentdp/wechat-rest/config"
+	"github.com/opentdp/wechat-rest/server/midware"
+	"github.com/opentdp/wechat-rest/server/wcf-api"
 )
 
 func Start() {

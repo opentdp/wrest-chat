@@ -5,8 +5,8 @@ import (
 	"github.com/opentdp/go-helper/logman"
 	"github.com/spf13/cast"
 
-	"github.com/rehiy/wechat-rest-api/config"
-	"github.com/rehiy/wechat-rest-api/wcf-sdk"
+	"github.com/opentdp/wechat-rest/config"
+	"github.com/opentdp/wechat-rest/wcf-sdk"
 )
 
 var wc *wcf.Client
@@ -224,7 +224,7 @@ func enableReceivingMsg(c *gin.Context) {
 	status := wc.EnableReceivingMsg(true)
 
 	go wc.OnReceivingMsg(func(msg *wcf.WxMsg) {
-		logman.Info("OnReceivingMsg", msg)
+		logman.Info("OnReceivingMsg", "msg", msg)
 	})
 
 	c.Set("Payload", gin.H{

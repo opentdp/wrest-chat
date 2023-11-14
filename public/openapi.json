@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "WeChat Rest API",
-        "description": "Github Repo <a href='https://github.com/rehiy/wechat-rest-api'>wechat-rest-api</a>",
+        "description": "Github Repo <a href='https://github.com/opentdp/wechat-rest'>wechat-rest</a>",
         "version": "0.1.0"
     },
     "paths": {

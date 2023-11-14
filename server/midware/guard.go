@@ -3,7 +3,7 @@ package midware
 import (
 	"strings"
 
-	"github.com/rehiy/wechat-rest-api/config"
+	"github.com/opentdp/wechat-rest/config"
 
 	"github.com/gin-gonic/gin"
 )

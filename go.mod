@@ -1,6 +1,6 @@
-module github.com/rehiy/wechat-rest-api
+module github.com/opentdp/wechat-rest
 
-go 1.21.3
+go 1.21.0
 
 require (
 	github.com/gin-gonic/gin v1.9.1

@@ -1,0 +1,35 @@
+name: Wechat Rest Builder
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: Build binary
+        run: |
+          sh build.sh
+
+      - name: Create github release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body_path: ./RELEASE.md
+          draft: false
+          prerelease: false
+          files: |
+            ./*.tar.gz
