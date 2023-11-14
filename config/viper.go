@@ -19,7 +19,7 @@ func init() {
 	viper.SetDefault("httpd.address", "127.0.0.1:7600")
 
 	viper.SetDefault("wcf.address", "127.0.0.1:10080")
-	viper.SetDefault("wcf.executable", "wcf.exe")
+	viper.SetDefault("wcf.executable", "./wcf.exe")
 
 }
 
