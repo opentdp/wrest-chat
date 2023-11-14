@@ -1,6 +1,6 @@
 # WeChatFerry go-sdk
 
-WCF客户端go语言版，用于访问RCP服务，实现和微信进程的远程交互。
+WCF客户端go语言版，用于访问RPC服务，实现和微信进程的远程交互。
 
 ## 调用方式
 
@@ -8,15 +8,17 @@ WCF客户端go语言版，用于访问RCP服务，实现和微信进程的远程
 package main
 
 import (
-	"fmt"
-	"github.com/rehiy/wechat-rest-api/wcf-sdk"
+    "fmt"
+    "github.com/rehiy/wechat-rest-api/wcf-sdk"
 )
 
 func main() {
-	wc, err := wcf.NewWCF(config.Wcf.Address)
-	if err != nil {
-		panic(err)
-	}
+    wl := &wcf.Launcher{}
+    wc, err := wl.Start()
+
+    if err != nil {
+        panic(err)
+    }
 
     fmt.Println(c.IsLogin())
 }

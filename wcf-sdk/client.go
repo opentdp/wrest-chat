@@ -1,7 +1,6 @@
 package wcf
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/opentdp/go-helper/logman"
@@ -13,10 +12,11 @@ import (
 )
 
 type Client struct {
-	server string
 	socket protocol.Socket
 
-	IsReceivingMsg bool
+	CmdServer    string // 控制接口地址
+	MsgServer    string // 消息接口地址
+	ReceivingMsg bool   // 是否正在接收消息
 }
 
 func (c *Client) dial() error {
@@ -24,7 +24,7 @@ func (c *Client) dial() error {
 	if err != nil {
 		return err
 	}
-	err = socket.Dial(c.server)
+	err = socket.Dial(c.CmdServer)
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,9 @@ func (c *Client) Call(data []byte) *Response {
 
 // 关闭 RPC 连接
 func (c *Client) Close() error {
-	c.DisableReceivingMsg()
+	if c.ReceivingMsg {
+		c.DisableReceivingMsg()
+	}
 	return c.socket.Close()
 }
 
@@ -537,7 +539,7 @@ func (c *Client) EnableReceivingMsg(pyq bool) int32 {
 		Flag: pyq,
 	}
 	recv := c.Call(req.build())
-	c.IsReceivingMsg = true
+	c.ReceivingMsg = true
 	return recv.GetStatus()
 }
 
@@ -545,7 +547,7 @@ func (c *Client) EnableReceivingMsg(pyq bool) int32 {
 func (c *Client) DisableReceivingMsg() int32 {
 	req := genFunReq(Functions_FUNC_DISABLE_RECV_TXT)
 	recv := c.Call(req.build())
-	c.IsReceivingMsg = false
+	c.ReceivingMsg = false
 	return recv.GetStatus()
 }
 
@@ -555,18 +557,15 @@ func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
 	if err != nil {
 		return err
 	}
-	// dial to server
-	parts := strings.Split(c.server, ":")
-	port, _ := strconv.Atoi(parts[2])
-	server := parts[0] + ":" + parts[1] + ":" + strconv.Itoa(port+1)
-	if err = socket.Dial(server); err != nil {
+	// dial to msg server
+	if err = socket.Dial(c.MsgServer); err != nil {
 		return err
 	}
 	// loop for receiving msg
 	defer socket.Close()
 	socket.SetOption(mangos.OptionRecvDeadline, 2000)
 	socket.SetOption(mangos.OptionSendDeadline, 2000)
-	for c.IsReceivingMsg {
+	for c.ReceivingMsg {
 		logman.Info("receiving msg: waiting")
 		if recv, err := socket.Recv(); err == nil {
 			resp := &Response{}

@@ -15,7 +15,12 @@ func initWCF() {
 
 	var err error
 
-	wc, err = wcf.NewWCF(config.Wcf.Address)
+	wl := &wcf.Launcher{
+		Address: config.Wcf.Address,
+		Wcfexe:  config.Wcf.Executable,
+	}
+
+	wc, err = wl.Start()
 	if err != nil {
 		panic(err)
 	}
