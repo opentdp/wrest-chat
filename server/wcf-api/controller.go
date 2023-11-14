@@ -25,6 +25,8 @@ func initWCF() {
 		panic(err)
 	}
 
+	go wl.AutoStop()
+
 }
 
 func isLogin(c *gin.Context) {

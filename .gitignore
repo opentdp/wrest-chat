@@ -1,3 +1,6 @@
 *.log
+*.lock
 .DS_Store
 config.yml
+
+logs/*
