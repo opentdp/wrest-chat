@@ -27,4 +27,4 @@ build windows amd64
 ####################################################################
 
 mv -f build wechat-rest
-tar czvf wechat-rest.tar.gz wechat-rest/
+zip -r wechat-rest.zip wechat-rest/
