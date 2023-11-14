@@ -2,6 +2,16 @@
 
 基于 [WeChatFerry](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 框架实现的 REST 接口，使用 go 语言编写。
 
+## 使用方法
+
+1、下载 [WeChatSetup-3.9.2.23](https://github.com/lich0821/WeChatFerry/releases/download/v39.0.3/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
+
+2、在一台 Windows 系统电脑上安装刚刚下载的微信
+
+3、同一台电脑上，解压 `Wechat-rest` ，双击 `wrest.exe` 启动接口服务
+
+4、浏览器打开 `http://localhost:7600` 查看支持的接口
+
 ## 功能清单
 
 - 检查登录状态

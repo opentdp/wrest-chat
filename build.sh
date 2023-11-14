@@ -20,11 +20,13 @@ build() {
 
 ####################################################################
 
-mv -f wcf-bin build
-
 build windows amd64
 
 ####################################################################
 
-mv -f build wechat-rest
+cp README.md build/
+cp wcf-bin/wcf.exe build/
+cp wcf-bin/spy.dll build/
+
+mv build wechat-rest
 zip -r wechat-rest.zip wechat-rest/
