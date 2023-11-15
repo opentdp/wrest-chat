@@ -187,7 +187,7 @@ func (c *Client) DbSqlQuery(db, sql string) []*DbRow {
 //
 // Returns:
 //
-//	[]*DbRow: 查询结果
+//	map[string]any: 查询结果
 func (c *Client) DbSqlQueryMap(db, sql string) map[string]any {
 	rows := c.DbSqlQuery(db, sql)
 	res := map[string]any{}
@@ -512,7 +512,7 @@ func (c *Client) GetAliasInChatRoom(wxid, roomId string) string {
 //
 // Returns:
 //
-//	int32: 是否成功
+//	int32:  1 为成功，其他失败
 func (c *Client) DecryptImage(src, dst string) int32 {
 	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
 	req.Msg = &Request_Dec{
@@ -526,6 +526,7 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 }
 
 // 开启接收消息
+//
 // Args:
 //
 //	pyq bool: 是否接收朋友圈消息
@@ -544,6 +545,10 @@ func (c *Client) EnableReceivingMsg(pyq bool) int32 {
 }
 
 // 停止接收消息
+//
+// Returns:
+//
+//	int32: 0 为成功，其他失败
 func (c *Client) DisableReceivingMsg() int32 {
 	req := genFunReq(Functions_FUNC_DISABLE_RECV_TXT)
 	recv := c.Call(req.build())
