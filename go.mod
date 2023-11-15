@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/gin-gonic/gin v1.9.1
-	github.com/opentdp/go-helper v0.2.4
+	github.com/opentdp/go-helper v0.2.5
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/viper v1.17.0
 	go.nanomsg.org/mangos/v3 v3.4.2
