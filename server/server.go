@@ -10,9 +10,9 @@ import (
 
 func Start() {
 
-	engine := httpd.Engine(config.Debug)
+	httpd.Engine(config.Debug)
 
-	api := engine.Group("/api")
+	api := httpd.Group("/api")
 	api.Use(midware.OutputHandle)
 	api.Use(midware.AuthGuard)
 
