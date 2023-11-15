@@ -12,8 +12,8 @@ type MsgReceiver struct {
 
 type MsgCallback func(msg *WxMsg)
 
-func (c *MsgReceiver) Enroll(f MsgCallback) error {
-	c.callbacks = append(c.callbacks, f)
+func (c *MsgReceiver) Enroll(fn ...MsgCallback) error {
+	c.callbacks = append(c.callbacks, fn...)
 	if !c.receiving {
 		return c.looper()
 	}

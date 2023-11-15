@@ -502,14 +502,17 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 // Returns:
 //
 //	int32: 0 为成功，其他失败
-func (c *Client) ReceiverEnroll(pyq bool, fn MsgCallback) int32 {
+func (c *Client) ReceiverEnroll(pyq bool, fn ...MsgCallback) int32 {
 	req := genFunReq(Functions_FUNC_ENABLE_RECV_TXT)
 	req.Msg = &Request_Flag{
 		Flag: pyq,
 	}
 	recv := c.Call(req.build())
-	go c.Receiver.Enroll(fn)
-	return recv.GetStatus()
+	stat := recv.GetStatus()
+	if stat == 0 && len(fn) > 0 {
+		go c.Receiver.Enroll(fn...)
+	}
+	return stat
 }
 
 // 停止接收消息
