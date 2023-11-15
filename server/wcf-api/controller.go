@@ -20,12 +20,11 @@ func initWCF() {
 		Wcfexe:  config.Wcf.Executable,
 	}
 
-	wc, err = wl.Start()
-	if err != nil {
-		panic(err)
+	if wc, err = wl.Start(); err != nil {
+		logman.Fatal("start wcf faild", "error", err)
 	}
 
-	go wl.AutoStop()
+	wl.AutoDestory()
 
 }
 

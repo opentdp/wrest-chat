@@ -1,15 +1,15 @@
 package wcf
 
 import (
+	"bytes"
 	"os"
 	"os/exec"
-	"os/signal"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/onquit"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -47,7 +47,11 @@ func (l *Launcher) Start() (*Client, error) {
 	parts := strings.Split(l.Address, ":")
 	port, _ := strconv.Atoi(parts[1])
 
+	// 启动 wcf 服务
 	if l.Wcfexe != "" {
+		if wl.IsWeChatRunning() {
+			logman.Fatal("pleae close wechat first")
+		}
 		logman.Info("wcf start", "bin", l.Wcfexe, "port", port)
 		cmd := exec.Command(l.Wcfexe, "start", strconv.Itoa(port))
 		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
@@ -57,27 +61,37 @@ func (l *Launcher) Start() (*Client, error) {
 		time.Sleep(5 * time.Second)
 	}
 
+	// 连接 wcf 服务
 	l.client = &Client{
 		CmdServer: "tcp://" + l.Address,
 		MsgServer: "tcp://" + parts[0] + ":" + strconv.Itoa(port+1),
 	}
-
-	logman.Info("wcf connect", "CmdServer", l.client.CmdServer)
+	logman.Info("wcf connect", "server", l.Address)
 	return l.client, l.client.dial()
 }
 
-func (l *Launcher) AutoStop() error {
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-	<-quit
+func (l *Launcher) AutoDestory() {
+	onquit.Register(func() {
+		// 关闭 wcf 连接
+		l.client.Close()
+		// 关闭 wcf 服务
+		if l.Wcfexe != "" {
+			logman.Info("killing wechat process")
+			cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
+			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+			cmd.Run()
+		}
+	})
+}
 
-	if l.Wcfexe != "" {
-		logman.Info("wcf stop", "bin", l.Wcfexe)
-		cmd := exec.Command(l.Wcfexe, "stop")
-		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-		cmd.Run()
+func (l *Launcher) IsWeChatRunning() bool {
+	var out bytes.Buffer
+
+	cmd := exec.Command("tasklist")
+	cmd.Stdout = &out
+
+	if err := cmd.Run(); err == nil {
+		return strings.Contains(out.String(), "WeChat")
 	}
-
-	logman.Info("wcf disconnect", "CmdServer", l.client.CmdServer)
-	return l.client.Close()
+	return false
 }
