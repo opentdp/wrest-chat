@@ -2,9 +2,9 @@ package wcf
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/opentdp/go-helper/logman"
 	"github.com/spf13/cast"
 
+	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/config"
 	"github.com/opentdp/wechat-rest/wcf-sdk"
 )
@@ -220,9 +220,7 @@ func decryptImage(c *gin.Context) {
 
 func enableReceivingMsg(c *gin.Context) {
 
-	status := wc.EnableReceivingMsg(true)
-
-	go wc.OnReceivingMsg(func(msg *wcf.WxMsg) {
+	status := wc.ReceiverEnroll(true, func(msg *wcf.WxMsg) {
 		logman.Info("OnReceivingMsg", "msg", msg)
 	})
 
@@ -234,7 +232,7 @@ func enableReceivingMsg(c *gin.Context) {
 
 func disableReceivingMsg(c *gin.Context) {
 
-	status := wc.DisableReceivingMsg()
+	status := wc.ReceiverDisable()
 
 	c.Set("Payload", gin.H{
 		"status": status,

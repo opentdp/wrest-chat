@@ -4,8 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/opentdp/go-helper/logman"
 	"github.com/spf13/viper"
+
+	"github.com/opentdp/go-helper/logman"
 )
 
 func init() {

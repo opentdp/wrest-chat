@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/opentdp/go-helper/httpd"
-
 	"github.com/opentdp/wechat-rest/config"
 	"github.com/opentdp/wechat-rest/server/midware"
 	"github.com/opentdp/wechat-rest/server/wcf-api"

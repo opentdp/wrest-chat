@@ -3,46 +3,22 @@ package wcf
 import (
 	"strings"
 
-	"github.com/opentdp/go-helper/logman"
-	"go.nanomsg.org/mangos/v3"
-	"go.nanomsg.org/mangos/v3/protocol"
-	"go.nanomsg.org/mangos/v3/protocol/pair1"
-	_ "go.nanomsg.org/mangos/v3/transport/all"
 	"google.golang.org/protobuf/proto"
+
+	"github.com/opentdp/go-helper/logman"
 )
 
 type Client struct {
-	socket protocol.Socket
-
-	CmdServer    string // 控制接口地址
-	MsgServer    string // 消息接口地址
-	ReceivingMsg bool   // 是否正在接收消息
+	Receiver *MsgReceiver // 消息接收器
+	pbSocket              // RPC 客户端
 }
 
-func (c *Client) dial() error {
-	socket, err := pair1.NewSocket()
-	if err != nil {
-		return err
+// 关闭 RPC 连接
+func (c *Client) Close() error {
+	if c.Receiver.receiving {
+		c.ReceiverDisable()
 	}
-	err = socket.Dial(c.CmdServer)
-	if err != nil {
-		return err
-	}
-	c.socket = socket
-	return err
-}
-
-func (c *Client) send(data []byte) error {
-	return c.socket.Send(data)
-}
-
-func (c *Client) recv() (*Response, error) {
-	resp := &Response{}
-	recv, err := c.socket.Recv()
-	if err == nil {
-		err = proto.Unmarshal(recv, resp)
-	}
-	return resp, err
+	return c.close()
 }
 
 // 调用 RPC 接口
@@ -55,14 +31,6 @@ func (c *Client) Call(data []byte) *Response {
 		logman.Error(err.Error())
 	}
 	return recv
-}
-
-// 关闭 RPC 连接
-func (c *Client) Close() error {
-	if c.ReceivingMsg {
-		c.DisableReceivingMsg()
-	}
-	return c.socket.Close()
 }
 
 // 检查登录状态
@@ -534,13 +502,13 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 // Returns:
 //
 //	int32: 0 为成功，其他失败
-func (c *Client) EnableReceivingMsg(pyq bool) int32 {
+func (c *Client) ReceiverEnroll(pyq bool, fn MsgCallback) int32 {
 	req := genFunReq(Functions_FUNC_ENABLE_RECV_TXT)
 	req.Msg = &Request_Flag{
 		Flag: pyq,
 	}
 	recv := c.Call(req.build())
-	c.ReceivingMsg = true
+	go c.Receiver.Enroll(fn)
 	return recv.GetStatus()
 }
 
@@ -549,37 +517,9 @@ func (c *Client) EnableReceivingMsg(pyq bool) int32 {
 // Returns:
 //
 //	int32: 0 为成功，其他失败
-func (c *Client) DisableReceivingMsg() int32 {
+func (c *Client) ReceiverDisable() int32 {
+	c.Receiver.Disable() // 停止接收消息
 	req := genFunReq(Functions_FUNC_DISABLE_RECV_TXT)
 	recv := c.Call(req.build())
-	c.ReceivingMsg = false
 	return recv.GetStatus()
-}
-
-// 异步处理消息
-func (c *Client) OnReceivingMsg(f func(msg *WxMsg)) error {
-	socket, err := pair1.NewSocket()
-	if err != nil {
-		return err
-	}
-	// dial to msg server
-	if err = socket.Dial(c.MsgServer); err != nil {
-		return err
-	}
-	// loop for receiving msg
-	defer socket.Close()
-	socket.SetOption(mangos.OptionRecvDeadline, 2000)
-	socket.SetOption(mangos.OptionSendDeadline, 2000)
-	for c.ReceivingMsg {
-		logman.Info("receiving msg: waiting")
-		if recv, err := socket.Recv(); err == nil {
-			resp := &Response{}
-			proto.Unmarshal(recv, resp)
-			go f(resp.GetWxmsg())
-		} else {
-			logman.Info("receiving msg", "error", err)
-			return err
-		}
-	}
-	return err
 }
