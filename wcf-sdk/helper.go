@@ -43,22 +43,14 @@ func (l *Launcher) Start() (*Client, error) {
 	if l.Address == "" {
 		l.Address = "127.0.0.1:10080"
 	}
-
+	// 解析地址
 	parts := strings.Split(l.Address, ":")
 	port, _ := strconv.Atoi(parts[1])
 
 	// 启动 wcf 服务
 	if l.Wcfexe != "" {
-		if wl.IsWeChatRunning() {
-			logman.Fatal("pleae close wechat first")
-		}
-		logman.Info("wcf start", "bin", l.Wcfexe, "port", port)
-		cmd := exec.Command(l.Wcfexe, "start", strconv.Itoa(port))
-		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-		if err := cmd.Start(); err != nil {
-			return nil, err
-		}
-		time.Sleep(5 * time.Second)
+		l.injectWechat(port)
+		time.Sleep(3 * time.Second)
 	}
 
 	// 连接 wcf 服务
@@ -74,24 +66,34 @@ func (l *Launcher) AutoDestory() {
 	onquit.Register(func() {
 		// 关闭 wcf 连接
 		l.client.Close()
+
 		// 关闭 wcf 服务
 		if l.Wcfexe != "" {
 			logman.Info("killing wechat process")
 			cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
-			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-			cmd.Run()
+			if err := cmd.Run(); err != nil {
+				logman.Warn("failed to kill wechat", "error", err)
+			}
 		}
 	})
 }
 
-func (l *Launcher) IsWeChatRunning() bool {
+func (l *Launcher) injectWechat(port int) {
+	var cmd *exec.Cmd
+
+	// 检查 wechat 是否已经启动
 	var out bytes.Buffer
-
-	cmd := exec.Command("tasklist")
+	cmd = exec.Command("tasklist")
 	cmd.Stdout = &out
-
-	if err := cmd.Run(); err == nil {
-		return strings.Contains(out.String(), "WeChat")
+	if strings.Contains(out.String(), "WeChat") {
+		logman.Fatal("please close wechat first")
 	}
-	return false
+
+	// 启动 wcf 并注入 wechat
+	logman.Info("start wcf", "bin", l.Wcfexe, "port", port)
+	cmd = exec.Command(l.Wcfexe, "start", strconv.Itoa(port))
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	if err := cmd.Start(); err != nil {
+		logman.Fatal("failed to inject wecaht", err)
+	}
 }

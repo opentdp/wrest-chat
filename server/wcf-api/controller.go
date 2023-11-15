@@ -11,7 +11,7 @@ import (
 
 var wc *wcf.Client
 
-func initWCF() {
+func initWcfService() {
 
 	var err error
 
@@ -21,7 +21,7 @@ func initWCF() {
 	}
 
 	if wc, err = wl.Start(); err != nil {
-		logman.Fatal("start wcf faild", "error", err)
+		logman.Fatal("failed to start wcf", "error", err)
 	}
 
 	wl.AutoDestory()
