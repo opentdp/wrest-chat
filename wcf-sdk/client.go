@@ -23,11 +23,8 @@ type Client struct {
 }
 
 // 启动 wcf 服务
-//
-// Returns:
-//
-// *CmdClient: wcf 客户端
-// error: 错误信息
+// @param *CmdClient wcf 客户端
+// @return error 错误信息
 func (c *Client) Connect() error {
 	// 设置默认值
 	if c.WcfAddr == "" {
@@ -71,15 +68,9 @@ func (c *Client) AutoDestory() {
 }
 
 // 启动消息接收器
-//
-// Args:
-//
-// pyq bool: 是否接收朋友圈消息
-// fn ...MsgCallback: 消息回调函数
-//
-// Returns:
-//
-// error: 错误信息
+// @param pyq bool 是否接收朋友圈消息
+// @param fn ...MsgCallback 消息回调函数
+// @return error 错误信息
 func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
 	if c.CmdClient.EnableMsgServer(true) != 0 {
 		return errors.New("failed to enable msg server")
@@ -90,10 +81,7 @@ func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
 }
 
 // 关闭消息接收器
-//
-// Returns:
-//
-// error: 错误信息
+// @return error 错误信息
 func (c *Client) DisableReceiver() error {
 	if c.CmdClient.DisableMsgServer() != 0 {
 		return errors.New("failed to disable msg server")
@@ -102,15 +90,9 @@ func (c *Client) DisableReceiver() error {
 }
 
 // 构建地址
-//
-// Args:
-//
-// ip string: IP地址
-// port int: 端口
-//
-// Returns:
-//
-// string: IP地址和端口
+// @param ip string IP地址
+// @param port int 端口
+// @return string IP地址和端口
 func (c *Client) buildAddr(ip string, port int) string {
 	if strings.Contains(ip, ":") {
 		return fmt.Sprintf("tcp://[%s]:%d", ip, port)
@@ -120,10 +102,8 @@ func (c *Client) buildAddr(ip string, port int) string {
 }
 
 // 启动 wcf 服务并注入 wechat
-//
-// Args:
-//
-// port int: wcf 服务端口
+// @param port int wcf 服务端口
+// @return error 错误信息
 func (c *Client) injectWechat(port int) error {
 	var cmd *exec.Cmd
 	// 检查 wechat 是否已经启动
