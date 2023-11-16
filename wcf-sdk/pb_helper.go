@@ -16,11 +16,13 @@ type cmdMsg struct {
 	*Request
 }
 
+// 生成消息
 func (c *cmdMsg) build() []byte {
 	marshal, _ := proto.Marshal(c)
 	return marshal
 }
 
+// 生成请求消息
 func genFunReq(fun Functions) *cmdMsg {
 	return &cmdMsg{
 		&Request{Func: fun, Msg: nil},
@@ -34,6 +36,7 @@ type pbSocket struct {
 	socket protocol.Socket
 }
 
+// 连接服务器
 func (c *pbSocket) dial() (err error) {
 	all.AddTransports(nil) // 注册所有传输协议
 	logman.Info("pbsocket", "server", c.Server)
@@ -44,6 +47,7 @@ func (c *pbSocket) dial() (err error) {
 	return c.socket.Dial(c.Server)
 }
 
+// 接收数据
 func (c *pbSocket) recv() (*Response, error) {
 	resp := &Response{}
 	recv, err := c.socket.Recv()
@@ -53,14 +57,17 @@ func (c *pbSocket) recv() (*Response, error) {
 	return resp, err
 }
 
+// 发送数据
 func (c *pbSocket) send(data []byte) error {
 	return c.socket.Send(data)
 }
 
+// 关闭连接
 func (c *pbSocket) close() error {
 	return c.socket.Close()
 }
 
+// 设置超时时间
 func (c *pbSocket) deadline(d int) {
 	c.socket.SetOption(mangos.OptionRecvDeadline, d)
 	c.socket.SetOption(mangos.OptionSendDeadline, d)
