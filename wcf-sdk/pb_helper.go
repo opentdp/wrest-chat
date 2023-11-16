@@ -32,19 +32,31 @@ func genFunReq(fun Functions) *cmdMsg {
 // RPC 客户端
 
 type pbSocket struct {
-	Server string // 接口地址
+	server string // 接口地址
 	socket protocol.Socket
 }
 
 // 连接服务器
 func (c *pbSocket) dial() (err error) {
 	all.AddTransports(nil) // 注册所有传输协议
-	logman.Info("pbsocket", "server", c.Server)
+	logman.Info("pbsocket", "server", c.server)
 	c.socket, err = pair1.NewSocket()
 	if err != nil {
 		return err
 	}
-	return c.socket.Dial(c.Server)
+	return c.socket.Dial(c.server)
+}
+
+// 调用接口
+func (c *CmdClient) call(data []byte) *Response {
+	if err := c.send(data); err != nil {
+		logman.Error(err.Error())
+	}
+	recv, err := c.recv()
+	if err != nil {
+		logman.Error(err.Error())
+	}
+	return recv
 }
 
 // 接收数据

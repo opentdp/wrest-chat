@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-    wl := &wcf.Launcher{}
+    wl := &wcf.Client{}
     wc, err := wl.Start()
 
     if err != nil {

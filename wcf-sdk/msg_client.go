@@ -4,14 +4,25 @@ import (
 	"github.com/opentdp/go-helper/logman"
 )
 
-type MsgReceiver struct {
-	callbacks []MsgCallback
-	receiving bool // 正在接收消息
+type MsgClient struct {
 	pbSocket       // RPC 客户端
+	receiving bool // 接收消息中
+	callbacks []MsgCallback
 }
 
 // 消息回调函数
 type MsgCallback func(msg *WxMsg)
+
+// 关闭 RPC 连接
+//
+// Returns:
+//
+// error: 错误信息
+func (c *MsgClient) Close() error {
+	c.callbacks = []MsgCallback{}
+	c.receiving = false
+	return c.close()
+}
 
 // 创建消息接收器
 //
@@ -22,24 +33,10 @@ type MsgCallback func(msg *WxMsg)
 // Returns:
 //
 // error: 错误信息
-func (c *MsgReceiver) Enroll(fn ...MsgCallback) error {
+func (c *MsgClient) Register(fn ...MsgCallback) error {
 	c.callbacks = append(c.callbacks, fn...)
 	if !c.receiving {
-		return c.looper()
-	}
-	return nil
-}
-
-// 关闭消息接收器
-//
-// Returns:
-//
-// error: 错误信息
-func (c *MsgReceiver) Disable() error {
-	c.callbacks = []MsgCallback{}
-	if c.receiving {
-		c.receiving = false
-		return c.close()
+		return c.listener()
 	}
 	return nil
 }
@@ -49,7 +46,7 @@ func (c *MsgReceiver) Disable() error {
 // Returns:
 //
 // error: 错误信息
-func (c *MsgReceiver) looper() error {
+func (c *MsgClient) listener() error {
 	// 连接消息服务
 	c.receiving = true
 	if err := c.dial(); err != nil {
@@ -68,5 +65,5 @@ func (c *MsgReceiver) looper() error {
 		}
 	}
 	// 关闭连接
-	return c.Disable()
+	return c.Close()
 }

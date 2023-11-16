@@ -1,6 +1,8 @@
 package wcf
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 
@@ -14,87 +16,89 @@ var wc *wcf.Client
 
 func initWcfService() {
 
-	var err error
+	parts := strings.Split(config.Wcf.Address, ":")
+	port := cast.ToInt(parts[1])
 
-	wl := &wcf.Launcher{
-		Address: config.Wcf.Address,
-		Wcfexe:  config.Wcf.Executable,
+	wc = &wcf.Client{
+		WcfPath: config.Wcf.Executable,
+		WcfAddr: parts[0],
+		WcfPort: port,
 	}
 
-	if wc, err = wl.Start(); err != nil {
+	if err := wc.Start(); err != nil {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
 
-	wl.AutoDestory()
+	wc.AutoDestory()
 
 }
 
 func isLogin(c *gin.Context) {
 
-	c.Set("Payload", wc.IsLogin())
+	c.Set("Payload", wc.CmdClient.IsLogin())
 
 }
 
 func getSelfWxid(c *gin.Context) {
 
-	c.Set("Payload", wc.GetSelfWxid())
+	c.Set("Payload", wc.CmdClient.GetSelfWxid())
 
 }
 
 func getUserInfo(c *gin.Context) {
 
-	c.Set("Payload", wc.GetUserInfo())
+	c.Set("Payload", wc.CmdClient.GetUserInfo())
 
 }
 
 func getMsgTypes(c *gin.Context) {
 
-	c.Set("Payload", wc.GetMsgTypes())
+	c.Set("Payload", wc.CmdClient.GetMsgTypes())
 
 }
 
 func getContacts(c *gin.Context) {
 
-	c.Set("Payload", wc.GetContacts())
+	c.Set("Payload", wc.CmdClient.GetContacts())
 
 }
 
 func getFriends(c *gin.Context) {
 
-	c.Set("Payload", wc.GetFriends())
+	c.Set("Payload", wc.CmdClient.GetFriends())
 
 }
 
 func getDbNames(c *gin.Context) {
 
-	c.Set("Payload", wc.GetDbNames())
+	c.Set("Payload", wc.CmdClient.GetDbNames())
 
 }
 
 func getDbTables(c *gin.Context) {
 
 	db := c.Param("db")
-	c.Set("Payload", wc.GetDbTables(db))
+	c.Set("Payload", wc.CmdClient.GetDbTables(db))
 
 }
 
 func refreshPyq(c *gin.Context) {
 
 	id := cast.ToUint64(c.Param("id"))
-	c.Set("Payload", wc.RefreshPyq(id))
+	c.Set("Payload", wc.CmdClient.RefreshPyq(id))
 
 }
 
 func getChatRooms(c *gin.Context) {
 
-	c.Set("Payload", wc.GetChatRooms())
+	c.Set("Payload", wc.CmdClient.GetChatRooms())
 
 }
 
 func getChatRoomMembers(c *gin.Context) {
 
 	roomid := c.Param("roomid")
-	c.Set("Payload", wc.GetChatRoomMembers(roomid))
+	c.Set("Payload", wc.CmdClient.GetChatRoomMembers(roomid))
 
 }
 
@@ -102,7 +106,7 @@ func getAliasInChatRoom(c *gin.Context) {
 
 	wxid := c.Param("wxid")
 	roomid := c.Param("roomid")
-	c.Set("Payload", wc.GetAliasInChatRoom(wxid, roomid))
+	c.Set("Payload", wc.CmdClient.GetAliasInChatRoom(wxid, roomid))
 
 }
 
@@ -114,7 +118,7 @@ func sendTxt(c *gin.Context) {
 		return
 	}
 
-	status := wc.SendTxt(req.Msg, req.Receiver, req.Aters)
+	status := wc.CmdClient.SendTxt(req.Msg, req.Receiver, req.Aters)
 
 	c.Set("Payload", gin.H{
 		"success": status == 0,
@@ -130,7 +134,7 @@ func sendImg(c *gin.Context) {
 		return
 	}
 
-	status := wc.SendImg(req.Path, req.Receiver)
+	status := wc.CmdClient.SendImg(req.Path, req.Receiver)
 
 	c.Set("Payload", gin.H{
 		"success": status == 0,
@@ -146,7 +150,7 @@ func sendFile(c *gin.Context) {
 		return
 	}
 
-	status := wc.SendFile(req.Path, req.Receiver)
+	status := wc.CmdClient.SendFile(req.Path, req.Receiver)
 
 	c.Set("Payload", gin.H{
 		"success": status == 0,
@@ -167,7 +171,7 @@ func dbSqlQuery(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.DbSqlQueryMap(req.Db, req.Sql))
+	c.Set("Payload", wc.CmdClient.DbSqlQueryMap(req.Db, req.Sql))
 
 }
 
@@ -179,7 +183,7 @@ func acceptNewFriend(c *gin.Context) {
 		return
 	}
 
-	status := wc.AcceptNewFriend(req.V3, req.V4, req.Scene)
+	status := wc.CmdClient.AcceptNewFriend(req.V3, req.V4, req.Scene)
 
 	c.Set("Payload", gin.H{
 		"success": status == 1,
@@ -195,7 +199,7 @@ func receiveTransfer(c *gin.Context) {
 		return
 	}
 
-	status := wc.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid)
+	status := wc.CmdClient.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid)
 
 	c.Set("Payload", gin.H{
 		"success": status == 1,
@@ -211,7 +215,7 @@ func addChatRoomMembers(c *gin.Context) {
 		return
 	}
 
-	status := wc.AddChatRoomMembers(req.Roomid, req.Wxids)
+	status := wc.CmdClient.AddChatRoomMembers(req.Roomid, req.Wxids)
 
 	c.Set("Payload", gin.H{
 		"success": status == 1,
@@ -227,7 +231,7 @@ func delChatRoomMembers(c *gin.Context) {
 		return
 	}
 
-	status := wc.DelChatRoomMembers(req.Roomid, req.Wxids)
+	status := wc.CmdClient.DelChatRoomMembers(req.Roomid, req.Wxids)
 
 	c.Set("Payload", gin.H{
 		"success": status == 1,
@@ -243,7 +247,7 @@ func decryptImage(c *gin.Context) {
 		return
 	}
 
-	status := wc.DecryptImage(req.Src, req.Dst)
+	status := wc.CmdClient.DecryptImage(req.Src, req.Dst)
 
 	c.Set("Payload", gin.H{
 		"success": status == 1,
@@ -268,7 +272,7 @@ func enableForwardMsg(c *gin.Context) {
 		request.JsonPost(req.Url, msg, request.H{})
 	}
 
-	status := wc.ReceiverEnroll(true, cb)
+	status := wc.EnrollReceiver(true, cb)
 
 	c.Set("Payload", gin.H{
 		"success": status == 0,
@@ -278,7 +282,7 @@ func enableForwardMsg(c *gin.Context) {
 
 func disableForwardMsg(c *gin.Context) {
 
-	status := wc.ReceiverDisable()
+	status := wc.DisableReceiver()
 
 	c.Set("Payload", gin.H{
 		"success": status == 0,

@@ -1,546 +1,72 @@
 package wcf
 
 import (
+	"bytes"
+	"fmt"
+	"os"
+	"os/exec"
+	"strconv"
 	"strings"
-
-	"google.golang.org/protobuf/proto"
+	"time"
 
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/onquit"
 )
 
 type Client struct {
-	Receiver *MsgReceiver // 消息接收器
-	pbSocket              // RPC 客户端
+	WcfPath   string     // wcf.exe 路径
+	WcfAddr   string     // wcf 监听地址
+	WcfPort   int        // wcf 监听端口
+	CmdClient *CmdClient // 命令客户端
+	MsgClient *MsgClient // 消息客户端
 }
 
-// 关闭 RPC 连接
+// 启动 wcf 服务
 //
 // Returns:
 //
+// *CmdClient: wcf 客户端
 // error: 错误信息
-func (c *Client) Close() error {
-	if c.Receiver.receiving {
-		c.ReceiverDisable()
+func (c *Client) Start() error {
+	if c.WcfAddr == "" {
+		c.WcfAddr = "127.0.0.1"
 	}
-	return c.close()
+	if c.WcfPort == 0 {
+		c.WcfPort = 10080
+	}
+	// 启动 wcf 服务
+	if c.WcfPath != "" {
+		c.injectWechat(c.WcfPort)
+		time.Sleep(5 * time.Second)
+	}
+	// 连接 wcf 服务
+	c.CmdClient = &CmdClient{
+		pbSocket: pbSocket{server: c.buildAddr(c.WcfAddr, c.WcfPort)},
+	}
+	c.MsgClient = &MsgClient{
+		pbSocket: pbSocket{server: c.buildAddr(c.WcfAddr, c.WcfPort+1)},
+	}
+	return c.CmdClient.dial()
 }
 
-// 调用 RPC 接口
-//
-// Args:
-//
-// data []byte: 要发送的数据
-//
-// Returns:
-//
-// *Response: 返回的数据
-func (c *Client) Call(data []byte) *Response {
-	if err := c.send(data); err != nil {
-		logman.Error(err.Error())
-	}
-	recv, err := c.recv()
-	if err != nil {
-		logman.Error(err.Error())
-	}
-	return recv
-}
-
-// 检查登录状态
-//
-// Returns:
-//
-// bool: 是否已登录
-func (c *Client) IsLogin() bool {
-	req := genFunReq(Functions_FUNC_IS_LOGIN)
-	recv := c.Call(req.build())
-	if recv.GetStatus() == 1 {
-		return true
-	}
-	return false
-}
-
-// 获取登录账号wxid
-//
-// Returns:
-//
-// string: 登录账号wxid
-func (c *Client) GetSelfWxid() string {
-	req := genFunReq(Functions_FUNC_GET_SELF_WXID)
-	recv := c.Call(req.build())
-	return recv.GetStr()
-}
-
-// 获取登录账号个人信息
-//
-// Returns:
-//
-// *UserInfo: 登录账号个人信息
-func (c *Client) GetUserInfo() *UserInfo {
-	req := genFunReq(Functions_FUNC_GET_USER_INFO)
-	recv := c.Call(req.build())
-	return recv.GetUi()
-}
-
-// 获取所有消息类型
-//
-// Returns:
-//
-// map[int32]string: 所有消息类型
-func (c *Client) GetMsgTypes() map[int32]string {
-	req := genFunReq(Functions_FUNC_GET_MSG_TYPES)
-	recv := c.Call(req.build())
-	return recv.GetTypes().GetTypes()
-}
-
-// 获取完整通讯录
-//
-// Returns:
-//
-// []*RpcContact: 完整通讯录
-func (c *Client) GetContacts() []*RpcContact {
-	req := genFunReq(Functions_FUNC_GET_CONTACTS)
-	recv := c.Call(req.build())
-	return recv.GetContacts().GetContacts()
-}
-
-// 获取好友列表
-//
-// Returns:
-//
-// []*RpcContact: 好友列表
-func (c *Client) GetFriends() []*RpcContact {
-	notFriends := map[string]string{
-		"mphelper":    "公众平台助手",
-		"fmessage":    "朋友推荐消息",
-		"medianote":   "语音记事本",
-		"floatbottle": "漂流瓶",
-		"filehelper":  "文件传输助手",
-		"newsapp":     "新闻",
-	}
-	friends := []*RpcContact{}
-	for _, cnt := range c.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") || strings.HasPrefix(cnt.Wxid, "gh_") || notFriends[cnt.Wxid] != "" {
-			continue
-		}
-		friends = append(friends, cnt)
-	}
-	return friends
-}
-
-// 获取群聊列表
-//
-// Returns:
-//
-// []*RpcContact: 群聊列表
-func (c *Client) GetChatRooms() []*RpcContact {
-	chatrooms := []*RpcContact{}
-	for _, cnt := range c.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") {
-			chatrooms = append(chatrooms, cnt)
-		}
-	}
-	return chatrooms
-}
-
-// 获取所有数据库
-//
-// Returns:
-//
-// []string: 所有数据库名
-func (c *Client) GetDbNames() []string {
-	req := genFunReq(Functions_FUNC_GET_DB_NAMES)
-	recv := c.Call(req.build())
-	return recv.GetDbs().Names
-}
-
-// 获取数据库中所有表
-//
-// Args:
-//
-// db string: 数据库名
-//
-// Returns:
-//
-// []*DbTable: `db` 下的所有表名及对应建表语句
-func (c *Client) GetDbTables(db string) []*DbTable {
-	req := genFunReq(Functions_FUNC_GET_DB_TABLES)
-	req.Msg = &Request_Str{
-		Str: db,
-	}
-	recv := c.Call(req.build())
-	return recv.GetTables().GetTables()
-}
-
-// 执行 SQL 查询，如果数据量大注意分页
-//
-// Args:
-//
-// db string: 要查询的数据库
-// sql string: 要执行的 SQL
-//
-// Returns:
-//
-// []*DbRow: 查询结果
-func (c *Client) DbSqlQuery(db, sql string) []*DbRow {
-	req := genFunReq(Functions_FUNC_EXEC_DB_QUERY)
-	req.Msg = &Request_Query{
-		Query: &DbQuery{
-			Db:  db,
-			Sql: sql,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetRows().GetRows()
-}
-
-// 执行 SQL 查询，如果数据量大注意分页
-//
-// Args:
-//
-// db string: 要查询的数据库
-// sql string: 要执行的 SQL
-//
-// Returns:
-//
-// map[string]any: 查询结果
-func (c *Client) DbSqlQueryMap(db, sql string) map[string]any {
-	rows := c.DbSqlQuery(db, sql)
-	res := map[string]any{}
-	for _, row := range rows {
-		for _, field := range row.Fields {
-			res[field.Column] = field.Content
-		}
-	}
-	return res
-}
-
-// 发送文本消息
-//
-// Args:
-//
-// msg string: 要发送的消息，换行使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
-// receiver string: 消息接收人，wxid 或者 roomid
-// aters string: 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`
-//
-// Returns:
-//
-// int32: 0 为成功，其他失败
-func (c *Client) SendTxt(msg, receiver, aters string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_TXT)
-	req.Msg = &Request_Txt{
-		Txt: &TextMsg{
-			Msg:      msg,
-			Receiver: receiver,
-			Aters:    aters,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 发送图片，非线程安全
-//
-// Args:
-//
-// path string: 图片路径，如：`C:/Projs/WeChatRobot/TEQuant.jpeg`
-// receiver string: 消息接收人，wxid 或者 roomid
-//
-// Returns:
-//
-// int32: 0 为成功，其他失败
-func (c *Client) SendImg(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_IMG)
-	req.Msg = &Request_File{
-		File: &PathMsg{
-			Path:     path,
-			Receiver: receiver,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 发送文件，非线程安全
-//
-// Args:
-//
-// path string: 本地文件路径，如：`C:/Projs/WeChatRobot/README.MD`
-// receiver string: 消息接收人，wxid 或者 roomid
-//
-// Returns:
-//
-// int32: 0 为成功，其他失败
-func (c *Client) SendFile(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_FILE)
-	req.Msg = &Request_File{
-		File: &PathMsg{
-			Path:     path,
-			Receiver: receiver,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 发送 XML
-//
-// Args:
-//
-// path string: 封面图片路径
-// content string: xml 内容
-// receiver string: 消息接收人，wxid 或者 roomid
-// type int32: xml 类型，如：0x21 为小程序
-//
-// Returns:
-//
-// int32: 0 为成功，其他失败
-func (c *Client) SendXml(path, content, receiver string, Type int32) int32 {
-	req := genFunReq(Functions_FUNC_SEND_XML)
-	req.Msg = &Request_Xml{
-		Xml: &XmlMsg{
-			Receiver: receiver,
-			Content:  content,
-			Path:     path,
-			Type:     Type,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 发送表情
-//
-// Args:
-//
-// path string: 本地表情路径，如：`C:/Projs/WeChatRobot/emo.gif`
-// receiver string: 消息接收人，wxid 或者 roomid
-//
-// Returns:
-//
-// int32: 0 为成功，其他失败
-func (c *Client) SendEmotion(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_EMOTION)
-	req.Msg = &Request_File{
-		File: &PathMsg{
-			Path:     path,
-			Receiver: receiver,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 接受好友申请
-//
-// Args:
-//
-// v3 string: 加密用户名 (好友申请消息里 v3 开头的字符串)
-// v4 string: Ticket (好友申请消息里 v4 开头的字符串)
-// scene int32: 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) AcceptNewFriend(v3, v4 string, scene int32) int32 {
-	req := genFunReq(Functions_FUNC_ACCEPT_FRIEND)
-	req.Msg = &Request_V{
-		V: &Verification{
-			V3:    v3,
-			V4:    v4,
-			Scene: scene,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 接收转账
-//
-// Args:
-//
-// wxid string: 转账消息里的发送人 wxid
-// transferid string: 转账消息里的 transferid
-// transactionid string: 转账消息里的 transactionid
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) ReceiveTransfer(wxid, tfid, taid string) int32 {
-	req := genFunReq(Functions_FUNC_RECV_TRANSFER)
-	req.Msg = &Request_Tf{
-		Tf: &Transfer{
-			Wxid: wxid,
-			Tfid: tfid,
-			Taid: taid,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 刷新朋友圈
-//
-// Args:
-//
-// id int32: 开始 id，0 为最新页
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) RefreshPyq(id uint64) int32 {
-	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
-	req.Msg = &Request_Ui64{
-		Ui64: id,
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 添加群成员
-//
-// Args:
-//
-// roomid string: 待加群的 id
-// wxids string: 要加到群里的 wxid，多个用逗号分隔
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) AddChatRoomMembers(roomId, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &AddMembers{
-			Roomid: roomId,
-			Wxids:  wxIds,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 删除群成员
-//
-// Args:
-//
-// roomid string: 群的 id
-// wxids string: 要删除成员的 wxid，多个用逗号分隔
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) DelChatRoomMembers(roomId, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &AddMembers{
-			Roomid: roomId,
-			Wxids:  wxIds,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 获取群成员列表
-//
-// Args:
-//
-// roomid string: 群的 id
-//
-// Returns:
-//
-// []*RpcContact: 群成员列表
-func (c *Client) GetChatRoomMembers(roomId string) []*RpcContact {
-	members := []*RpcContact{}
-	// get user data
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
-	userMap := map[string]string{}
-	for _, user := range userRds {
-		wxid := string(user.Fields[0].Content)
-		userMap[wxid] = string(user.Fields[1].Content)
-	}
-	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
-		return members
-	}
-	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
-		return members
-	}
-	// fix user name
-	for _, member := range roomData.Members {
-		if member.Name == "" {
-			member.Name = userMap[member.Wxid]
-		}
-		members = append(members, &RpcContact{
-			Wxid: member.Wxid,
-			Name: member.Name,
-		})
-	}
-	return members
-}
-
-// 获取群成员昵称
-//
-// Args:
-//
-// wxid string: wxid
-// roomid string: 群的 id
-//
-// Returns:
-//
-// string: 群成员昵称
-func (c *Client) GetAliasInChatRoom(wxid, roomId string) string {
-	// get user data
-	nickName := ""
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
-	if len(userRds) > 0 && len(userRds[0].Fields) > 0 {
-		nickName = string(userRds[0].Fields[0].Content)
-	}
-	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
-		return nickName
-	}
-	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
-		return nickName
-	}
-	// fix user name
-	for _, member := range roomData.Members {
-		if member.Wxid == wxid {
-			if member.Name != "" {
-				nickName = member.Name
+// 自动销毁 wcf 服务
+func (c *Client) AutoDestory() {
+	onquit.Register(func() {
+		// 关闭 wcf 连接
+		c.MsgClient.Close()
+		c.CmdClient.Close()
+		// 关闭 wcf 服务
+		if c.WcfPath != "" {
+			logman.Info("killing wechat process")
+			cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
+			if err := cmd.Run(); err != nil {
+				logman.Warn("failed to kill wechat", "error", err)
 			}
-			break
 		}
-	}
-	return nickName
+	})
 }
 
-// 解密图片
-//
-// Args:
-//
-// src string: 加密的图片路径
-// dst string: 解密的图片路径
-//
-// Returns:
-//
-// int32: 1 为成功，其他失败
-func (c *Client) DecryptImage(src, dst string) int32 {
-	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
-	req.Msg = &Request_Dec{
-		Dec: &DecPath{
-			Src: src,
-			Dst: dst,
-		},
-	}
-	recv := c.Call(req.build())
-	return recv.GetStatus()
-}
-
-// 开启接收消息
+// 启动消息接收器
 //
 // Args:
 //
@@ -550,27 +76,60 @@ func (c *Client) DecryptImage(src, dst string) int32 {
 // Returns:
 //
 // int32: 0 为成功，其他失败
-func (c *Client) ReceiverEnroll(pyq bool, fn ...MsgCallback) int32 {
-	req := genFunReq(Functions_FUNC_ENABLE_RECV_TXT)
-	req.Msg = &Request_Flag{
-		Flag: pyq,
-	}
-	recv := c.Call(req.build())
-	stat := recv.GetStatus()
-	if stat == 0 && len(fn) > 0 {
-		go c.Receiver.Enroll(fn...)
-	}
-	return stat
+func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) int32 {
+	status := c.CmdClient.EnableMsgServer(true)
+	c.MsgClient.Register(fn...)
+	return status
 }
 
-// 停止接收消息
+// 关闭消息接收器
 //
 // Returns:
 //
 // int32: 0 为成功，其他失败
-func (c *Client) ReceiverDisable() int32 {
-	c.Receiver.Disable() // 停止接收消息
-	req := genFunReq(Functions_FUNC_DISABLE_RECV_TXT)
-	recv := c.Call(req.build())
-	return recv.GetStatus()
+func (c *Client) DisableReceiver() int32 {
+	status := c.CmdClient.DisableMsgServer()
+	c.MsgClient.Close()
+	return status
+}
+
+// 构建地址
+//
+// Args:
+//
+// ip string: IP地址
+// port int: 端口
+//
+// Returns:
+//
+// string: IP地址和端口
+func (c *Client) buildAddr(ip string, port int) string {
+	if strings.Contains(ip, ":") {
+		return fmt.Sprintf("tcp://[%s]:%d", ip, port)
+	} else {
+		return fmt.Sprintf("tcp://%s:%d", ip, port)
+	}
+}
+
+// 启动 wcf 服务并注入 wechat
+//
+// Args:
+//
+// port int: wcf 服务端口
+func (c *Client) injectWechat(port int) {
+	var cmd *exec.Cmd
+	// 检查 wechat 是否已经启动
+	var out bytes.Buffer
+	cmd = exec.Command("tasklist")
+	cmd.Stdout = &out
+	if strings.Contains(out.String(), "WeChat") {
+		logman.Fatal("please close wechat first")
+	}
+	// 启动 wcf 并注入 wechat
+	logman.Info("start wcf", "bin", c.WcfPath, "port", port)
+	cmd = exec.Command(c.WcfPath, "start", strconv.Itoa(port))
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	if err := cmd.Start(); err != nil {
+		logman.Fatal("failed to inject wecaht", err)
+	}
 }
