@@ -25,7 +25,7 @@ func initWcfService() {
 		WcfPort: port,
 	}
 
-	if err := wc.Start(); err != nil {
+	if err := wc.Connect(); err != nil {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
 

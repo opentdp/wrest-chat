@@ -2,6 +2,7 @@ package wcf
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -27,7 +28,8 @@ type Client struct {
 //
 // *CmdClient: wcf 客户端
 // error: 错误信息
-func (c *Client) Start() error {
+func (c *Client) Connect() error {
+	// 设置默认值
 	if c.WcfAddr == "" {
 		c.WcfAddr = "127.0.0.1"
 	}
@@ -36,7 +38,9 @@ func (c *Client) Start() error {
 	}
 	// 启动 wcf 服务
 	if c.WcfPath != "" {
-		c.injectWechat(c.WcfPort)
+		if err := c.injectWechat(c.WcfPort); err != nil {
+			return err
+		}
 		time.Sleep(5 * time.Second)
 	}
 	// 连接 wcf 服务
@@ -116,20 +120,18 @@ func (c *Client) buildAddr(ip string, port int) string {
 // Args:
 //
 // port int: wcf 服务端口
-func (c *Client) injectWechat(port int) {
+func (c *Client) injectWechat(port int) error {
 	var cmd *exec.Cmd
 	// 检查 wechat 是否已经启动
 	var out bytes.Buffer
 	cmd = exec.Command("tasklist")
 	cmd.Stdout = &out
 	if strings.Contains(out.String(), "WeChat") {
-		logman.Fatal("please close wechat first")
+		return errors.New("please close wechat first")
 	}
 	// 启动 wcf 并注入 wechat
 	logman.Info("start wcf", "bin", c.WcfPath, "port", port)
 	cmd = exec.Command(c.WcfPath, "start", strconv.Itoa(port))
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-	if err := cmd.Start(); err != nil {
-		logman.Fatal("failed to inject wecaht", err)
-	}
+	return cmd.Start()
 }

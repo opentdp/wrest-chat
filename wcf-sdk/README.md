@@ -13,13 +13,12 @@ import (
 )
 
 func main() {
-    wl := &wcf.Client{}
-    wc, err := wl.Start()
-
-    if err != nil {
+    wc := &wcf.Client{}
+    if err := wc.Connect(); err == nil {
+        wc.AutoDestory()
+    } else {
         panic(err)
     }
-
     fmt.Println(c.IsLogin())
 }
 ```
