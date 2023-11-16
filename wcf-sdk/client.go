@@ -85,7 +85,8 @@ func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
 		return errors.New("failed to enable msg server")
 	}
 	time.Sleep(1 * time.Second)
-	return c.MsgClient.Register(fn...)
+	c.MsgClient.Register(fn...)
+	return nil
 }
 
 // 关闭消息接收器

@@ -29,16 +29,11 @@ func (c *MsgClient) Close() error {
 // Args:
 //
 // fn ...MsgCallback: 消息回调函数
-//
-// Returns:
-//
-// error: 错误信息
-func (c *MsgClient) Register(fn ...MsgCallback) error {
+func (c *MsgClient) Register(fn ...MsgCallback) {
 	c.callbacks = append(c.callbacks, fn...)
 	if !c.receiving {
-		return c.listener()
+		go c.listener()
 	}
-	return nil
 }
 
 // 消息接收器循环
