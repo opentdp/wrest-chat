@@ -18,6 +18,12 @@ type Launcher struct {
 	client  *Client // wcf 客户端
 }
 
+// 启动 wcf 服务
+//
+// Returns:
+//
+// *Client: wcf 客户端
+// error: 错误信息
 func (l *Launcher) Start() (*Client, error) {
 	if l.Address == "" {
 		l.Address = "127.0.0.1:10080"
@@ -44,6 +50,7 @@ func (l *Launcher) Start() (*Client, error) {
 	return l.client, l.client.dial()
 }
 
+// 自动销毁 wcf 服务
 func (l *Launcher) AutoDestory() {
 	onquit.Register(func() {
 		// 关闭 wcf 连接
@@ -59,6 +66,11 @@ func (l *Launcher) AutoDestory() {
 	})
 }
 
+// 启动 wcf 服务并注入 wechat
+//
+// Args:
+//
+// port int: wcf 服务端口
 func (l *Launcher) injectWechat(port int) {
 	var cmd *exec.Cmd
 	// 检查 wechat 是否已经启动
