@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cast"
 
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/wechat-rest/config"
 	"github.com/opentdp/wechat-rest/wcf-sdk"
 )
@@ -113,7 +114,11 @@ func sendTxt(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.SendTxt(req.Msg, req.Receiver, req.Aters))
+	status := wc.SendTxt(req.Msg, req.Receiver, req.Aters)
+
+	c.Set("Payload", gin.H{
+		"success": status == 0,
+	})
 
 }
 
@@ -125,7 +130,11 @@ func sendImg(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.SendImg(req.Path, req.Receiver))
+	status := wc.SendImg(req.Path, req.Receiver)
+
+	c.Set("Payload", gin.H{
+		"success": status == 0,
+	})
 
 }
 
@@ -137,7 +146,11 @@ func sendFile(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.SendFile(req.Path, req.Receiver))
+	status := wc.SendFile(req.Path, req.Receiver)
+
+	c.Set("Payload", gin.H{
+		"success": status == 0,
+	})
 
 }
 
@@ -166,7 +179,11 @@ func acceptNewFriend(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.AcceptNewFriend(req.V3, req.V4, req.Scene))
+	status := wc.AcceptNewFriend(req.V3, req.V4, req.Scene)
+
+	c.Set("Payload", gin.H{
+		"success": status == 1,
+	})
 
 }
 
@@ -178,7 +195,11 @@ func receiveTransfer(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid))
+	status := wc.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid)
+
+	c.Set("Payload", gin.H{
+		"success": status == 1,
+	})
 
 }
 
@@ -190,7 +211,11 @@ func addChatRoomMembers(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.AddChatRoomMembers(req.Roomid, req.Wxids))
+	status := wc.AddChatRoomMembers(req.Roomid, req.Wxids)
+
+	c.Set("Payload", gin.H{
+		"success": status == 1,
+	})
 
 }
 
@@ -202,7 +227,11 @@ func delChatRoomMembers(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.DelChatRoomMembers(req.Roomid, req.Wxids))
+	status := wc.DelChatRoomMembers(req.Roomid, req.Wxids)
+
+	c.Set("Payload", gin.H{
+		"success": status == 1,
+	})
 
 }
 
@@ -214,22 +243,35 @@ func decryptImage(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.DecryptImage(req.Src, req.Dst))
+	status := wc.DecryptImage(req.Src, req.Dst)
+
+	c.Set("Payload", gin.H{
+		"success": status == 1,
+	})
 
 }
 
-type ReceiveTransferRequest struct {
+type ForwardMsgRequest struct {
 	Url string `json:"url"`
 }
 
 func enableForwardMsg(c *gin.Context) {
 
-	status := wc.ReceiverEnroll(true, func(msg *wcf.WxMsg) {
-		logman.Info("OnReceivingMsg", "msg", msg)
-	})
+	var req ForwardMsgRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Payload", err)
+		return
+	}
+
+	cb := func(msg *wcf.WxMsg) {
+		logman.Info("forward msg", "url", req.Url, "msg", msg)
+		request.JsonPost(req.Url, msg, request.H{})
+	}
+
+	status := wc.ReceiverEnroll(true, cb)
 
 	c.Set("Payload", gin.H{
-		"status": status,
+		"success": status == 0,
 	})
 
 }
@@ -239,7 +281,7 @@ func disableForwardMsg(c *gin.Context) {
 	status := wc.ReceiverDisable()
 
 	c.Set("Payload", gin.H{
-		"status": status,
+		"success": status == 0,
 	})
 
 }
