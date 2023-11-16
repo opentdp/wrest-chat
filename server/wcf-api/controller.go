@@ -272,20 +272,22 @@ func enableForwardMsg(c *gin.Context) {
 		request.JsonPost(req.Url, msg, request.H{})
 	}
 
-	status := wc.EnrollReceiver(true, cb)
+	error := wc.EnrollReceiver(true, cb)
 
 	c.Set("Payload", gin.H{
-		"success": status == 0,
+		"success": error == nil,
+		"error":   error,
 	})
 
 }
 
 func disableForwardMsg(c *gin.Context) {
 
-	status := wc.DisableReceiver()
+	error := wc.DisableReceiver()
 
 	c.Set("Payload", gin.H{
-		"success": status == 0,
+		"success": error == nil,
+		"error":   error,
 	})
 
 }

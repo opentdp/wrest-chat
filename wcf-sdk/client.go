@@ -79,22 +79,25 @@ func (c *Client) AutoDestory() {
 //
 // Returns:
 //
-// int32: 0 为成功，其他失败
-func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) int32 {
-	status := c.CmdClient.EnableMsgServer(true)
-	c.MsgClient.Register(fn...)
-	return status
+// error: 错误信息
+func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
+	if c.CmdClient.EnableMsgServer(true) != 0 {
+		return errors.New("failed to enable msg server")
+	}
+	time.Sleep(1 * time.Second)
+	return c.MsgClient.Register(fn...)
 }
 
 // 关闭消息接收器
 //
 // Returns:
 //
-// int32: 0 为成功，其他失败
-func (c *Client) DisableReceiver() int32 {
-	status := c.CmdClient.DisableMsgServer()
-	c.MsgClient.Close()
-	return status
+// error: 错误信息
+func (c *Client) DisableReceiver() error {
+	if c.CmdClient.DisableMsgServer() != 0 {
+		return errors.New("failed to disable msg server")
+	}
+	return c.MsgClient.Close()
 }
 
 // 构建地址
