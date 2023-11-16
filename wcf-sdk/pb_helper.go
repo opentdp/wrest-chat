@@ -4,7 +4,7 @@ import (
 	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/v3/protocol"
 	"go.nanomsg.org/mangos/v3/protocol/pair1"
-	_ "go.nanomsg.org/mangos/v3/transport/all"
+	"go.nanomsg.org/mangos/v3/transport/all"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/opentdp/go-helper/logman"
@@ -35,6 +35,7 @@ type pbSocket struct {
 }
 
 func (c *pbSocket) dial() (err error) {
+	all.AddTransports(nil) // 注册所有传输协议
 	logman.Info("pbsocket", "server", c.Server)
 	c.socket, err = pair1.NewSocket()
 	if err != nil {
