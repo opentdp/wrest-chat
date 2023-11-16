@@ -351,12 +351,21 @@
                 }
             }
         },
-        "/api/enable_receiving_msg": {
-            "get": {
+        "/api/enable_forward_msg": {
+            "post": {
                 "summary": "开启消息接收",
                 "description": "开启消息接收",
-                "operationId": "enable_receiving_msg__get",
-                "parameters": [],
+                "operationId": "enable_forward_msg__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_enable_forward_msg_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -364,7 +373,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "title": "Response Enable Receiving Msg  Get"
+                                    "title": "Response Enable Receiving Msg  POST"
                                 }
                             }
                         }
@@ -382,11 +391,11 @@
                 }
             }
         },
-        "/api/disable_receiving_msg": {
+        "/api/disable_forward_msg": {
             "get": {
                 "summary": "关闭消息接收",
                 "description": "关闭消息接收",
-                "operationId": "disable_receiving_msgg__get",
+                "operationId": "disable_forward_msg__get",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -541,18 +550,18 @@
                 }
             }
         },
-        "/api/db_sql_query": {
+        "/api/db_query_sql": {
             "post": {
                 "summary": "执行 SQL 查询，如果数据量大注意分页",
                 "description": "执行 SQL，如果数据量大注意分页\n\nArgs:\n    db string: 要查询的数据库\n    sql string: 要执行的 SQL\n\nReturns:\n    List[dict]: 查询结果",
-                "operationId": "db_sql_query_sql_post",
+                "operationId": "db_query_sql_sql_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/Body_db_sql_query_sql_post"
+                                        "$ref": "#/components/schemas/Body_db_query_sql_sql_post"
                                     }
                                 ],
                                 "title": "Body"
@@ -886,7 +895,7 @@
                 "type": "object",
                 "title": "Body_del_chatroom_members_chatroom_member_delete"
             },
-            "Body_db_sql_query_sql_post": {
+            "Body_db_query_sql_sql_post": {
                 "properties": {
                     "db": {
                         "type": "string",
@@ -902,7 +911,7 @@
                     }
                 },
                 "type": "object",
-                "title": "Body_db_sql_query_sql_post"
+                "title": "Body_db_query_sql_sql_post"
             },
             "Body_receive_transfer_transfer_post": {
                 "properties": {
@@ -945,6 +954,18 @@
                 },
                 "type": "object",
                 "title": "Body_send_file_file_post"
+            },
+            "Body_enable_forward_msg_post": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "title": "Url",
+                        "description": "转发地址",
+                        "default": "https://recv.example.org"
+                    }
+                },
+                "type": "object",
+                "title": "Body_enable_forward_msg_post"
             },
             "Body_send_image_image_post": {
                 "properties": {

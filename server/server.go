@@ -12,8 +12,7 @@ func Start() {
 	httpd.Engine(config.Debug)
 
 	api := httpd.Group("/api")
-	api.Use(midware.OutputHandle)
-	api.Use(midware.AuthGuard)
+	api.Use(midware.OutputHandle, midware.AuthGuard)
 
 	// 注册 WCF
 	wcf.Route(api)

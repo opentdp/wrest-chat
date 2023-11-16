@@ -218,7 +218,11 @@ func decryptImage(c *gin.Context) {
 
 }
 
-func enableReceivingMsg(c *gin.Context) {
+type ReceiveTransferRequest struct {
+	Url string `json:"url"`
+}
+
+func enableForwardMsg(c *gin.Context) {
 
 	status := wc.ReceiverEnroll(true, func(msg *wcf.WxMsg) {
 		logman.Info("OnReceivingMsg", "msg", msg)
@@ -230,7 +234,7 @@ func enableReceivingMsg(c *gin.Context) {
 
 }
 
-func disableReceivingMsg(c *gin.Context) {
+func disableForwardMsg(c *gin.Context) {
 
 	status := wc.ReceiverDisable()
 

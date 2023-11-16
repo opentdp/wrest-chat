@@ -17,7 +17,7 @@ func Route(rg *gin.RouterGroup) {
 
 	rg.GET("db_names", getDbNames)
 	rg.GET("db_tables/:db", getDbTables)
-	rg.POST("db_sql_query", dbSqlQuery)
+	rg.POST("db_query_sql", dbSqlQuery)
 
 	rg.GET("chatrooms", getChatRooms)
 	rg.GET("chatroom_members/:roomid", getChatRoomMembers)
@@ -34,7 +34,7 @@ func Route(rg *gin.RouterGroup) {
 	rg.GET("refresh_pyq/:id", refreshPyq)
 	rg.POST("decrypt_image", decryptImage)
 
-	rg.GET("enable_receiving_msg", enableReceivingMsg)
-	rg.GET("disable_receiving_msg", disableReceivingMsg)
+	rg.POST("enable_forward_msg", enableForwardMsg)
+	rg.GET("disable_forward_msg", disableForwardMsg)
 
 }
