@@ -1,6 +1,8 @@
 package wcf
 
 import (
+	"errors"
+
 	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/v3/protocol"
 	"go.nanomsg.org/mangos/v3/protocol/pair1"
@@ -41,10 +43,16 @@ func (c *pbSocket) dial() (err error) {
 	all.AddTransports(nil) // 注册所有传输协议
 	logman.Info("pbsocket", "server", c.server)
 	c.socket, err = pair1.NewSocket()
-	if err != nil {
-		return err
+	if err == nil {
+		return c.socket.Dial(c.server)
 	}
-	return c.socket.Dial(c.server)
+	return err
+}
+
+// 设置超时时间
+func (c *pbSocket) deadline(d int) {
+	c.socket.SetOption(mangos.OptionRecvDeadline, d)
+	c.socket.SetOption(mangos.OptionSendDeadline, d)
 }
 
 // 调用接口
@@ -62,6 +70,9 @@ func (c *CmdClient) call(data []byte) *Response {
 // 接收数据
 func (c *pbSocket) recv() (*Response, error) {
 	resp := &Response{}
+	if c.socket == nil {
+		return resp, errors.New("socket is nil")
+	}
 	recv, err := c.socket.Recv()
 	if err == nil {
 		err = proto.Unmarshal(recv, resp)
@@ -71,16 +82,16 @@ func (c *pbSocket) recv() (*Response, error) {
 
 // 发送数据
 func (c *pbSocket) send(data []byte) error {
+	if c.socket == nil {
+		return errors.New("socket is nil")
+	}
 	return c.socket.Send(data)
 }
 
 // 关闭连接
 func (c *pbSocket) close() error {
+	if c.socket == nil {
+		return errors.New("socket is nil")
+	}
 	return c.socket.Close()
-}
-
-// 设置超时时间
-func (c *pbSocket) deadline(d int) {
-	c.socket.SetOption(mangos.OptionRecvDeadline, d)
-	c.socket.SetOption(mangos.OptionSendDeadline, d)
 }
