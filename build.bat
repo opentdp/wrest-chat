@@ -17,7 +17,7 @@ GOTO :EOF
   SET GOOS=%1
   SET GOARCH=%2
   echo building for %1/%2
-  SET target=build/tdp-blackbox-%1-%2
+  SET target=build/wrest-%1-%2
   IF "%1"=="windows" (
     SET target=%target%.exe
   )
