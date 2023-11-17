@@ -4,7 +4,7 @@
 
 ## 使用方法
 
-1、下载 [WeChatSetup-3.9.2.23](https://github.com/lich0821/WeChatFerry/releases/download/v39.0.3/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
+1、下载 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
 2、在一台 Windows 系统电脑上安装刚刚下载的微信
 
