@@ -17,9 +17,6 @@
     "paths": {
         "/accept_new_friend": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -39,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -47,9 +44,6 @@
         },
         "/add_chatroom_members": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -69,7 +63,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -101,7 +95,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "string"
                         }
                     }
                 }
@@ -126,7 +120,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.RpcContact"
+                            }
                         }
                     }
                 }
@@ -142,7 +139,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.RpcContact"
+                            }
                         }
                     }
                 }
@@ -158,7 +158,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.RpcContact"
+                            }
                         }
                     }
                 }
@@ -174,7 +177,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -182,9 +188,6 @@
         },
         "/db_query_sql": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -204,7 +207,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -229,7 +232,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.DbTable"
+                            }
                         }
                     }
                 }
@@ -237,9 +243,6 @@
         },
         "/decrypt_image": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -259,7 +262,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -267,9 +270,6 @@
         },
         "/del_chatroom_members": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -289,7 +289,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -297,9 +297,6 @@
         },
         "/disable_forward_msg": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -319,7 +316,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -327,9 +324,6 @@
         },
         "/enable_forward_msg": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -349,7 +343,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -365,7 +359,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.RpcContact"
+                            }
                         }
                     }
                 }
@@ -381,7 +378,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "boolean"
                         }
                     }
                 }
@@ -397,7 +394,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -405,9 +405,6 @@
         },
         "/receive_transfer": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -427,7 +424,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -452,7 +449,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -468,7 +465,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "type": "string"
                         }
                     }
                 }
@@ -476,9 +473,6 @@
         },
         "/send_file": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -498,7 +492,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -506,9 +500,6 @@
         },
         "/send_img": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -528,7 +519,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -536,9 +527,6 @@
         },
         "/send_txt": {
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -558,7 +546,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.ActionStatus"
                         }
                     }
                 }
@@ -574,7 +562,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/gin.H"
+                            "$ref": "#/definitions/wcf.UserInfo"
                         }
                     }
                 }
@@ -582,9 +570,14 @@
         }
     },
     "definitions": {
-        "gin.H": {
+        "wcf.ActionStatus": {
             "type": "object",
-            "additionalProperties": {}
+            "properties": {
+                "error": {},
+                "success": {
+                    "type": "boolean"
+                }
+            }
         },
         "wcf.AddMembers": {
             "type": "object",
@@ -606,6 +599,19 @@
                     "type": "string"
                 },
                 "sql": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.DbTable": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "表名",
+                    "type": "string"
+                },
+                "sql": {
+                    "description": "建表 SQL",
                     "type": "string"
                 }
             }
@@ -644,6 +650,43 @@
                 }
             }
         },
+        "wcf.RpcContact": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "微信号",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "国家",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "性别",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "微信昵称",
+                    "type": "string"
+                },
+                "province": {
+                    "description": "省/州",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "微信 id",
+                    "type": "string"
+                }
+            }
+        },
         "wcf.TextMsg": {
             "type": "object",
             "properties": {
@@ -674,6 +717,27 @@
                 },
                 "wxid": {
                     "description": "转账人",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.UserInfo": {
+            "type": "object",
+            "properties": {
+                "home": {
+                    "description": "文件/图片等父路径",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "微信ID",
                     "type": "string"
                 }
             }
