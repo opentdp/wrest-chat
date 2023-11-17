@@ -19,7 +19,7 @@ func main() {
     } else {
         panic(err)
     }
-    fmt.Println(c.IsLogin())
+	fmt.Println(wc.CmdClient.IsLogin())
 }
 ```
 
