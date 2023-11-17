@@ -35,6 +35,6 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("decrypt_image", decryptImage)
 
 	rg.POST("enable_forward_msg", enableForwardMsg)
-	rg.GET("disable_forward_msg", disableForwardMsg)
+	rg.POST("disable_forward_msg", disableForwardMsg)
 
 }

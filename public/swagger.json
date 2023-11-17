@@ -1,9 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "微信 REST 接口文档",
+        "description": "基于 WeChatFerry RPC 实现的电脑版微信 REST-API，使用 Go 语言编写，无第三方运行时依赖。基于 HTTP 提供操作接口，轻松对接任意编程语言。",
         "title": "Wechat Rest API",
-        "contact": {},
+        "contact": {
+            "name": "OpenTDP",
+            "url": "https://github.com/opentdp/wechat-rest"
+        },
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -14,36 +17,21 @@
     "paths": {
         "/accept_new_friend": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "接受好友请求",
                 "parameters": [
                     {
-                        "description": "v3",
-                        "name": "v3",
+                        "description": "接受好友请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "v4",
-                        "name": "v4",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "scene",
-                        "name": "scene",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/wcf.Verification"
                         }
                     }
                 ],
@@ -59,27 +47,21 @@
         },
         "/add_chatroom_members": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "添加群成员",
                 "parameters": [
                     {
-                        "description": "群id",
-                        "name": "roomid",
+                        "description": "增删群成员请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "wxid列表",
-                        "name": "wxids",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.AddMembers"
                         }
                     }
                 ],
@@ -200,27 +182,21 @@
         },
         "/db_query_sql": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "执行数据库查询",
                 "parameters": [
                     {
-                        "description": "数据库名",
-                        "name": "db",
+                        "description": "数据库查询请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "sql语句",
-                        "name": "sql",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.DbSqlQueryRequest"
                         }
                     }
                 ],
@@ -261,27 +237,21 @@
         },
         "/decrypt_image": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "解密图片",
                 "parameters": [
                     {
-                        "description": "源文件路径",
-                        "name": "src",
+                        "description": "解密图片请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "目标文件路径",
-                        "name": "dst",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.DecPath"
                         }
                     }
                 ],
@@ -297,27 +267,21 @@
         },
         "/del_chatroom_members": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "删除群成员",
                 "parameters": [
                     {
-                        "description": "群id",
-                        "name": "roomid",
+                        "description": "增删群成员请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "wxid列表",
-                        "name": "wxids",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.AddMembers"
                         }
                     }
                 ],
@@ -332,11 +296,25 @@
             }
         },
         "/disable_forward_msg": {
-            "get": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "关闭消息转发",
+                "parameters": [
+                    {
+                        "description": "消息转发请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ForwardMsgRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -349,18 +327,21 @@
         },
         "/enable_forward_msg": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "开启消息转发",
                 "parameters": [
                     {
-                        "description": "转发地址",
-                        "name": "url",
+                        "description": "消息转发请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.ForwardMsgRequest"
                         }
                     }
                 ],
@@ -424,36 +405,21 @@
         },
         "/receive_transfer": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "接受转账",
                 "parameters": [
                     {
-                        "description": "wxid",
-                        "name": "wxid",
+                        "description": "接受转账请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "tfid",
-                        "name": "tfid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "taid",
-                        "name": "taid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.Transfer"
                         }
                     }
                 ],
@@ -510,27 +476,21 @@
         },
         "/send_file": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "发送文件消息",
                 "parameters": [
                     {
-                        "description": "文件路径",
-                        "name": "path",
+                        "description": "文件消息请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "接收者wxid",
-                        "name": "receiver",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.PathMsg"
                         }
                     }
                 ],
@@ -546,27 +506,21 @@
         },
         "/send_img": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "发送图片消息",
                 "parameters": [
                     {
-                        "description": "图片路径",
-                        "name": "path",
+                        "description": "图片消息请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "接收者wxid",
-                        "name": "receiver",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.PathMsg"
                         }
                     }
                 ],
@@ -582,35 +536,21 @@
         },
         "/send_txt": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "发送文本消息",
                 "parameters": [
                     {
-                        "description": "消息内容",
-                        "name": "msg",
+                        "description": "文本消息请求参数",
+                        "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "接收者wxid",
-                        "name": "receiver",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "被@者wxid列表",
-                        "name": "aters",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcf.TextMsg"
                         }
                     }
                 ],
@@ -645,6 +585,115 @@
         "gin.H": {
             "type": "object",
             "additionalProperties": {}
+        },
+        "wcf.AddMembers": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "要加的群ID",
+                    "type": "string"
+                },
+                "wxids": {
+                    "description": "要加群的人列表，逗号分隔",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.DbSqlQueryRequest": {
+            "type": "object",
+            "properties": {
+                "db": {
+                    "type": "string"
+                },
+                "sql": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.DecPath": {
+            "type": "object",
+            "properties": {
+                "dst": {
+                    "description": "目标路径",
+                    "type": "string"
+                },
+                "src": {
+                    "description": "源路径",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.ForwardMsgRequest": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.PathMsg": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "要发送的图片的路径",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "消息接收人",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.TextMsg": {
+            "type": "object",
+            "properties": {
+                "aters": {
+                    "description": "要@的人列表，逗号分隔",
+                    "type": "string"
+                },
+                "msg": {
+                    "description": "要发送的消息内容",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "消息接收人，当为群时可@",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.Transfer": {
+            "type": "object",
+            "properties": {
+                "taid": {
+                    "description": "Transaction id",
+                    "type": "string"
+                },
+                "tfid": {
+                    "description": "转账id transferid",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "转账人",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.Verification": {
+            "type": "object",
+            "properties": {
+                "scene": {
+                    "description": "添加方式：17 名片，30 扫码",
+                    "type": "integer"
+                },
+                "v3": {
+                    "description": "加密的用户名",
+                    "type": "string"
+                },
+                "v4": {
+                    "description": "Ticket",
+                    "type": "string"
+                }
+            }
         }
     }
 }

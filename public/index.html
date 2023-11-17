@@ -19,16 +19,14 @@
     <script type="text/javascript">
         SwaggerUIBundle({
             url: 'swagger.json',
-            "dom_id": "#swagger-ui",
-            "layout": "BaseLayout",
-            "deepLinking": true,
-            "showExtensions": true,
-            "showCommonExtensions": true,
-            oauth2RedirectUrl: window.location.origin + '/oauth2-redirect',
+            dom_id: '#swagger-ui',
+            layout: 'BaseLayout',
+            deepLinking: true,
+            showExtensions: true,
+            showCommonExtensions: true,
             presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.SwaggerUIStandalonePreset
-            ],
+                SwaggerUIBundle.presets.apis
+            ]
         })
     </script>
 </body>

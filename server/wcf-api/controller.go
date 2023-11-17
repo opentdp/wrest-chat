@@ -165,9 +165,8 @@ func getAliasInChatRoom(c *gin.Context) {
 
 // @Summary 发送文本消息
 // @Produce json
-// @Param msg body string true "消息内容"
-// @Param receiver body string true "接收者wxid"
-// @Param aters body string false "被@者wxid列表"
+// @Accept json
+// @Param body body wcf.TextMsg true "文本消息请求参数"
 // @Success 200 {object} gin.H
 // @Router /send_txt [post]
 func sendTxt(c *gin.Context) {
@@ -188,8 +187,8 @@ func sendTxt(c *gin.Context) {
 
 // @Summary 发送图片消息
 // @Produce json
-// @Param path body string true "图片路径"
-// @Param receiver body string true "接收者wxid"
+// @Accept json
+// @Param body body wcf.PathMsg true "图片消息请求参数"
 // @Success 200 {object} gin.H
 // @Router /send_img [post]
 func sendImg(c *gin.Context) {
@@ -210,8 +209,8 @@ func sendImg(c *gin.Context) {
 
 // @Summary 发送文件消息
 // @Produce json
-// @Param path body string true "文件路径"
-// @Param receiver body string true "接收者wxid"
+// @Accept json
+// @Param body body wcf.PathMsg true "文件消息请求参数"
 // @Success 200 {object} gin.H
 // @Router /send_file [post]
 func sendFile(c *gin.Context) {
@@ -238,8 +237,8 @@ type DbSqlQueryRequest struct {
 
 // @Summary 执行数据库查询
 // @Produce json
-// @Param db body string true "数据库名"
-// @Param sql body string true "sql语句"
+// @Accept json
+// @Param body body DbSqlQueryRequest true "数据库查询请求参数"
 // @Success 200 {object} gin.H
 // @Router /db_query_sql [post]
 func dbSqlQuery(c *gin.Context) {
@@ -256,9 +255,8 @@ func dbSqlQuery(c *gin.Context) {
 
 // @Summary 接受好友请求
 // @Produce json
-// @Param v3 body string true "v3"
-// @Param v4 body string true "v4"
-// @Param scene body int true "scene"
+// @Accept json
+// @Param body body wcf.Verification true "接受好友请求参数"
 // @Success 200 {object} gin.H
 // @Router /accept_new_friend [post]
 func acceptNewFriend(c *gin.Context) {
@@ -279,9 +277,8 @@ func acceptNewFriend(c *gin.Context) {
 
 // @Summary 接受转账
 // @Produce json
-// @Param wxid body string true "wxid"
-// @Param tfid body string true "tfid"
-// @Param taid body string true "taid"
+// @Accept json
+// @Param body body wcf.Transfer true "接受转账请求参数"
 // @Success 200 {object} gin.H
 // @Router /receive_transfer [post]
 func receiveTransfer(c *gin.Context) {
@@ -302,8 +299,8 @@ func receiveTransfer(c *gin.Context) {
 
 // @Summary 添加群成员
 // @Produce json
-// @Param roomid body string true "群id"
-// @Param wxids body string true "wxid列表"
+// @Accept json
+// @Param body body wcf.AddMembers true "增删群成员请求参数"
 // @Success 200 {object} gin.H
 // @Router /add_chatroom_members [post]
 func addChatRoomMembers(c *gin.Context) {
@@ -324,8 +321,8 @@ func addChatRoomMembers(c *gin.Context) {
 
 // @Summary 删除群成员
 // @Produce json
-// @Param roomid body string true "群id"
-// @Param wxids body string true "wxid列表"
+// @Accept json
+// @Param body body wcf.AddMembers true "增删群成员请求参数"
 // @Success 200 {object} gin.H
 // @Router /del_chatroom_members [post]
 func delChatRoomMembers(c *gin.Context) {
@@ -346,8 +343,8 @@ func delChatRoomMembers(c *gin.Context) {
 
 // @Summary 解密图片
 // @Produce json
-// @Param src body string true "源文件路径"
-// @Param dst body string true "目标文件路径"
+// @Accept json
+// @Param body body wcf.DecPath true "解密图片请求参数"
 // @Success 200 {object} gin.H
 // @Router /decrypt_image [post]
 func decryptImage(c *gin.Context) {
@@ -373,7 +370,8 @@ type ForwardMsgRequest struct {
 
 // @Summary 开启消息转发
 // @Produce json
-// @Param url body string true "转发地址"
+// @Accept json
+// @Param body body ForwardMsgRequest true "消息转发请求参数"
 // @Success 200 {object} gin.H
 // @Router /enable_forward_msg [post]
 func enableForwardMsg(c *gin.Context) {
@@ -400,8 +398,10 @@ func enableForwardMsg(c *gin.Context) {
 
 // @Summary 关闭消息转发
 // @Produce json
+// @Accept json
+// @Param body body ForwardMsgRequest true "消息转发请求参数"
 // @Success 200 {object} gin.H
-// @Router /disable_forward_msg [get]
+// @Router /disable_forward_msg [post]
 func disableForwardMsg(c *gin.Context) {
 
 	error := wc.DisableReceiver()

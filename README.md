@@ -1,6 +1,6 @@
-# 微信 REST Api
+# 微信 REST API
 
-基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现的电脑版微信REST-API，使用 Go 语言编写，无第三方运行时依赖。基于HTTP提供操作接口，轻松对接任意编程语言。
+基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现的电脑版微信 REST API，使用 Go 语言编写，无第三方运行时依赖。基于 HTTP 提供操作接口，轻松对接任意编程语言。
 
 ## 使用方法
 
