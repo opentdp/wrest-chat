@@ -3,9 +3,8 @@ package midware
 import (
 	"strings"
 
-	"github.com/opentdp/wechat-rest/config"
-
 	"github.com/gin-gonic/gin"
+	"github.com/opentdp/wechat-rest/args"
 )
 
 func AuthGuard(c *gin.Context) {
@@ -18,7 +17,7 @@ func AuthGuard(c *gin.Context) {
 		token = parts[1]
 	}
 
-	if token != config.Httpd.Token {
+	if token != args.Httpd.Token {
 		c.Set("Error", gin.H{"Code": 401, "Message": "未授权的操作"})
 		c.Set("ExitCode", 401)
 		c.Abort()

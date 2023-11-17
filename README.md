@@ -47,5 +47,5 @@
 go get github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag
 
-swag init --parseDependency --output public --outputTypes json
+swag init --parseDependency -g httpd/server.go -o public -ot json
 ```

@@ -8,7 +8,7 @@ import (
 
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
-	"github.com/opentdp/wechat-rest/config"
+	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcf-sdk"
 )
 
@@ -16,11 +16,11 @@ var wc *wcf.Client
 
 func initService() {
 
-	parts := strings.Split(config.Wcf.Address, ":")
+	parts := strings.Split(args.Wcf.Address, ":")
 	port := cast.ToInt(parts[1])
 
 	wc = &wcf.Client{
-		WcfPath: config.Wcf.Executable,
+		WcfPath: args.Wcf.Executable,
 		WcfAddr: parts[0],
 		WcfPort: port,
 	}
