@@ -14,7 +14,7 @@ import (
 
 var wc *wcf.Client
 
-func initWcfService() {
+func initService() {
 
 	parts := strings.Split(config.Wcf.Address, ":")
 	port := cast.ToInt(parts[1])
@@ -33,48 +33,81 @@ func initWcfService() {
 
 }
 
+// @Summary 检查登录状态
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/is_login [get]
 func isLogin(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.IsLogin())
 
 }
 
+// @Summary 获取登录账号wxid
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/self_wxid [get]
 func getSelfWxid(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetSelfWxid())
 
 }
 
+// @Summary 获取登录账号个人信息
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/user_info [get]
 func getUserInfo(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetUserInfo())
 
 }
 
+// @Summary 获取所有消息类型
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/msg_types [get]
 func getMsgTypes(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetMsgTypes())
 
 }
 
+// @Summary 获取完整通讯录
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/contacts [get]
 func getContacts(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetContacts())
 
 }
 
+// @Summary 获取好友列表
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/friends [get]
 func getFriends(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetFriends())
 
 }
 
+// @Summary 获取数据库列表
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/db_names [get]
 func getDbNames(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetDbNames())
 
 }
 
+// @Summary 获取数据库表列表
+// @Produce json
+// @Param db path string true "数据库名"
+// @Success 200 {object} gin.H
+// @Router /api/db_tables/{db} [get]
 func getDbTables(c *gin.Context) {
 
 	db := c.Param("db")
@@ -82,6 +115,11 @@ func getDbTables(c *gin.Context) {
 
 }
 
+// @Summary 刷新朋友圈
+// @Produce json
+// @Param id path int true "朋友圈id"
+// @Success 200 {object} gin.H
+// @Router /api/refresh_pyq/{id} [get]
 func refreshPyq(c *gin.Context) {
 
 	id := cast.ToUint64(c.Param("id"))
@@ -89,12 +127,21 @@ func refreshPyq(c *gin.Context) {
 
 }
 
+// @Summary 获取群列表
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/chatrooms [get]
 func getChatRooms(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetChatRooms())
 
 }
 
+// @Summary 获取群成员列表
+// @Produce json
+// @Param roomid path string true "群id"
+// @Success 200 {object} gin.H
+// @Router /api/chatroom_members/{roomid} [get]
 func getChatRoomMembers(c *gin.Context) {
 
 	roomid := c.Param("roomid")
@@ -102,6 +149,12 @@ func getChatRoomMembers(c *gin.Context) {
 
 }
 
+// @Summary 获取群成员昵称
+// @Produce json
+// @Param wxid path string true "wxid"
+// @Param roomid path string true "群id"
+// @Success 200 {object} gin.H
+// @Router /api/alias_in_chatroom/{wxid}/{roomid} [get]
 func getAliasInChatRoom(c *gin.Context) {
 
 	wxid := c.Param("wxid")
@@ -110,6 +163,13 @@ func getAliasInChatRoom(c *gin.Context) {
 
 }
 
+// @Summary 发送文本消息
+// @Produce json
+// @Param msg body string true "消息内容"
+// @Param receiver body string true "接收者wxid"
+// @Param aters body string false "被@者wxid列表"
+// @Success 200 {object} gin.H
+// @Router /api/send_txt [post]
 func sendTxt(c *gin.Context) {
 
 	var req wcf.TextMsg
@@ -126,6 +186,12 @@ func sendTxt(c *gin.Context) {
 
 }
 
+// @Summary 发送图片消息
+// @Produce json
+// @Param path body string true "图片路径"
+// @Param receiver body string true "接收者wxid"
+// @Success 200 {object} gin.H
+// @Router /api/send_img [post]
 func sendImg(c *gin.Context) {
 
 	var req wcf.PathMsg
@@ -142,6 +208,12 @@ func sendImg(c *gin.Context) {
 
 }
 
+// @Summary 发送文件消息
+// @Produce json
+// @Param path body string true "文件路径"
+// @Param receiver body string true "接收者wxid"
+// @Success 200 {object} gin.H
+// @Router /api/send_file [post]
 func sendFile(c *gin.Context) {
 
 	var req wcf.PathMsg
@@ -158,11 +230,18 @@ func sendFile(c *gin.Context) {
 
 }
 
+// 数据库查询参数
 type DbSqlQueryRequest struct {
 	Db  string `json:"db"`
 	Sql string `json:"sql"`
 }
 
+// @Summary 执行数据库查询
+// @Produce json
+// @Param db body string true "数据库名"
+// @Param sql body string true "sql语句"
+// @Success 200 {object} gin.H
+// @Router /api/db_query_sql [post]
 func dbSqlQuery(c *gin.Context) {
 
 	var req DbSqlQueryRequest
@@ -175,6 +254,13 @@ func dbSqlQuery(c *gin.Context) {
 
 }
 
+// @Summary 接受好友请求
+// @Produce json
+// @Param v3 body string true "v3"
+// @Param v4 body string true "v4"
+// @Param scene body int true "scene"
+// @Success 200 {object} gin.H
+// @Router /api/accept_new_friend [post]
 func acceptNewFriend(c *gin.Context) {
 
 	var req wcf.Verification
@@ -191,6 +277,13 @@ func acceptNewFriend(c *gin.Context) {
 
 }
 
+// @Summary 接受转账
+// @Produce json
+// @Param wxid body string true "wxid"
+// @Param tfid body string true "tfid"
+// @Param taid body string true "taid"
+// @Success 200 {object} gin.H
+// @Router /api/receive_transfer [post]
 func receiveTransfer(c *gin.Context) {
 
 	var req wcf.Transfer
@@ -207,6 +300,12 @@ func receiveTransfer(c *gin.Context) {
 
 }
 
+// @Summary 添加群成员
+// @Produce json
+// @Param roomid body string true "群id"
+// @Param wxids body string true "wxid列表"
+// @Success 200 {object} gin.H
+// @Router /api/add_chatroom_members [post]
 func addChatRoomMembers(c *gin.Context) {
 
 	var req wcf.AddMembers
@@ -223,6 +322,12 @@ func addChatRoomMembers(c *gin.Context) {
 
 }
 
+// @Summary 删除群成员
+// @Produce json
+// @Param roomid body string true "群id"
+// @Param wxids body string true "wxid列表"
+// @Success 200 {object} gin.H
+// @Router /api/del_chatroom_members [post]
 func delChatRoomMembers(c *gin.Context) {
 
 	var req wcf.AddMembers
@@ -239,6 +344,12 @@ func delChatRoomMembers(c *gin.Context) {
 
 }
 
+// @Summary 解密图片
+// @Produce json
+// @Param src body string true "源文件路径"
+// @Param dst body string true "目标文件路径"
+// @Success 200 {object} gin.H
+// @Router /api/decrypt_image [post]
 func decryptImage(c *gin.Context) {
 
 	var req wcf.DecPath
@@ -255,10 +366,16 @@ func decryptImage(c *gin.Context) {
 
 }
 
+// 消息转发参数
 type ForwardMsgRequest struct {
 	Url string `json:"url"`
 }
 
+// @Summary 开启消息转发
+// @Produce json
+// @Param url body string true "转发地址"
+// @Success 200 {object} gin.H
+// @Router /api/enable_forward_msg [post]
 func enableForwardMsg(c *gin.Context) {
 
 	var req ForwardMsgRequest
@@ -281,6 +398,10 @@ func enableForwardMsg(c *gin.Context) {
 
 }
 
+// @Summary 关闭消息转发
+// @Produce json
+// @Success 200 {object} gin.H
+// @Router /api/disable_forward_msg [get]
 func disableForwardMsg(c *gin.Context) {
 
 	error := wc.DisableReceiver()

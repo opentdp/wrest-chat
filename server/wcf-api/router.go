@@ -6,7 +6,7 @@ import (
 
 func Route(rg *gin.RouterGroup) {
 
-	initWcfService()
+	initService()
 
 	rg.GET("is_login", isLogin)
 	rg.GET("self_wxid", getSelfWxid)
