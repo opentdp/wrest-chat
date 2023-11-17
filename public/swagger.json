@@ -1,0 +1,650 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "微信 REST 接口文档",
+        "title": "Wechat Rest API",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "v0.0.1"
+    },
+    "basePath": "/api",
+    "paths": {
+        "/accept_new_friend": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "接受好友请求",
+                "parameters": [
+                    {
+                        "description": "v3",
+                        "name": "v3",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "v4",
+                        "name": "v4",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "scene",
+                        "name": "scene",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/add_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "添加群成员",
+                "parameters": [
+                    {
+                        "description": "群id",
+                        "name": "roomid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "wxid列表",
+                        "name": "wxids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/alias_in_chatroom/{wxid}/{roomid}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取群成员昵称",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "wxid",
+                        "name": "wxid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "群id",
+                        "name": "roomid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/chatroom_members/{roomid}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取群成员列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "群id",
+                        "name": "roomid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/chatrooms": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取群列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/contacts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取完整通讯录",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/db_names": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取数据库列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/db_query_sql": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "执行数据库查询",
+                "parameters": [
+                    {
+                        "description": "数据库名",
+                        "name": "db",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "sql语句",
+                        "name": "sql",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/db_tables/{db}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取数据库表列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "数据库名",
+                        "name": "db",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/decrypt_image": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "解密图片",
+                "parameters": [
+                    {
+                        "description": "源文件路径",
+                        "name": "src",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "目标文件路径",
+                        "name": "dst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/del_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除群成员",
+                "parameters": [
+                    {
+                        "description": "群id",
+                        "name": "roomid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "wxid列表",
+                        "name": "wxids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/disable_forward_msg": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "关闭消息转发",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/enable_forward_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "开启消息转发",
+                "parameters": [
+                    {
+                        "description": "转发地址",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/friends": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取好友列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/is_login": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "检查登录状态",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/msg_types": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取所有消息类型",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/receive_transfer": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "接受转账",
+                "parameters": [
+                    {
+                        "description": "wxid",
+                        "name": "wxid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "tfid",
+                        "name": "tfid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "taid",
+                        "name": "taid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/refresh_pyq/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "刷新朋友圈",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "朋友圈id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/self_wxid": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取登录账号wxid",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_file": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送文件消息",
+                "parameters": [
+                    {
+                        "description": "文件路径",
+                        "name": "path",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "接收者wxid",
+                        "name": "receiver",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_img": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送图片消息",
+                "parameters": [
+                    {
+                        "description": "图片路径",
+                        "name": "path",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "接收者wxid",
+                        "name": "receiver",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_txt": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送文本消息",
+                "parameters": [
+                    {
+                        "description": "消息内容",
+                        "name": "msg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "接收者wxid",
+                        "name": "receiver",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "被@者wxid列表",
+                        "name": "aters",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/user_info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取登录账号个人信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "gin.H": {
+            "type": "object",
+            "additionalProperties": {}
+        }
+    }
+}

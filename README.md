@@ -40,3 +40,12 @@
 - 异步处理接的消息
 - 允许接收消息
 - 停止接收消息
+
+## 生成 OpenApi 文档
+
+```shell
+go get github.com/swaggo/swag/cmd/swag
+go install github.com/swaggo/swag/cmd/
+
+swag init --parseDependency --exclude wcf-sdk --output public --outputTypes json
+```

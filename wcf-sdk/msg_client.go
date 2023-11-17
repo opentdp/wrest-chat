@@ -14,7 +14,7 @@ type MsgClient struct {
 type MsgCallback func(msg *WxMsg)
 
 // 关闭 RPC 连接
-// @return error 错误信息
+// return error 错误信息
 func (c *MsgClient) Close() error {
 	c.callbacks = []MsgCallback{}
 	c.receiving = false
@@ -22,7 +22,7 @@ func (c *MsgClient) Close() error {
 }
 
 // 创建消息接收器
-// @param fn ...MsgCallback 消息回调函数
+// param fn ...MsgCallback 消息回调函数
 func (c *MsgClient) Register(fn ...MsgCallback) {
 	c.callbacks = append(c.callbacks, fn...)
 	if !c.receiving {
@@ -31,7 +31,7 @@ func (c *MsgClient) Register(fn ...MsgCallback) {
 }
 
 // 消息接收器循环
-// @return error 错误信息
+// return error 错误信息
 func (c *MsgClient) listener() error {
 	// 连接消息服务
 	c.receiving = true
