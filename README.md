@@ -45,7 +45,7 @@
 
 ```shell
 go get github.com/swaggo/swag/cmd/swag
-go install github.com/swaggo/swag/cmd/
+go install github.com/swaggo/swag/cmd/swag
 
-swag init --parseDependency --exclude wcf-sdk --output public --outputTypes json
+swag init --parseDependency --output public --outputTypes json
 ```
