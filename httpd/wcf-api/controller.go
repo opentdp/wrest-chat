@@ -20,7 +20,7 @@ func initService() {
 	port := cast.ToInt(parts[1])
 
 	wc = &wcf.Client{
-		WcfPath: args.Wcf.Executable,
+		WcfPath: args.Wcf.SdkLibrary,
 		WcfAddr: parts[0],
 		WcfPort: port,
 	}

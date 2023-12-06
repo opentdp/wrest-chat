@@ -7,7 +7,6 @@ SET GO111MODULE=on
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CALL :build windows 386
-CALL :build windows amd64
 
 GOTO :EOF
 

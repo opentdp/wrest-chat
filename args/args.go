@@ -35,5 +35,5 @@ var Httpd struct {
 
 var Wcf struct {
 	Address    string
-	Executable string
+	SdkLibrary string
 }

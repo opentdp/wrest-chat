@@ -21,13 +21,12 @@ build() {
 ####################################################################
 
 build windows 386
-build windows amd64
 
 ####################################################################
 
 cp README.md build/
-cp wcf-bin/wcf.exe build/
-cp wcf-bin/spy.dll build/
+cp wcf-sdk/dll/sdk.dll build/
+cp wcf-sdk/dll/spy.dll build/
 
 mv build wechat-rest
 zip -r wechat-rest.zip wechat-rest/

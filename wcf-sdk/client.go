@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
-	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/opentdp/go-helper/logman"
@@ -15,7 +14,7 @@ import (
 )
 
 type Client struct {
-	WcfPath   string     // wcf.exe 路径
+	WcfPath   string     // sdk.dll 路径
 	WcfAddr   string     // wcf 监听地址
 	WcfPort   int        // wcf 监听端口
 	CmdClient *CmdClient // 命令客户端
@@ -104,17 +103,29 @@ func (c *Client) buildAddr(ip string, port int) string {
 // param port int wcf 服务端口
 // return error 错误信息
 func (c *Client) injectWechat(port int) error {
-	var cmd *exec.Cmd
-	// 检查 wechat 是否已经启动
+	// 检查 wechat 状态
 	var out bytes.Buffer
-	cmd = exec.Command("tasklist")
+	cmd := exec.Command("tasklist")
 	cmd.Stdout = &out
 	if strings.Contains(out.String(), "WeChat") {
 		return errors.New("please close wechat first")
 	}
-	// 启动 wcf 并注入 wechat
-	logman.Info("start wcf", "bin", c.WcfPath, "port", port)
-	cmd = exec.Command(c.WcfPath, "start", strconv.Itoa(port))
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-	return cmd.Start()
+	// 加载 sdk.dll 动态库
+	sdk, err := syscall.LoadDLL(c.WcfPath)
+	if err != nil {
+		logman.Info("load sdk.dll failed", "error", err)
+		return err
+	}
+	defer sdk.Release()
+	// 查找 WxInitSDK 函数
+	wxInitSDK, err := sdk.FindProc("WxInitSDK")
+	if err != nil {
+		logman.Info("call wxInitSDK failed", "error", err)
+		return err
+	}
+	// 初始化 WeChatFerry 服务
+	logman.Info("init Wcf service", "listen", port)
+	r1, r2, err := wxInitSDK.Call(uintptr(0), uintptr(port))
+	logman.Info("wxInitSDK", "r1", r1, "r2", r2, "error", err)
+	return nil
 }

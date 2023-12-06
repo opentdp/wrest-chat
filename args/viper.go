@@ -20,7 +20,7 @@ func init() {
 	viper.SetDefault("httpd.address", "127.0.0.1:7600")
 
 	viper.SetDefault("wcf.address", "127.0.0.1:10080")
-	viper.SetDefault("wcf.executable", "./wcf.exe")
+	viper.SetDefault("wcf.sdklibrary", "./sdk.dll")
 
 }
 
@@ -51,7 +51,7 @@ func Viper() {
 	Httpd.Token = viper.GetString("httpd.token")
 
 	Wcf.Address = viper.GetString("wcf.address")
-	Wcf.Executable = viper.GetString("wcf.executable")
+	Wcf.SdkLibrary = viper.GetString("wcf.sdklibrary")
 
 	// 写入配置文件
 

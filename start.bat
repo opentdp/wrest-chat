@@ -1,11 +1,13 @@
 @ECHO OFF
 ::
 
+SET GOARCH=386
+
 SET CGO_ENABLED=0
 SET GO111MODULE=on
 
-set SDIR=%~dp0
-set PATH=%PATH%;%SDIR%wcf-bin
+SET SDIR=%~dp0
+SET PATH=%PATH%;%SDIR%wcf-bin
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
