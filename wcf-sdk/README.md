@@ -13,7 +13,10 @@ import (
 )
 
 func main() {
-    wc := &wcf.Client{}
+    wc := &wcf.Client{
+        WcfPath: "./sdk.dll",
+	    WcfAddr: "10080",
+    }
     if err := wc.Connect(); err == nil {
         wc.AutoDestory()
     } else {
