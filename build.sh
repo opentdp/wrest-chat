@@ -9,18 +9,13 @@ set -o noglob
 export CGO_ENABLED=0
 export GO111MODULE=on
 
-build() {
-    echo building for $1/$2
-    target=build/wrest-$1-$2
-    if [ x"$1" = x"windows" ]; then
-        target="${target}.exe"
-    fi
-    GOOS=$1 GOARCH=$2 go build -ldflags="-s -w" -o $target main.go
-}
+export GOOS=windows
+export GOARCH=386
 
-####################################################################
+echo building for $GOOS/$GOARCH
 
-build windows 386
+target=build/wrest.exe
+go build -ldflags="-s -w" -o $target main.go
 
 ####################################################################
 
