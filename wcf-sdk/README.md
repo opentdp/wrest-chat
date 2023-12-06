@@ -15,7 +15,8 @@ import (
 func main() {
     wc := &wcf.Client{
         WcfPath: "./sdk.dll",
-	    WcfAddr: "10080",
+		WcfAddr: "127.0.0.1",
+		WcfPort: "10080",
     }
     if err := wc.Connect(); err == nil {
         wc.AutoDestory()
