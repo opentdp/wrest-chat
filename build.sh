@@ -25,8 +25,8 @@ build windows 386
 ####################################################################
 
 cp README.md build/
-cp wcf-sdk/dll/sdk.dll build/
-cp wcf-sdk/dll/spy.dll build/
+cp wcf-sdk/libs/sdk.dll build/
+cp wcf-sdk/libs/spy.dll build/
 
 mv build wechat-rest
 zip -r wechat-rest.zip wechat-rest/

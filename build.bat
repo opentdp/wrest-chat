@@ -7,6 +7,7 @@ SET GO111MODULE=on
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CALL :build windows 386
+COPY wcf-sdk\libs\*.dll build\
 
 GOTO :EOF
 

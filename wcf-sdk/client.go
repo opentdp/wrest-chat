@@ -126,6 +126,6 @@ func (c *Client) injectWechat(port int) error {
 	// 初始化 WeChatFerry 服务
 	logman.Info("init Wcf service", "listen", port)
 	r1, r2, err := wxInitSDK.Call(uintptr(0), uintptr(port))
-	logman.Info("wxInitSDK", "r1", r1, "r2", r2, "error", err)
+	logman.Warn("wxInitSDK", "r1", r1, "r2", r2, "error", err)
 	return nil
 }
