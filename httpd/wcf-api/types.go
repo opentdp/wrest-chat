@@ -1,9 +1,32 @@
 package wcf
 
 // 执行结果
-type ActionStatus struct {
-	Error   error `json:"error"`
-	Success bool  `json:"success"`
+type ActionResponse struct {
+	Data    string `json:"data"`
+	Error   error  `json:"error"`
+	Success bool   `json:"success"`
+}
+
+// 下载附件参数
+type DownloadAttachRequest struct {
+	Msgid uint64 `json:"msgid"`
+	Thumb string `json:"thumb"`
+	Extra string `json:"extra"`
+}
+
+// 下载图片参数
+type DownloadImageRequest struct {
+	Msgid   uint64 `json:"msgid"`
+	Extra   string `json:"extra"`
+	Dir     string `json:"dir"`
+	Timeout int    `json:"timeout"`
+}
+
+// 获取音频消息参数
+type GetAudioMsgRequest struct {
+	Msgid   uint64 `json:"msgid"`
+	Dir     string `json:"path"`
+	Timeout int    `json:"timeout"`
 }
 
 // 数据库查询参数

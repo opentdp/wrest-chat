@@ -408,6 +408,47 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
 	return nickName
 }
 
+// 获取语音消息并转成 MP3
+// param msgid 语音消息 id
+// param dir MP3 保存目录（目录不存在会出错）
+// return string 成功返回存储路径；空字符串为失败
+func (c *CmdClient) GetAudioMsg(id uint64, dir string) string {
+	req := genFunReq(Functions_FUNC_GET_AUDIO_MSG)
+	req.Msg = &Request_Am{
+		Am: &AudioMsg{
+			Id:  uint64(id),
+			Dir: dir,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStr()
+}
+
+// 获取语音消息并转成 MP3
+// param msgid 语音消息 id
+// param dir MP3 保存目录（目录不存在会出错）
+// param timeout 超时时间（秒）
+// return string 成功返回存储路径；空字符串为失败
+func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) string {
+	// 不等待
+	if timeout == 0 {
+		return c.GetAudioMsg(msgid, dir)
+	}
+	// 1秒轮询一次，最多轮询 timeout 次
+	cnt := 0
+	for cnt < timeout {
+		path := c.GetAudioMsg(msgid, dir)
+		if path != "" {
+			return path
+		}
+		time.Sleep(1 * time.Second)
+		cnt++
+	}
+	// 超时
+	logman.Error("failed to get audio msg", "msgid", msgid)
+	return ""
+}
+
 // 下载附件
 // param msgid string 消息 id
 // param thumb string 消息中的 thumb
@@ -424,23 +465,6 @@ func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int
 	}
 	rsp := c.call(req.build())
 	return rsp.GetStatus()
-}
-
-// 解密图片
-// 此方法别直接调用，下载图片使用 `DownloadImage` 方法
-// param src string 加密的图片路径
-// param dir string 保存图片的目录
-// return str 解密图片的保存路径
-func (c *CmdClient) DecryptImage(src, dir string) string {
-	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
-	req.Msg = &Request_Dec{
-		Dec: &DecPath{
-			Src: src,
-			Dst: dir,
-		},
-	}
-	rsp := c.call(req.build())
-	return rsp.GetStr()
 }
 
 // 下载图片
@@ -467,6 +491,23 @@ func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) 
 	}
 	logman.Warn("download image timeout", "msgid", msgid)
 	return ""
+}
+
+// 解密图片
+// 此方法别直接调用，下载图片使用 `DownloadImage` 方法
+// param src string 加密的图片路径
+// param dir string 保存图片的目录
+// return str 解密图片的保存路径
+func (c *CmdClient) DecryptImage(src, dir string) string {
+	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
+	req.Msg = &Request_Dec{
+		Dec: &DecPath{
+			Src: src,
+			Dst: dir,
+		},
+	}
+	rsp := c.call(req.build())
+	return rsp.GetStr()
 }
 
 // 开启消息服务器
