@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package wcf;
-option go_package="./;wcf";
+option go_package = "./;wcf";
 
 enum Functions {
     FUNC_RESERVED         = 0x00;
@@ -12,6 +12,7 @@ enum Functions {
     FUNC_GET_DB_NAMES     = 0x13;
     FUNC_GET_DB_TABLES    = 0x14;
     FUNC_GET_USER_INFO    = 0x15;
+    FUNC_GET_AUDIO_MSG    = 0x16;
     FUNC_SEND_TXT         = 0x20;
     FUNC_SEND_IMG         = 0x21;
     FUNC_SEND_FILE        = 0x22;
@@ -23,6 +24,9 @@ enum Functions {
     FUNC_ACCEPT_FRIEND    = 0x51;
     FUNC_RECV_TRANSFER    = 0x52;
     FUNC_REFRESH_PYQ      = 0x53;
+    FUNC_DOWNLOAD_ATTACH  = 0x54;
+    FUNC_GET_CONTACT_INFO = 0x55;
+    FUNC_REVOKE_MSG       = 0x56;
     FUNC_DECRYPT_IMAGE    = 0x60;
     FUNC_ADD_ROOM_MEMBERS = 0x70;
     FUNC_DEL_ROOM_MEMBERS = 0x71;
@@ -45,6 +49,8 @@ message Request
         Transfer tf    = 11;
         uint64 ui64    = 12; // 64 位整数，通用
         bool flag      = 13;
+        AttachMsg att  = 14;
+        AudioMsg am    = 15;
     }
 }
 
@@ -175,4 +181,17 @@ message Transfer
     string wxid = 1; // 转账人
     string tfid = 2; // 转账id transferid
     string taid = 3; // Transaction id
+}
+
+message AttachMsg
+{
+    uint64 id    = 1; // 消息 id
+    string thumb = 2; // 消息中的 thumb
+    string extra = 3; // 消息中的 extra
+}
+
+message AudioMsg
+{
+    uint64 id  = 1; // 语音消息 id
+    string dir = 2; // 存放目录
 }
