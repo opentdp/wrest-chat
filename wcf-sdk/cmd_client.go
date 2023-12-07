@@ -2,7 +2,9 @@ package wcf
 
 import (
 	"strings"
+	"time"
 
+	"github.com/opentdp/go-helper/logman"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -78,6 +80,25 @@ func (c *CmdClient) GetFriends() []*RpcContact {
 		friends = append(friends, cnt)
 	}
 	return friends
+}
+
+// 通过 wxid 查询微信号昵称等信息
+// param wxid (str): 联系人 wxid
+// return *RpcContact
+func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
+	req := genFunReq(Functions_FUNC_GET_CONTACT_INFO)
+	req.Msg = &Request_Str{
+		Str: wxid,
+	}
+	rsp := c.call(req.build())
+	contacts := rsp.GetContacts()
+	if contacts != nil {
+		contacts := contacts.GetContacts()
+		if contacts != nil {
+			return contacts[0]
+		}
+	}
+	return nil
 }
 
 // 获取群聊列表
@@ -229,6 +250,18 @@ func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 	return recv.GetStatus()
 }
 
+// 撤回消息
+// param msgid (uint64): 消息 id
+// return int: 1 为成功，其他失败
+func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
+	req := genFunReq(Functions_FUNC_REVOKE_MSG)
+	req.Msg = &Request_Ui64{
+		Ui64: msgid,
+	}
+	rsp := c.call(req.build())
+	return rsp.GetStatus()
+}
+
 // 接受好友申请
 // param v3 string 加密用户名 (好友申请消息里 v3 开头的字符串)
 // param v4 string Ticket (好友申请消息里 v4 开头的字符串)
@@ -375,20 +408,65 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
 	return nickName
 }
 
+// 下载附件
+// param msgid string 消息 id
+// param thumb string 消息中的 thumb
+// param extra string 消息中的 extra
+// return int32 0 为成功，其他失败
+func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int32 {
+	req := genFunReq(Functions_FUNC_DOWNLOAD_ATTACH)
+	req.Msg = &Request_Att{
+		Att: &AttachMsg{
+			Id:    msgid,
+			Thumb: thumb,
+			Extra: extra,
+		},
+	}
+	rsp := c.call(req.build())
+	return rsp.GetStatus()
+}
+
 // 解密图片
+// 此方法别直接调用，下载图片使用 `DownloadImage` 方法
 // param src string 加密的图片路径
-// param dst string 解密的图片路径
-// return int32 1 为成功，其他失败
-func (c *CmdClient) DecryptImage(src, dst string) int32 {
+// param dir string 保存图片的目录
+// return str 解密图片的保存路径
+func (c *CmdClient) DecryptImage(src, dir string) string {
 	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
 	req.Msg = &Request_Dec{
 		Dec: &DecPath{
 			Src: src,
-			Dst: dst,
+			Dst: dir,
 		},
 	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
+	rsp := c.call(req.build())
+	return rsp.GetStr()
+}
+
+// 下载图片
+// param msgid uint64 消息 id
+// param extra string 消息中的 extra
+// param dir string 存放图片的目录（目录不存在会出错）
+// param timeout int 超时时间（秒）
+// return string 成功返回存储路径；空字符串为失败，原因见日志
+func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) string {
+	if c.DownloadAttach(msgid, "", extra) != 0 {
+		logman.Warn("failed to download image", "msgid", msgid)
+		return ""
+	}
+	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
+	for i := 0; i < 2*timeout; i++ {
+		select {
+		case <-ticker.C:
+			path := c.DecryptImage(extra, dir)
+			if path != "" {
+				return path
+			}
+		}
+	}
+	logman.Warn("download image timeout", "msgid", msgid)
+	return ""
 }
 
 // 开启消息服务器

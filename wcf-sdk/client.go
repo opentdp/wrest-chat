@@ -113,14 +113,14 @@ func (c *Client) injectWechat(port int) error {
 	// 加载 sdk.dll 动态库
 	sdk, err := syscall.LoadDLL(c.WcfPath)
 	if err != nil {
-		logman.Info("load sdk.dll failed", "error", err)
+		logman.Info("failed to load sdk.dll", "error", err)
 		return err
 	}
 	defer sdk.Release()
 	// 查找 WxInitSDK 函数
 	wxInitSDK, err := sdk.FindProc("WxInitSDK")
 	if err != nil {
-		logman.Info("call wxInitSDK failed", "error", err)
+		logman.Info("failed to call wxInitSDK", "error", err)
 		return err
 	}
 	// 初始化 WeChatFerry 服务
