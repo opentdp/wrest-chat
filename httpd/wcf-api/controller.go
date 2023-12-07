@@ -346,7 +346,7 @@ func getAudioMsg(c *gin.Context) {
 // @Produce json
 // @Param body body DownloadAttachRequest true "下载附件参数"
 // @Success 200 {object} ActionResponse
-// @Router /download_attachment [post]
+// @Router /download_attach [post]
 func downloadAttach(c *gin.Context) {
 
 	var req DownloadAttachRequest
@@ -378,10 +378,7 @@ func downloadImage(c *gin.Context) {
 
 	path := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
 
-	c.Set("Payload", ActionResponse{
-		Success: path == "",
-		Data:    path,
-	})
+	c.Set("Payload", path)
 
 }
 

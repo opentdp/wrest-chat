@@ -295,7 +295,7 @@
                 }
             }
         },
-        "/download_attachment": {
+        "/download_attach": {
             "post": {
                 "produces": [
                     "application/json"
@@ -677,9 +677,6 @@
         "wcf.ActionResponse": {
             "type": "object",
             "properties": {
-                "data": {
-                    "type": "string"
-                },
                 "error": {},
                 "success": {
                     "type": "boolean"

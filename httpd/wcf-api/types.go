@@ -2,9 +2,8 @@ package wcf
 
 // 执行结果
 type ActionResponse struct {
-	Data    string `json:"data"`
-	Error   error  `json:"error"`
-	Success bool   `json:"success"`
+	Success bool  `json:"success"`
+	Error   error `json:"error"`
 }
 
 // 下载附件参数
