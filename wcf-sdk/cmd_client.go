@@ -412,11 +412,11 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
 // param msgid 语音消息 id
 // param dir MP3 保存目录（目录不存在会出错）
 // return string 成功返回存储路径；空字符串为失败
-func (c *CmdClient) GetAudioMsg(id uint64, dir string) string {
+func (c *CmdClient) GetAudioMsg(msgid uint64, dir string) string {
 	req := genFunReq(Functions_FUNC_GET_AUDIO_MSG)
 	req.Msg = &Request_Am{
 		Am: &AudioMsg{
-			Id:  uint64(id),
+			Id:  msgid,
 			Dir: dir,
 		},
 	}
@@ -430,15 +430,9 @@ func (c *CmdClient) GetAudioMsg(id uint64, dir string) string {
 // param timeout 超时时间（秒）
 // return string 成功返回存储路径；空字符串为失败
 func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) string {
-	// 不等待
-	if timeout == 0 {
-		return c.GetAudioMsg(msgid, dir)
-	}
-	// 1秒轮询一次，最多轮询 timeout 次
 	cnt := 0
-	for cnt < timeout {
-		path := c.GetAudioMsg(msgid, dir)
-		if path != "" {
+	for cnt <= timeout {
+		if path := c.GetAudioMsg(msgid, dir); path != "" {
 			return path
 		}
 		time.Sleep(1 * time.Second)
@@ -446,6 +440,30 @@ func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) st
 	}
 	// 超时
 	logman.Error("failed to get audio msg", "msgid", msgid)
+	return ""
+}
+
+// 下载图片
+// param msgid uint64 消息 id
+// param extra string 消息中的 extra
+// param dir string 存放图片的目录（目录不存在会出错）
+// param timeout int 超时时间（秒）
+// return string 成功返回存储路径；空字符串为失败，原因见日志
+func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) string {
+	if c.DownloadAttach(msgid, "", extra) != 0 {
+		logman.Warn("failed to download image", "msgid", msgid)
+		return ""
+	}
+	cnt := 0
+	for cnt <= timeout {
+		if path := c.DecryptImage(extra, dir); path != "" {
+			return path
+		}
+		time.Sleep(1 * time.Second)
+		cnt++
+	}
+	// 超时
+	logman.Warn("download image timeout", "msgid", msgid)
 	return ""
 }
 
@@ -465,32 +483,6 @@ func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int
 	}
 	rsp := c.call(req.build())
 	return rsp.GetStatus()
-}
-
-// 下载图片
-// param msgid uint64 消息 id
-// param extra string 消息中的 extra
-// param dir string 存放图片的目录（目录不存在会出错）
-// param timeout int 超时时间（秒）
-// return string 成功返回存储路径；空字符串为失败，原因见日志
-func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) string {
-	if c.DownloadAttach(msgid, "", extra) != 0 {
-		logman.Warn("failed to download image", "msgid", msgid)
-		return ""
-	}
-	ticker := time.NewTicker(500 * time.Millisecond)
-	defer ticker.Stop()
-	for i := 0; i < 2*timeout; i++ {
-		select {
-		case <-ticker.C:
-			path := c.DecryptImage(extra, dir)
-			if path != "" {
-				return path
-			}
-		}
-	}
-	logman.Warn("download image timeout", "msgid", msgid)
-	return ""
 }
 
 // 解密图片
