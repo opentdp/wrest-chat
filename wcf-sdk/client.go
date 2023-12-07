@@ -3,6 +3,7 @@ package wcf
 import (
 	"errors"
 	"os/exec"
+	"strings"
 	"syscall"
 	"time"
 
@@ -29,8 +30,10 @@ func (c *Client) Connect() error {
 		c.WcfPort = 10080
 	}
 	// 启动 wcf 服务
-	if err := c.wxInitSDK(); err != nil {
-		return err
+	if c.WcfPath != "" {
+		if err := c.wxInitSDK(); err != nil {
+			return err
+		}
 	}
 	// 连接 wcf 服务
 	c.CmdClient = &CmdClient{
@@ -49,7 +52,9 @@ func (c *Client) AutoDestory() {
 		c.MsgClient.Close()
 		c.CmdClient.Close()
 		// 关闭 wcf 服务
-		c.wxDestroySDK()
+		if c.WcfPath != "" {
+			c.wxDestroySDK()
+		}
 	})
 }
 
@@ -99,31 +104,24 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
-	if c.WcfPath == "" {
-		return nil
+	out, _ := exec.Command("tasklist").Output()
+	if strings.Contains(string(out), "WeChat.exe") {
+		return errors.New("please close wechat")
 	}
-	cmd := exec.Command("tasklist", "/FI", "IMAGENAME eq WeChat.exe")
-	if err := cmd.Run(); err == nil {
-		logman.Warn("please close wechat", "error", err)
-		return err
-	}
-	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.WcfPort))
+	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.WcfPort))
 	time.Sleep(5 * time.Second)
-	return err
+	return nil
 }
 
 // 关闭 wcf 服务
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
-	if c.WcfPath == "" {
-		return nil
-	}
+	c.sdkCall("WxDestroySDK", uintptr(0))
 	logman.Info("killing wechat process")
-	err := c.sdkCall("WxDestroySDK", uintptr(0))
 	cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
 	if err := cmd.Run(); err != nil {
 		logman.Warn("failed to kill wechat", "error", err)
 		return err
 	}
-	return err
+	return nil
 }

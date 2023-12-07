@@ -18,11 +18,10 @@ func main() {
 		WcfAddr: "127.0.0.1",
 		WcfPort: "10080",
     }
-    if err := wc.Connect(); err == nil {
-        wc.AutoDestory()
-    } else {
+    if err := wc.Connect(); err != nil {
         panic(err)
     }
+    wc.AutoDestory()
 	fmt.Println(wc.CmdClient.IsLogin())
 }
 ```
