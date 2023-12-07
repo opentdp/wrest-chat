@@ -32,11 +32,8 @@ func (c *Client) Connect() error {
 		c.WcfPort = 10080
 	}
 	// 启动 wcf 服务
-	if c.WcfPath != "" {
-		if err := c.injectWechat(c.WcfPort); err != nil {
-			return err
-		}
-		time.Sleep(5 * time.Second)
+	if err := c.wxInitSDK(); err != nil {
+		return err
 	}
 	// 连接 wcf 服务
 	c.CmdClient = &CmdClient{
@@ -55,13 +52,7 @@ func (c *Client) AutoDestory() {
 		c.MsgClient.Close()
 		c.CmdClient.Close()
 		// 关闭 wcf 服务
-		if c.WcfPath != "" {
-			logman.Info("killing wechat process")
-			cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
-			if err := cmd.Run(); err != nil {
-				logman.Warn("failed to kill wechat", "error", err)
-			}
-		}
+		c.wxDestroySDK()
 	})
 }
 
@@ -99,33 +90,55 @@ func (c *Client) buildAddr(ip string, port int) string {
 	}
 }
 
-// 启动 wcf 服务并注入 wechat
-// param port int wcf 服务端口
-// return error 错误信息
-func (c *Client) injectWechat(port int) error {
-	// 检查 wechat 状态
-	var out bytes.Buffer
-	cmd := exec.Command("tasklist")
-	cmd.Stdout = &out
-	if strings.Contains(out.String(), "WeChat") {
-		return errors.New("please close wechat first")
-	}
-	// 加载 sdk.dll 动态库
+// 调用 sdk.dll 中的函数
+func (c *Client) sdkCall(fn string, a ...uintptr) error {
+	// 加载 sdk.dll 库
 	sdk, err := syscall.LoadDLL(c.WcfPath)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
 		return err
 	}
 	defer sdk.Release()
-	// 查找 WxInitSDK 函数
-	wxInitSDK, err := sdk.FindProc("WxInitSDK")
+	// 查找 fn 函数
+	proc, err := sdk.FindProc(fn)
 	if err != nil {
-		logman.Info("failed to call wxInitSDK", "error", err)
+		logman.Info("failed to call "+fn, "error", err)
 		return err
 	}
-	// 初始化 WeChatFerry 服务
-	logman.Info("init Wcf service", "listen", port)
-	r1, r2, err := wxInitSDK.Call(uintptr(0), uintptr(port))
-	logman.Warn("wxInitSDK", "r1", r1, "r2", r2, "error", err)
-	return nil
+	// 初始化 fn 服务
+	r1, r2, err := proc.Call(a...)
+	logman.Warn(fn, "r1", r1, "r2", r2, "error", err)
+	return err
+}
+
+// 启动 wcf 服务并注入 wechat
+// return error 错误信息
+func (c *Client) wxInitSDK() error {
+	if c.WcfPath == "" {
+		return nil
+	}
+	cmd := exec.Command("tasklist")
+	out := bytes.Buffer{}
+	cmd.Stdout = &out
+	if strings.Contains(out.String(), "WeChat") {
+		return errors.New("please close wechat first")
+	}
+	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.WcfPort))
+	time.Sleep(5 * time.Second)
+	return err
+}
+
+// 关闭 wcf 服务
+// return error 错误信息
+func (c *Client) wxDestroySDK() error {
+	if c.WcfPath == "" {
+		return nil
+	}
+	logman.Info("killing wechat process")
+	err := c.sdkCall("WxDestroySDK", uintptr(0))
+	cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
+	if err := cmd.Run(); err != nil {
+		logman.Warn("failed to kill wechat", "error", err)
+	}
+	return err
 }
