@@ -5,7 +5,7 @@ import (
 )
 
 type MsgClient struct {
-	pbSocket       // RPC 客户端
+	*pbSocket      // RPC 客户端
 	receiving bool // 接收消息中
 	callbacks []MsgCallback
 }

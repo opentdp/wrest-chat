@@ -2,6 +2,8 @@ package wcf
 
 import (
 	"errors"
+	"fmt"
+	"strings"
 
 	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/v3/protocol"
@@ -36,6 +38,17 @@ func genFunReq(fun Functions) *cmdMsg {
 type pbSocket struct {
 	server string // 接口地址
 	socket protocol.Socket
+}
+
+// 创建客户端
+func newPbSocket(ip string, port int) *pbSocket {
+	var addr string
+	if strings.Contains(ip, ":") {
+		addr = fmt.Sprintf("tcp://[%s]:%d", ip, port)
+	} else {
+		addr = fmt.Sprintf("tcp://%s:%d", ip, port)
+	}
+	return &pbSocket{server: addr}
 }
 
 // 连接服务器

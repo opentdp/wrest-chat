@@ -9,7 +9,7 @@ import (
 )
 
 type CmdClient struct {
-	pbSocket // RPC 客户端
+	*pbSocket // RPC 客户端
 }
 
 // 关闭 RPC 连接

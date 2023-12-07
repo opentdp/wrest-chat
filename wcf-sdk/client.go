@@ -1,11 +1,8 @@
 package wcf
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
 	"os/exec"
-	"strings"
 	"syscall"
 	"time"
 
@@ -37,10 +34,10 @@ func (c *Client) Connect() error {
 	}
 	// 连接 wcf 服务
 	c.CmdClient = &CmdClient{
-		pbSocket: pbSocket{server: c.buildAddr(c.WcfAddr, c.WcfPort)},
+		pbSocket: newPbSocket(c.WcfAddr, c.WcfPort),
 	}
 	c.MsgClient = &MsgClient{
-		pbSocket: pbSocket{server: c.buildAddr(c.WcfAddr, c.WcfPort+1)},
+		pbSocket: newPbSocket(c.WcfAddr, c.WcfPort+1),
 	}
 	return c.CmdClient.dial()
 }
@@ -78,18 +75,6 @@ func (c *Client) DisableReceiver() error {
 	return c.MsgClient.Close()
 }
 
-// 构建地址
-// param ip string IP地址
-// param port int 端口
-// return string IP地址和端口
-func (c *Client) buildAddr(ip string, port int) string {
-	if strings.Contains(ip, ":") {
-		return fmt.Sprintf("tcp://[%s]:%d", ip, port)
-	} else {
-		return fmt.Sprintf("tcp://%s:%d", ip, port)
-	}
-}
-
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll 库
@@ -111,17 +96,16 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	return err
 }
 
-// 启动 wcf 服务并注入 wechat
+// 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
 	if c.WcfPath == "" {
 		return nil
 	}
-	cmd := exec.Command("tasklist")
-	out := bytes.Buffer{}
-	cmd.Stdout = &out
-	if strings.Contains(out.String(), "WeChat") {
-		return errors.New("please close wechat first")
+	cmd := exec.Command("tasklist", "/FI", "IMAGENAME eq WeChat.exe")
+	if err := cmd.Run(); err == nil {
+		logman.Warn("please close wechat", "error", err)
+		return err
 	}
 	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.WcfPort))
 	time.Sleep(5 * time.Second)
@@ -139,6 +123,7 @@ func (c *Client) wxDestroySDK() error {
 	cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
 	if err := cmd.Run(); err != nil {
 		logman.Warn("failed to kill wechat", "error", err)
+		return err
 	}
 	return err
 }
