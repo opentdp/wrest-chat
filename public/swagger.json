@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -63,7 +63,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -207,7 +207,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -241,33 +241,6 @@
                 }
             }
         },
-        "/decrypt_image": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "解密图片",
-                "parameters": [
-                    {
-                        "description": "解密图片请求参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcf.DecPath"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
-                        }
-                    }
-                }
-            }
-        },
         "/del_chatroom_members": {
             "post": {
                 "produces": [
@@ -289,7 +262,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -316,7 +289,61 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/download_attachment": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "下载附件",
+                "parameters": [
+                    {
+                        "description": "下载附件参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.DownloadAttachRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/download_image": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "下载图片",
+                "parameters": [
+                    {
+                        "description": "下载图片参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.DownloadImageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -343,7 +370,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -363,6 +390,33 @@
                             "items": {
                                 "$ref": "#/definitions/wcf.RpcContact"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/get_audio_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取语音消息",
+                "parameters": [
+                    {
+                        "description": "语音消息请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.GetAudioMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -424,7 +478,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -449,7 +503,32 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/revoke_msg/{msgid}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "撤回消息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "消息id",
+                        "name": "msgid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -492,7 +571,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -519,7 +598,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -546,7 +625,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionStatus"
+                            "$ref": "#/definitions/wcf.ActionResponse"
                         }
                     }
                 }
@@ -567,12 +646,40 @@
                     }
                 }
             }
+        },
+        "/user_info/{wxid}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "根据wxid获取个人信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "wxid",
+                        "name": "wxid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.UserInfo"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "wcf.ActionStatus": {
+        "wcf.ActionResponse": {
             "type": "object",
             "properties": {
+                "data": {
+                    "type": "string"
+                },
                 "error": {},
                 "success": {
                     "type": "boolean"
@@ -616,16 +723,34 @@
                 }
             }
         },
-        "wcf.DecPath": {
+        "wcf.DownloadAttachRequest": {
             "type": "object",
             "properties": {
-                "dst": {
-                    "description": "目标路径",
+                "extra": {
                     "type": "string"
                 },
-                "src": {
-                    "description": "源路径",
+                "msgid": {
+                    "type": "integer"
+                },
+                "thumb": {
                     "type": "string"
+                }
+            }
+        },
+        "wcf.DownloadImageRequest": {
+            "type": "object",
+            "properties": {
+                "dir": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "string"
+                },
+                "msgid": {
+                    "type": "integer"
+                },
+                "timeout": {
+                    "type": "integer"
                 }
             }
         },
@@ -634,6 +759,20 @@
             "properties": {
                 "url": {
                     "type": "string"
+                }
+            }
+        },
+        "wcf.GetAudioMsgRequest": {
+            "type": "object",
+            "properties": {
+                "msgid": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
                 }
             }
         },
