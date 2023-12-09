@@ -12,8 +12,8 @@ var efs embed.FS
 
 func main() {
 
-	args.Viper()
 	args.Efs = &efs
+	args.NewConfig().Init()
 
 	httpd.Server()
 
