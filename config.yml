@@ -1,7 +1,8 @@
 httpd:
     address: 127.0.0.1:7600
+    token: ""
 logger:
-    dir: .
+    dir: ./logs
     level: info
     target: stdout
 wcf:
