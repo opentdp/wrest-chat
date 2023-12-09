@@ -400,7 +400,7 @@ func sendPatMsg(c *gin.Context) {
 	status := wc.CmdClient.SendPatMsg(req.Roomid, req.Wxid)
 
 	c.Set("Payload", ActionResponse{
-		Success: status == 0,
+		Success: status == 1,
 	})
 
 }
@@ -461,9 +461,7 @@ func downloadImage(c *gin.Context) {
 		return
 	}
 
-	path := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
-
-	c.Set("Payload", path)
+	c.Set("Payload", wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout))
 
 }
 
@@ -548,11 +546,11 @@ func enableForwardMsg(c *gin.Context) {
 		request.JsonPost(req.Url, msg, request.H{})
 	}
 
-	error := wc.EnrollReceiver(true, cb)
+	err := wc.EnrollReceiver(true, cb)
 
 	c.Set("Payload", ActionResponse{
-		Success: error == nil,
-		Error:   error,
+		Success: err == nil,
+		Error:   err,
 	})
 
 }
@@ -564,11 +562,11 @@ func enableForwardMsg(c *gin.Context) {
 // @Router /disable_forward_msg [post]
 func disableForwardMsg(c *gin.Context) {
 
-	error := wc.DisableReceiver()
+	err := wc.DisableReceiver()
 
 	c.Set("Payload", ActionResponse{
-		Success: error == nil,
-		Error:   error,
+		Success: err == nil,
+		Error:   err,
 	})
 
 }
