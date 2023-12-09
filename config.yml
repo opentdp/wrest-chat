@@ -8,3 +8,4 @@ logger:
 wcf:
     address: 127.0.0.1:10080
     sdklibrary: ./wcferry/libs/sdk.dll
+    wechatauto: false

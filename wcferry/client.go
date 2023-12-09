@@ -15,6 +15,7 @@ type Client struct {
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
 	SdkLibrary string     // sdk.dll 路径
+	WeChatAuto bool       // 微信自动启停
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
 }
@@ -104,9 +105,11 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
-	out, _ := exec.Command("tasklist").Output()
-	if strings.Contains(string(out), "WeChat.exe") {
-		return errors.New("please close wechat")
+	if c.WeChatAuto {
+		out, _ := exec.Command("tasklist").Output()
+		if strings.Contains(string(out), "WeChat.exe") {
+			return errors.New("please close wechat")
+		}
 	}
 	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
 	time.Sleep(5 * time.Second)
@@ -117,11 +120,13 @@ func (c *Client) wxInitSDK() error {
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
 	c.sdkCall("WxDestroySDK", uintptr(0))
-	logman.Info("killing wechat process")
-	cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
-	if err := cmd.Run(); err != nil {
-		logman.Warn("failed to kill wechat", "error", err)
-		return err
+	if c.WeChatAuto {
+		logman.Info("killing wechat process")
+		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
+		if err := cmd.Run(); err != nil {
+			logman.Warn("failed to kill wechat", "error", err)
+			return err
+		}
 	}
 	return nil
 }

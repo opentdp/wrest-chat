@@ -23,6 +23,7 @@ func initService() {
 		ListenAddr: parts[0],
 		ListenPort: strutil.ToInt(parts[1]),
 		SdkLibrary: args.Wcf.SdkLibrary,
+		WeChatAuto: args.Wcf.WeChatAuto,
 	}
 
 	logman.Info("wcf starting ...")

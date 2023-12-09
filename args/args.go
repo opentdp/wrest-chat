@@ -46,6 +46,7 @@ var Httpd = IHttpd{
 type IWcf struct {
 	Address    string
 	SdkLibrary string
+	WeChatAuto bool
 }
 
 var Wcf = IWcf{
