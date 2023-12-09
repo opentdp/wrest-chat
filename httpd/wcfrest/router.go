@@ -36,8 +36,8 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("send_emotion", sendEmotion)
 	rg.POST("send_rich_text", sendRichText)
 	rg.POST("send_pat_msg", sendPatMsg)
-	rg.POST("fetch_audio_msg", getAudioMsg)
-	rg.POST("fetch_ocr_result", getOcrResult)
+	rg.POST("get_audio_msg", getAudioMsg)
+	rg.POST("get_ocr_result", getOcrResult)
 	rg.POST("download_image", downloadImage)
 	rg.POST("download_attach", downloadAttach)
 

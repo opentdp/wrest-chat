@@ -377,7 +377,7 @@
                 }
             }
         },
-        "/fetch_audio_msg": {
+        "/get_audio_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -404,7 +404,7 @@
                 }
             }
         },
-        "/fetch_ocr_result": {
+        "/get_ocr_result": {
             "post": {
                 "produces": [
                     "application/json"
