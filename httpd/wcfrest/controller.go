@@ -31,8 +31,6 @@ func initService() {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
 
-	wc.AutoDestory()
-
 }
 
 // @Summary 检查登录状态

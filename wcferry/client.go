@@ -36,27 +36,23 @@ func (c *Client) Connect() error {
 			return err
 		}
 	}
-	// 连接 wcf 服务
+	// 注册 wcf 服务
 	c.CmdClient = &CmdClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort),
 	}
 	c.MsgClient = &MsgClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
-	return c.CmdClient.dial()
-}
-
-// 自动销毁 wcf 服务
-func (c *Client) AutoDestory() {
+	// 自动注销 wcf
 	onquit.Register(func() {
-		// 关闭 wcf 连接
 		c.MsgClient.Close()
 		c.CmdClient.Close()
-		// 关闭 wcf 服务
 		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}
 	})
+	// 返回连接结果
+	return c.CmdClient.dial()
 }
 
 // 启动消息接收器

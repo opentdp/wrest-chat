@@ -19,7 +19,6 @@ func main() {
     if err := wc.Connect(); err != nil {
         panic(err)
     }
-    wc.AutoDestory()
     fmt.Println(wc.CmdClient.IsLogin())
 }
 ```
