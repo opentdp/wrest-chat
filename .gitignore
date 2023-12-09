@@ -2,5 +2,6 @@
 *.lock
 .DS_Store
 
+build/*
 docs/*
 logs/*

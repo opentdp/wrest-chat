@@ -20,8 +20,7 @@ go build -ldflags="-s -w" -o $target main.go
 ####################################################################
 
 cp README.md build/
-cp wcferry/libs/sdk.dll build/
-cp wcferry/libs/spy.dll build/
+cp wcferry/libs/*.dll build/
 
 mv build wechat-rest
 zip -r wechat-rest.zip wechat-rest/
