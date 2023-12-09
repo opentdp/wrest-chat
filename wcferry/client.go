@@ -82,7 +82,7 @@ func (c *Client) DisableReceiver() error {
 
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
-	// 加载 sdk.dll 库
+	// 加载 sdk.dll
 	sdk, err := syscall.LoadDLL(c.SdkLibrary)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
@@ -95,9 +95,9 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 		logman.Info("failed to call "+fn, "error", err)
 		return err
 	}
-	// 初始化 fn 服务
+	// 执行 fn(a...)
 	r1, r2, err := proc.Call(a...)
-	logman.Warn(fn, "r1", r1, "r2", r2, "error", err)
+	logman.Warn("call dll:"+fn, "r1", r1, "r2", r2, "error", err)
 	return err
 }
 

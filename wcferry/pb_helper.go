@@ -54,7 +54,7 @@ func newPbSocket(ip string, port int) *pbSocket {
 // 连接服务器
 func (c *pbSocket) dial() (err error) {
 	all.AddTransports(nil) // 注册所有传输协议
-	logman.Info("pbsocket", "server", c.server)
+	logman.Info("pbSocket dial", "server", c.server)
 	c.socket, err = pair1.NewSocket()
 	if err == nil {
 		return c.socket.Dial(c.server)

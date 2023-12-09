@@ -24,6 +24,7 @@ func initService() {
 		SdkLibrary: args.Wcf.SdkLibrary,
 	}
 
+	logman.Info("wcf starting ...")
 	if err := wc.Connect(); err != nil {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
