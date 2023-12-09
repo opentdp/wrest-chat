@@ -1,6 +1,7 @@
 package wcfrest
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -409,7 +410,7 @@ func sendPatMsg(c *gin.Context) {
 // @Produce json
 // @Param body body GetAudioMsgRequest true "语音消息请求参数"
 // @Success 200 {object} string
-// @Router /fetch_audio_msg [post]
+// @Router /get_audio_msg [post]
 func getAudioMsg(c *gin.Context) {
 
 	var req GetAudioMsgRequest
@@ -430,7 +431,7 @@ func getAudioMsg(c *gin.Context) {
 // @Produce json
 // @Param body body GetOcrRequest true "文本请求参数"
 // @Success 200 {object} string
-// @Router /fetch_ocr_result [post]
+// @Router /get_ocr_result [post]
 func getOcrResult(c *gin.Context) {
 
 	var req GetOcrRequest
@@ -542,8 +543,31 @@ func enableForwardMsg(c *gin.Context) {
 	}
 
 	cb := func(msg *wcferry.WxMsg) {
-		logman.Info("forward msg", "url", req.Url, "msg", msg)
-		request.JsonPost(req.Url, msg, request.H{})
+		if strings.HasPrefix(req.Url, "http") {
+			logman.Info("forward msg", "url", req.Url)
+			request.JsonPost(req.Url, msg, request.H{})
+		} else {
+			fmt.Print(">> New Message <<\n")
+			if msg.Id > 0 {
+				fmt.Printf(">>Id: %d\n", msg.Id)
+			}
+			if msg.Type > 0 {
+				fmt.Printf(">>Type: %d\n", msg.Type)
+			}
+			if msg.Roomid != "" {
+				fmt.Printf(">>Roomid: %s\n", msg.Roomid)
+			}
+			if msg.Sender != "" {
+				fmt.Printf(">>Sender: %v\n", msg.Sender)
+			}
+			if msg.Content != "" {
+				fmt.Printf(">>Content: %s\n", msg.Content)
+			}
+			if msg.Extra != "" {
+				fmt.Printf(">>Extra: %s\n", strings.TrimSpace(msg.Extra))
+			}
+			fmt.Print(">> End Message <<\n")
+		}
 	}
 
 	err := wc.EnrollReceiver(true, cb)
