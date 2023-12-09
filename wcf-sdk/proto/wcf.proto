@@ -18,6 +18,8 @@ enum Functions {
     FUNC_SEND_FILE        = 0x22;
     FUNC_SEND_XML         = 0x23;
     FUNC_SEND_EMOTION     = 0x24;
+    FUNC_SEND_RICH_TXT    = 0x25;
+    FUNC_SEND_PAT_MSG     = 0x26;
     FUNC_ENABLE_RECV_TXT  = 0x30;
     FUNC_DISABLE_RECV_TXT = 0x40;
     FUNC_EXEC_DB_QUERY    = 0x50;
@@ -28,8 +30,10 @@ enum Functions {
     FUNC_GET_CONTACT_INFO = 0x55;
     FUNC_REVOKE_MSG       = 0x56;
     FUNC_DECRYPT_IMAGE    = 0x60;
+    FUNC_EXEC_OCR         = 0x61;
     FUNC_ADD_ROOM_MEMBERS = 0x70;
     FUNC_DEL_ROOM_MEMBERS = 0x71;
+    FUNC_INV_ROOM_MEMBERS = 0x72;
 }
 
 message Request
@@ -43,7 +47,7 @@ message Request
         PathMsg file   = 5;
         DbQuery query  = 6;
         Verification v = 7;
-        AddMembers m   = 8;
+        MemberMgmt m   = 8;  // 群成员管理，添加、删除、邀请
         XmlMsg xml     = 9;
         DecPath dec    = 10;
         Transfer tf    = 11;
@@ -51,6 +55,8 @@ message Request
         bool flag      = 13;
         AttachMsg att  = 14;
         AudioMsg am    = 15;
+        RichText rt    = 16;
+        PatMsg pm      = 17;
     }
 }
 
@@ -68,6 +74,7 @@ message Response
         DbTables tables      = 8;  // 表列表
         DbRows rows          = 9;  // 行列表
         UserInfo ui          = 10; // 个人信息
+        OcrMsg ocr           = 11; // OCR 结果
     };
 }
 
@@ -156,7 +163,7 @@ message Verification
     int32 scene = 3; // 添加方式：17 名片，30 扫码
 }
 
-message AddMembers
+message MemberMgmt
 {
     string roomid = 1; // 要加的群ID
     string wxids  = 2; // 要加群的人列表，逗号分隔
@@ -194,4 +201,27 @@ message AudioMsg
 {
     uint64 id  = 1; // 语音消息 id
     string dir = 2; // 存放目录
+}
+
+message RichText
+{
+    string name     = 1; // 显示名字
+    string account  = 2; // 公众号 id
+    string title    = 3; // 标题
+    string digest   = 4; // 摘要
+    string url      = 5; // 链接
+    string thumburl = 6; // 缩略图
+    string receiver = 7; // 接收人
+}
+
+message PatMsg
+{
+    string roomid = 1; // 群 id
+    string wxid   = 2; // wxid
+}
+
+message OcrMsg
+{
+    int32 status  = 1; // 状态
+    string result = 2; // 结果
 }

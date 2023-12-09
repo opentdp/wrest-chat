@@ -200,12 +200,12 @@ func getAliasInChatRoom(c *gin.Context) {
 
 // @Summary 添加群成员
 // @Produce json
-// @Param body body wcf.AddMembers true "增删群成员请求参数"
+// @Param body body wcf.MemberMgmt true "增删群成员请求参数"
 // @Success 200 {object} ActionResponse
 // @Router /add_chatroom_members [post]
 func addChatRoomMembers(c *gin.Context) {
 
-	var req wcf.AddMembers
+	var req wcf.MemberMgmt
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Error", err)
 		return
@@ -221,12 +221,12 @@ func addChatRoomMembers(c *gin.Context) {
 
 // @Summary 删除群成员
 // @Produce json
-// @Param body body wcf.AddMembers true "增删群成员请求参数"
+// @Param body body wcf.MemberMgmt true "增删群成员请求参数"
 // @Success 200 {object} ActionResponse
 // @Router /del_chatroom_members [post]
 func delChatRoomMembers(c *gin.Context) {
 
-	var req wcf.AddMembers
+	var req wcf.MemberMgmt
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.Set("Error", err)
 		return

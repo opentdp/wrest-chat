@@ -250,6 +250,57 @@ func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 	return recv.GetStatus()
 }
 
+// SendRichText 发送富文本消息
+// 卡片样式：
+// |-------------------------------------|
+// |title, 最长两行                       |
+// |(长标题, 标题短的话这行没有)           |
+// |digest, 最多三行，会占位     |--------|
+// |digest, 最多三行，会占位     |thumburl|
+// |digest, 最多三行，会占位     |--------|
+// |(account logo) name                  |
+// |-------------------------------------|
+// param name string 左下显示的名字
+// param account string 填公众号 id 可以显示对应的头像（gh_ 开头的）
+// param title string 标题，最多两行
+// param digest string 摘要，三行
+// param url string 点击后跳转的链接
+// param thumburl string 缩略图的链接
+// param receiver string 接收人, wxid 或者 roomid
+// return int32 0 为成功，其他失败
+func (c *CmdClient) SendRichText(name, account, title, digest, url, thumburl, receiver string) int32 {
+	req := genFunReq(Functions_FUNC_SEND_RICH_TXT)
+	req.Msg = &Request_Rt{
+		Rt: &RichText{
+			Name:     name,
+			Account:  account,
+			Title:    title,
+			Digest:   digest,
+			Url:      url,
+			Thumburl: thumburl,
+			Receiver: receiver,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// SendPatMsg 拍一拍群友
+// param roomid string 群 id
+// param wxid string 要拍的群友的 wxid
+// return int32 1 为成功，其他失败
+func (c *CmdClient) SendPatMsg(roomid, wxid string) int32 {
+	req := genFunReq(Functions_FUNC_SEND_PAT_MSG)
+	req.Msg = &Request_Pm{
+		Pm: &PatMsg{
+			Roomid: roomid,
+			Wxid:   wxid,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
 // 撤回消息
 // param msgid (uint64): 消息 id
 // return int: 1 为成功，其他失败
@@ -314,11 +365,11 @@ func (c *CmdClient) RefreshPyq(id uint64) int32 {
 // param roomid string 待加群的 id
 // param wxids string 要加到群里的 wxid，多个用逗号分隔
 // return int32 1 为成功，其他失败
-func (c *CmdClient) AddChatRoomMembers(roomId, wxIds string) int32 {
+func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
 	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
 	req.Msg = &Request_M{
-		M: &AddMembers{
-			Roomid: roomId,
+		M: &MemberMgmt{
+			Roomid: roomid,
 			Wxids:  wxIds,
 		},
 	}
@@ -330,11 +381,11 @@ func (c *CmdClient) AddChatRoomMembers(roomId, wxIds string) int32 {
 // param roomid string 群的 id
 // param wxids string 要删除成员的 wxid，多个用逗号分隔
 // return int32 1 为成功，其他失败
-func (c *CmdClient) DelChatRoomMembers(roomId, wxIds string) int32 {
+func (c *CmdClient) DelChatRoomMembers(roomid, wxIds string) int32 {
 	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
 	req.Msg = &Request_M{
-		M: &AddMembers{
-			Roomid: roomId,
+		M: &MemberMgmt{
+			Roomid: roomid,
 			Wxids:  wxIds,
 		},
 	}
@@ -345,7 +396,7 @@ func (c *CmdClient) DelChatRoomMembers(roomId, wxIds string) int32 {
 // 获取群成员列表
 // param roomid string 群的 id
 // return []*RpcContact 群成员列表
-func (c *CmdClient) GetChatRoomMembers(roomId string) []*RpcContact {
+func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	members := []*RpcContact{}
 	// get user data
 	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
@@ -355,7 +406,7 @@ func (c *CmdClient) GetChatRoomMembers(roomId string) []*RpcContact {
 		userMap[wxid] = string(user.Fields[1].Content)
 	}
 	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
 	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
 		return members
 	}
@@ -380,7 +431,7 @@ func (c *CmdClient) GetChatRoomMembers(roomId string) []*RpcContact {
 // param wxid string wxid
 // param roomid string 群的 id
 // return string 群成员昵称
-func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
+func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	// get user data
 	nickName := ""
 	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
@@ -388,7 +439,7 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
 		nickName = string(userRds[0].Fields[0].Content)
 	}
 	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomId+"';")
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
 	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
 		return nickName
 	}
@@ -406,6 +457,54 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomId string) string {
 		}
 	}
 	return nickName
+}
+
+// 邀请群成员
+// param roomid string 群的 id
+// param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
+// return int32 1 为成功，其他失败
+func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
+	req := genFunReq(Functions_FUNC_INV_ROOM_MEMBERS)
+	req.Msg = &Request_M{
+		M: &MemberMgmt{
+			Roomid: roomid,
+			Wxids:  strings.ReplaceAll(wxids, " ", ""),
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 获取 OCR 结果
+// 鸡肋，需要图片能自动下载；通过下载接口下载的图片无法识别
+// param extra string 待识别的图片路径，消息里的 extra
+// return string OCR 结果
+// return int32 状态码，0 为成功，其他失败
+func (c *CmdClient) GetOcrResult(extra string) (string, int32) {
+	req := genFunReq(Functions_FUNC_EXEC_OCR)
+	req.Msg = &Request_Str{
+		Str: extra,
+	}
+	recv := c.call(req.build())
+	ocr := recv.GetOcr()
+	return ocr.GetResult(), ocr.GetStatus()
+}
+
+// 获取 OCR 结果，带有超时时间
+// param extra string 待识别的图片路径，消息里的 extra
+// param timeout int 超时时间
+// return string OCR 结果
+func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
+	cnt := 0
+	for cnt <= timeout {
+		result, status := c.GetOcrResult(extra)
+		if status == 0 {
+			return result
+		}
+		time.Sleep(1 * time.Second)
+		cnt++
+	}
+	return ""
 }
 
 // 获取语音消息并转成 MP3
