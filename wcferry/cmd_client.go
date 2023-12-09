@@ -1,4 +1,4 @@
-package wcf
+package wcferry
 
 import (
 	"strings"

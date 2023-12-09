@@ -28,7 +28,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.Verification"
+                            "$ref": "#/definitions/wcferry.Verification"
                         }
                     }
                 ],
@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -55,7 +55,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.MemberMgmt"
+                            "$ref": "#/definitions/wcferry.MemberMgmt"
                         }
                     }
                 ],
@@ -63,7 +63,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -122,7 +122,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcf.RpcContact"
+                                "$ref": "#/definitions/wcferry.RpcContact"
                             }
                         }
                     }
@@ -141,7 +141,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcf.RpcContact"
+                                "$ref": "#/definitions/wcferry.RpcContact"
                             }
                         }
                     }
@@ -160,7 +160,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcf.RpcContact"
+                                "$ref": "#/definitions/wcferry.RpcContact"
                             }
                         }
                     }
@@ -199,7 +199,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.DbSqlQueryRequest"
+                            "$ref": "#/definitions/wcfrest.DbSqlQueryRequest"
                         }
                     }
                 ],
@@ -207,7 +207,8 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
@@ -234,7 +235,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcf.DbTable"
+                                "$ref": "#/definitions/wcferry.DbTable"
                             }
                         }
                     }
@@ -254,7 +255,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.MemberMgmt"
+                            "$ref": "#/definitions/wcferry.MemberMgmt"
                         }
                     }
                 ],
@@ -262,7 +263,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -281,7 +282,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.ForwardMsgRequest"
+                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
                         }
                     }
                 ],
@@ -289,7 +290,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -308,7 +309,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.DownloadAttachRequest"
+                            "$ref": "#/definitions/wcfrest.DownloadAttachRequest"
                         }
                     }
                 ],
@@ -316,7 +317,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -335,7 +336,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.DownloadImageRequest"
+                            "$ref": "#/definitions/wcfrest.DownloadImageRequest"
                         }
                     }
                 ],
@@ -343,7 +344,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "type": "string"
                         }
                     }
                 }
@@ -362,7 +363,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.ForwardMsgRequest"
+                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
                         }
                     }
                 ],
@@ -370,7 +371,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -389,7 +390,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.GetAudioMsgRequest"
+                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
                         }
                     }
                 ],
@@ -416,7 +417,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.GetOcrRequest"
+                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
                         }
                     }
                 ],
@@ -442,7 +443,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcf.RpcContact"
+                                "$ref": "#/definitions/wcferry.RpcContact"
                             }
                         }
                     }
@@ -462,7 +463,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.MemberMgmt"
+                            "$ref": "#/definitions/wcferry.MemberMgmt"
                         }
                     }
                 ],
@@ -470,7 +471,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -524,7 +525,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.Transfer"
+                            "$ref": "#/definitions/wcferry.Transfer"
                         }
                     }
                 ],
@@ -532,7 +533,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -557,7 +558,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -582,7 +583,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -617,7 +618,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.PathMsg"
+                            "$ref": "#/definitions/wcferry.PathMsg"
                         }
                     }
                 ],
@@ -625,7 +626,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -644,7 +645,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.PathMsg"
+                            "$ref": "#/definitions/wcferry.PathMsg"
                         }
                     }
                 ],
@@ -652,7 +653,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -671,7 +672,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.PathMsg"
+                            "$ref": "#/definitions/wcferry.PathMsg"
                         }
                     }
                 ],
@@ -679,7 +680,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -698,7 +699,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.PatMsg"
+                            "$ref": "#/definitions/wcferry.PatMsg"
                         }
                     }
                 ],
@@ -706,7 +707,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -725,7 +726,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.RichText"
+                            "$ref": "#/definitions/wcferry.RichText"
                         }
                     }
                 ],
@@ -733,7 +734,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -752,7 +753,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.TextMsg"
+                            "$ref": "#/definitions/wcferry.TextMsg"
                         }
                     }
                 ],
@@ -760,7 +761,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.ActionResponse"
                         }
                     }
                 }
@@ -776,7 +777,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.UserInfo"
+                            "$ref": "#/definitions/wcferry.UserInfo"
                         }
                     }
                 }
@@ -801,7 +802,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcf.UserInfo"
+                            "$ref": "#/definitions/wcferry.RpcContact"
                         }
                     }
                 }
@@ -809,27 +810,7 @@
         }
     },
     "definitions": {
-        "wcf.ActionResponse": {
-            "type": "object",
-            "properties": {
-                "error": {},
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "wcf.DbSqlQueryRequest": {
-            "type": "object",
-            "properties": {
-                "db": {
-                    "type": "string"
-                },
-                "sql": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcf.DbTable": {
+        "wcferry.DbTable": {
             "type": "object",
             "properties": {
                 "name": {
@@ -842,71 +823,7 @@
                 }
             }
         },
-        "wcf.DownloadAttachRequest": {
-            "type": "object",
-            "properties": {
-                "extra": {
-                    "type": "string"
-                },
-                "msgid": {
-                    "type": "integer"
-                },
-                "thumb": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcf.DownloadImageRequest": {
-            "type": "object",
-            "properties": {
-                "dir": {
-                    "type": "string"
-                },
-                "extra": {
-                    "type": "string"
-                },
-                "msgid": {
-                    "type": "integer"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcf.ForwardMsgRequest": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcf.GetAudioMsgRequest": {
-            "type": "object",
-            "properties": {
-                "msgid": {
-                    "type": "integer"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcf.GetOcrRequest": {
-            "type": "object",
-            "properties": {
-                "extra": {
-                    "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcf.MemberMgmt": {
+        "wcferry.MemberMgmt": {
             "type": "object",
             "properties": {
                 "roomid": {
@@ -919,7 +836,7 @@
                 }
             }
         },
-        "wcf.PatMsg": {
+        "wcferry.PatMsg": {
             "type": "object",
             "properties": {
                 "roomid": {
@@ -932,7 +849,7 @@
                 }
             }
         },
-        "wcf.PathMsg": {
+        "wcferry.PathMsg": {
             "type": "object",
             "properties": {
                 "path": {
@@ -945,7 +862,7 @@
                 }
             }
         },
-        "wcf.RichText": {
+        "wcferry.RichText": {
             "type": "object",
             "properties": {
                 "account": {
@@ -978,7 +895,7 @@
                 }
             }
         },
-        "wcf.RpcContact": {
+        "wcferry.RpcContact": {
             "type": "object",
             "properties": {
                 "city": {
@@ -1015,7 +932,7 @@
                 }
             }
         },
-        "wcf.TextMsg": {
+        "wcferry.TextMsg": {
             "type": "object",
             "properties": {
                 "aters": {
@@ -1032,7 +949,7 @@
                 }
             }
         },
-        "wcf.Transfer": {
+        "wcferry.Transfer": {
             "type": "object",
             "properties": {
                 "taid": {
@@ -1049,7 +966,7 @@
                 }
             }
         },
-        "wcf.UserInfo": {
+        "wcferry.UserInfo": {
             "type": "object",
             "properties": {
                 "home": {
@@ -1070,7 +987,7 @@
                 }
             }
         },
-        "wcf.Verification": {
+        "wcferry.Verification": {
             "type": "object",
             "properties": {
                 "scene": {
@@ -1084,6 +1001,90 @@
                 "v4": {
                     "description": "Ticket",
                     "type": "string"
+                }
+            }
+        },
+        "wcfrest.ActionResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "wcfrest.DbSqlQueryRequest": {
+            "type": "object",
+            "properties": {
+                "db": {
+                    "type": "string"
+                },
+                "sql": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.DownloadAttachRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "type": "string"
+                },
+                "msgid": {
+                    "type": "integer"
+                },
+                "thumb": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.DownloadImageRequest": {
+            "type": "object",
+            "properties": {
+                "dir": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "string"
+                },
+                "msgid": {
+                    "type": "integer"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.ForwardMsgRequest": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetAudioMsgRequest": {
+            "type": "object",
+            "properties": {
+                "msgid": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.GetOcrRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
                 }
             }
         }

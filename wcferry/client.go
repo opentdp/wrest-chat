@@ -1,4 +1,4 @@
-package wcf
+package wcferry
 
 import (
 	"errors"
@@ -12,35 +12,35 @@ import (
 )
 
 type Client struct {
-	WcfPath   string     // sdk.dll 路径
-	WcfAddr   string     // wcf 监听地址
-	WcfPort   int        // wcf 监听端口
-	CmdClient *CmdClient // 命令客户端
-	MsgClient *MsgClient // 消息客户端
+	ListenAddr string     // wcf 监听地址
+	ListenPort int        // wcf 监听端口
+	SdkLibrary string     // sdk.dll 路径
+	CmdClient  *CmdClient // 命令客户端
+	MsgClient  *MsgClient // 消息客户端
 }
 
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) Connect() error {
 	// 设置默认值
-	if c.WcfAddr == "" {
-		c.WcfAddr = "127.0.0.1"
+	if c.ListenAddr == "" {
+		c.ListenAddr = "127.0.0.1"
 	}
-	if c.WcfPort == 0 {
-		c.WcfPort = 10080
+	if c.ListenPort == 0 {
+		c.ListenPort = 10080
 	}
 	// 启动 wcf 服务
-	if c.WcfPath != "" {
+	if c.SdkLibrary != "" {
 		if err := c.wxInitSDK(); err != nil {
 			return err
 		}
 	}
 	// 连接 wcf 服务
 	c.CmdClient = &CmdClient{
-		pbSocket: newPbSocket(c.WcfAddr, c.WcfPort),
+		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort),
 	}
 	c.MsgClient = &MsgClient{
-		pbSocket: newPbSocket(c.WcfAddr, c.WcfPort+1),
+		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
 	return c.CmdClient.dial()
 }
@@ -52,7 +52,7 @@ func (c *Client) AutoDestory() {
 		c.MsgClient.Close()
 		c.CmdClient.Close()
 		// 关闭 wcf 服务
-		if c.WcfPath != "" {
+		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}
 	})
@@ -83,7 +83,7 @@ func (c *Client) DisableReceiver() error {
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll 库
-	sdk, err := syscall.LoadDLL(c.WcfPath)
+	sdk, err := syscall.LoadDLL(c.SdkLibrary)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
 		return err
@@ -108,7 +108,7 @@ func (c *Client) wxInitSDK() error {
 	if strings.Contains(string(out), "WeChat.exe") {
 		return errors.New("please close wechat")
 	}
-	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.WcfPort))
+	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
 	time.Sleep(5 * time.Second)
 	return nil
 }

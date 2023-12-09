@@ -6,4 +6,4 @@ logger:
     target: stdout
 wcf:
     address: 127.0.0.1:10080
-    sdklibrary: ./wcf-sdk/libs/sdk.dll
+    sdklibrary: ./wcferry/libs/sdk.dll

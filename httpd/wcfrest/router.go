@@ -1,4 +1,4 @@
-package wcf
+package wcfrest
 
 import (
 	"github.com/gin-gonic/gin"

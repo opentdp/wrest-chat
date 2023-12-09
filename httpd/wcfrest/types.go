@@ -1,4 +1,4 @@
-package wcf
+package wcfrest
 
 // 执行结果
 type ActionResponse struct {

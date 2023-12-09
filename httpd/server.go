@@ -5,7 +5,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/httpd/midware"
-	"github.com/opentdp/wechat-rest/httpd/wcf-api"
+	"github.com/opentdp/wechat-rest/httpd/wcfrest"
 )
 
 // @title Wechat Rest API
@@ -25,7 +25,7 @@ func Server() {
 	api.Use(midware.OutputHandle, midware.AuthGuard)
 
 	// 注册 WCF
-	wcf.Route(api)
+	wcfrest.Route(api)
 
 	// 前端文件路由
 	httpd.StaticEmbed("/", "public", args.Efs)

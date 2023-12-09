@@ -1,4 +1,4 @@
-package wcf
+package wcferry
 
 import (
 	"github.com/opentdp/go-helper/logman"

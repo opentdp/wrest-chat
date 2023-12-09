@@ -9,14 +9,12 @@ package main
 
 import (
     "fmt"
-    "github.com/opentdp/wechat-rest/wcf-sdk"
+    "github.com/opentdp/wechat-rest/wcferry"
 )
 
 func main() {
-    wc := &wcf.Client{
-        WcfPath: "./sdk.dll",
-        WcfAddr: "127.0.0.1",
-        WcfPort: "10080",
+    wc := &wcferry.Client{
+        SdkLibrary: "./sdk.dll",
     }
     if err := wc.Connect(); err != nil {
         panic(err)

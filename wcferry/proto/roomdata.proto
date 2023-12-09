@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package wcf;
-option go_package="./;wcf";
+package wcferry;
+option go_package="./;wcferry";
 
 message RoomData {
 
