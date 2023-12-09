@@ -376,26 +376,7 @@
                 }
             }
         },
-        "/friends": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "获取好友列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcf.RpcContact"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/get_audio_msg": {
+        "/fetch_audio_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -422,7 +403,7 @@
                 }
             }
         },
-        "/get_ocr_result": {
+        "/fetch_ocr_result": {
             "post": {
                 "produces": [
                     "application/json"
@@ -444,6 +425,25 @@
                         "description": "OK",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/friends": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取好友列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcf.RpcContact"
+                            }
                         }
                     }
                 }
@@ -604,33 +604,6 @@
                 }
             }
         },
-        "/send_card": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "发送卡片消息",
-                "parameters": [
-                    {
-                        "description": "卡片消息请求参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcf.RichText"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcf.ActionResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/send_emotion": {
             "post": {
                 "produces": [
@@ -712,7 +685,7 @@
                 }
             }
         },
-        "/send_pat": {
+        "/send_pat_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -726,6 +699,33 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/wcf.PatMsg"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_rich_text": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送卡片消息",
+                "parameters": [
+                    {
+                        "description": "卡片消息请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.RichText"
                         }
                     }
                 ],
