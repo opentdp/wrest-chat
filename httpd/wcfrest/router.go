@@ -25,8 +25,8 @@ func Route(rg *gin.RouterGroup) {
 	rg.GET("chatrooms", getChatRooms)
 	rg.GET("chatroom_members/:roomid", getChatRoomMembers)
 	rg.GET("alias_in_chatroom/:wxid/:roomid", getAliasInChatRoom)
-	rg.POST("add_chatroom_members", addChatRoomMembers)
 	rg.POST("invite_chatroom_members", inviteChatroomMembers)
+	rg.POST("add_chatroom_members", addChatRoomMembers)
 	rg.POST("del_chatroom_members", delChatRoomMembers)
 
 	rg.GET("revoke_msg/:msgid", revokeMsg)

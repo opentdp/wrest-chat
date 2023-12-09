@@ -242,22 +242,6 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	return nickName
 }
 
-// 添加群成员
-// param roomid string 待加群的 id
-// param wxids string 要加到群里的 wxid，多个用逗号分隔
-// return int32 1 为成功，其他失败
-func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &MemberMgmt{
-			Roomid: roomid,
-			Wxids:  wxIds,
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
 // 邀请群成员
 // param roomid string 群的 id
 // param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
@@ -268,6 +252,22 @@ func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
 		M: &MemberMgmt{
 			Roomid: roomid,
 			Wxids:  strings.ReplaceAll(wxids, " ", ""),
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 添加群成员
+// param roomid string 待加群的 id
+// param wxids string 要加到群里的 wxid，多个用逗号分隔
+// return int32 1 为成功，其他失败
+func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
+	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
+	req.Msg = &Request_M{
+		M: &MemberMgmt{
+			Roomid: roomid,
+			Wxids:  wxIds,
 		},
 	}
 	recv := c.call(req.build())

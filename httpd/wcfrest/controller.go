@@ -199,27 +199,6 @@ func getAliasInChatRoom(c *gin.Context) {
 
 }
 
-// @Summary 添加群成员
-// @Produce json
-// @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
-// @Success 200 {object} ActionResponse
-// @Router /add_chatroom_members [post]
-func addChatRoomMembers(c *gin.Context) {
-
-	var req wcferry.MemberMgmt
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Set("Error", err)
-		return
-	}
-
-	status := wc.CmdClient.AddChatRoomMembers(req.Roomid, req.Wxids)
-
-	c.Set("Payload", ActionResponse{
-		Success: status == 1,
-	})
-
-}
-
 // @Summary 邀请群成员
 // @Produce json
 // @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
@@ -234,6 +213,27 @@ func inviteChatroomMembers(c *gin.Context) {
 	}
 
 	status := wc.CmdClient.InviteChatroomMembers(req.Roomid, req.Wxids)
+
+	c.Set("Payload", ActionResponse{
+		Success: status == 1,
+	})
+
+}
+
+// @Summary 添加群成员
+// @Produce json
+// @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
+// @Success 200 {object} ActionResponse
+// @Router /add_chatroom_members [post]
+func addChatRoomMembers(c *gin.Context) {
+
+	var req wcferry.MemberMgmt
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	status := wc.CmdClient.AddChatRoomMembers(req.Roomid, req.Wxids)
 
 	c.Set("Payload", ActionResponse{
 		Success: status == 1,

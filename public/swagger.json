@@ -4,14 +4,14 @@
         "description": "基于 WeChatFerry RPC 实现的电脑版微信 REST-API，使用 Go 语言编写，无第三方运行时依赖。基于 HTTP 提供操作接口，轻松对接任意编程语言。",
         "title": "Wechat Rest API",
         "contact": {
-            "name": "Github",
+            "name": "WeChatRest",
             "url": "https://github.com/opentdp/wechat-rest"
         },
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "v0.4.0"
+        "version": "v0.4.1"
     },
     "basePath": "/api",
     "paths": {
@@ -377,6 +377,25 @@
                 }
             }
         },
+        "/friends": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取好友列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcferry.RpcContact"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/get_audio_msg": {
             "post": {
                 "produces": [
@@ -426,25 +445,6 @@
                         "description": "OK",
                         "schema": {
                             "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/friends": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "获取好友列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcferry.RpcContact"
-                            }
                         }
                     }
                 }
