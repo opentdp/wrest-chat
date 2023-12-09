@@ -6,11 +6,28 @@ type ActionResponse struct {
 	Error   error `json:"error"`
 }
 
-// 下载附件参数
-type DownloadAttachRequest struct {
-	Msgid uint64 `json:"msgid"`
-	Thumb string `json:"thumb"`
-	Extra string `json:"extra"`
+// 数据库查询参数
+type DbSqlQueryRequest struct {
+	Db  string `json:"db"`
+	Sql string `json:"sql"`
+}
+
+// 消息转发参数
+type ForwardMsgRequest struct {
+	Url string `json:"url"`
+}
+
+// 获取音频消息参数
+type GetAudioMsgRequest struct {
+	Msgid   uint64 `json:"msgid"`
+	Dir     string `json:"path"`
+	Timeout int    `json:"timeout"`
+}
+
+// 获取OCR识别参数
+type GetOcrRequest struct {
+	Extra   string `json:"extra"`
+	Timeout int    `json:"timeout"`
 }
 
 // 下载图片参数
@@ -21,20 +38,9 @@ type DownloadImageRequest struct {
 	Timeout int    `json:"timeout"`
 }
 
-// 获取音频消息参数
-type GetAudioMsgRequest struct {
-	Msgid   uint64 `json:"msgid"`
-	Dir     string `json:"path"`
-	Timeout int    `json:"timeout"`
-}
-
-// 数据库查询参数
-type DbSqlQueryRequest struct {
-	Db  string `json:"db"`
-	Sql string `json:"sql"`
-}
-
-// 消息转发参数
-type ForwardMsgRequest struct {
-	Url string `json:"url"`
+// 下载附件参数
+type DownloadAttachRequest struct {
+	Msgid uint64 `json:"msgid"`
+	Thumb string `json:"thumb"`
+	Extra string `json:"extra"`
 }

@@ -63,28 +63,6 @@ func getUserInfo(c *gin.Context) {
 
 }
 
-// @Summary 根据wxid获取个人信息
-// @Produce json
-// @Param wxid path string true "wxid"
-// @Success 200 {object} wcf.UserInfo
-// @Router /user_info/{wxid} [get]
-func getUserInfoByWxid(c *gin.Context) {
-
-	wxid := c.Param("wxid")
-	c.Set("Payload", wc.CmdClient.GetInfoByWxid(wxid))
-
-}
-
-// @Summary 获取所有消息类型
-// @Produce json
-// @Success 200 {object} map[int32]string
-// @Router /msg_types [get]
-func getMsgTypes(c *gin.Context) {
-
-	c.Set("Payload", wc.CmdClient.GetMsgTypes())
-
-}
-
 // @Summary 获取完整通讯录
 // @Produce json
 // @Success 200 {object} []wcf.RpcContact
@@ -102,6 +80,18 @@ func getContacts(c *gin.Context) {
 func getFriends(c *gin.Context) {
 
 	c.Set("Payload", wc.CmdClient.GetFriends())
+
+}
+
+// @Summary 根据wxid获取个人信息
+// @Produce json
+// @Param wxid path string true "wxid"
+// @Success 200 {object} wcf.UserInfo
+// @Router /user_info/{wxid} [get]
+func getUserInfoByWxid(c *gin.Context) {
+
+	wxid := c.Param("wxid")
+	c.Set("Payload", wc.CmdClient.GetInfoByWxid(wxid))
 
 }
 
@@ -141,6 +131,16 @@ func dbSqlQuery(c *gin.Context) {
 	}
 
 	c.Set("Payload", wc.CmdClient.DbSqlQueryMap(req.Db, req.Sql))
+
+}
+
+// @Summary 获取所有消息类型
+// @Produce json
+// @Success 200 {object} map[int32]string
+// @Router /msg_types [get]
+func getMsgTypes(c *gin.Context) {
+
+	c.Set("Payload", wc.CmdClient.GetMsgTypes())
 
 }
 
@@ -219,6 +219,27 @@ func addChatRoomMembers(c *gin.Context) {
 
 }
 
+// @Summary 邀请群成员
+// @Produce json
+// @Param body body wcf.MemberMgmt true "增删群成员请求参数"
+// @Success 200 {object} ActionResponse
+// @Router /invite_chatroom_members [post]
+func inviteChatroomMembers(c *gin.Context) {
+
+	var req wcf.MemberMgmt
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	status := wc.CmdClient.InviteChatroomMembers(req.Roomid, req.Wxids)
+
+	c.Set("Payload", ActionResponse{
+		Success: status == 1,
+	})
+
+}
+
 // @Summary 删除群成员
 // @Produce json
 // @Param body body wcf.MemberMgmt true "增删群成员请求参数"
@@ -233,6 +254,24 @@ func delChatRoomMembers(c *gin.Context) {
 	}
 
 	status := wc.CmdClient.DelChatRoomMembers(req.Roomid, req.Wxids)
+
+	c.Set("Payload", ActionResponse{
+		Success: status == 1,
+	})
+
+}
+
+// @Summary 撤回消息
+// @Produce json
+// @Param msgid path int true "消息id"
+// @Success 200 {object} ActionResponse
+// @Router /revoke_msg/{msgid} [get]
+func revokeMsg(c *gin.Context) {
+
+	id := c.Param("msgid")
+	msgid := uint64(strutil.ToUint(id))
+
+	status := wc.CmdClient.RevokeMsg(msgid)
 
 	c.Set("Payload", ActionResponse{
 		Success: status == 1,
@@ -303,20 +342,65 @@ func sendFile(c *gin.Context) {
 
 }
 
-// @Summary 撤回消息
+// @Summary 发送表情消息
 // @Produce json
-// @Param msgid path int true "消息id"
+// @Param body body wcf.PathMsg true "表情消息请求参数"
 // @Success 200 {object} ActionResponse
-// @Router /revoke_msg/{msgid} [get]
-func revokeMsg(c *gin.Context) {
+// @Router /send_emotion [post]
+func sendEmotion(c *gin.Context) {
 
-	id := c.Param("msgid")
-	msgid := uint64(strutil.ToUint(id))
+	var req wcf.PathMsg
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
 
-	status := wc.CmdClient.RevokeMsg(msgid)
+	status := wc.CmdClient.SendEmotion(req.Path, req.Receiver)
 
 	c.Set("Payload", ActionResponse{
-		Success: status == 1,
+		Success: status == 0,
+	})
+
+}
+
+// @Summary 发送卡片消息
+// @Produce json
+// @Param body body wcf.RichText true "卡片消息请求参数"
+// @Success 200 {object} ActionResponse
+// @Router /send_rich_text [post]
+func sendRichText(c *gin.Context) {
+
+	var req wcf.RichText
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	status := wc.CmdClient.SendRichText(req.Name, req.Account, req.Title, req.Digest, req.Url, req.Thumburl, req.Receiver)
+
+	c.Set("Payload", ActionResponse{
+		Success: status == 0,
+	})
+
+}
+
+// @Summary 拍一拍群友
+// @Produce json
+// @Param body body wcf.PatMsg true "拍一拍请求参数"
+// @Success 200 {object} ActionResponse
+// @Router /send_pat_msg [post]
+func sendPatMsg(c *gin.Context) {
+
+	var req wcf.PatMsg
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	status := wc.CmdClient.SendPatMsg(req.Roomid, req.Wxid)
+
+	c.Set("Payload", ActionResponse{
+		Success: status == 0,
 	})
 
 }
@@ -325,7 +409,7 @@ func revokeMsg(c *gin.Context) {
 // @Produce json
 // @Param body body GetAudioMsgRequest true "语音消息请求参数"
 // @Success 200 {object} string
-// @Router /get_audio_msg [post]
+// @Router /fetch_audio_msg [post]
 func getAudioMsg(c *gin.Context) {
 
 	var req GetAudioMsgRequest
@@ -339,6 +423,47 @@ func getAudioMsg(c *gin.Context) {
 	} else {
 		c.Set("Payload", wc.CmdClient.GetAudioMsgTimeout(req.Msgid, req.Dir, req.Timeout))
 	}
+
+}
+
+// @Summary 获取OCR识别结果
+// @Produce json
+// @Param body body GetOcrRequest true "文本请求参数"
+// @Success 200 {object} string
+// @Router /fetch_ocr_result [post]
+func getOcrResult(c *gin.Context) {
+
+	var req GetOcrRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	if req.Timeout == 0 {
+		resp, _ := wc.CmdClient.GetOcrResult(req.Extra)
+		c.Set("Payload", resp)
+	} else {
+		c.Set("Payload", wc.CmdClient.GetOcrResultTimeout(req.Extra, req.Timeout))
+	}
+
+}
+
+// @Summary 下载图片
+// @Produce json
+// @Param body body DownloadImageRequest true "下载图片参数"
+// @Success 200 {object} ActionResponse
+// @Router /download_image [post]
+func downloadImage(c *gin.Context) {
+
+	var req DownloadImageRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	path := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
+
+	c.Set("Payload", path)
 
 }
 
@@ -360,25 +485,6 @@ func downloadAttach(c *gin.Context) {
 	c.Set("Payload", ActionResponse{
 		Success: status == 0,
 	})
-
-}
-
-// @Summary 下载图片
-// @Produce json
-// @Param body body DownloadImageRequest true "下载图片参数"
-// @Success 200 {object} ActionResponse
-// @Router /download_image [post]
-func downloadImage(c *gin.Context) {
-
-	var req DownloadImageRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Set("Error", err)
-		return
-	}
-
-	path := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
-
-	c.Set("Payload", path)
 
 }
 

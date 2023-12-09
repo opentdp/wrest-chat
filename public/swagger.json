@@ -55,7 +55,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.AddMembers"
+                            "$ref": "#/definitions/wcf.MemberMgmt"
                         }
                     }
                 ],
@@ -254,7 +254,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcf.AddMembers"
+                            "$ref": "#/definitions/wcf.MemberMgmt"
                         }
                     }
                 ],
@@ -422,6 +422,60 @@
                 }
             }
         },
+        "/get_ocr_result": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取OCR识别结果",
+                "parameters": [
+                    {
+                        "description": "文本请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.GetOcrRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/invite_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "邀请群成员",
+                "parameters": [
+                    {
+                        "description": "增删群成员请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.MemberMgmt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/is_login": {
             "get": {
                 "produces": [
@@ -550,6 +604,60 @@
                 }
             }
         },
+        "/send_card": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送卡片消息",
+                "parameters": [
+                    {
+                        "description": "卡片消息请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.RichText"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_emotion": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送表情消息",
+                "parameters": [
+                    {
+                        "description": "表情消息请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.PathMsg"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/send_file": {
             "post": {
                 "produces": [
@@ -591,6 +699,33 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/wcf.PathMsg"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcf.ActionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/send_pat": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "拍一拍群友",
+                "parameters": [
+                    {
+                        "description": "拍一拍请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcf.PatMsg"
                         }
                     }
                 ],
@@ -683,19 +818,6 @@
                 }
             }
         },
-        "wcf.AddMembers": {
-            "type": "object",
-            "properties": {
-                "roomid": {
-                    "description": "要加的群ID",
-                    "type": "string"
-                },
-                "wxids": {
-                    "description": "要加群的人列表，逗号分隔",
-                    "type": "string"
-                }
-            }
-        },
         "wcf.DbSqlQueryRequest": {
             "type": "object",
             "properties": {
@@ -773,6 +895,43 @@
                 }
             }
         },
+        "wcf.GetOcrRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wcf.MemberMgmt": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "要加的群ID",
+                    "type": "string"
+                },
+                "wxids": {
+                    "description": "要加群的人列表，逗号分隔",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.PatMsg": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "群 id",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "wxid",
+                    "type": "string"
+                }
+            }
+        },
         "wcf.PathMsg": {
             "type": "object",
             "properties": {
@@ -782,6 +941,39 @@
                 },
                 "receiver": {
                     "description": "消息接收人",
+                    "type": "string"
+                }
+            }
+        },
+        "wcf.RichText": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "description": "公众号 id",
+                    "type": "string"
+                },
+                "digest": {
+                    "description": "摘要",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "显示名字",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "接收人",
+                    "type": "string"
+                },
+                "thumburl": {
+                    "description": "缩略图",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "链接",
                     "type": "string"
                 }
             }

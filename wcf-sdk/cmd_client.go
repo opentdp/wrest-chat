@@ -45,14 +45,6 @@ func (c *CmdClient) GetUserInfo() *UserInfo {
 	return recv.GetUi()
 }
 
-// 获取所有消息类型
-// return map[int32]string 所有消息类型
-func (c *CmdClient) GetMsgTypes() map[int32]string {
-	req := genFunReq(Functions_FUNC_GET_MSG_TYPES)
-	recv := c.call(req.build())
-	return recv.GetTypes().GetTypes()
-}
-
 // 获取完整通讯录
 // return []*RpcContact 完整通讯录
 func (c *CmdClient) GetContacts() []*RpcContact {
@@ -99,18 +91,6 @@ func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
 		}
 	}
 	return nil
-}
-
-// 获取群聊列表
-// return []*RpcContact 群聊列表
-func (c *CmdClient) GetChatRooms() []*RpcContact {
-	chatrooms := []*RpcContact{}
-	for _, cnt := range c.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") {
-			chatrooms = append(chatrooms, cnt)
-		}
-	}
-	return chatrooms
 }
 
 // 获取所有数据库
@@ -162,6 +142,164 @@ func (c *CmdClient) DbSqlQueryMap(db, sql string) map[string]any {
 		}
 	}
 	return res
+}
+
+// 获取所有消息类型
+// return map[int32]string 所有消息类型
+func (c *CmdClient) GetMsgTypes() map[int32]string {
+	req := genFunReq(Functions_FUNC_GET_MSG_TYPES)
+	recv := c.call(req.build())
+	return recv.GetTypes().GetTypes()
+}
+
+// 刷新朋友圈
+// param id int32 开始 id，0 为最新页
+// return int32 1 为成功，其他失败
+func (c *CmdClient) RefreshPyq(id uint64) int32 {
+	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
+	req.Msg = &Request_Ui64{
+		Ui64: id,
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 获取群聊列表
+// return []*RpcContact 群聊列表
+func (c *CmdClient) GetChatRooms() []*RpcContact {
+	chatrooms := []*RpcContact{}
+	for _, cnt := range c.GetContacts() {
+		if strings.HasSuffix(cnt.Wxid, "@chatroom") {
+			chatrooms = append(chatrooms, cnt)
+		}
+	}
+	return chatrooms
+}
+
+// 获取群成员列表
+// param roomid string 群的 id
+// return []*RpcContact 群成员列表
+func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
+	members := []*RpcContact{}
+	// get user data
+	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
+	userMap := map[string]string{}
+	for _, user := range userRds {
+		wxid := string(user.Fields[0].Content)
+		userMap[wxid] = string(user.Fields[1].Content)
+	}
+	// get room data
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
+	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
+		return members
+	}
+	roomData := &RoomData{}
+	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
+		return members
+	}
+	// fix user name
+	for _, member := range roomData.Members {
+		if member.Name == "" {
+			member.Name = userMap[member.Wxid]
+		}
+		members = append(members, &RpcContact{
+			Wxid: member.Wxid,
+			Name: member.Name,
+		})
+	}
+	return members
+}
+
+// 获取群成员昵称
+// param wxid string wxid
+// param roomid string 群的 id
+// return string 群成员昵称
+func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
+	// get user data
+	nickName := ""
+	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
+	if len(userRds) > 0 && len(userRds[0].Fields) > 0 {
+		nickName = string(userRds[0].Fields[0].Content)
+	}
+	// get room data
+	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
+	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
+		return nickName
+	}
+	roomData := &RoomData{}
+	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
+		return nickName
+	}
+	// fix user name
+	for _, member := range roomData.Members {
+		if member.Wxid == wxid {
+			if member.Name != "" {
+				nickName = member.Name
+			}
+			break
+		}
+	}
+	return nickName
+}
+
+// 添加群成员
+// param roomid string 待加群的 id
+// param wxids string 要加到群里的 wxid，多个用逗号分隔
+// return int32 1 为成功，其他失败
+func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
+	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
+	req.Msg = &Request_M{
+		M: &MemberMgmt{
+			Roomid: roomid,
+			Wxids:  wxIds,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 邀请群成员
+// param roomid string 群的 id
+// param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
+// return int32 1 为成功，其他失败
+func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
+	req := genFunReq(Functions_FUNC_INV_ROOM_MEMBERS)
+	req.Msg = &Request_M{
+		M: &MemberMgmt{
+			Roomid: roomid,
+			Wxids:  strings.ReplaceAll(wxids, " ", ""),
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 删除群成员
+// param roomid string 群的 id
+// param wxids string 要删除成员的 wxid，多个用逗号分隔
+// return int32 1 为成功，其他失败
+func (c *CmdClient) DelChatRoomMembers(roomid, wxIds string) int32 {
+	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
+	req.Msg = &Request_M{
+		M: &MemberMgmt{
+			Roomid: roomid,
+			Wxids:  wxIds,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 撤回消息
+// param msgid (uint64): 消息 id
+// return int: 1 为成功，其他失败
+func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
+	req := genFunReq(Functions_FUNC_REVOKE_MSG)
+	req.Msg = &Request_Ui64{
+		Ui64: msgid,
+	}
+	rsp := c.call(req.build())
+	return rsp.GetStatus()
 }
 
 // 发送文本消息
@@ -250,7 +388,7 @@ func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 	return recv.GetStatus()
 }
 
-// SendRichText 发送富文本消息
+// 发送富文本消息
 // 卡片样式：
 // |-------------------------------------|
 // |title, 最长两行                       |
@@ -285,7 +423,7 @@ func (c *CmdClient) SendRichText(name, account, title, digest, url, thumburl, re
 	return recv.GetStatus()
 }
 
-// SendPatMsg 拍一拍群友
+// 拍一拍群友
 // param roomid string 群 id
 // param wxid string 要拍的群友的 wxid
 // return int32 1 为成功，其他失败
@@ -299,212 +437,6 @@ func (c *CmdClient) SendPatMsg(roomid, wxid string) int32 {
 	}
 	recv := c.call(req.build())
 	return recv.GetStatus()
-}
-
-// 撤回消息
-// param msgid (uint64): 消息 id
-// return int: 1 为成功，其他失败
-func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
-	req := genFunReq(Functions_FUNC_REVOKE_MSG)
-	req.Msg = &Request_Ui64{
-		Ui64: msgid,
-	}
-	rsp := c.call(req.build())
-	return rsp.GetStatus()
-}
-
-// 接受好友申请
-// param v3 string 加密用户名 (好友申请消息里 v3 开头的字符串)
-// param v4 string Ticket (好友申请消息里 v4 开头的字符串)
-// param scene int32 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
-// return int32 1 为成功，其他失败
-func (c *CmdClient) AcceptNewFriend(v3, v4 string, scene int32) int32 {
-	req := genFunReq(Functions_FUNC_ACCEPT_FRIEND)
-	req.Msg = &Request_V{
-		V: &Verification{
-			V3:    v3,
-			V4:    v4,
-			Scene: scene,
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 接收转账
-// param wxid string 转账消息里的发送人 wxid
-// param transferid string 转账消息里的 transferid
-// param transactionid string 转账消息里的 transactionid
-// return int32 1 为成功，其他失败
-func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
-	req := genFunReq(Functions_FUNC_RECV_TRANSFER)
-	req.Msg = &Request_Tf{
-		Tf: &Transfer{
-			Wxid: wxid,
-			Tfid: tfid,
-			Taid: taid,
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 刷新朋友圈
-// param id int32 开始 id，0 为最新页
-// return int32 1 为成功，其他失败
-func (c *CmdClient) RefreshPyq(id uint64) int32 {
-	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
-	req.Msg = &Request_Ui64{
-		Ui64: id,
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 添加群成员
-// param roomid string 待加群的 id
-// param wxids string 要加到群里的 wxid，多个用逗号分隔
-// return int32 1 为成功，其他失败
-func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &MemberMgmt{
-			Roomid: roomid,
-			Wxids:  wxIds,
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 删除群成员
-// param roomid string 群的 id
-// param wxids string 要删除成员的 wxid，多个用逗号分隔
-// return int32 1 为成功，其他失败
-func (c *CmdClient) DelChatRoomMembers(roomid, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &MemberMgmt{
-			Roomid: roomid,
-			Wxids:  wxIds,
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 获取群成员列表
-// param roomid string 群的 id
-// return []*RpcContact 群成员列表
-func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
-	members := []*RpcContact{}
-	// get user data
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
-	userMap := map[string]string{}
-	for _, user := range userRds {
-		wxid := string(user.Fields[0].Content)
-		userMap[wxid] = string(user.Fields[1].Content)
-	}
-	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
-		return members
-	}
-	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
-		return members
-	}
-	// fix user name
-	for _, member := range roomData.Members {
-		if member.Name == "" {
-			member.Name = userMap[member.Wxid]
-		}
-		members = append(members, &RpcContact{
-			Wxid: member.Wxid,
-			Name: member.Name,
-		})
-	}
-	return members
-}
-
-// 获取群成员昵称
-// param wxid string wxid
-// param roomid string 群的 id
-// return string 群成员昵称
-func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
-	// get user data
-	nickName := ""
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
-	if len(userRds) > 0 && len(userRds[0].Fields) > 0 {
-		nickName = string(userRds[0].Fields[0].Content)
-	}
-	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
-		return nickName
-	}
-	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
-		return nickName
-	}
-	// fix user name
-	for _, member := range roomData.Members {
-		if member.Wxid == wxid {
-			if member.Name != "" {
-				nickName = member.Name
-			}
-			break
-		}
-	}
-	return nickName
-}
-
-// 邀请群成员
-// param roomid string 群的 id
-// param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
-// return int32 1 为成功，其他失败
-func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
-	req := genFunReq(Functions_FUNC_INV_ROOM_MEMBERS)
-	req.Msg = &Request_M{
-		M: &MemberMgmt{
-			Roomid: roomid,
-			Wxids:  strings.ReplaceAll(wxids, " ", ""),
-		},
-	}
-	recv := c.call(req.build())
-	return recv.GetStatus()
-}
-
-// 获取 OCR 结果
-// 鸡肋，需要图片能自动下载；通过下载接口下载的图片无法识别
-// param extra string 待识别的图片路径，消息里的 extra
-// return string OCR 结果
-// return int32 状态码，0 为成功，其他失败
-func (c *CmdClient) GetOcrResult(extra string) (string, int32) {
-	req := genFunReq(Functions_FUNC_EXEC_OCR)
-	req.Msg = &Request_Str{
-		Str: extra,
-	}
-	recv := c.call(req.build())
-	ocr := recv.GetOcr()
-	return ocr.GetResult(), ocr.GetStatus()
-}
-
-// 获取 OCR 结果，带有超时时间
-// param extra string 待识别的图片路径，消息里的 extra
-// param timeout int 超时时间
-// return string OCR 结果
-func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
-	cnt := 0
-	for cnt <= timeout {
-		result, status := c.GetOcrResult(extra)
-		if status == 0 {
-			return result
-		}
-		time.Sleep(1 * time.Second)
-		cnt++
-	}
-	return ""
 }
 
 // 获取语音消息并转成 MP3
@@ -539,6 +471,38 @@ func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) st
 	}
 	// 超时
 	logman.Error("failed to get audio msg", "msgid", msgid)
+	return ""
+}
+
+// 获取 OCR 结果
+// 鸡肋，需要图片能自动下载；通过下载接口下载的图片无法识别
+// param extra string 待识别的图片路径，消息里的 extra
+// return string OCR 结果
+// return int32 状态码，0 为成功，其他失败
+func (c *CmdClient) GetOcrResult(extra string) (string, int32) {
+	req := genFunReq(Functions_FUNC_EXEC_OCR)
+	req.Msg = &Request_Str{
+		Str: extra,
+	}
+	recv := c.call(req.build())
+	ocr := recv.GetOcr()
+	return ocr.GetResult(), ocr.GetStatus()
+}
+
+// 获取 OCR 结果，带有超时时间
+// param extra string 待识别的图片路径，消息里的 extra
+// param timeout int 超时时间
+// return string OCR 结果
+func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
+	cnt := 0
+	for cnt <= timeout {
+		result, status := c.GetOcrResult(extra)
+		if status == 0 {
+			return result
+		}
+		time.Sleep(1 * time.Second)
+		cnt++
+	}
 	return ""
 }
 
@@ -599,6 +563,42 @@ func (c *CmdClient) DecryptImage(src, dir string) string {
 	}
 	rsp := c.call(req.build())
 	return rsp.GetStr()
+}
+
+// 接受好友申请
+// param v3 string 加密用户名 (好友申请消息里 v3 开头的字符串)
+// param v4 string Ticket (好友申请消息里 v4 开头的字符串)
+// param scene int32 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
+// return int32 1 为成功，其他失败
+func (c *CmdClient) AcceptNewFriend(v3, v4 string, scene int32) int32 {
+	req := genFunReq(Functions_FUNC_ACCEPT_FRIEND)
+	req.Msg = &Request_V{
+		V: &Verification{
+			V3:    v3,
+			V4:    v4,
+			Scene: scene,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
+}
+
+// 接收好友转账
+// param wxid string 转账消息里的发送人 wxid
+// param transferid string 转账消息里的 transferid
+// param transactionid string 转账消息里的 transactionid
+// return int32 1 为成功，其他失败
+func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
+	req := genFunReq(Functions_FUNC_RECV_TRANSFER)
+	req.Msg = &Request_Tf{
+		Tf: &Transfer{
+			Wxid: wxid,
+			Tfid: tfid,
+			Taid: taid,
+		},
+	}
+	recv := c.call(req.build())
+	return recv.GetStatus()
 }
 
 // 开启消息服务器
