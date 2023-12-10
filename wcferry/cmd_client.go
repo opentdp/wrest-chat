@@ -246,7 +246,7 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 // param roomid string 群的 id
 // param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
 // return int32 1 为成功，其他失败
-func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
+func (c *CmdClient) InviteChatroomMembers(roomid, wxids string) int32 {
 	req := &Request{Func: Functions_FUNC_INV_ROOM_MEMBERS}
 	req.Msg = &Request_M{
 		M: &MemberMgmt{
@@ -533,7 +533,7 @@ func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) 
 // param thumb string 消息中的 thumb
 // param extra string 消息中的 extra
 // return int32 0 为成功，其他失败
-func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int32 {
+func (c *CmdClient) DownloadAttach(msgid uint64, thumb, extra string) int32 {
 	req := &Request{Func: Functions_FUNC_DOWNLOAD_ATTACH}
 	req.Msg = &Request_Att{
 		Att: &AttachMsg{
