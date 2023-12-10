@@ -20,5 +20,4 @@ message RoomData {
   int32 field_6 = 6;
   int64 field_7 = 7;
   int64 field_8 = 8;
-
 }
