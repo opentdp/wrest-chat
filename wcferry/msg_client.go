@@ -36,15 +36,16 @@ func (c *MsgClient) listener() error {
 	// 连接消息服务
 	c.receiving = true
 	if err := c.dial(); err != nil {
-		logman.Warn("msg receiver", "error", err)
+		logman.Error("msg receiver", "error", err)
 		c.receiving = false
 		return err
 	}
+	c.deadline(2000)
 	// 开始接收消息
 	for c.receiving {
 		resp, err := c.recv()
 		if err != nil {
-			logman.Warn("msg receiver", "error", err)
+			logman.Error("msg receiver", "error", err)
 		}
 		for _, f := range c.callbacks {
 			go f(resp.GetWxmsg())

@@ -21,8 +21,8 @@ func (c *CmdClient) Close() error {
 // 检查登录状态
 // return bool 是否已登录
 func (c *CmdClient) IsLogin() bool {
-	req := genFunReq(Functions_FUNC_IS_LOGIN)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_IS_LOGIN}
+	recv := c.call(req)
 	if recv.GetStatus() == 1 {
 		return true
 	}
@@ -32,24 +32,24 @@ func (c *CmdClient) IsLogin() bool {
 // 获取登录账号wxid
 // return string 登录账号wxid
 func (c *CmdClient) GetSelfWxid() string {
-	req := genFunReq(Functions_FUNC_GET_SELF_WXID)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_GET_SELF_WXID}
+	recv := c.call(req)
 	return recv.GetStr()
 }
 
 // 获取登录账号个人信息
 // return *UserInfo 登录账号个人信息
 func (c *CmdClient) GetUserInfo() *UserInfo {
-	req := genFunReq(Functions_FUNC_GET_USER_INFO)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_GET_USER_INFO}
+	recv := c.call(req)
 	return recv.GetUi()
 }
 
 // 获取完整通讯录
 // return []*RpcContact 完整通讯录
 func (c *CmdClient) GetContacts() []*RpcContact {
-	req := genFunReq(Functions_FUNC_GET_CONTACTS)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_GET_CONTACTS}
+	recv := c.call(req)
 	return recv.GetContacts().GetContacts()
 }
 
@@ -78,12 +78,12 @@ func (c *CmdClient) GetFriends() []*RpcContact {
 // param wxid (str): 联系人 wxid
 // return *RpcContact
 func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
-	req := genFunReq(Functions_FUNC_GET_CONTACT_INFO)
+	req := &Request{Func: Functions_FUNC_GET_CONTACT_INFO}
 	req.Msg = &Request_Str{
 		Str: wxid,
 	}
-	rsp := c.call(req.build())
-	contacts := rsp.GetContacts()
+	recv := c.call(req)
+	contacts := recv.GetContacts()
 	if contacts != nil {
 		contacts := contacts.GetContacts()
 		if contacts != nil {
@@ -96,8 +96,8 @@ func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
 // 获取所有数据库
 // return []string 所有数据库名
 func (c *CmdClient) GetDbNames() []string {
-	req := genFunReq(Functions_FUNC_GET_DB_NAMES)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_GET_DB_NAMES}
+	recv := c.call(req)
 	return recv.GetDbs().Names
 }
 
@@ -105,11 +105,11 @@ func (c *CmdClient) GetDbNames() []string {
 // param db string 数据库名
 // return []*DbTable `db` 下的所有表名及对应建表语句
 func (c *CmdClient) GetDbTables(db string) []*DbTable {
-	req := genFunReq(Functions_FUNC_GET_DB_TABLES)
+	req := &Request{Func: Functions_FUNC_GET_DB_TABLES}
 	req.Msg = &Request_Str{
 		Str: db,
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetTables().GetTables()
 }
 
@@ -118,14 +118,14 @@ func (c *CmdClient) GetDbTables(db string) []*DbTable {
 // param sql string 要执行的 SQL
 // return []*DbRow 查询结果
 func (c *CmdClient) DbSqlQuery(db, sql string) []*DbRow {
-	req := genFunReq(Functions_FUNC_EXEC_DB_QUERY)
+	req := &Request{Func: Functions_FUNC_EXEC_DB_QUERY}
 	req.Msg = &Request_Query{
 		Query: &DbQuery{
 			Db:  db,
 			Sql: sql,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetRows().GetRows()
 }
 
@@ -147,8 +147,8 @@ func (c *CmdClient) DbSqlQueryMap(db, sql string) map[string]any {
 // 获取所有消息类型
 // return map[int32]string 所有消息类型
 func (c *CmdClient) GetMsgTypes() map[int32]string {
-	req := genFunReq(Functions_FUNC_GET_MSG_TYPES)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_GET_MSG_TYPES}
+	recv := c.call(req)
 	return recv.GetTypes().GetTypes()
 }
 
@@ -156,11 +156,11 @@ func (c *CmdClient) GetMsgTypes() map[int32]string {
 // param id int32 开始 id，0 为最新页
 // return int32 1 为成功，其他失败
 func (c *CmdClient) RefreshPyq(id uint64) int32 {
-	req := genFunReq(Functions_FUNC_REFRESH_PYQ)
+	req := &Request{Func: Functions_FUNC_REFRESH_PYQ}
 	req.Msg = &Request_Ui64{
 		Ui64: id,
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -247,14 +247,14 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 // param wxids string 要邀请成员的 wxid, 多个用逗号`,`分隔
 // return int32 1 为成功，其他失败
 func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
-	req := genFunReq(Functions_FUNC_INV_ROOM_MEMBERS)
+	req := &Request{Func: Functions_FUNC_INV_ROOM_MEMBERS}
 	req.Msg = &Request_M{
 		M: &MemberMgmt{
 			Roomid: roomid,
 			Wxids:  strings.ReplaceAll(wxids, " ", ""),
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -263,14 +263,14 @@ func (c *CmdClient) InviteChatroomMembers(roomid string, wxids string) int32 {
 // param wxids string 要加到群里的 wxid，多个用逗号分隔
 // return int32 1 为成功，其他失败
 func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_ADD_ROOM_MEMBERS)
+	req := &Request{Func: Functions_FUNC_ADD_ROOM_MEMBERS}
 	req.Msg = &Request_M{
 		M: &MemberMgmt{
 			Roomid: roomid,
 			Wxids:  wxIds,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -279,14 +279,14 @@ func (c *CmdClient) AddChatRoomMembers(roomid, wxIds string) int32 {
 // param wxids string 要删除成员的 wxid，多个用逗号分隔
 // return int32 1 为成功，其他失败
 func (c *CmdClient) DelChatRoomMembers(roomid, wxIds string) int32 {
-	req := genFunReq(Functions_FUNC_DEL_ROOM_MEMBERS)
+	req := &Request{Func: Functions_FUNC_DEL_ROOM_MEMBERS}
 	req.Msg = &Request_M{
 		M: &MemberMgmt{
 			Roomid: roomid,
 			Wxids:  wxIds,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -294,12 +294,12 @@ func (c *CmdClient) DelChatRoomMembers(roomid, wxIds string) int32 {
 // param msgid (uint64): 消息 id
 // return int: 1 为成功，其他失败
 func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
-	req := genFunReq(Functions_FUNC_REVOKE_MSG)
+	req := &Request{Func: Functions_FUNC_REVOKE_MSG}
 	req.Msg = &Request_Ui64{
 		Ui64: msgid,
 	}
-	rsp := c.call(req.build())
-	return rsp.GetStatus()
+	recv := c.call(req)
+	return recv.GetStatus()
 }
 
 // 发送文本消息
@@ -308,7 +308,7 @@ func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
 // param aters string 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendTxt(msg, receiver, aters string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_TXT)
+	req := &Request{Func: Functions_FUNC_SEND_TXT}
 	req.Msg = &Request_Txt{
 		Txt: &TextMsg{
 			Msg:      msg,
@@ -316,7 +316,7 @@ func (c *CmdClient) SendTxt(msg, receiver, aters string) int32 {
 			Aters:    aters,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -325,14 +325,14 @@ func (c *CmdClient) SendTxt(msg, receiver, aters string) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendImg(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_IMG)
+	req := &Request{Func: Functions_FUNC_SEND_IMG}
 	req.Msg = &Request_File{
 		File: &PathMsg{
 			Path:     path,
 			Receiver: receiver,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -341,14 +341,14 @@ func (c *CmdClient) SendImg(path, receiver string) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendFile(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_FILE)
+	req := &Request{Func: Functions_FUNC_SEND_FILE}
 	req.Msg = &Request_File{
 		File: &PathMsg{
 			Path:     path,
 			Receiver: receiver,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -359,7 +359,7 @@ func (c *CmdClient) SendFile(path, receiver string) int32 {
 // param Type int32 xml 类型，如：0x21 为小程序
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
-	req := genFunReq(Functions_FUNC_SEND_XML)
+	req := &Request{Func: Functions_FUNC_SEND_XML}
 	req.Msg = &Request_Xml{
 		Xml: &XmlMsg{
 			Receiver: receiver,
@@ -368,7 +368,7 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 			Type:     Type,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -377,14 +377,14 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendEmotion(path, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_EMOTION)
+	req := &Request{Func: Functions_FUNC_SEND_EMOTION}
 	req.Msg = &Request_File{
 		File: &PathMsg{
 			Path:     path,
 			Receiver: receiver,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -407,7 +407,7 @@ func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 // param receiver string 接收人, wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendRichText(name, account, title, digest, url, thumburl, receiver string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_RICH_TXT)
+	req := &Request{Func: Functions_FUNC_SEND_RICH_TXT}
 	req.Msg = &Request_Rt{
 		Rt: &RichText{
 			Name:     name,
@@ -419,7 +419,7 @@ func (c *CmdClient) SendRichText(name, account, title, digest, url, thumburl, re
 			Receiver: receiver,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -428,14 +428,14 @@ func (c *CmdClient) SendRichText(name, account, title, digest, url, thumburl, re
 // param wxid string 要拍的群友的 wxid
 // return int32 1 为成功，其他失败
 func (c *CmdClient) SendPatMsg(roomid, wxid string) int32 {
-	req := genFunReq(Functions_FUNC_SEND_PAT_MSG)
+	req := &Request{Func: Functions_FUNC_SEND_PAT_MSG}
 	req.Msg = &Request_Pm{
 		Pm: &PatMsg{
 			Roomid: roomid,
 			Wxid:   wxid,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -444,14 +444,14 @@ func (c *CmdClient) SendPatMsg(roomid, wxid string) int32 {
 // param dir MP3 保存目录（目录不存在会出错）
 // return string 成功返回存储路径；空字符串为失败
 func (c *CmdClient) GetAudioMsg(msgid uint64, dir string) string {
-	req := genFunReq(Functions_FUNC_GET_AUDIO_MSG)
+	req := &Request{Func: Functions_FUNC_GET_AUDIO_MSG}
 	req.Msg = &Request_Am{
 		Am: &AudioMsg{
 			Id:  msgid,
 			Dir: dir,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStr()
 }
 
@@ -480,11 +480,11 @@ func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) st
 // return string OCR 结果
 // return int32 状态码，0 为成功，其他失败
 func (c *CmdClient) GetOcrResult(extra string) (string, int32) {
-	req := genFunReq(Functions_FUNC_EXEC_OCR)
+	req := &Request{Func: Functions_FUNC_EXEC_OCR}
 	req.Msg = &Request_Str{
 		Str: extra,
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	ocr := recv.GetOcr()
 	return ocr.GetResult(), ocr.GetStatus()
 }
@@ -514,7 +514,7 @@ func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
 // return string 成功返回存储路径；空字符串为失败，原因见日志
 func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) string {
 	if c.DownloadAttach(msgid, "", extra) != 0 {
-		logman.Warn("failed to download image", "msgid", msgid)
+		logman.Error("failed to download image", "msgid", msgid)
 		return ""
 	}
 	cnt := 0
@@ -526,7 +526,7 @@ func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) 
 		cnt++
 	}
 	// 超时
-	logman.Warn("download image timeout", "msgid", msgid)
+	logman.Error("download image timeout", "msgid", msgid)
 	return ""
 }
 
@@ -536,7 +536,7 @@ func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) 
 // param extra string 消息中的 extra
 // return int32 0 为成功，其他失败
 func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int32 {
-	req := genFunReq(Functions_FUNC_DOWNLOAD_ATTACH)
+	req := &Request{Func: Functions_FUNC_DOWNLOAD_ATTACH}
 	req.Msg = &Request_Att{
 		Att: &AttachMsg{
 			Id:    msgid,
@@ -544,8 +544,8 @@ func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int
 			Extra: extra,
 		},
 	}
-	rsp := c.call(req.build())
-	return rsp.GetStatus()
+	recv := c.call(req)
+	return recv.GetStatus()
 }
 
 // 解密图片
@@ -554,15 +554,15 @@ func (c *CmdClient) DownloadAttach(msgid uint64, thumb string, extra string) int
 // param dir string 保存图片的目录
 // return str 解密图片的保存路径
 func (c *CmdClient) DecryptImage(src, dir string) string {
-	req := genFunReq(Functions_FUNC_DECRYPT_IMAGE)
+	req := &Request{Func: Functions_FUNC_DECRYPT_IMAGE}
 	req.Msg = &Request_Dec{
 		Dec: &DecPath{
 			Src: src,
 			Dst: dir,
 		},
 	}
-	rsp := c.call(req.build())
-	return rsp.GetStr()
+	recv := c.call(req)
+	return recv.GetStr()
 }
 
 // 接受好友申请
@@ -571,7 +571,7 @@ func (c *CmdClient) DecryptImage(src, dir string) string {
 // param scene int32 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
 // return int32 1 为成功，其他失败
 func (c *CmdClient) AcceptNewFriend(v3, v4 string, scene int32) int32 {
-	req := genFunReq(Functions_FUNC_ACCEPT_FRIEND)
+	req := &Request{Func: Functions_FUNC_ACCEPT_FRIEND}
 	req.Msg = &Request_V{
 		V: &Verification{
 			V3:    v3,
@@ -579,7 +579,7 @@ func (c *CmdClient) AcceptNewFriend(v3, v4 string, scene int32) int32 {
 			Scene: scene,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -589,7 +589,7 @@ func (c *CmdClient) AcceptNewFriend(v3, v4 string, scene int32) int32 {
 // param transactionid string 转账消息里的 transactionid
 // return int32 1 为成功，其他失败
 func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
-	req := genFunReq(Functions_FUNC_RECV_TRANSFER)
+	req := &Request{Func: Functions_FUNC_RECV_TRANSFER}
 	req.Msg = &Request_Tf{
 		Tf: &Transfer{
 			Wxid: wxid,
@@ -597,7 +597,7 @@ func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
 			Taid: taid,
 		},
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
@@ -605,18 +605,18 @@ func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
 // param pyq bool 是否接收朋友圈消息
 // return int32 0 为成功，其他失败
 func (c *CmdClient) EnableMsgServer(pyq bool) int32 {
-	req := genFunReq(Functions_FUNC_ENABLE_RECV_TXT)
+	req := &Request{Func: Functions_FUNC_ENABLE_RECV_TXT}
 	req.Msg = &Request_Flag{
 		Flag: pyq,
 	}
-	recv := c.call(req.build())
+	recv := c.call(req)
 	return recv.GetStatus()
 }
 
 // 停止消息服务器
 // return int32 0 为成功，其他失败
 func (c *CmdClient) DisableMsgServer() int32 {
-	req := genFunReq(Functions_FUNC_DISABLE_RECV_TXT)
-	recv := c.call(req.build())
+	req := &Request{Func: Functions_FUNC_DISABLE_RECV_TXT}
+	recv := c.call(req)
 	return recv.GetStatus()
 }

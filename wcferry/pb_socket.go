@@ -14,29 +14,8 @@ import (
 	"github.com/opentdp/go-helper/logman"
 )
 
-// 通用消息
-
-type cmdMsg struct {
-	*Request
-}
-
-// 生成消息
-func (c *cmdMsg) build() []byte {
-	marshal, _ := proto.Marshal(c)
-	return marshal
-}
-
-// 生成请求消息
-func genFunReq(fun Functions) *cmdMsg {
-	return &cmdMsg{
-		&Request{Func: fun, Msg: nil},
-	}
-}
-
-// RPC 客户端
-
 type pbSocket struct {
-	server string // 接口地址
+	server string // 服务端
 	socket protocol.Socket
 }
 
@@ -62,22 +41,38 @@ func (c *pbSocket) dial() (err error) {
 	return err
 }
 
-// 设置超时时间
+// 读写超时
 func (c *pbSocket) deadline(d int) {
+	if c.socket == nil {
+		return
+	}
 	c.socket.SetOption(mangos.OptionRecvDeadline, d)
 	c.socket.SetOption(mangos.OptionSendDeadline, d)
 }
 
 // 调用接口
-func (c *CmdClient) call(data []byte) *Response {
-	if err := c.send(data); err != nil {
+func (c *CmdClient) call(req *Request) *Response {
+	if err := c.send(req); err != nil {
 		logman.Error(err.Error())
+		return &Response{}
 	}
 	recv, err := c.recv()
 	if err != nil {
 		logman.Error(err.Error())
 	}
 	return recv
+}
+
+// 发送数据
+func (c *pbSocket) send(req *Request) error {
+	if c.socket == nil {
+		return errors.New("socket is nil")
+	}
+	data, err := proto.Marshal(req)
+	if err != nil {
+		return err
+	}
+	return c.socket.Send(data)
 }
 
 // 接收数据
@@ -91,14 +86,6 @@ func (c *pbSocket) recv() (*Response, error) {
 		err = proto.Unmarshal(recv, resp)
 	}
 	return resp, err
-}
-
-// 发送数据
-func (c *pbSocket) send(data []byte) error {
-	if c.socket == nil {
-		return errors.New("socket is nil")
-	}
-	return c.socket.Send(data)
 }
 
 // 关闭连接
