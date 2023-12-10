@@ -47,6 +47,7 @@ type IWcf struct {
 	Address    string
 	SdkLibrary string
 	WeChatAuto bool
+	MsgPrint   bool
 }
 
 var Wcf = IWcf{

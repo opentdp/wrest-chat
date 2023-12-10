@@ -29,6 +29,7 @@ func NewConfig() *Config {
 	return &Config{k, p}
 
 }
+
 func (c *Config) Init() {
 
 	// 读取默认配置

@@ -60,7 +60,7 @@ func (c *MsgClient) listener() error {
 
 // 打印接收到的消息
 // param msg *WxMsg 消息
-func PrintMsg(msg *WxMsg) {
+func MsgPrinter(msg *WxMsg) {
 	fmt.Print("=== New Message ===\n")
 	if msg.Id > 0 {
 		fmt.Printf("<<Id>> %d\n", msg.Id)

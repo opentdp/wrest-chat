@@ -30,6 +30,11 @@ func initService() {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
 
+	// 打印收到的消息
+	if args.Wcf.MsgPrint {
+		wc.EnrollReceiver(true, wcferry.MsgPrinter)
+	}
+
 }
 
 // @Summary 检查登录状态
