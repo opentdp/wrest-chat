@@ -1,9 +1,10 @@
 package wcfrest
 
 // 执行结果
-type ActionResponse struct {
-	Success bool  `json:"success"`
-	Error   error `json:"error"`
+type RespPayload struct {
+	Success bool   `json:"success,omitempty"`
+	Result  string `json:"result,omitempty"`
+	Error   error  `json:"error,omitempty"`
 }
 
 // 数据库查询参数

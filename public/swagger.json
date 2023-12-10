@@ -11,7 +11,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "v0.4.1"
+        "version": "v0.4.2"
     },
     "basePath": "/api",
     "paths": {
@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -63,7 +63,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -263,7 +263,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -290,7 +290,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -317,7 +317,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -344,7 +344,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -371,7 +371,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -417,7 +417,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -444,7 +444,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -471,7 +471,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -533,7 +533,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -558,7 +558,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -583,7 +583,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -626,7 +626,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -653,7 +653,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -680,7 +680,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -707,7 +707,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -734,7 +734,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -761,7 +761,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ActionResponse"
+                            "$ref": "#/definitions/wcfrest.RespPayload"
                         }
                     }
                 }
@@ -1004,15 +1004,6 @@
                 }
             }
         },
-        "wcfrest.ActionResponse": {
-            "type": "object",
-            "properties": {
-                "error": {},
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
         "wcfrest.DbSqlQueryRequest": {
             "type": "object",
             "properties": {
@@ -1085,6 +1076,18 @@
                 },
                 "timeout": {
                     "type": "integer"
+                }
+            }
+        },
+        "wcfrest.RespPayload": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "result": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         }

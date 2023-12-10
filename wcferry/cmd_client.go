@@ -1,10 +1,10 @@
 package wcferry
 
 import (
+	"errors"
 	"strings"
 	"time"
 
-	"github.com/opentdp/go-helper/logman"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -460,18 +460,17 @@ func (c *CmdClient) GetAudioMsg(msgid uint64, dir string) string {
 // param dir MP3 保存目录（目录不存在会出错）
 // param timeout 超时时间（秒）
 // return string 成功返回存储路径；空字符串为失败
-func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) string {
+func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) (string, error) {
 	cnt := 0
 	for cnt <= timeout {
 		if path := c.GetAudioMsg(msgid, dir); path != "" {
-			return path
+			return path, nil
 		}
 		time.Sleep(1 * time.Second)
 		cnt++
 	}
 	// 超时
-	logman.Error("failed to get audio msg", "msgid", msgid)
-	return ""
+	return "", errors.New("timeout")
 }
 
 // 获取 OCR 结果
@@ -493,17 +492,18 @@ func (c *CmdClient) GetOcrResult(extra string) (string, int32) {
 // param extra string 待识别的图片路径，消息里的 extra
 // param timeout int 超时时间
 // return string OCR 结果
-func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
+func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) (string, error) {
 	cnt := 0
 	for cnt <= timeout {
 		result, status := c.GetOcrResult(extra)
 		if status == 0 {
-			return result
+			return result, nil
 		}
 		time.Sleep(1 * time.Second)
 		cnt++
 	}
-	return ""
+	// 超时
+	return "", errors.New("timeout")
 }
 
 // 下载图片
@@ -511,23 +511,21 @@ func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) string {
 // param extra string 消息中的 extra
 // param dir string 存放图片的目录（目录不存在会出错）
 // param timeout int 超时时间（秒）
-// return string 成功返回存储路径；空字符串为失败，原因见日志
-func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) string {
+// return string 成功返回存储路径
+func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) (string, error) {
 	if c.DownloadAttach(msgid, "", extra) != 0 {
-		logman.Error("failed to download image", "msgid", msgid)
-		return ""
+		return "", errors.New("failed to download attach")
 	}
 	cnt := 0
 	for cnt <= timeout {
 		if path := c.DecryptImage(extra, dir); path != "" {
-			return path
+			return path, nil
 		}
 		time.Sleep(1 * time.Second)
 		cnt++
 	}
 	// 超时
-	logman.Error("download image timeout", "msgid", msgid)
-	return ""
+	return "", errors.New("timeout")
 }
 
 // 下载附件

@@ -1,7 +1,6 @@
 package wcfrest
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -147,7 +146,7 @@ func getMsgTypes(c *gin.Context) {
 // @Summary 刷新朋友圈
 // @Produce json
 // @Param id path int true "朋友圈id"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /refresh_pyq/{id} [get]
 func refreshPyq(c *gin.Context) {
 
@@ -156,7 +155,7 @@ func refreshPyq(c *gin.Context) {
 
 	status := wc.CmdClient.RefreshPyq(pyqid)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -201,7 +200,7 @@ func getAliasInChatRoom(c *gin.Context) {
 // @Summary 邀请群成员
 // @Produce json
 // @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /invite_chatroom_members [post]
 func inviteChatroomMembers(c *gin.Context) {
 
@@ -213,7 +212,7 @@ func inviteChatroomMembers(c *gin.Context) {
 
 	status := wc.CmdClient.InviteChatroomMembers(req.Roomid, req.Wxids)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -222,7 +221,7 @@ func inviteChatroomMembers(c *gin.Context) {
 // @Summary 添加群成员
 // @Produce json
 // @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /add_chatroom_members [post]
 func addChatRoomMembers(c *gin.Context) {
 
@@ -234,7 +233,7 @@ func addChatRoomMembers(c *gin.Context) {
 
 	status := wc.CmdClient.AddChatRoomMembers(req.Roomid, req.Wxids)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -243,7 +242,7 @@ func addChatRoomMembers(c *gin.Context) {
 // @Summary 删除群成员
 // @Produce json
 // @Param body body wcferry.MemberMgmt true "增删群成员请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /del_chatroom_members [post]
 func delChatRoomMembers(c *gin.Context) {
 
@@ -255,7 +254,7 @@ func delChatRoomMembers(c *gin.Context) {
 
 	status := wc.CmdClient.DelChatRoomMembers(req.Roomid, req.Wxids)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -264,7 +263,7 @@ func delChatRoomMembers(c *gin.Context) {
 // @Summary 撤回消息
 // @Produce json
 // @Param msgid path int true "消息id"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /revoke_msg/{msgid} [get]
 func revokeMsg(c *gin.Context) {
 
@@ -273,7 +272,7 @@ func revokeMsg(c *gin.Context) {
 
 	status := wc.CmdClient.RevokeMsg(msgid)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -282,7 +281,7 @@ func revokeMsg(c *gin.Context) {
 // @Summary 发送文本消息
 // @Produce json
 // @Param body body wcferry.TextMsg true "文本消息请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_txt [post]
 func sendTxt(c *gin.Context) {
 
@@ -294,7 +293,7 @@ func sendTxt(c *gin.Context) {
 
 	status := wc.CmdClient.SendTxt(req.Msg, req.Receiver, req.Aters)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -303,7 +302,7 @@ func sendTxt(c *gin.Context) {
 // @Summary 发送图片消息
 // @Produce json
 // @Param body body wcferry.PathMsg true "图片消息请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_img [post]
 func sendImg(c *gin.Context) {
 
@@ -315,7 +314,7 @@ func sendImg(c *gin.Context) {
 
 	status := wc.CmdClient.SendImg(req.Path, req.Receiver)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -324,7 +323,7 @@ func sendImg(c *gin.Context) {
 // @Summary 发送文件消息
 // @Produce json
 // @Param body body wcferry.PathMsg true "文件消息请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_file [post]
 func sendFile(c *gin.Context) {
 
@@ -336,7 +335,7 @@ func sendFile(c *gin.Context) {
 
 	status := wc.CmdClient.SendFile(req.Path, req.Receiver)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -345,7 +344,7 @@ func sendFile(c *gin.Context) {
 // @Summary 发送表情消息
 // @Produce json
 // @Param body body wcferry.PathMsg true "表情消息请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_emotion [post]
 func sendEmotion(c *gin.Context) {
 
@@ -357,7 +356,7 @@ func sendEmotion(c *gin.Context) {
 
 	status := wc.CmdClient.SendEmotion(req.Path, req.Receiver)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -366,7 +365,7 @@ func sendEmotion(c *gin.Context) {
 // @Summary 发送卡片消息
 // @Produce json
 // @Param body body wcferry.RichText true "卡片消息请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_rich_text [post]
 func sendRichText(c *gin.Context) {
 
@@ -378,7 +377,7 @@ func sendRichText(c *gin.Context) {
 
 	status := wc.CmdClient.SendRichText(req.Name, req.Account, req.Title, req.Digest, req.Url, req.Thumburl, req.Receiver)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -387,7 +386,7 @@ func sendRichText(c *gin.Context) {
 // @Summary 拍一拍群友
 // @Produce json
 // @Param body body wcferry.PatMsg true "拍一拍请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /send_pat_msg [post]
 func sendPatMsg(c *gin.Context) {
 
@@ -399,7 +398,7 @@ func sendPatMsg(c *gin.Context) {
 
 	status := wc.CmdClient.SendPatMsg(req.Roomid, req.Wxid)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -408,7 +407,7 @@ func sendPatMsg(c *gin.Context) {
 // @Summary 获取语音消息
 // @Produce json
 // @Param body body GetAudioMsgRequest true "语音消息请求参数"
-// @Success 200 {object} string
+// @Success 200 {object} RespPayload
 // @Router /get_audio_msg [post]
 func getAudioMsg(c *gin.Context) {
 
@@ -421,7 +420,12 @@ func getAudioMsg(c *gin.Context) {
 	if req.Timeout == 0 {
 		c.Set("Payload", wc.CmdClient.GetAudioMsg(req.Msgid, req.Dir))
 	} else {
-		c.Set("Payload", wc.CmdClient.GetAudioMsgTimeout(req.Msgid, req.Dir, req.Timeout))
+		resp, err := wc.CmdClient.GetAudioMsgTimeout(req.Msgid, req.Dir, req.Timeout)
+		c.Set("Payload", RespPayload{
+			Success: resp == "",
+			Result:  resp,
+			Error:   err,
+		})
 	}
 
 }
@@ -429,7 +433,7 @@ func getAudioMsg(c *gin.Context) {
 // @Summary 获取OCR识别结果
 // @Produce json
 // @Param body body GetOcrRequest true "文本请求参数"
-// @Success 200 {object} string
+// @Success 200 {object} RespPayload
 // @Router /get_ocr_result [post]
 func getOcrResult(c *gin.Context) {
 
@@ -443,7 +447,12 @@ func getOcrResult(c *gin.Context) {
 		resp, _ := wc.CmdClient.GetOcrResult(req.Extra)
 		c.Set("Payload", resp)
 	} else {
-		c.Set("Payload", wc.CmdClient.GetOcrResultTimeout(req.Extra, req.Timeout))
+		resp, err := wc.CmdClient.GetOcrResultTimeout(req.Extra, req.Timeout)
+		c.Set("Payload", RespPayload{
+			Success: resp == "",
+			Result:  resp,
+			Error:   err,
+		})
 	}
 
 }
@@ -451,7 +460,7 @@ func getOcrResult(c *gin.Context) {
 // @Summary 下载图片
 // @Produce json
 // @Param body body DownloadImageRequest true "下载图片参数"
-// @Success 200 {object} string
+// @Success 200 {object} RespPayload
 // @Router /download_image [post]
 func downloadImage(c *gin.Context) {
 
@@ -461,14 +470,20 @@ func downloadImage(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout))
+	resp, err := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
+
+	c.Set("Payload", RespPayload{
+		Success: resp == "",
+		Result:  resp,
+		Error:   err,
+	})
 
 }
 
 // @Summary 下载附件
 // @Produce json
 // @Param body body DownloadAttachRequest true "下载附件参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /download_attach [post]
 func downloadAttach(c *gin.Context) {
 
@@ -480,7 +495,7 @@ func downloadAttach(c *gin.Context) {
 
 	status := wc.CmdClient.DownloadAttach(req.Msgid, req.Thumb, req.Extra)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 0,
 	})
 
@@ -489,7 +504,7 @@ func downloadAttach(c *gin.Context) {
 // @Summary 接受好友请求
 // @Produce json
 // @Param body body wcferry.Verification true "接受好友请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /accept_new_friend [post]
 func acceptNewFriend(c *gin.Context) {
 
@@ -501,7 +516,7 @@ func acceptNewFriend(c *gin.Context) {
 
 	status := wc.CmdClient.AcceptNewFriend(req.V3, req.V4, req.Scene)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -510,7 +525,7 @@ func acceptNewFriend(c *gin.Context) {
 // @Summary 接受转账
 // @Produce json
 // @Param body body wcferry.Transfer true "接受转账请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /receive_transfer [post]
 func receiveTransfer(c *gin.Context) {
 
@@ -522,7 +537,7 @@ func receiveTransfer(c *gin.Context) {
 
 	status := wc.CmdClient.ReceiveTransfer(req.Wxid, req.Tfid, req.Taid)
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: status == 1,
 	})
 
@@ -531,7 +546,7 @@ func receiveTransfer(c *gin.Context) {
 // @Summary 开启消息转发
 // @Produce json
 // @Param body body ForwardMsgRequest true "消息转发请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /enable_forward_msg [post]
 func enableForwardMsg(c *gin.Context) {
 
@@ -541,37 +556,17 @@ func enableForwardMsg(c *gin.Context) {
 		return
 	}
 
-	cb := func(msg *wcferry.WxMsg) {
-		if strings.HasPrefix(req.Url, "http") {
-			logman.Info("forward msg", "url", req.Url)
-			request.JsonPost(req.Url, msg, request.H{})
-		} else {
-			fmt.Print(">> New Message <<\n")
-			if msg.Id > 0 {
-				fmt.Printf(">>Id: %d\n", msg.Id)
-			}
-			if msg.Type > 0 {
-				fmt.Printf(">>Type: %d\n", msg.Type)
-			}
-			if msg.Roomid != "" {
-				fmt.Printf(">>Roomid: %s\n", msg.Roomid)
-			}
-			if msg.Sender != "" {
-				fmt.Printf(">>Sender: %v\n", msg.Sender)
-			}
-			if msg.Content != "" {
-				fmt.Printf(">>Content: %s\n", msg.Content)
-			}
-			if msg.Extra != "" {
-				fmt.Printf(">>Extra: %s\n", strings.TrimSpace(msg.Extra))
-			}
-			fmt.Print(">> End Message <<\n")
-		}
+	if !strings.HasPrefix(req.Url, "http") {
+		c.Set("Error", "url must start with http(s)://")
+		return
 	}
 
-	err := wc.EnrollReceiver(true, cb)
+	err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+		logman.Info("forward msg", "url", req.Url, "Id", msg.Id)
+		request.JsonPost(req.Url, msg, request.H{})
+	})
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: err == nil,
 		Error:   err,
 	})
@@ -581,13 +576,13 @@ func enableForwardMsg(c *gin.Context) {
 // @Summary 关闭消息转发
 // @Produce json
 // @Param body body ForwardMsgRequest true "消息转发请求参数"
-// @Success 200 {object} ActionResponse
+// @Success 200 {object} RespPayload
 // @Router /disable_forward_msg [post]
 func disableForwardMsg(c *gin.Context) {
 
 	err := wc.DisableReceiver()
 
-	c.Set("Payload", ActionResponse{
+	c.Set("Payload", RespPayload{
 		Success: err == nil,
 		Error:   err,
 	})
