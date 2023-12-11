@@ -2,11 +2,11 @@ httpd:
     address: 127.0.0.1:7600
     token: ""
 logger:
-    dir: ./logs
+    dir: logs
     level: info
     target: stdout
 wcf:
     address: 127.0.0.1:10080
-    sdklibrary: ./wcferry/libs/sdk.dll
+    sdklibrary: wcferry/libs/sdk.dll
     wechatauto: true
     msgprint: true

@@ -14,7 +14,7 @@ var Efs *embed.FS
 
 // 配置文件
 
-var YamlFile = "./config.yml"
+var YamlFile = "config.yml"
 
 // 日志参数
 
@@ -25,7 +25,7 @@ type ILogger struct {
 }
 
 var Logger = ILogger{
-	Dir:    "./logs",
+	Dir:    "logs",
 	Level:  "info",
 	Target: "stdout",
 }
@@ -52,5 +52,5 @@ type IWcf struct {
 
 var Wcf = IWcf{
 	Address:    "127.0.0.1:10080",
-	SdkLibrary: "./sdk.dll",
+	SdkLibrary: "sdk.dll",
 }
