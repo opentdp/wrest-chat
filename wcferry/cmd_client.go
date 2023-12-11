@@ -2,6 +2,7 @@ package wcferry
 
 import (
 	"errors"
+	"os"
 	"strings"
 	"time"
 
@@ -325,6 +326,12 @@ func (c *CmdClient) SendTxt(msg, receiver, aters string) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendImg(path, receiver string) int32 {
+	if tmp := DownloadFile(path); tmp != "" {
+		defer os.Remove(tmp)
+		path = tmp
+	} else {
+		return -1
+	}
 	req := &Request{Func: Functions_FUNC_SEND_IMG}
 	req.Msg = &Request_File{
 		File: &PathMsg{
@@ -341,6 +348,12 @@ func (c *CmdClient) SendImg(path, receiver string) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendFile(path, receiver string) int32 {
+	if tmp := DownloadFile(path); tmp != "" {
+		defer os.Remove(tmp)
+		path = tmp
+	} else {
+		return -1
+	}
 	req := &Request{Func: Functions_FUNC_SEND_FILE}
 	req.Msg = &Request_File{
 		File: &PathMsg{
@@ -359,6 +372,12 @@ func (c *CmdClient) SendFile(path, receiver string) int32 {
 // param Type int32 xml 类型，如：0x21 为小程序
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
+	if tmp := DownloadFile(path); tmp != "" {
+		defer os.Remove(tmp)
+		path = tmp
+	} else {
+		return -1
+	}
 	req := &Request{Func: Functions_FUNC_SEND_XML}
 	req.Msg = &Request_Xml{
 		Xml: &XmlMsg{
@@ -377,6 +396,12 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendEmotion(path, receiver string) int32 {
+	if tmp := DownloadFile(path); tmp != "" {
+		defer os.Remove(tmp)
+		path = tmp
+	} else {
+		return -1
+	}
 	req := &Request{Func: Functions_FUNC_SEND_EMOTION}
 	req.Msg = &Request_File{
 		File: &PathMsg{
