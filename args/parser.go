@@ -32,15 +32,6 @@ func NewConfig() *Config {
 
 func (c *Config) Init() {
 
-	// 读取默认配置
-	df := map[string]any{
-		"logger": Logger,
-		"httpd":  Httpd,
-		"wcf":    Wcf,
-	}
-	c.Koanf.Load(confmap.Provider(df, "."), nil)
-
-	// 读取配置文件
 	c.ReadYaml()
 
 	// debug mode
@@ -62,19 +53,27 @@ func (c *Config) Init() {
 
 func (c *Config) ReadYaml() {
 
-	// 配置不存在则忽略
+	// 读取默认配置
+	df := map[string]any{
+		"logger": Logger,
+		"httpd":  Httpd,
+		"wcf":    Wcf,
+	}
+	c.Koanf.Load(confmap.Provider(df, "."), nil)
+
+	// 不存在则忽略
 	_, err := os.Stat(YamlFile)
 	if os.IsNotExist(err) {
 		return
 	}
 
-	// 从配置文件读取参数
+	// 读取配置文件
 	err = c.Koanf.Load(file.Provider(YamlFile), c.Parser)
 	if err != nil {
 		logman.Fatal("read config error", "error", err)
 	}
 
-	// 解析参数信息
+	// 解析配置信息
 	c.Koanf.Unmarshal("logger", &Logger)
 	c.Koanf.Unmarshal("httpd", &Httpd)
 	c.Koanf.Unmarshal("wcf", &Wcf)
