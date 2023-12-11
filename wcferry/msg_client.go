@@ -43,7 +43,6 @@ func (c *MsgClient) listener() error {
 		c.receiving = false
 		return err
 	}
-	c.deadline(2000)
 	// 开始接收消息
 	for c.receiving {
 		resp, err := c.recv()

@@ -20,21 +20,13 @@ type Client struct {
 	MsgClient  *MsgClient // 消息客户端
 }
 
-// 启动 wcf 服务
-// return error 错误信息
-func (c *Client) Connect() error {
-	// 设置默认值
+// 默认初始化
+func (c *Client) Default() {
 	if c.ListenAddr == "" {
 		c.ListenAddr = "127.0.0.1"
 	}
 	if c.ListenPort == 0 {
 		c.ListenPort = 10080
-	}
-	// 启动 wcf 服务
-	if c.SdkLibrary != "" {
-		if err := c.wxInitSDK(); err != nil {
-			return err
-		}
 	}
 	// 注册 wcf 服务
 	c.CmdClient = &CmdClient{
@@ -42,6 +34,18 @@ func (c *Client) Connect() error {
 	}
 	c.MsgClient = &MsgClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
+	}
+}
+
+// 启动 wcf 服务
+// return error 错误信息
+func (c *Client) Connect() error {
+	c.Default()
+	// 启动 wcf 服务
+	if c.SdkLibrary != "" {
+		if err := c.wxInitSDK(); err != nil {
+			return err
+		}
 	}
 	// 自动注销 wcf
 	onquit.Register(func() {
@@ -52,6 +56,7 @@ func (c *Client) Connect() error {
 		}
 	})
 	// 返回连接结果
+	c.CmdClient.deadline(60)
 	return c.CmdClient.dial()
 }
 

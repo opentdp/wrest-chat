@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"go.nanomsg.org/mangos"
 	"go.nanomsg.org/mangos/v3/protocol"
@@ -34,20 +35,19 @@ func newPbSocket(ip string, port int) *pbSocket {
 func (c *pbSocket) dial() (err error) {
 	all.AddTransports(nil) // 注册所有传输协议
 	logman.Info("pbSocket dial", "server", c.server)
-	c.socket, err = pair1.NewSocket()
-	if err == nil {
+	if c.socket, err = pair1.NewSocket(); err == nil {
 		return c.socket.Dial(c.server)
 	}
 	return err
 }
 
 // 读写超时
-func (c *pbSocket) deadline(d int) {
-	if c.socket == nil {
-		return
+func (c *pbSocket) deadline(d uint) {
+	if c.socket != nil {
+		t := time.Duration(d) * time.Second
+		c.socket.SetOption(mangos.OptionRecvDeadline, t)
+		c.socket.SetOption(mangos.OptionSendDeadline, t)
 	}
-	c.socket.SetOption(mangos.OptionRecvDeadline, d)
-	c.socket.SetOption(mangos.OptionSendDeadline, d)
 }
 
 // 调用接口
@@ -56,11 +56,12 @@ func (c *CmdClient) call(req *Request) *Response {
 		logman.Error(err.Error())
 		return &Response{}
 	}
-	recv, err := c.recv()
-	if err != nil {
+	if resp, err := c.recv(); err != nil {
 		logman.Error(err.Error())
+		return &Response{}
+	} else {
+		return resp
 	}
-	return recv
 }
 
 // 发送数据
@@ -69,10 +70,10 @@ func (c *pbSocket) send(req *Request) error {
 		return errors.New("socket is nil")
 	}
 	data, err := proto.Marshal(req)
-	if err != nil {
-		return err
+	if err == nil {
+		return c.socket.Send(data)
 	}
-	return c.socket.Send(data)
+	return err
 }
 
 // 接收数据
@@ -81,9 +82,9 @@ func (c *pbSocket) recv() (*Response, error) {
 	if c.socket == nil {
 		return resp, errors.New("socket is nil")
 	}
-	recv, err := c.socket.Recv()
+	data, err := c.socket.Recv()
 	if err == nil {
-		err = proto.Unmarshal(recv, resp)
+		err = proto.Unmarshal(data, resp)
 	}
 	return resp, err
 }
