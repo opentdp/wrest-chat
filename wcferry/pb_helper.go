@@ -11,27 +11,27 @@ import (
 // 打印接收到的消息
 // param msg *WxMsg 消息
 func MsgPrinter(msg *WxMsg) {
+	rs := "\n=== New Message ===\n"
 	re := regexp.MustCompile(`(?m)^\s*|\n`)
-	fmt.Print("\n=== New Message ===\n")
 	if msg.Id > 0 {
-		fmt.Printf("::Id:: %d\n", msg.Id)
+		rs += fmt.Sprintf("::Id:: %d\n", msg.Id)
 	}
 	if msg.Type > 0 {
-		fmt.Printf("::Type:: %d\n", msg.Type)
+		rs += fmt.Sprintf("::Type:: %d\n", msg.Type)
 	}
 	if msg.Roomid != "" {
-		fmt.Printf("::Roomid:: %s\n", msg.Roomid)
+		rs += fmt.Sprintf("::Roomid:: %s\n", msg.Roomid)
 	}
 	if msg.Sender != "" {
-		fmt.Printf("::Sender:: %v\n", msg.Sender)
+		rs += fmt.Sprintf("::Sender:: %v\n", msg.Sender)
 	}
 	if msg.Content != "" {
-		fmt.Printf("::Content:: %s\n", re.ReplaceAllString(msg.Content, ""))
+		rs += fmt.Sprintf("::Content:: %s\n", re.ReplaceAllString(msg.Content, ""))
 	}
 	if msg.Extra != "" {
-		fmt.Printf("::Extra:: %s\n", re.ReplaceAllString(msg.Extra, ""))
+		rs += fmt.Sprintf("::Extra:: %s\n", re.ReplaceAllString(msg.Extra, ""))
 	}
-	fmt.Print("=== End Message ===\n")
+	fmt.Print(rs, "=== End Message ===\n")
 }
 
 // 获取网络文件
