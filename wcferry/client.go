@@ -48,7 +48,7 @@ func (c *Client) Connect() error {
 		}
 	}
 	// 自动注销 wcf
-	onquit.Register(func() {
+	defer onquit.Register(func() {
 		c.MsgClient.Close()
 		c.CmdClient.Close()
 		if c.SdkLibrary != "" {
@@ -56,8 +56,7 @@ func (c *Client) Connect() error {
 		}
 	})
 	// 返回连接结果
-	c.CmdClient.deadline(60)
-	return c.CmdClient.dial()
+	return c.CmdClient.init(0)
 }
 
 // 启动消息接收器

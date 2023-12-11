@@ -33,9 +33,9 @@ func (c *MsgClient) Register(fn ...MsgCallback) {
 // 消息接收器循环
 // return error 错误信息
 func (c *MsgClient) listener() error {
-	// 连接消息服务
 	c.receiving = true
-	if err := c.dial(); err != nil {
+	// 连接消息服务
+	if err := c.init(0); err != nil {
 		logman.Error("msg receiver", "error", err)
 		c.receiving = false
 		return err

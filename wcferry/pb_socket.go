@@ -21,36 +21,42 @@ type pbSocket struct {
 }
 
 // 创建客户端
+// param ip string 服务器地址
+// param port int 服务器端口
+// return *pbSocket 客户端
 func newPbSocket(ip string, port int) *pbSocket {
-	var addr string
 	if strings.Contains(ip, ":") {
-		addr = fmt.Sprintf("tcp://[%s]:%d", ip, port)
-	} else {
-		addr = fmt.Sprintf("tcp://%s:%d", ip, port)
+		addr := fmt.Sprintf("tcp://[%s]:%d", ip, port)
+		return &pbSocket{server: addr}
 	}
+	addr := fmt.Sprintf("tcp://%s:%d", ip, port)
 	return &pbSocket{server: addr}
 }
 
 // 连接服务器
-func (c *pbSocket) dial() (err error) {
-	all.AddTransports(nil) // 注册所有传输协议
-	logman.Info("pbSocket dial", "server", c.server)
-	if c.socket, err = pair1.NewSocket(); err == nil {
-		return c.socket.Dial(c.server)
+// param d uint 读写超时时间(s)
+// return error 错误信息
+func (c *pbSocket) init(d uint) (err error) {
+	// 创建连接
+	all.AddTransports(nil)
+	if c.socket, err = pair1.NewSocket(); err != nil {
+		return err
 	}
-	return err
-}
-
-// 读写超时
-func (c *pbSocket) deadline(d uint) {
-	if c.socket != nil {
+	// 设置参数
+	if d > 0 {
 		t := time.Duration(d) * time.Second
 		c.socket.SetOption(mangos.OptionRecvDeadline, t)
 		c.socket.SetOption(mangos.OptionSendDeadline, t)
 	}
+	c.socket.SetOption(mangos.OptionMaxRecvSize, 16*1024*1024)
+	// 连接服务器
+	logman.Info("pbSocket dial", "server", c.server)
+	return c.socket.Dial(c.server)
 }
 
 // 调用接口
+// param req *Request 请求参数
+// return *Response 响应参数
 func (c *CmdClient) call(req *Request) *Response {
 	if err := c.send(req); err != nil {
 		logman.Error(err.Error())
@@ -65,6 +71,8 @@ func (c *CmdClient) call(req *Request) *Response {
 }
 
 // 发送数据
+// param req *Request 请求参数
+// return error 错误信息
 func (c *pbSocket) send(req *Request) error {
 	if c.socket == nil {
 		return errors.New("socket is nil")
@@ -77,6 +85,7 @@ func (c *pbSocket) send(req *Request) error {
 }
 
 // 接收数据
+// return *Response 响应参数
 func (c *pbSocket) recv() (*Response, error) {
 	resp := &Response{}
 	if c.socket == nil {
