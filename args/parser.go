@@ -52,7 +52,7 @@ func (c *Config) Init() {
 		Level:    Logger.Level,
 		Target:   Logger.Target,
 		Storage:  Logger.Dir,
-		Filename: "global",
+		Filename: "std",
 	})
 
 	// write config
