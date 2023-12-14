@@ -12,7 +12,7 @@ import (
 
 // 配置文件路径
 
-var YamlFile string
+var YamlFile = "config.yml"
 var ForceWrite bool
 
 // 配置信息操作类
