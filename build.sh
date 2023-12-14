@@ -12,6 +12,16 @@ export GO111MODULE=on
 export GOOS=windows
 export GOARCH=386
 
+####################################################################
+
+RUN_NUMBER=${GITHUB_RUN_NUMBER:-0}
+
+last_tag=`git tag | sort -V | tail -n 1`
+prev_tag=`git tag | sort -V | tail -n 2 | head -n 1`
+git log $prev_tag..$last_tag --pretty=format:"%s" | grep -v "^release" | sed 's/^/- /' | sort > RELEASE.md
+
+####################################################################
+
 echo building for $GOOS/$GOARCH
 
 target=build/wrest.exe
