@@ -422,14 +422,18 @@ func getAudioMsg(c *gin.Context) {
 		return
 	}
 
-	if req.Timeout == 0 {
-		c.Set("Payload", wc.CmdClient.GetAudioMsg(req.Msgid, req.Dir))
-	} else {
+	if req.Timeout > 0 {
 		resp, err := wc.CmdClient.GetAudioMsgTimeout(req.Msgid, req.Dir, req.Timeout)
 		c.Set("Payload", RespPayload{
-			Success: resp == "",
+			Success: resp != "",
 			Result:  resp,
 			Error:   err,
+		})
+	} else {
+		resp := wc.CmdClient.GetAudioMsg(req.Msgid, req.Dir)
+		c.Set("Payload", RespPayload{
+			Success: resp != "",
+			Result:  resp,
 		})
 	}
 
@@ -448,15 +452,18 @@ func getOcrResult(c *gin.Context) {
 		return
 	}
 
-	if req.Timeout == 0 {
-		resp, _ := wc.CmdClient.GetOcrResult(req.Extra)
-		c.Set("Payload", resp)
-	} else {
+	if req.Timeout > 0 {
 		resp, err := wc.CmdClient.GetOcrResultTimeout(req.Extra, req.Timeout)
 		c.Set("Payload", RespPayload{
-			Success: resp == "",
+			Success: resp != "",
 			Result:  resp,
 			Error:   err,
+		})
+	} else {
+		resp, stat := wc.CmdClient.GetOcrResult(req.Extra)
+		c.Set("Payload", RespPayload{
+			Success: stat == 0,
+			Result:  resp,
 		})
 	}
 
@@ -478,7 +485,7 @@ func downloadImage(c *gin.Context) {
 	resp, err := wc.CmdClient.DownloadImage(req.Msgid, req.Extra, req.Dir, req.Timeout)
 
 	c.Set("Payload", RespPayload{
-		Success: resp == "",
+		Success: resp != "",
 		Result:  resp,
 		Error:   err,
 	})
