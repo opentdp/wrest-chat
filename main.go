@@ -13,7 +13,9 @@ var efs embed.FS
 func main() {
 
 	args.Efs = &efs
-	args.NewConfig().Init()
+
+	c := args.Config{}
+	c.Init().Unmarshal()
 
 	httpd.Server()
 
