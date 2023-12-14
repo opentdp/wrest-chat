@@ -1,6 +1,8 @@
 package wcferry
 
 import (
+	"errors"
+
 	"github.com/opentdp/go-helper/logman"
 )
 
@@ -15,7 +17,7 @@ type MsgCallback func(msg *WxMsg)
 
 // 关闭 RPC 连接
 // return error 错误信息
-func (c *MsgClient) Close() error {
+func (c *MsgClient) Destroy() error {
 	c.callbacks = []MsgCallback{}
 	c.receiving = false
 	return c.close()
@@ -33,11 +35,11 @@ func (c *MsgClient) Register(fn ...MsgCallback) {
 // 消息接收器循环
 // return error 错误信息
 func (c *MsgClient) listener() error {
+	defer c.Destroy()
 	c.receiving = true
 	// 连接消息服务
 	if err := c.init(0); err != nil {
 		logman.Error("msg receiver", "error", err)
-		c.receiving = false
 		return err
 	}
 	// 开始接收消息
@@ -50,6 +52,5 @@ func (c *MsgClient) listener() error {
 			go f(resp.GetWxmsg())
 		}
 	}
-	// 关闭连接
-	return c.Close()
+	return errors.New("msg receiver stopped")
 }

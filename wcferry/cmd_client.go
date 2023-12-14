@@ -15,7 +15,7 @@ type CmdClient struct {
 
 // 关闭 RPC 连接
 // return error 错误信息
-func (c *CmdClient) Close() error {
+func (c *CmdClient) Destroy() error {
 	return c.close()
 }
 

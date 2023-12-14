@@ -49,8 +49,8 @@ func (c *Client) Connect() error {
 	}
 	// 自动注销 wcf
 	defer onquit.Register(func() {
-		c.MsgClient.Close()
-		c.CmdClient.Close()
+		c.MsgClient.Destroy()
+		c.CmdClient.Destroy()
 		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}
@@ -78,7 +78,7 @@ func (c *Client) DisableReceiver() error {
 	if c.CmdClient.DisableMsgServer() != 0 {
 		return errors.New("failed to disable msg server")
 	}
-	return c.MsgClient.Close()
+	return c.MsgClient.Destroy()
 }
 
 // 调用 sdk.dll 中的函数
