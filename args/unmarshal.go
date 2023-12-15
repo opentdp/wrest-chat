@@ -11,19 +11,19 @@ func (c *Config) Unmarshal() {
 
 	// 读取默认配置
 
-	df := map[string]any{
-		"logger": Logger,
-		"httpd":  Httpd,
-		"wcf":    Wcf,
+	mp := map[string]any{
+		"logger": &Logger,
+		"httpd":  &Httpd,
+		"wcf":    &Wcf,
 	}
-	c.Koanf.Load(confmap.Provider(df, "."), nil)
+	c.Koanf.Load(confmap.Provider(mp, "."), nil)
 
 	// 读取配置文件
 
 	c.ReadYaml()
-	c.Koanf.Unmarshal("logger", &Logger)
-	c.Koanf.Unmarshal("httpd", &Httpd)
-	c.Koanf.Unmarshal("wcf", &Wcf)
+	for k, v := range mp {
+		c.Koanf.Unmarshal(k, v)
+	}
 
 	// 初始化日志
 
