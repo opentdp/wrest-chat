@@ -605,33 +605,6 @@
                 }
             }
         },
-        "/send_emotion": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "发送表情消息",
-                "parameters": [
-                    {
-                        "description": "表情消息请求参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcferry.PathMsg"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
         "/send_file": {
             "post": {
                 "produces": [

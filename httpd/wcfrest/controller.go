@@ -346,27 +346,6 @@ func sendFile(c *gin.Context) {
 
 }
 
-// @Summary 发送表情消息
-// @Produce json
-// @Param body body wcferry.PathMsg true "表情消息请求参数"
-// @Success 200 {object} RespPayload
-// @Router /send_emotion [post]
-func sendEmotion(c *gin.Context) {
-
-	var req wcferry.PathMsg
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Set("Error", err)
-		return
-	}
-
-	status := wc.CmdClient.SendEmotion(req.Path, req.Receiver)
-
-	c.Set("Payload", RespPayload{
-		Success: status == 0,
-	})
-
-}
-
 // @Summary 发送卡片消息
 // @Produce json
 // @Param body body wcferry.RichText true "卡片消息请求参数"

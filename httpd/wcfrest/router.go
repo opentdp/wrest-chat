@@ -33,7 +33,6 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("send_txt", sendTxt)
 	rg.POST("send_img", sendImg)
 	rg.POST("send_file", sendFile)
-	rg.POST("send_emotion", sendEmotion)
 	rg.POST("send_rich_text", sendRichText)
 	rg.POST("send_pat_msg", sendPatMsg)
 	rg.POST("get_audio_msg", getAudioMsg)
