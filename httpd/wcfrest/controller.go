@@ -13,6 +13,7 @@ import (
 )
 
 var wc *wcferry.Client
+var forwardUrls = map[string]bool{}
 
 func initService() {
 
@@ -552,10 +553,19 @@ func enableForwardMsg(c *gin.Context) {
 		return
 	}
 
+	if _, ok := forwardUrls[req.Url]; ok {
+		c.Set("Error", "url already exists")
+		return
+	}
+
 	err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 		logman.Info("forward msg", "url", req.Url, "Id", msg.Id)
 		request.JsonPost(req.Url, msg, request.H{})
 	})
+
+	if err == nil {
+		forwardUrls[req.Url] = true
+	}
 
 	c.Set("Payload", RespPayload{
 		Success: err == nil,
