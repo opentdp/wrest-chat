@@ -1,6 +1,7 @@
 package wcfrest
 
 import (
+	"net"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -17,11 +18,14 @@ var forwardUrls = map[string]bool{}
 
 func initService() {
 
-	parts := strings.Split(args.Wcf.Address, ":")
+	host, port, err := net.SplitHostPort(args.Wcf.Address)
+	if err != nil {
+		logman.Fatal("failed to start wcf", "error", err)
+	}
 
 	wc = &wcferry.Client{
-		ListenAddr: parts[0],
-		ListenPort: strutil.ToInt(parts[1]),
+		ListenAddr: host,
+		ListenPort: strutil.ToInt(port),
 		SdkLibrary: args.Wcf.SdkLibrary,
 		WeChatAuto: args.Wcf.WeChatAuto,
 	}

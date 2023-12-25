@@ -2,8 +2,8 @@ package wcferry
 
 import (
 	"errors"
-	"fmt"
-	"strings"
+	"net"
+	"strconv"
 	"time"
 
 	"go.nanomsg.org/mangos"
@@ -25,11 +25,7 @@ type pbSocket struct {
 // param port int 服务器端口
 // return *pbSocket 客户端
 func newPbSocket(ip string, port int) *pbSocket {
-	if strings.Contains(ip, ":") {
-		addr := fmt.Sprintf("tcp://[%s]:%d", ip, port)
-		return &pbSocket{server: addr}
-	}
-	addr := fmt.Sprintf("tcp://%s:%d", ip, port)
+	addr := net.JoinHostPort(ip, strconv.Itoa(port))
 	return &pbSocket{server: addr}
 }
 
