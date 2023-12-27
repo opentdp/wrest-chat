@@ -26,7 +26,7 @@ type pbSocket struct {
 // return *pbSocket 客户端
 func newPbSocket(ip string, port int) *pbSocket {
 	addr := net.JoinHostPort(ip, strconv.Itoa(port))
-	return &pbSocket{server: addr}
+	return &pbSocket{server: "tcp://" + addr}
 }
 
 // 连接服务器
