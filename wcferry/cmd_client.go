@@ -303,6 +303,22 @@ func (c *CmdClient) RevokeMsg(msgid uint64) int32 {
 	return recv.GetStatus()
 }
 
+// 转发消息
+// param msgid (uint64): 消息 id
+// param receiver string 消息接收人，wxid 或者 roomid
+// return int: 1 为成功，其他失败
+func (c *CmdClient) ForwardMsg(msgid uint64, receiver string) int32 {
+	req := &Request{Func: Functions_FUNC_FORWARD_MSG}
+	req.Msg = &Request_Fm{
+		Fm: &ForwardMsg{
+			Id:       msgid,
+			Receiver: receiver,
+		},
+	}
+	recv := c.call(req)
+	return recv.GetStatus()
+}
+
 // 发送文本消息
 // param msg string 要发送的消息，换行使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
 // param receiver string 消息接收人，wxid 或者 roomid
