@@ -20,8 +20,9 @@ type Client struct {
 	MsgClient  *MsgClient // 消息客户端
 }
 
-// 默认初始化
-func (c *Client) Default() {
+// 启动 wcf 服务
+// return error 错误信息
+func (c *Client) Connect() error {
 	if c.ListenAddr == "" {
 		c.ListenAddr = "127.0.0.1"
 	}
@@ -35,12 +36,6 @@ func (c *Client) Default() {
 	c.MsgClient = &MsgClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
-}
-
-// 启动 wcf 服务
-// return error 错误信息
-func (c *Client) Connect() error {
-	c.Default()
 	// 启动 wcf 服务
 	if c.SdkLibrary != "" {
 		if err := c.wxInitSDK(); err != nil {
