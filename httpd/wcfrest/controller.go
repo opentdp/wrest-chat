@@ -288,6 +288,27 @@ func revokeMsg(c *gin.Context) {
 
 }
 
+// @Summary 转发消息
+// @Produce json
+// @Param body body wcferry.ForwardMsg true "转发消息请求参数"
+// @Success 200 {object} RespPayload
+// @Router /forward_msg [post]
+func forwardMsg(c *gin.Context) {
+
+	var req wcferry.ForwardMsg
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	status := wc.CmdClient.ForwardMsg(req.Id, req.Receiver)
+
+	c.Set("Payload", RespPayload{
+		Success: status == 1,
+	})
+
+}
+
 // @Summary 发送文本消息
 // @Produce json
 // @Param body body wcferry.TextMsg true "文本消息请求参数"
@@ -539,7 +560,7 @@ func receiveTransfer(c *gin.Context) {
 
 }
 
-// @Summary 开启消息转发
+// @Summary 开启转发消息到URL
 // @Produce json
 // @Param body body ForwardMsgRequest true "消息转发请求参数"
 // @Success 200 {object} RespPayload
@@ -578,7 +599,7 @@ func enableForwardMsg(c *gin.Context) {
 
 }
 
-// @Summary 关闭消息转发
+// @Summary 关闭转发消息到URL
 // @Produce json
 // @Param body body ForwardMsgRequest true "消息转发请求参数"
 // @Success 200 {object} RespPayload
