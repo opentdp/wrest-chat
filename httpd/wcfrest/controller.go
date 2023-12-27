@@ -20,7 +20,7 @@ func initService() {
 
 	host, port, err := net.SplitHostPort(args.Wcf.Address)
 	if err != nil {
-		logman.Fatal("failed to start wcf", "error", err)
+		logman.Fatal("invalid address", "error", err)
 	}
 
 	wc = &wcferry.Client{
