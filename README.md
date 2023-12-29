@@ -4,13 +4,13 @@
 
 ## 使用方法
 
-1、下载 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
+1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
-2、在一台 Windows 系统电脑上安装刚刚下载的微信
+2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录即可
 
-3、同一台电脑上，解压 `Wechat-rest` ，双击 `wrest.exe` 启动接口服务
+3、浏览器打开 `http://localhost:7600` 查看支持的接口
 
-4、浏览器打开 `http://localhost:7600` 查看支持的接口
+> 接口使用范例请参考 <https://github.com/opentdp/wechat-robot>
 
 ## 配置说明
 
