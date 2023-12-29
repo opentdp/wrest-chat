@@ -18,6 +18,7 @@
 httpd:
     address: 127.0.0.1:7600 # api 监听地址
     token: "" # 使用 token 验证请求
+    swag: true # 启用 OpenApi 文档
 logger:
     dir: logs # 日志目录
     level: info # 日志级别
@@ -29,7 +30,7 @@ wcf:
     msgprint: true # 打印收到的消息
 ```
 
-> 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: v1 $token`
+> 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
 
 ## 功能清单
 

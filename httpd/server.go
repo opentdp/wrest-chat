@@ -20,12 +20,17 @@ import (
 func Server() {
 
 	httpd.Engine(args.Debug)
+	httpd.Use(midware.OutputHandle)
 
+	// Api 守卫
 	api := httpd.Group("/api")
-	api.Use(midware.OutputHandle, midware.AuthGuard)
+	api.Use(midware.ApiGuard)
 
-	// 注册 WCF
+	// Wcf 路由
 	wcfrest.Route(api)
+
+	// Swagger 守卫
+	httpd.Use(midware.SwagGuard)
 
 	// 前端文件路由
 	httpd.StaticEmbed("/", "public", args.Efs)
