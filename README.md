@@ -29,6 +29,8 @@ wcf:
     msgprint: true # 打印收到的消息
 ```
 
+> 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: v1 $token`
+
 ## 功能清单
 
 - 检查登录状态
