@@ -17,7 +17,10 @@ type MsgCallback func(msg *WxMsg)
 
 // 关闭 RPC 连接
 // return error 错误信息
-func (c *MsgClient) Destroy() error {
+func (c *MsgClient) Destroy(force bool) error {
+	if !force && len(c.callbacks) > 0 {
+		return errors.New("callbacks not empty")
+	}
 	c.callbacks = []MsgCallback{}
 	c.receiving = false
 	return c.close()
@@ -35,14 +38,14 @@ func (c *MsgClient) Register(fn ...MsgCallback) {
 // 消息接收器循环
 // return error 错误信息
 func (c *MsgClient) listener() error {
-	defer c.Destroy()
-	c.receiving = true
 	// 连接消息服务
 	if err := c.init(0); err != nil {
 		logman.Error("msg receiver", "error", err)
 		return err
 	}
+	defer c.Destroy(true)
 	// 开始接收消息
+	c.receiving = true
 	for c.receiving {
 		resp, err := c.recv()
 		if err != nil {

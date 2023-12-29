@@ -44,8 +44,8 @@ func (c *Client) Connect() error {
 	}
 	// 自动注销 wcf
 	defer onquit.Register(func() {
-		c.MsgClient.Destroy()
 		c.CmdClient.Destroy()
+		c.MsgClient.Destroy(true)
 		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}
@@ -68,12 +68,13 @@ func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
 }
 
 // 关闭消息接收器
+// param force bool 是否强制关闭
 // return error 错误信息
-func (c *Client) DisableReceiver() error {
+func (c *Client) DisableReceiver(force bool) error {
 	if c.CmdClient.DisableMsgServer() != 0 {
 		return errors.New("failed to disable msg server")
 	}
-	return c.MsgClient.Destroy()
+	return c.MsgClient.Destroy(force)
 }
 
 // 调用 sdk.dll 中的函数
