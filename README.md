@@ -63,7 +63,13 @@ wcf:
 - 转发消息给好友
 - 转发收到的消息到URL
 
-## 生成 OpenApi 文档
+## 开发说明
+
+### 编译须知
+
+由于微信和WCF均为32位应用，所以`go`也必须以`32`位模式编译，务必设置 `GOARCH` 环境变量为 `386`
+
+### 生成 OpenApi 文档
 
 ```shell
 go get github.com/swaggo/swag/cmd/swag
