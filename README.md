@@ -6,7 +6,9 @@
 
 1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
-2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录即可
+2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录。
+
+> 初始化时出现 **Attempt to access invalid address** 错误信息可以忽略
 
 3、浏览器打开 `http://localhost:7600` 查看支持的接口
 
