@@ -31,29 +31,29 @@ func (c *MsgClient) Destroy(force bool) error {
 func (c *MsgClient) Register(fn ...MsgCallback) {
 	c.callbacks = append(c.callbacks, fn...)
 	if !c.receiving {
+		c.receiving = true
 		go c.listener()
 	}
 }
 
 // 消息接收器循环
-// return error 错误信息
-func (c *MsgClient) listener() error {
+func (c *MsgClient) listener() {
+	defer c.Destroy(true)
 	// 连接消息服务
 	if err := c.init(0); err != nil {
 		logman.Error("msg receiver", "error", err)
-		return err
+		return
 	}
-	defer c.Destroy(true)
 	// 开始接收消息
-	c.receiving = true
 	for c.receiving {
-		resp, err := c.recv()
-		if err != nil {
+		if resp, err := c.recv(); err == nil {
+			res := resp.GetWxmsg()
+			for _, f := range c.callbacks {
+				go f(res)
+			}
+		} else {
 			logman.Error("msg receiver", "error", err)
 		}
-		for _, f := range c.callbacks {
-			go f(resp.GetWxmsg())
-		}
 	}
-	return errors.New("msg receiver stopped")
+	logman.Warn("msg receiver stopped")
 }

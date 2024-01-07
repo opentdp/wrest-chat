@@ -18,7 +18,7 @@ func enableForwardToUrl(url string) error {
 		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			for url := range forwardToUrlList {
 				logman.Info("forward msg", "url", url, "Id", msg.Id)
-				request.JsonPost(url, msg, request.H{})
+				go request.JsonPost(url, msg, request.H{})
 			}
 		})
 		if err != nil {
