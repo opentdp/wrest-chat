@@ -2,11 +2,9 @@ package wcferry
 
 import (
 	"bytes"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
-	"regexp"
 	"strings"
 
 	"github.com/opentdp/go-helper/request"
@@ -28,7 +26,6 @@ func DownloadFile(url string) string {
 // param msg *MsgPayload 消息
 func MsgPrinter(msg *MsgPayload) {
 	rs := "\n=== New Message ===\n"
-	re := regexp.MustCompile(`(?m)^\s*|\n`)
 	if msg.Id > 0 {
 		rs += fmt.Sprintf("::Id:: %d\n", msg.Id)
 	}
@@ -42,21 +39,13 @@ func MsgPrinter(msg *MsgPayload) {
 		rs += fmt.Sprintf("::Sender:: %v\n", msg.Sender)
 	}
 	if msg.Content != "" {
-		rs += fmt.Sprintf("::Content:: %s\n", re.ReplaceAllString(msg.Content, ""))
-	}
-	if msg.ContentMap != nil {
-		data, _ := json.Marshal(msg.ContentMap)
-		rs += fmt.Sprintf("::ContentMap:: %s\n", string(data))
-	}
-	if msg.Xml != "" {
-		rs += fmt.Sprintf("::Xml:: %s\n", re.ReplaceAllString(msg.Xml, ""))
-	}
-	if msg.XmlMap != nil {
-		data, _ := json.Marshal(msg.XmlMap)
-		rs += fmt.Sprintf("::XmlMap:: %s\n", string(data))
+		rs += fmt.Sprintf("::Content:: %s\n", msg.Content)
 	}
 	if msg.Extra != "" {
-		rs += fmt.Sprintf("::Extra:: %s\n", re.ReplaceAllString(msg.Extra, ""))
+		rs += fmt.Sprintf("::Extra:: %s\n", msg.Extra)
+	}
+	if msg.Xml != "" {
+		rs += fmt.Sprintf("::Xml:: %s\n", msg.Xml)
 	}
 	fmt.Print(rs, "=== End Message ===\n")
 }

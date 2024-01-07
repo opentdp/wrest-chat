@@ -14,10 +14,11 @@ type MsgClient struct {
 	callbacks []MsgCallback // 消息回调函数
 }
 
+// 消息回调参数
 type MsgPayload struct {
-	*WxMsg                    // 消息原始数据
-	XmlMap     map[string]any `json:",omitempty"`
-	ContentMap map[string]any `json:",omitempty"`
+	*WxMsg      // 消息原始数据
+	Content any `json:"content,omitempty"`
+	Xml     any `json:"xml,omitempty"`
 }
 
 // 消息回调函数
@@ -45,43 +46,52 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 		}
 		// 开始接收消息
 		c.receiving = true
-		go c.listener()
+		go func() {
+			defer c.Destroy(true)
+			for c.receiving {
+				if resp, err := c.recv(); err == nil {
+					msg := c.MsgXmlToMap(resp.GetWxmsg())
+					for _, f := range c.callbacks {
+						go f(msg)
+					}
+				} else {
+					logman.Error("msg receiver", "error", err)
+				}
+			}
+			logman.Warn("msg receiver stopped")
+		}()
 	}
+	// 注册回调函数
 	c.callbacks = append(c.callbacks, fn...)
 	return nil
 }
 
-// 消息接收器循环
-func (c *MsgClient) listener() {
-	defer c.Destroy(true)
-	for c.receiving {
-		if resp, err := c.recv(); err == nil {
-			res := &MsgPayload{resp.GetWxmsg(), nil, nil}
-			// 解析 XML 内容
-			if res.ContentMap, err = convertMsgContent(res.Content); err == nil {
-				res.Content = ""
-			}
-			if res.XmlMap, err = mxj.NewMapXml([]byte(res.Xml)); err == nil {
-				res.Xml = ""
-			}
-			// 批量回调
-			for _, f := range c.callbacks {
-				go f(res)
-			}
-		} else {
-			logman.Error("msg receiver", "error", err)
+// 转换消息中的XML为Map
+// param msg *WxMsg 消息
+// return *MsgPayload 转换后的消息
+func (c *MsgClient) MsgXmlToMap(msg *WxMsg) *MsgPayload {
+	var str string
+	var ret = &MsgPayload{msg, msg.Content, msg.Xml}
+	// c.Xml
+	str = strings.TrimSpace(msg.Xml)
+	if strings.HasPrefix(str, "<") {
+		mv, err := mxj.NewMapXml([]byte(str))
+		if err == nil {
+			ret.Xml = mv
 		}
 	}
-	logman.Warn("msg receiver stopped")
-}
-
-func convertMsgContent(str string) (mxj.Map, error) {
-	str = strings.TrimSpace(str)
+	// c.Content
+	str = strings.TrimSpace(msg.Content)
 	xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
 	for _, prefix := range xmlPrefixes {
 		if strings.HasPrefix(str, prefix) {
-			return mxj.NewMapXml([]byte(str))
+			mv, err := mxj.NewMapXml([]byte(str))
+			if err == nil {
+				ret.Content = mv
+			}
+			break
 		}
 	}
-	return nil, errors.New("skip")
+	// return
+	return ret
 }
