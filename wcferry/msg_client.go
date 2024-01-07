@@ -2,18 +2,22 @@ package wcferry
 
 import (
 	"errors"
+	"strings"
 
+	"github.com/clbanning/mxj"
 	"github.com/opentdp/go-helper/logman"
 )
 
 type MsgClient struct {
-	*pbSocket      // RPC 客户端
-	receiving bool // 接收消息中
-	callbacks []MsgCallback
+	*pbSocket               // RPC 客户端
+	receiving bool          // 接收消息中
+	callbacks []MsgCallback // 消息回调函数
 }
 
 type MsgPayload struct {
-	*WxMsg
+	*WxMsg                    // 消息原始数据
+	XmlMap     map[string]any `json:",omitempty"`
+	ContentMap map[string]any `json:",omitempty"`
 }
 
 // 消息回调函数
@@ -52,7 +56,15 @@ func (c *MsgClient) listener() {
 	defer c.Destroy(true)
 	for c.receiving {
 		if resp, err := c.recv(); err == nil {
-			res := &MsgPayload{resp.GetWxmsg()}
+			res := &MsgPayload{resp.GetWxmsg(), nil, nil}
+			// 解析 XML 内容
+			if res.ContentMap, err = convertMsgContent(res.Content); err == nil {
+				res.Content = ""
+			}
+			if res.XmlMap, err = mxj.NewMapXml([]byte(res.Xml)); err == nil {
+				res.Xml = ""
+			}
+			// 批量回调
 			for _, f := range c.callbacks {
 				go f(res)
 			}
@@ -61,4 +73,15 @@ func (c *MsgClient) listener() {
 		}
 	}
 	logman.Warn("msg receiver stopped")
+}
+
+func convertMsgContent(str string) (mxj.Map, error) {
+	str = strings.TrimSpace(str)
+	xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
+	for _, prefix := range xmlPrefixes {
+		if strings.HasPrefix(str, prefix) {
+			return mxj.NewMapXml([]byte(str))
+		}
+	}
+	return nil, errors.New("skip")
 }
