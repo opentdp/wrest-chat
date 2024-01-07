@@ -15,7 +15,7 @@ var forwardToUrlList = map[string]bool{}
 func enableForwardToUrl(url string) error {
 
 	if !forwardToUrlStat {
-		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+		err := wc.EnrollReceiver(true, func(msg *wcferry.MsgPayload) {
 			for url := range forwardToUrlList {
 				logman.Info("forward msg", "url", url, "Id", msg.Id)
 				go request.JsonPost(url, msg, request.H{})

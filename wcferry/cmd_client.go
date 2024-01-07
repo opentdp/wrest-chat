@@ -640,10 +640,10 @@ func (c *CmdClient) ReceiveTransfer(wxid, tfid, taid string) int32 {
 	return recv.GetStatus()
 }
 
-// 开启消息服务器
+// 开启消息接收服务
 // param pyq bool 是否接收朋友圈消息
 // return int32 0 为成功，其他失败
-func (c *CmdClient) EnableMsgServer(pyq bool) int32 {
+func (c *CmdClient) EnableMsgReciver(pyq bool) int32 {
 	req := &Request{Func: Functions_FUNC_ENABLE_RECV_TXT}
 	req.Msg = &Request_Flag{
 		Flag: pyq,
@@ -652,9 +652,9 @@ func (c *CmdClient) EnableMsgServer(pyq bool) int32 {
 	return recv.GetStatus()
 }
 
-// 停止消息服务器
+// 停止消息接收服务
 // return int32 0 为成功，其他失败
-func (c *CmdClient) DisableMsgServer() int32 {
+func (c *CmdClient) DisableMsgReciver() int32 {
 	req := &Request{Func: Functions_FUNC_DISABLE_RECV_TXT}
 	recv := c.call(req)
 	return recv.GetStatus()

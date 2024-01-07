@@ -18,6 +18,7 @@ type Client struct {
 	WeChatAuto bool       // 微信自动启停
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
+	msgReciver bool       // 消息接收器
 }
 
 // 启动 wcf 服务
@@ -59,21 +60,22 @@ func (c *Client) Connect() error {
 // param fn ...MsgCallback 消息回调函数
 // return error 错误信息
 func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
-	if c.CmdClient.EnableMsgServer(true) != 0 {
+	if !c.msgReciver && c.CmdClient.EnableMsgReciver(true) != 0 {
 		return errors.New("failed to enable msg server")
 	}
+	c.msgReciver = true
 	time.Sleep(1 * time.Second)
-	c.MsgClient.Register(fn...)
-	return nil
+	return c.MsgClient.Register(fn...)
 }
 
 // 关闭消息接收器
 // param force bool 是否强制关闭
 // return error 错误信息
 func (c *Client) DisableReceiver(force bool) error {
-	if c.CmdClient.DisableMsgServer() != 0 {
+	if c.msgReciver && c.CmdClient.DisableMsgReciver() != 0 {
 		return errors.New("failed to disable msg server")
 	}
+	c.msgReciver = false
 	return c.MsgClient.Destroy(force)
 }
 

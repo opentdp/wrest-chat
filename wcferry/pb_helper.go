@@ -9,8 +9,8 @@ import (
 )
 
 // 打印接收到的消息
-// param msg *WxMsg 消息
-func MsgPrinter(msg *WxMsg) {
+// param msg *MsgPayload 消息
+func MsgPrinter(msg *MsgPayload) {
 	rs := "\n=== New Message ===\n"
 	re := regexp.MustCompile(`(?m)^\s*|\n`)
 	if msg.Id > 0 {
