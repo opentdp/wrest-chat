@@ -1,10 +1,7 @@
 package wcferry
 
 import (
-	"bytes"
-	"encoding/xml"
 	"fmt"
-	"io"
 	"strings"
 
 	"github.com/opentdp/go-helper/request"
@@ -48,66 +45,4 @@ func MsgPrinter(msg *MsgPayload) {
 		rs += fmt.Sprintf("::Xml:: %s\n", msg.Xml)
 	}
 	fmt.Print(rs, "=== End Message ===\n")
-}
-
-// 解析 XML
-// param data string XML数据
-// return map[string]any 解析失败则返回空
-func ParseXMLToMap(data string) (map[string]any, error) {
-	var (
-		decoder     = xml.NewDecoder(bytes.NewBufferString(data))
-		nodeStack   []map[string]any
-		currentNode map[string]any
-	)
-
-	for {
-		token, err := decoder.Token()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			return nil, err
-		}
-
-		switch tokenType := token.(type) {
-		case xml.StartElement:
-			// Create a new node and push it onto the stack
-			newNode := make(map[string]any)
-			for _, attr := range tokenType.Attr {
-				newNode[attr.Name.Local] = attr.Value
-			}
-			if currentNode != nil {
-				// Add this node as a child of the current node
-				children, ok := currentNode[tokenType.Name.Local]
-				if !ok {
-					currentNode[tokenType.Name.Local] = []any{newNode}
-				} else {
-					currentNode[tokenType.Name.Local] = append(children.([]any), newNode)
-				}
-			}
-			nodeStack = append(nodeStack, newNode)
-			currentNode = newNode
-		case xml.EndElement:
-			// Pop the stack
-			if len(nodeStack) > 1 {
-				nodeStack = nodeStack[:len(nodeStack)-1]
-				currentNode = nodeStack[len(nodeStack)-1]
-			}
-		case xml.CharData:
-			charData := string(bytes.TrimSpace(tokenType))
-			if charData != "" && len(nodeStack) > 0 {
-				currentText, ok := currentNode["content"]
-				if !ok {
-					currentNode["content"] = charData
-				} else {
-					currentNode["content"] = currentText.(string) + charData
-				}
-			}
-		}
-	}
-
-	if len(nodeStack) > 0 {
-		return nodeStack[0], nil
-	}
-	return nil, fmt.Errorf("no root element")
 }
