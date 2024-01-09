@@ -1,6 +1,6 @@
 # WeChatFerry go-sdk
 
-WCF客户端go语言版，用于访问RPC服务，实现和微信进程的远程交互。接口文档请查阅 <https://pkg.go.dev/github.com/opentdp/wechat-rest>
+`WeChatFerry` 客户端 **Go** 语言版，用于管理 `WeChatFerry RPC` 服务，并实现与微信进程的互操作。接口文档请查阅 <https://pkg.go.dev/github.com/opentdp/wechat-rest>
 
 ## 调用方式
 
