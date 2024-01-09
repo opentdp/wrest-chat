@@ -12,9 +12,9 @@ func (c *Config) Unmarshal() {
 	// 读取默认配置
 
 	mp := map[string]any{
-		"logger": &Logger,
+		"bot":    &Bot,
 		"httpd":  &Httpd,
-		"robot":  &Robot,
+		"logger": &Logger,
 		"wcf":    &Wcf,
 	}
 	c.Koanf.Load(confmap.Provider(mp, "."), nil)

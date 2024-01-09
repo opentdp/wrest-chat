@@ -42,7 +42,7 @@ func Reciver(msg *wcferry.WxMsg) {
 		}
 		// 添加好友后自动回复
 		if strings.Contains(msg.Content, "现在可以开始聊天了") {
-			wc.CmdClient.SendTxt(args.Robot.FriendWelcome, msg.Sender, "")
+			wc.CmdClient.SendTxt(args.Bot.FriendWelcome, msg.Sender, "")
 			return
 		}
 		return

@@ -18,7 +18,7 @@ func main() {
 	c := args.Config{}
 	c.Init().Unmarshal()
 
-	if args.Robot.Enable {
+	if args.Bot.Enable {
 		wclient.Robot()
 	}
 

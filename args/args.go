@@ -12,6 +12,15 @@ var Debug bool
 
 var Efs *embed.FS
 
+// 机器人参数
+
+var Bot = struct {
+	Enable        bool
+	FriendWelcome string
+}{
+	Enable: false,
+}
+
 // 日志参数
 
 var Logger = struct {
@@ -33,15 +42,6 @@ var Httpd = struct {
 }{
 	Address: "127.0.0.1:7600",
 	Swag:    true,
-}
-
-// 机器人参数
-
-var Robot = struct {
-	Enable        bool
-	FriendWelcome string
-}{
-	Enable: false,
 }
 
 // Wcf 服务参数
