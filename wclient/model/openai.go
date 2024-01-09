@@ -12,7 +12,7 @@ func OpenaiChat(id, msg string) (string, error) {
 
 	config := openai.DefaultConfig(args.LLM.OpenAiKey)
 	if args.LLM.OpenAiUrl != "" {
-		config.BaseURL = args.LLM.OpenAiUrl
+		config.BaseURL = args.LLM.OpenAiUrl + "/v1"
 	}
 
 	client := openai.NewClientWithConfig(config)
