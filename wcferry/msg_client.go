@@ -70,16 +70,10 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 // param msg *WxMsg 消息
 // return *MsgPayload 转换后的消息
 func (c *MsgClient) MsgXmlToMap(msg *WxMsg) *MsgPayload {
-	var str string
 	var ret = &MsgPayload{msg, msg.Content, msg.Xml}
-	// c.Xml
-	str = strings.TrimSpace(msg.Xml)
-	if strings.HasPrefix(str, "<") {
-		mv, err := mxj.NewMapXml([]byte(str))
-		if err == nil {
-			ret.Xml = mv
-		}
-	}
+	var str string
+	// no prefix
+	mxj.SetAttrPrefix("")
 	// c.Content
 	str = strings.TrimSpace(msg.Content)
 	xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
@@ -90,6 +84,14 @@ func (c *MsgClient) MsgXmlToMap(msg *WxMsg) *MsgPayload {
 				ret.Content = mv
 			}
 			break
+		}
+	}
+	// c.Xml
+	str = strings.TrimSpace(msg.Xml)
+	if strings.HasPrefix(str, "<") {
+		mv, err := mxj.NewMapXml([]byte(str))
+		if err == nil {
+			ret.Xml = mv
 		}
 	}
 	// return
