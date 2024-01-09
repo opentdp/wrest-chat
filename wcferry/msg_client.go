@@ -2,9 +2,7 @@ package wcferry
 
 import (
 	"errors"
-	"strings"
 
-	"github.com/clbanning/mxj"
 	"github.com/opentdp/go-helper/logman"
 )
 
@@ -15,15 +13,8 @@ type MsgClient struct {
 	msgXmlToMap bool          // 转换消息中的Xml为Map
 }
 
-// 消息回调参数
-type MsgPayload struct {
-	*WxMsg      // 消息原始数据
-	Content any `json:"content,omitempty"`
-	Xml     any `json:"xml,omitempty"`
-}
-
 // 消息回调函数
-type MsgCallback func(msg *MsgPayload)
+type MsgCallback func(msg *WxMsg)
 
 // 关闭 RPC 连接
 // return error 错误信息
@@ -51,7 +42,7 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 			defer c.Destroy(true)
 			for c.receiving {
 				if resp, err := c.recv(); err == nil {
-					msg := c.ParseWxmsg(resp.GetWxmsg())
+					msg := resp.GetWxmsg()
 					for _, f := range c.callbacks {
 						go f(msg)
 					}
@@ -65,39 +56,4 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 	// 注册回调函数
 	c.callbacks = append(c.callbacks, fn...)
 	return nil
-}
-
-// 解析消息数据
-// param msg *WxMsg 消息
-// return *MsgPayload 转换后的消息
-func (c *MsgClient) ParseWxmsg(msg *WxMsg) *MsgPayload {
-	var ret = &MsgPayload{msg, msg.Content, msg.Xml}
-	if !c.msgXmlToMap {
-		return ret
-	}
-	// preset
-	var str string
-	mxj.SetAttrPrefix("")
-	// c.Content
-	str = strings.TrimSpace(msg.Content)
-	xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
-	for _, prefix := range xmlPrefixes {
-		if strings.HasPrefix(str, prefix) {
-			mv, err := mxj.NewMapXml([]byte(str))
-			if err == nil {
-				ret.Content = mv
-			}
-			break
-		}
-	}
-	// c.Xml
-	str = strings.TrimSpace(msg.Xml)
-	if strings.HasPrefix(str, "<") {
-		mv, err := mxj.NewMapXml([]byte(str))
-		if err == nil {
-			ret.Xml = mv
-		}
-	}
-	// return
-	return ret
 }

@@ -57,17 +57,18 @@ func (c *Client) Connect() error {
 
 // 启动消息接收器
 // param pyq bool 是否接收朋友圈消息
-// param x2m bool 是否将消息中的 xml 转换为 map，影响全局
-// param fn ...MsgCallback 消息回调函数
+// param fn ...MsgCallback 消息回调函数，可选参数
 // return error 错误信息
-func (c *Client) EnrollReceiver(pyq, x2m bool, fn ...MsgCallback) error {
+func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
 	if !c.msgReciver && c.CmdClient.EnableMsgReciver(true) != 0 {
 		return errors.New("failed to enable msg server")
 	}
 	c.msgReciver = true
 	time.Sleep(1 * time.Second)
-	c.MsgClient.msgXmlToMap = x2m
-	return c.MsgClient.Register(fn...)
+	if len(fn) > 0 {
+		return c.MsgClient.Register(fn...)
+	}
+	return nil
 }
 
 // 关闭消息接收器
