@@ -1,18 +1,25 @@
 # 机器人
 bot:
     enable: true # 是否启用内置机器人
-    friendWelcome: 回复 /help 查询指令 # 添加好友后自动回复
-    roomAddList: # 群组列表
-        - id: 38699745819@chatroom
-          name: OpenTDP 开发群
+    welcome: 回复 /help 查询指令 # 添加好友或加群后自动回复
+    invitable_rooms: # 可邀请的群组列表
+        - id: 38699745819@chatroom # 群聊 Id
+          name: OpenTDP 开发群 # 群聊名称
         - id: 17907657671@chatroom
           name: OpenTDP 闲聊群
 
 # REST 接口
 httpd:
-    address: 127.0.0.1:7600 # api 监听地址
-    token: "" # 使用 token 验证请求
-    swag: true # 启用 OpenApi 文档
+    address: 127.0.0.1:7600 # Api 监听地址
+    token: "" # 使用 Token 验证请求
+    swag: true # 是否启用 OpenApi 文档
+
+# 大语言模型
+llm:
+    google_ai_url: https://googai.173371.xyz # Google AI 接口，留空使用官方接口
+    google_ai_key: YOUR-API-KEY # Google AI 密钥
+    openai_url: https://chat.451024.xyz # OpenAI 接口，留空使用官方接口
+    openai_key: YOUR-API-KEY # OpenAI 密钥
 
 # 运行日志
 logger:
@@ -22,7 +29,7 @@ logger:
 
 # WeChat Ferry
 wcf:
-    address: 127.0.0.1:10080 # rpc 监听地址
-    sdkLibrary: wcferry/libs/sdk.dll # sdk 依赖库
-    wechatAuto: true # 自动启停微信
-    msgPrinter: false # 打印收到的消息
+    address: 127.0.0.1:10080 # Rpc 监听地址
+    sdk_library: wcferry/libs/sdk.dll # Sdk 路径
+    wechat_auto: true # 是否跟随启停微信
+    msg_printer: false # 是否打印收到的消息

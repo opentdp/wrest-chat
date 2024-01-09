@@ -50,28 +50,28 @@ func initHandlers() {
 
 	cache.Handlers["/ai"] = func(id, msg string) string {
 		if _, exists := cache.Models[id]; !exists {
-			cache.Models[id] = "gemini"
+			cache.Models[id] = "gemini-pro"
 		}
 		if _, exists := cache.History[id]; !exists {
-			cache.History[id] = []string{}
+			cache.History[id] = []cache.HistoryItem{}
 		}
 		return strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
 	}
 
 	cache.Handlers["/new"] = func(id, msg string) string {
-		cache.History[id] = []string{}
+		cache.History[id] = []cache.HistoryItem{}
 		return "已清空上下文"
 	}
 
 	cache.Handlers["/m:gpt35"] = func(id, msg string) string {
-		cache.Models[id] = "gpt35"
-		cache.History[id] = []string{}
+		cache.Models[id] = "gpt-3.5-turbo"
+		cache.History[id] = []cache.HistoryItem{}
 		return "对话模型已切换为 Openai GPT-3.5"
 	}
 
 	cache.Handlers["/m:gemini"] = func(id, msg string) string {
-		cache.Models[id] = "gemini"
-		cache.History[id] = []string{}
+		cache.Models[id] = "gemini-pro"
+		cache.History[id] = []cache.HistoryItem{}
 		return "对话模型已切换为 Google Gemini"
 	}
 
@@ -82,7 +82,7 @@ func initHandlers() {
 		return text
 	}
 
-	for k, v := range args.Bot.RoomAddList {
+	for k, v := range args.Bot.InvitableRooms {
 		cmdkey := "/room:" + strconv.Itoa(k+1)
 		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
 		cache.Handlers[cmdkey] = func(id, msg string) string {

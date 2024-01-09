@@ -3,8 +3,13 @@ module github.com/opentdp/wechat-rest
 go 1.21
 
 require (
+	github.com/clbanning/mxj v1.8.4
 	github.com/gin-gonic/gin v1.9.1
+	github.com/knadh/koanf v1.5.0
+	github.com/knadh/koanf/v2 v2.0.1
 	github.com/opentdp/go-helper v0.5.5-0.20240109013403-7323088c3f39
+	github.com/sashabaranov/go-openai v1.17.10
+	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2
 	google.golang.org/protobuf v1.32.0
 )
@@ -16,7 +21,6 @@ require (
 	github.com/cheggaaa/pb/v3 v3.1.4 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/clbanning/mxj v1.8.4
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
@@ -29,8 +33,6 @@ require (
 	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
-	github.com/knadh/koanf v1.5.0
-	github.com/knadh/koanf/v2 v2.0.1
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -44,7 +46,6 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	go.nanomsg.org/mangos v2.0.0+incompatible
 	golang.org/x/arch v0.7.0 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/mod v0.14.0 // indirect

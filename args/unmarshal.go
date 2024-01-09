@@ -14,6 +14,7 @@ func (c *Config) Unmarshal() {
 	mp := map[string]any{
 		"bot":    &Bot,
 		"httpd":  &Httpd,
+		"llm":    &LLM,
 		"logger": &Logger,
 		"wcf":    &Wcf,
 	}
