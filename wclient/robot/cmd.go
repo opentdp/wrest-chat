@@ -2,6 +2,7 @@ package robot
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -24,6 +25,9 @@ func initHandlers() {
 	}
 
 	handlers["/ai"] = func(id, msg string) string {
+		if _, exists := models[id]; !exists {
+			models[id] = "gemini"
+		}
 		if _, exists := history[id]; !exists {
 			history[id] = []string{}
 		}
@@ -54,8 +58,10 @@ func initHandlers() {
 		return text
 	}
 
-	for _, v := range args.Bot.RoomAddList {
-		handlers["/room:"+v.Id] = func(id, msg string) string {
+	for k, v := range args.Bot.RoomAddList {
+		cmdkey := "/room:" + strconv.Itoa(k+1)
+		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
+		handlers[cmdkey] = func(id, msg string) string {
 			resp := wc.CmdClient.InviteChatroomMembers(v.Id, id)
 			if resp == 1 {
 				return "已发送群邀请，稍后请点击进入"
@@ -69,7 +75,7 @@ func initHandlers() {
 
 func chatCommand(msg *wcferry.WxMsg) bool {
 
-	re := regexp.MustCompile(`^/([\w:-]{2,20})(\s|$)`)
+	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s|$)`)
 	matches := re.FindStringSubmatch(msg.Content)
 	if matches == nil || len(matches) < 2 {
 		return false
@@ -91,9 +97,9 @@ func chatCommand(msg *wcferry.WxMsg) bool {
 
 	if msg.IsGroup {
 		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		wc.CmdClient.SendTxt(msg.Roomid, "@"+user.Name+"\n"+output, msg.Sender)
+		wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
 	} else {
-		wc.CmdClient.SendTxt(msg.Sender, output, "")
+		wc.CmdClient.SendTxt(output, msg.Sender, "")
 	}
 
 	return true
