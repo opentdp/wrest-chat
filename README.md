@@ -26,7 +26,8 @@
 
 启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](./config.yml)
 
-> 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
+- 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
+- 免费申请 `Google AI API` 请登录 <https://makersuite.google.com>
 
 ## 功能清单
 

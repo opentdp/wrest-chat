@@ -11,7 +11,6 @@ import (
 func OpenaiChat(uid, msg string) (string, error) {
 
 	config := openai.DefaultConfig(args.LLM.OpenAiKey)
-
 	if args.LLM.OpenAiUrl != "" {
 		config.BaseURL = args.LLM.OpenAiUrl
 	}
@@ -26,30 +25,44 @@ func OpenaiChat(uid, msg string) (string, error) {
 	}
 
 	for _, msg := range cache.History[uid] {
+		role := openai.ChatMessageRoleAssistant
+		if msg.Role == "user" {
+			role = openai.ChatMessageRoleUser
+		}
 		req.Messages = append(req.Messages, openai.ChatCompletionMessage{
-			Role:    msg.Role,
+			Role:    role,
 			Content: msg.Content,
 		})
 	}
 
-	// 调用 OpenAI 接口
+	req.Messages = append(req.Messages, openai.ChatCompletionMessage{
+		Role:    openai.ChatMessageRoleUser,
+		Content: msg,
+	})
+
+	// 请求模型接口
 
 	resp, err := client.CreateChatCompletion(
 		context.Background(), req,
 	)
-
 	if err != nil {
 		return "", err
 	}
 
-	// 解析返回的数据
+	// 更新历史记录
 
-	data := cache.HistoryItem{
+	item1 := cache.HistoryItem{
+		Role:    "user",
+		Content: msg,
+	}
+
+	item2 := cache.HistoryItem{
 		Role:    resp.Choices[0].Message.Role,
 		Content: resp.Choices[0].Message.Content,
 	}
-	cache.History[uid] = append(cache.History[uid], data)
 
-	return data.Content, nil
+	cache.History[uid] = append(cache.History[uid], item1, item2)
+
+	return item2.Content, nil
 
 }
