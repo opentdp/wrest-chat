@@ -12,7 +12,7 @@ import (
 
 var wc *wcferry.Client
 
-func Connect() *wcferry.Client {
+func Register() *wcferry.Client {
 
 	if wc != nil {
 		return wc

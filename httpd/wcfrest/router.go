@@ -7,7 +7,7 @@ import (
 
 func Route(rg *gin.RouterGroup) {
 
-	ctrl := Controller{wclient.Connect()}
+	ctrl := Controller{wclient.Register()}
 
 	rg.GET("is_login", ctrl.isLogin)
 	rg.GET("self_wxid", ctrl.getSelfWxid)

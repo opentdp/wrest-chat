@@ -7,6 +7,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wechat-rest/wclient/cache"
 	"github.com/opentdp/wechat-rest/wclient/proto"
 )
 
@@ -14,12 +15,16 @@ var wc *wcferry.Client
 
 func Register() {
 
-	wc = wclient.Connect()
-	wc.EnrollReceiver(true, Reciver)
+	wc = wclient.Register()
+	wc.EnrollReceiver(true, reciver)
+
+	if len(cache.Handlers) == 0 {
+		initHandlers()
+	}
 
 }
 
-func Reciver(msg *wcferry.WxMsg) {
+func reciver(msg *wcferry.WxMsg) {
 
 	switch msg.Type {
 	case 1:
@@ -28,7 +33,7 @@ func Reciver(msg *wcferry.WxMsg) {
 			return
 		}
 		// 处理聊天指令
-		if chatCommand(msg) {
+		if chatHandler(msg) {
 			return
 		}
 		return
