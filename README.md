@@ -4,10 +4,10 @@
 
 - 使用 Go 语言编写，无运行时依赖
 - 基于 HTTP 提供操作接口，无缝对接大多数编程语言
-- 支持作为标准 SDK 使用，参见 `wcferry/README.md`
-- 内置互动机器人，参见 `wclient/README.md`
+- 支持作为标准 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
+- 内置互动机器人，参见 [wclient/README.md](./wclient/README.md)
 - 内置 OpenApi 文档，参见 `http://localhost:7600`
-- 支持 HTTP 接口授权，参见 `配置说明`
+- 支持 HTTP 接口授权，参见 [配置说明](#配置说明)
 - 消息中的 Xml 尽可能转为 Object
 
 ## 使用方法
@@ -24,7 +24,7 @@
 
 ## 配置说明
 
-启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](https://github.com/opentdp/wechat-rest/blob/master/config.yml)
+启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](./config.yml)
 
 > 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
 
