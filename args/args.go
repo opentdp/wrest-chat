@@ -35,13 +35,22 @@ var Httpd = struct {
 	Swag:    true,
 }
 
+// 机器人参数
+
+var Robot = struct {
+	Enable        bool
+	FriendWelcome string
+}{
+	Enable: false,
+}
+
 // Wcf 服务参数
 
 var Wcf = struct {
 	Address    string
 	SdkLibrary string
 	WeChatAuto bool
-	MsgPrint   bool
+	MsgPrinter bool
 }{
 	Address:    "127.0.0.1:10080",
 	SdkLibrary: "sdk.dll",

@@ -5,6 +5,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/httpd"
+	"github.com/opentdp/wechat-rest/wclient"
 )
 
 //go:embed public
@@ -16,6 +17,10 @@ func main() {
 
 	c := args.Config{}
 	c.Init().Unmarshal()
+
+	if args.Robot.Enable {
+		wclient.Robot()
+	}
 
 	httpd.Server()
 

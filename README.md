@@ -23,21 +23,7 @@
 
 ## 配置说明
 
-```yml
-httpd:
-    address: 127.0.0.1:7600 # api 监听地址
-    token: "" # 使用 token 验证请求
-    swag: true # 启用 OpenApi 文档
-logger:
-    dir: logs # 日志目录
-    level: info # 日志级别
-    target: stdout # 日志输出方式
-wcf:
-    address: 127.0.0.1:10080 # rpc 监听地址
-    sdklibrary: libs/sdk.dll # sdk 依赖库
-    wechatauto: true # 自动启动或停止微信
-    msgprint: true # 打印收到的消息
-```
+启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](https://github.com/opentdp/wechat-rest/blob/master/config.yml)
 
 > 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
 

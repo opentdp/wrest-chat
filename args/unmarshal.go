@@ -14,6 +14,7 @@ func (c *Config) Unmarshal() {
 	mp := map[string]any{
 		"logger": &Logger,
 		"httpd":  &Httpd,
+		"robot":  &Robot,
 		"wcf":    &Wcf,
 	}
 	c.Koanf.Load(confmap.Provider(mp, "."), nil)
