@@ -20,9 +20,9 @@ type WxMsgParsed struct {
 // param msg *WxMsg 消息
 // return *WxMsgParsed 转换后的消息
 func WxMsgParser(msg *WxMsg) *WxMsgParsed {
-	var ret = &WxMsgParsed{msg, msg.Content, msg.Xml}
+	ret := &WxMsgParsed{msg, msg.Content, msg.Xml}
 	// preset
-	var str string
+	str := ""
 	mxj.SetAttrPrefix("")
 	// c.Content
 	str = strings.TrimSpace(msg.Content)

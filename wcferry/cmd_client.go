@@ -136,13 +136,13 @@ func (c *CmdClient) DbSqlQuery(db, sql string) []*DbRow {
 // return map[string]any 查询结果
 func (c *CmdClient) DbSqlQueryMap(db, sql string) map[string]any {
 	rows := c.DbSqlQuery(db, sql)
-	res := map[string]any{}
+	data := map[string]any{}
 	for _, row := range rows {
 		for _, field := range row.Fields {
-			res[field.Column] = field.Content
+			data[field.Column] = field.Content
 		}
 	}
-	return res
+	return data
 }
 
 // 获取所有消息类型

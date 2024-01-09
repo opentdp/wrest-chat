@@ -2,6 +2,11 @@
 bot:
     enable: true # 是否启用内置机器人
     friendWelcome: 回复 /help 查询指令 # 添加好友后自动回复
+    roomAddList: # 群组列表
+        - id: 38699745819@chatroom
+          name: OpenTDP 开发群
+        - id: 17907657671@chatroom
+          name: OpenTDP 闲聊群
 
 # REST 接口
 httpd:

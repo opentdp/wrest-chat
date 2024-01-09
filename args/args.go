@@ -15,8 +15,13 @@ var Efs *embed.FS
 // 机器人参数
 
 var Bot = struct {
-	Enable        bool
-	FriendWelcome string
+	Enable      bool
+	Welcome     string
+	RoomAddList []struct {
+		Id      string
+		Name    string
+		Welcome string
+	}
 }{
 	Enable: false,
 }
