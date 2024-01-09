@@ -8,7 +8,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func OpenaiChat(uid, msg string) (string, error) {
+func OpenaiChat(id, msg string) (string, error) {
 
 	config := openai.DefaultConfig(args.LLM.OpenAiKey)
 	if args.LLM.OpenAiUrl != "" {
@@ -20,11 +20,11 @@ func OpenaiChat(uid, msg string) (string, error) {
 	// 构造请求参数
 
 	req := openai.ChatCompletionRequest{
-		Model:    cache.Models[uid],
+		Model:    cache.Models[id],
 		Messages: []openai.ChatCompletionMessage{},
 	}
 
-	for _, msg := range cache.History[uid] {
+	for _, msg := range cache.History[id] {
 		role := openai.ChatMessageRoleAssistant
 		if msg.Role == "user" {
 			role = openai.ChatMessageRoleUser
@@ -61,7 +61,7 @@ func OpenaiChat(uid, msg string) (string, error) {
 		Content: resp.Choices[0].Message.Content,
 	}
 
-	cache.History[uid] = append(cache.History[uid], item1, item2)
+	cache.History[id] = append(cache.History[id], item1, item2)
 
 	return item2.Content, nil
 

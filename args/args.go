@@ -21,7 +21,7 @@ var Bot = struct {
 		Id      string `yaml:"id"`
 		Name    string `yaml:"name"`
 		Welcome string `yaml:"welcome"`
-	} `yaml:"invitable_rooms"`
+	} `yaml:"invitableRooms"`
 }{
 	Enable: true,
 }
@@ -40,10 +40,10 @@ var Httpd = struct {
 // 大语言模型参数
 
 var LLM = struct {
-	GoogleAiUrl string `yaml:"google_ai_url"`
-	GoogleAiKey string `yaml:"google_ai_key"`
-	OpenAiUrl   string `yaml:"openai_url"`
-	OpenAiKey   string `yaml:"openai_key"`
+	GoogleAiUrl string `yaml:"googleAiUrl"`
+	GoogleAiKey string `yaml:"googleAiKey"`
+	OpenAiUrl   string `yaml:"openaiUrl"`
+	OpenAiKey   string `yaml:"openaiKey"`
 }{
 	GoogleAiUrl: "https://generativelanguage.googleapis.com",
 	OpenAiUrl:   "https://api.openai.com",
@@ -65,9 +65,9 @@ var Logger = struct {
 
 var Wcf = struct {
 	Address    string `yaml:"address"`
-	SdkLibrary string `yaml:"sdk_library"`
-	WeChatAuto bool   `yaml:"wechat_auto"`
-	MsgPrinter bool   `yaml:"msg_printer"`
+	SdkLibrary string `yaml:"sdkLibrary"`
+	WeChatAuto bool   `yaml:"wechatAuto"`
+	MsgPrinter bool   `yaml:"msgPrinter"`
 }{
 	Address:    "127.0.0.1:10080",
 	SdkLibrary: "sdk.dll",

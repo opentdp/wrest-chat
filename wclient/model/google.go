@@ -11,7 +11,7 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/cache"
 )
 
-func GeminiChat(uid, msg string) (string, error) {
+func GeminiChat(id, msg string) (string, error) {
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(args.LLM.GoogleAiKey),
@@ -30,12 +30,12 @@ func GeminiChat(uid, msg string) (string, error) {
 
 	// 构造请求参数
 
-	model := client.GenerativeModel(cache.Models[uid])
+	model := client.GenerativeModel(cache.Models[id])
 
 	cs := model.StartChat()
 	cs.History = []*genai.Content{}
 
-	for _, msg := range cache.History[uid] {
+	for _, msg := range cache.History[id] {
 		role := "model"
 		if msg.Role == "user" {
 			role = "user"
@@ -53,7 +53,9 @@ func GeminiChat(uid, msg string) (string, error) {
 		return "", err
 	}
 
-	fmt.Println(resp)
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+		return "", fmt.Errorf("未得到预期的结果")
+	}
 
 	// 更新历史记录
 
@@ -64,11 +66,11 @@ func GeminiChat(uid, msg string) (string, error) {
 
 	item2 := cache.HistoryItem{
 		Role:    "model",
-		Content: "",
+		Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]),
 	}
 
-	cache.History[uid] = append(cache.History[uid], item1, item2)
+	cache.History[id] = append(cache.History[id], item1, item2)
 
-	return "", nil
+	return item2.Content, nil
 
 }

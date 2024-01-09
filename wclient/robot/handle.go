@@ -8,6 +8,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/cache"
+	"github.com/opentdp/wechat-rest/wclient/model"
 )
 
 func chatHandler(msg *wcferry.WxMsg) bool {
@@ -49,13 +50,25 @@ func initHandlers() {
 	}
 
 	cache.Handlers["/ai"] = func(id, msg string) string {
+		var err error
+		var res string
 		if _, exists := cache.Models[id]; !exists {
 			cache.Models[id] = "gemini-pro"
 		}
 		if _, exists := cache.History[id]; !exists {
 			cache.History[id] = []cache.HistoryItem{}
 		}
-		return strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
+		str := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
+		switch cache.Models[id] {
+		case "gpt-3.5-turbo":
+			res, err = model.OpenaiChat(id, str)
+		case "gemini-pro":
+			res, err = model.GeminiChat(id, str)
+		}
+		if err != nil {
+			return err.Error()
+		}
+		return res
 	}
 
 	cache.Handlers["/new"] = func(id, msg string) string {
