@@ -37,7 +37,7 @@ func Connect() *wcferry.Client {
 
 	// 打印收到的消息
 	if args.Wcf.MsgPrint {
-		wc.EnrollReceiver(true, wcferry.MsgPrinter)
+		wc.EnrollReceiver(true, false, wcferry.MsgPrinter)
 	}
 
 	return wc

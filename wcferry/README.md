@@ -22,7 +22,7 @@ func main() {
     // 打印登录状态
     fmt.Println(wc.CmdClient.IsLogin())
     // 打印收到的消息
-    wc.EnrollReceiver(true, wcferry.MsgPrinter)
+    wc.EnrollReceiver(true, true, wcferry.MsgPrinter)
     // 阻止程序退出
     select{}
 }

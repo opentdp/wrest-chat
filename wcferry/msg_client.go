@@ -9,9 +9,10 @@ import (
 )
 
 type MsgClient struct {
-	*pbSocket               // RPC 客户端
-	receiving bool          // 接收消息中
-	callbacks []MsgCallback // 消息回调函数
+	*pbSocket                 // RPC 客户端
+	receiving   bool          // 接收消息中
+	callbacks   []MsgCallback // 消息回调函数
+	msgXmlToMap bool          // 转换消息中的Xml为Map
 }
 
 // 消息回调参数
@@ -50,7 +51,7 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 			defer c.Destroy(true)
 			for c.receiving {
 				if resp, err := c.recv(); err == nil {
-					msg := c.MsgXmlToMap(resp.GetWxmsg())
+					msg := c.ParseWxmsg(resp.GetWxmsg())
 					for _, f := range c.callbacks {
 						go f(msg)
 					}
@@ -66,13 +67,16 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 	return nil
 }
 
-// 转换消息中的XML为Map
+// 解析消息数据
 // param msg *WxMsg 消息
 // return *MsgPayload 转换后的消息
-func (c *MsgClient) MsgXmlToMap(msg *WxMsg) *MsgPayload {
+func (c *MsgClient) ParseWxmsg(msg *WxMsg) *MsgPayload {
 	var ret = &MsgPayload{msg, msg.Content, msg.Xml}
+	if !c.msgXmlToMap {
+		return ret
+	}
+	// preset
 	var str string
-	// no prefix
 	mxj.SetAttrPrefix("")
 	// c.Content
 	str = strings.TrimSpace(msg.Content)
