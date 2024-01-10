@@ -1,9 +1,9 @@
 package robot
 
 import (
+	"fmt"
 	"math/rand"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -11,90 +11,153 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/model"
 )
 
-var handlers = make(map[string]func(id, msg string) string)
+type Handler struct {
+	Level    int    // 0:不限制 9:管理员
+	ChatAble bool   // 是否允许在私聊使用
+	RoomAble bool   // 是否允许在群聊使用
+	Describe string // 指令描述
+	Callback func(msg *wcferry.WxMsg) string
+}
 
-func initHandler() {
+var handlers = make(map[string]*Handler)
 
-	helper := []string{}
+func initHandlers() {
 
-	helper = append(helper, "/ai 提问或交谈")
-	handlers["/ai"] = model.AiChat
+	helper1 := "" // 私聊指令
+	helper2 := "" // 群聊指令
 
-	helper = append(helper, "/new 重置上下文内容")
-	handlers["/new"] = func(id, msg string) string {
-		return model.ClearHistory(id)
+	handlers["/ai"] = &Handler{
+		Level:    0,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "提问或交谈",
+		Callback: func(msg *wcferry.WxMsg) string {
+			return model.AiChat(msg.Sender, msg.Content)
+		},
 	}
 
-	helper = append(helper, "/m 随机选择一个模型")
-	handlers["/mr"] = func(id, msg string) string {
-		k := rand.Intn(len(args.LLM.Models))
-		return model.SetUserModel(id, k)
+	handlers["/new"] = &Handler{
+		Level:    0,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "重置上下文内容",
+		Callback: func(msg *wcferry.WxMsg) string {
+			return model.ClearHistory(msg.Sender)
+		},
 	}
 
-	for k, v := range args.LLM.Models {
-		k, v := k, v // copy it
+	handlers["/mr"] = &Handler{
+		Level:    0,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "随机选择一个模型",
+		Callback: func(msg *wcferry.WxMsg) string {
+			k := rand.Intn(len(args.LLM.Models))
+			return model.SetUserModel(msg.Sender, args.LLM.Models[k])
+		},
+	}
+
+	for _, v := range args.LLM.Models {
+		v := v // copy it
 		cmdkey := "/m:" + v.Name
-		helper = append(helper, cmdkey+" 切换为 "+v.Model+" 模型")
-		handlers[cmdkey] = func(id, msg string) string {
-			return model.SetUserModel(id, k)
+		handlers[cmdkey] = &Handler{
+			Level:    0,
+			ChatAble: true,
+			RoomAble: true,
+			Describe: "切换为 " + v.Model + " 模型",
+			Callback: func(msg *wcferry.WxMsg) string {
+				return model.SetUserModel(msg.Sender, v)
+			},
 		}
 	}
 
-	for k, v := range args.Bot.InvitableRooms {
-		k, v := k, v // copy it
-		cmdkey := "/room:" + strconv.Itoa(k+1)
-		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
-		handlers[cmdkey] = func(id, msg string) string {
-			resp := wc.CmdClient.InviteChatroomMembers(v.Id, id)
-			if resp == 1 {
-				return "已发送群邀请，稍后请点击进入"
+	for _, v := range args.Bot.InvitableRooms {
+		v := v // copy it
+		cmdkey := "/room:" + v.Mark
+		handlers[cmdkey] = &Handler{
+			Level:    0,
+			ChatAble: true,
+			RoomAble: false,
+			Describe: "加入群聊 " + v.Name,
+			Callback: func(msg *wcferry.WxMsg) string {
+				resp := wc.CmdClient.InviteChatroomMembers(v.RoomId, msg.Sender)
+				if resp == 1 {
+					return "已发送群邀请，稍后请点击进入"
+				} else {
+					return "发送群邀请失败"
+				}
+			},
+		}
+	}
+
+	handlers["/help"] = &Handler{
+		Level:    0,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "查看帮助信息",
+		Callback: func(msg *wcferry.WxMsg) string {
+			text := ""
+			if msg.IsGroup {
+				text += helper2
 			} else {
-				return "发送群邀请失败"
+				text += helper1
 			}
-		}
+			text += "对话模型 " + model.GetUserModel(msg.Sender).Name + "，"
+			text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
+			return text
+		},
 	}
 
-	helper = append(helper, "/help 查看帮助信息")
-	handlers["/help"] = func(id, msg string) string {
-		text := strings.Join(helper, "\n") + "\n"
-		text += "对话模型 " + model.GetUserModel(id).Name + "，"
-		text += "上下文长度 " + strconv.Itoa(model.CountHistory(id)) + "/" + strconv.Itoa(args.LLM.HistoryNum)
-		return text
+	for k, v := range handlers {
+		if v.ChatAble {
+			helper1 += k + " " + v.Describe + "\n"
+		}
+		if v.RoomAble {
+			helper2 += k + " " + v.Describe + "\n"
+		}
 	}
 
 }
 
-func chatHandler(msg *wcferry.WxMsg) bool {
+func chatHandler(msg *wcferry.WxMsg) string {
 
+	// 解析指令
 	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s|$)`)
 	matches := re.FindStringSubmatch(msg.Content)
 	if matches == nil || len(matches) < 2 {
-		return false
+		return ""
 	}
 
-	output := ""
+	// 清理指令
 	command := matches[1]
-	content := strings.TrimSpace(msg.Content[len(matches[0]):])
-
-	if command == "/ai" && content == "" {
+	msg.Content = strings.TrimSpace(msg.Content[len(matches[0]):])
+	if command == "/ai" && msg.Content == "" {
 		command = "/help"
 	}
 
-	// 执行指令
-	if fn, ok := handlers[command]; ok {
-		output = fn(msg.Sender, content)
-	} else {
-		output = "指令或参数错误"
+	// 查找指令
+	hd, exists := handlers[command]
+	if !exists {
+		return "指令或参数错误"
 	}
 
-	// 发送消息
+	// 检查权限
+	if hd.Level > 0 {
+		return "无权限使用该指令"
+	}
+
+	// 检查场景
 	if msg.IsGroup {
-		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
+		if !hd.RoomAble {
+			return "该指令只能在私聊中使用"
+		}
 	} else {
-		wc.CmdClient.SendTxt(output, msg.Sender, "")
+		if !hd.ChatAble {
+			return "该指令只能在群聊中使用"
+		}
 	}
 
-	return true
+	// 执行指令
+	return hd.Callback(msg)
 
 }

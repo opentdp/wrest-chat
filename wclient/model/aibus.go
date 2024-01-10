@@ -17,18 +17,10 @@ func AiChat(id, msg string) string {
 
 	// 预设模型参数
 	if _, exists := UserModels[id]; !exists {
-		UserModels[id] = 0
+		UserModels[id] = args.LLM.Models[0]
 	}
 	if _, exists := MsgHistory[id]; !exists {
 		MsgHistory[id] = []*HistoryItem{}
-	}
-
-	// 防止模型越界
-	if UserModels[id] >= len(args.LLM.Models) {
-		UserModels[id] = 0
-	}
-	if len(MsgHistory[id]) > args.LLM.HistoryNum {
-		MsgHistory[id] = MsgHistory[id][2:]
 	}
 
 	// 调用接口生成文本
@@ -50,20 +42,33 @@ func AiChat(id, msg string) string {
 
 }
 
-// History
+// User Models
+
+var UserModels = make(map[string]*args.LLModel)
+
+func SetUserModel(id string, m *args.LLModel) string {
+
+	UserModels[id] = m
+	MsgHistory[id] = []*HistoryItem{}
+
+	return "对话模型已切换为 " + m.Name + " [" + m.Model + "]"
+
+}
+
+func GetUserModel(id string) *args.LLModel {
+
+	return UserModels[id]
+
+}
+
+// Message History
 
 type HistoryItem struct {
-	Role    string
 	Content string
+	Role    string
 }
 
 var MsgHistory = make(map[string][]*HistoryItem)
-
-func AddHistory(id string, items ...*HistoryItem) {
-
-	MsgHistory[id] = append(MsgHistory[id], items...)
-
-}
 
 func CountHistory(id string) int {
 
@@ -78,33 +83,12 @@ func ClearHistory(id string) string {
 
 }
 
-// UserModels
+func AppendHistory(id string, items ...*HistoryItem) {
 
-var UserModels = make(map[string]int)
-
-func SetUserModel(id string, k int) string {
-
-	if k >= len(args.LLM.Models) {
-		return "模型未定义"
+	if len(MsgHistory[id]) >= args.LLM.HistoryNum {
+		MsgHistory[id] = MsgHistory[id][len(items):]
 	}
 
-	UserModels[id] = k
-	MsgHistory[id] = []*HistoryItem{}
-
-	v := args.LLM.Models[k]
-	return "对话模型已切换为 " + v.Name + " [" + v.Model + "]"
-
-}
-
-func GetUserModel(id string) *args.LLModel {
-
-	if len(args.LLM.Models) == 0 {
-		return nil
-	}
-	if UserModels[id] >= len(args.LLM.Models) {
-		return nil
-	}
-
-	return args.LLM.Models[UserModels[id]]
+	MsgHistory[id] = append(MsgHistory[id], items...)
 
 }

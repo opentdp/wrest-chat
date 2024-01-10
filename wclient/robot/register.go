@@ -18,7 +18,7 @@ func Register() {
 	wc.EnrollReceiver(true, reciver)
 
 	if len(handlers) == 0 {
-		initHandler()
+		initHandlers()
 	}
 
 }
@@ -32,7 +32,13 @@ func reciver(msg *wcferry.WxMsg) {
 			return
 		}
 		// 处理聊天指令
-		if chatHandler(msg) {
+		if output := chatHandler(msg); output != "" {
+			if msg.IsGroup {
+				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
+				wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
+			} else {
+				wc.CmdClient.SendTxt(output, msg.Sender, "")
+			}
 			return
 		}
 		return

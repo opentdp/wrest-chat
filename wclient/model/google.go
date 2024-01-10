@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/google/generative-ai-go/genai"
@@ -12,9 +11,6 @@ import (
 func GoogleChat(id, msg string) (string, error) {
 
 	llmc := GetUserModel(id)
-	if llmc == nil {
-		return "", errors.New("未配置模型")
-	}
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),
@@ -63,16 +59,16 @@ func GoogleChat(id, msg string) (string, error) {
 	// 更新历史记录
 
 	item1 := &HistoryItem{
-		Role:    "user",
 		Content: msg,
+		Role:    "user",
 	}
 
 	item2 := &HistoryItem{
-		Role:    "model",
 		Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]),
+		Role:    "model",
 	}
 
-	AddHistory(id, item1, item2)
+	AppendHistory(id, item1, item2)
 
 	return item2.Content, nil
 

@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"errors"
 
 	"github.com/sashabaranov/go-openai"
 )
@@ -10,9 +9,6 @@ import (
 func OpenaiChat(id, msg string) (string, error) {
 
 	llmc := GetUserModel(id)
-	if llmc == nil {
-		return "", errors.New("未配置模型")
-	}
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {
@@ -56,16 +52,16 @@ func OpenaiChat(id, msg string) (string, error) {
 	// 更新历史记录
 
 	item1 := &HistoryItem{
-		Role:    "user",
 		Content: msg,
+		Role:    "user",
 	}
 
 	item2 := &HistoryItem{
-		Role:    resp.Choices[0].Message.Role,
 		Content: resp.Choices[0].Message.Content,
+		Role:    resp.Choices[0].Message.Role,
 	}
 
-	AddHistory(id, item1, item2)
+	AppendHistory(id, item1, item2)
 
 	return item2.Content, nil
 
