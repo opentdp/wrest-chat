@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"encoding/xml"
 	"fmt"
 	"math/rand"
 	"regexp"
@@ -10,6 +11,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/model"
+	"github.com/opentdp/wechat-rest/wclient/proto"
 )
 
 type Handler struct {
@@ -47,6 +49,27 @@ func initHandlers() {
 		},
 	}
 
+	handlers["/ban"] = &Handler{
+		Level:    1,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "禁止用户使用Ai服务",
+		Callback: func(msg *wcferry.WxMsg) string {
+			ret := &proto.AtMsgSource{}
+			err := xml.Unmarshal([]byte(msg.Xml), ret)
+			if err == nil && ret.AtUserList != "" {
+				users := strings.Split(ret.AtUserList, ",")
+				for _, v := range users {
+					if v != "" && !contains(args.Bot.BlackList, v) {
+						args.Bot.BlackList = append(args.Bot.BlackList, v)
+					}
+				}
+				return fmt.Sprintf("操作完成，已禁止用户数：%d", len(args.Bot.BlackList))
+			}
+			return "参数错误"
+		},
+	}
+
 	handlers["/mr"] = &Handler{
 		Level:    0,
 		ChatAble: true,
@@ -72,7 +95,7 @@ func initHandlers() {
 		}
 	}
 
-	for _, v := range args.Bot.InvitableRooms {
+	for _, v := range args.Bot.HostedRooms {
 		v := v // copy it
 		cmdkey := "/room:" + v.Mask
 		handlers[cmdkey] = &Handler{
@@ -127,6 +150,14 @@ func initHandlers() {
 
 func applyHandler(msg *wcferry.WxMsg) string {
 
+	// 匹配名单
+	if len(args.Bot.WhiteList) > 0 && !contains(args.Bot.WhiteList, msg.Sender) {
+		return ""
+	}
+	if len(args.Bot.BlackList) > 0 && contains(args.Bot.BlackList, msg.Sender) {
+		return ""
+	}
+
 	// 解析指令
 	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s|$)`)
 	matches := re.FindStringSubmatch(msg.Content)
@@ -148,7 +179,7 @@ func applyHandler(msg *wcferry.WxMsg) string {
 	}
 
 	// 检查权限
-	if hd.Level > 0 {
+	if hd.Level > 0 && !contains(args.Bot.Managers, msg.Sender) {
 		return "无权限使用该指令"
 	}
 
@@ -166,4 +197,13 @@ func applyHandler(msg *wcferry.WxMsg) string {
 	// 执行指令
 	return hd.Callback(msg)
 
+}
+
+func contains(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }

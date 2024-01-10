@@ -22,9 +22,12 @@ type BotRoom struct {
 }
 
 var Bot = struct {
-	Enable         bool       `yaml:"enable"`
-	Welcome        string     `yaml:"welcome"`
-	InvitableRooms []*BotRoom `yaml:"invitableRooms"`
+	Enable      bool       `yaml:"enable"`
+	Welcome     string     `yaml:"welcome"`
+	Managers    []string   `yaml:"managers"`
+	BlackList   []string   `yaml:"blackList"`
+	WhiteList   []string   `yaml:"whiteList"`
+	HostedRooms []*BotRoom `yaml:"hostedRooms"`
 }{
 	Enable: true,
 }
