@@ -73,7 +73,7 @@ func initHandlers() {
 
 	for _, v := range args.Bot.InvitableRooms {
 		v := v // copy it
-		cmdkey := "/room:" + v.Mark
+		cmdkey := "/room:" + v.Mask
 		handlers[cmdkey] = &Handler{
 			Level:    0,
 			ChatAble: true,

@@ -15,7 +15,7 @@ var Efs *embed.FS
 // 机器人参数
 
 type BotRoom struct {
-	Mark    string `yaml:"mark"`
+	Mask    string `yaml:"mask"`
 	Name    string `yaml:"name"`
 	RoomId  string `yaml:"roomId"`
 	Welcome string `yaml:"welcome"`
