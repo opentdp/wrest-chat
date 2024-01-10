@@ -23,16 +23,18 @@ func initHandler() {
 	handlers["/new"] = model.Clear
 
 	for k, v := range args.LLM.Models {
+		k, v := k, v // copy it
 		cmdkey := "/m:" + v.Name
 		helper = append(helper, cmdkey+" 切换对话模型 "+v.Model)
 		handlers[cmdkey] = func(id, msg string) string {
 			model.Clear(id, "")
 			model.Models[id] = k
-			return "对话模型已切换为" + v.Name + "[" + v.Model + "]"
+			return "对话模型已切换为 " + v.Name + "[" + v.Model + "]"
 		}
 	}
 
 	for k, v := range args.Bot.InvitableRooms {
+		k, v := k, v // copy it
 		cmdkey := "/room:" + strconv.Itoa(k+1)
 		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
 		handlers[cmdkey] = func(id, msg string) string {
