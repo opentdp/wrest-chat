@@ -12,9 +12,9 @@ CD /d %~dp0
 
 go mod tidy
 
-if exist .local.yaml (
+if exist .local.yml (
     echo use .local.yaml as config
-    go run main.go .local.yaml
+    go run main.go .local.yml
 ) else (
     go run main.go
 )
