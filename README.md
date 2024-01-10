@@ -1,6 +1,6 @@
 # 微信 REST API
 
-基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现的电脑版微信 REST API，主要特性如下：
+基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，主要特性如下：
 
 - 使用 Go 语言编写，无运行时依赖
 - 基于 HTTP 提供操作接口，无缝对接大多数编程语言
@@ -14,13 +14,11 @@
 
 1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
-2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录。
+2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
 
 > 初始化时出现 **Attempt to access invalid address** 错误信息可以忽略
 
 3、浏览器打开 `http://localhost:7600` 查看支持的接口
-
-> 接口使用范例请参考 <https://github.com/opentdp/wechat-robot>
 
 4、修改 `config.yml` 配置机器人参数，重启 wrest 和 wechat 后生效
 
