@@ -25,11 +25,11 @@ func initHandler() {
 	for k, v := range args.LLM.Models {
 		k, v := k, v // copy it
 		cmdkey := "/m:" + v.Name
-		helper = append(helper, cmdkey+" 切换对话模型 "+v.Model)
+		helper = append(helper, cmdkey+" 切换为 "+v.Model+" 模型")
 		handlers[cmdkey] = func(id, msg string) string {
 			model.Clear(id, "")
 			model.Models[id] = k
-			return "对话模型已切换为 " + v.Name + "[" + v.Model + "]"
+			return "对话模型已切换为 " + v.Name + " [" + v.Model + "]"
 		}
 	}
 
@@ -67,14 +67,20 @@ func chatHandler(msg *wcferry.WxMsg) bool {
 
 	output := ""
 	command := matches[1]
-	content := msg.Content[len(matches[0]):]
+	content := strings.TrimSpace(msg.Content[len(matches[0]):])
 
+	if command == "/ai" && content == "" {
+		command = "/help"
+	}
+
+	// 执行指令
 	if fn, ok := handlers[command]; ok {
 		output = fn(msg.Sender, content)
 	} else {
 		output = "指令或参数错误"
 	}
 
+	// 发送消息
 	if msg.IsGroup {
 		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
 		wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
