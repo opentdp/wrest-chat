@@ -11,4 +11,10 @@ SET GO111MODULE=on
 CD /d %~dp0
 
 go mod tidy
-go run main.go
+
+if exist .local.yaml (
+    echo use .local.yaml as config
+    go run main.go .local.yaml
+) else (
+    go run main.go
+)

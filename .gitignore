@@ -1,6 +1,7 @@
 *.log
 *.lock
 .DS_Store
+.local.yaml
 
 build/*
 docs/*
