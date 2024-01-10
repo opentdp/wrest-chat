@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -23,8 +24,8 @@ var handlers = make(map[string]*Handler)
 
 func initHandlers() {
 
-	helper1 := "" // 私聊指令
-	helper2 := "" // 群聊指令
+	helper1 := []string{} // 私聊指令
+	helper2 := []string{} // 群聊指令
 
 	handlers["/ai"] = &Handler{
 		Level:    0,
@@ -98,9 +99,9 @@ func initHandlers() {
 		Callback: func(msg *wcferry.WxMsg) string {
 			text := ""
 			if msg.IsGroup {
-				text += helper2
+				text += strings.Join(helper2, "\n") + "\n"
 			} else {
-				text += helper1
+				text += strings.Join(helper1, "\n") + "\n"
 			}
 			text += "对话模型 " + model.GetUserModel(msg.Sender).Name + "，"
 			text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
@@ -108,18 +109,23 @@ func initHandlers() {
 		},
 	}
 
+	// 生成帮助信息
+
 	for k, v := range handlers {
 		if v.ChatAble {
-			helper1 += k + " " + v.Describe + "\n"
+			helper1 = append(helper1, k+" "+v.Describe)
 		}
 		if v.RoomAble {
-			helper2 += k + " " + v.Describe + "\n"
+			helper2 = append(helper2, k+" "+v.Describe)
 		}
 	}
 
+	sort.Strings(helper1)
+	sort.Strings(helper2)
+
 }
 
-func chatHandler(msg *wcferry.WxMsg) string {
+func applyHandler(msg *wcferry.WxMsg) string {
 
 	// 解析指令
 	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s|$)`)

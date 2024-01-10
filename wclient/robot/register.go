@@ -32,7 +32,7 @@ func reciver(msg *wcferry.WxMsg) {
 			return
 		}
 		// 处理聊天指令
-		if output := chatHandler(msg); output != "" {
+		if output := applyHandler(msg); output != "" {
 			if msg.IsGroup {
 				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
 				wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
@@ -43,7 +43,7 @@ func reciver(msg *wcferry.WxMsg) {
 		}
 		return
 	case 37:
-		// 接受好友请求
+		// 自动接受好友请求
 		ret := &proto.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
@@ -51,12 +51,12 @@ func reciver(msg *wcferry.WxMsg) {
 		}
 		return
 	case 10000:
-		// 拍一拍
+		// 自动回应拍一拍
 		if strings.Contains(msg.Content, "拍了拍我") {
 			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 			return
 		}
-		// 添加好友后自动回复
+		// 添加好友后主动回复
 		if strings.Contains(msg.Content, "现在可以开始聊天了") {
 			wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
 			return
