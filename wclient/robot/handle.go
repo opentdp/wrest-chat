@@ -26,7 +26,7 @@ func initHandler() {
 	}
 
 	helper = append(helper, "/m 随机选择一个模型")
-	handlers["/m"] = func(id, msg string) string {
+	handlers["/mr"] = func(id, msg string) string {
 		k := rand.Intn(len(args.LLM.Models))
 		return model.SetUserModel(id, k)
 	}
