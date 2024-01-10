@@ -37,7 +37,7 @@ func (c *Config) Unmarshal() {
 		Level:    Logger.Level,
 		Target:   Logger.Target,
 		Storage:  Logger.Dir,
-		Filename: "rest",
+		Filename: "wrest",
 	})
 
 	// 写入配置文件
