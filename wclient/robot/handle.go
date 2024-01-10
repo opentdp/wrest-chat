@@ -42,7 +42,7 @@ func initHandlers() {
 		RoomAble: true,
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
-			return model.ClearHistory(msg.Sender)
+			return model.ResetHistory(msg.Sender)
 		},
 	}
 

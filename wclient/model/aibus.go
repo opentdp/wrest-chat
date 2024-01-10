@@ -16,16 +16,11 @@ func AiChat(id, msg string) string {
 	}
 
 	// 预设模型参数
-	if _, exists := UserModels[id]; !exists {
-		UserModels[id] = args.LLM.Models[0]
-	}
-	if _, exists := MsgHistory[id]; !exists {
-		MsgHistory[id] = []*HistoryItem{}
-	}
+	llmc, _ := GetUserModel(id), CountHistory(id)
+	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
 
 	// 调用接口生成文本
-	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
-	switch GetUserModel(id).Provider {
+	switch llmc.Provider {
 	case "google":
 		res, err = GoogleChat(id, text)
 	case "openai":
@@ -48,14 +43,18 @@ var UserModels = make(map[string]*args.LLModel)
 
 func SetUserModel(id string, m *args.LLModel) string {
 
+	ResetHistory(id)
 	UserModels[id] = m
-	MsgHistory[id] = []*HistoryItem{}
 
 	return "对话模型已切换为 " + m.Name + " [" + m.Model + "]"
 
 }
 
 func GetUserModel(id string) *args.LLModel {
+
+	if _, exists := UserModels[id]; !exists {
+		SetUserModel(id, args.LLM.Models[0])
+	}
 
 	return UserModels[id]
 
@@ -70,16 +69,20 @@ type HistoryItem struct {
 
 var MsgHistory = make(map[string][]*HistoryItem)
 
-func CountHistory(id string) int {
+func ResetHistory(id string) string {
 
-	return len(MsgHistory[id])
+	MsgHistory[id] = []*HistoryItem{}
+	return "已重置上下文"
 
 }
 
-func ClearHistory(id string) string {
+func CountHistory(id string) int {
 
-	MsgHistory[id] = []*HistoryItem{}
-	return "已清空上下文"
+	if _, exists := MsgHistory[id]; !exists {
+		ResetHistory(id)
+	}
+
+	return len(MsgHistory[id])
 
 }
 
