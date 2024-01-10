@@ -11,7 +11,7 @@ import (
 
 func GoogleChat(id, msg string) (string, error) {
 
-	llmc := Model(id)
+	llmc := GetUserModel(id)
 	if llmc == nil {
 		return "", errors.New("未配置模型")
 	}
@@ -38,7 +38,7 @@ func GoogleChat(id, msg string) (string, error) {
 	cs := model.StartChat()
 	cs.History = []*genai.Content{}
 
-	for _, msg := range History[id] {
+	for _, msg := range MsgHistory[id] {
 		role := "model"
 		if msg.Role == "user" {
 			role = "user"
@@ -62,17 +62,17 @@ func GoogleChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := HistoryItem{
+	item1 := &HistoryItem{
 		Role:    "user",
 		Content: msg,
 	}
 
-	item2 := HistoryItem{
+	item2 := &HistoryItem{
 		Role:    "model",
 		Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]),
 	}
 
-	History[id] = append(History[id], item1, item2)
+	AddHistory(id, item1, item2)
 
 	return item2.Content, nil
 

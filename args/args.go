@@ -41,7 +41,7 @@ var Httpd = struct {
 
 // 大语言模型参数
 
-type LLMModel struct {
+type LLModel struct {
 	Name     string `yaml:"name"`
 	Provider string `yaml:"provider"`
 	Endpoint string `yaml:"endpoint"`
@@ -51,7 +51,7 @@ type LLMModel struct {
 
 var LLM = struct {
 	HistoryNum int `yaml:"historyNum"`
-	Models     []*LLMModel
+	Models     []*LLModel
 }{
 	HistoryNum: 20,
 }

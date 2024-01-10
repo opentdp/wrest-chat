@@ -23,7 +23,7 @@ llm:
           endpoint: https://googai.173371.xyz # 留空使用官方接口
           model: gemini-pro # 模型
           key: YOUR-API-KEY # 密钥
-        - name: gpt35
+        - name: gpt
           provider: openai
           endpoint: https://chat.451024.xyz
           model: gpt-3.5-turbo

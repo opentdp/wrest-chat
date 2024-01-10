@@ -9,7 +9,7 @@ import (
 
 func OpenaiChat(id, msg string) (string, error) {
 
-	llmc := Model(id)
+	llmc := GetUserModel(id)
 	if llmc == nil {
 		return "", errors.New("未配置模型")
 	}
@@ -28,7 +28,7 @@ func OpenaiChat(id, msg string) (string, error) {
 		Messages: []openai.ChatCompletionMessage{},
 	}
 
-	for _, msg := range History[id] {
+	for _, msg := range MsgHistory[id] {
 		role := openai.ChatMessageRoleAssistant
 		if msg.Role == "user" {
 			role = openai.ChatMessageRoleUser
@@ -55,17 +55,17 @@ func OpenaiChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := HistoryItem{
+	item1 := &HistoryItem{
 		Role:    "user",
 		Content: msg,
 	}
 
-	item2 := HistoryItem{
+	item2 := &HistoryItem{
 		Role:    resp.Choices[0].Message.Role,
 		Content: resp.Choices[0].Message.Content,
 	}
 
-	History[id] = append(History[id], item1, item2)
+	AddHistory(id, item1, item2)
 
 	return item2.Content, nil
 

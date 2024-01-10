@@ -6,35 +6,6 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-type HistoryItem struct {
-	Role    string
-	Content string
-}
-
-var History = make(map[string][]HistoryItem)
-
-var Models = make(map[string]int)
-
-func Clear(id, msg string) string {
-
-	History[id] = []HistoryItem{}
-	return "已清空上下文"
-
-}
-
-func Model(id string) *args.LLMModel {
-
-	if len(args.LLM.Models) == 0 {
-		return nil
-	}
-	if Models[id] >= len(args.LLM.Models) {
-		return nil
-	}
-
-	return args.LLM.Models[Models[id]]
-
-}
-
 func AiChat(id, msg string) string {
 
 	var err error
@@ -45,24 +16,24 @@ func AiChat(id, msg string) string {
 	}
 
 	// 预设模型参数
-	if _, exists := Models[id]; !exists {
-		Models[id] = 0
+	if _, exists := UserModels[id]; !exists {
+		UserModels[id] = 0
 	}
-	if _, exists := History[id]; !exists {
-		History[id] = []HistoryItem{}
+	if _, exists := MsgHistory[id]; !exists {
+		MsgHistory[id] = []*HistoryItem{}
 	}
 
 	// 防止模型越界
-	if Models[id] >= len(args.LLM.Models) {
-		Models[id] = 0
+	if UserModels[id] >= len(args.LLM.Models) {
+		UserModels[id] = 0
 	}
-	if len(History[id]) > args.LLM.HistoryNum {
-		History[id] = History[id][2:]
+	if len(MsgHistory[id]) > args.LLM.HistoryNum {
+		MsgHistory[id] = MsgHistory[id][2:]
 	}
 
 	// 调用接口生成文本
 	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
-	switch Model(id).Provider {
+	switch GetUserModel(id).Provider {
 	case "google":
 		res, err = GoogleChat(id, text)
 	case "openai":
@@ -76,5 +47,64 @@ func AiChat(id, msg string) string {
 		return err.Error()
 	}
 	return res
+
+}
+
+// History
+
+type HistoryItem struct {
+	Role    string
+	Content string
+}
+
+var MsgHistory = make(map[string][]*HistoryItem)
+
+func AddHistory(id string, items ...*HistoryItem) {
+
+	MsgHistory[id] = append(MsgHistory[id], items...)
+
+}
+
+func CountHistory(id string) int {
+
+	return len(MsgHistory[id])
+
+}
+
+func ClearHistory(id string) string {
+
+	MsgHistory[id] = []*HistoryItem{}
+	return "已清空上下文"
+
+}
+
+// UserModels
+
+var UserModels = make(map[string]int)
+
+func SetUserModel(id string, k int) string {
+
+	if k >= len(args.LLM.Models) {
+		return "模型未定义"
+	}
+
+	UserModels[id] = k
+	MsgHistory[id] = []*HistoryItem{}
+
+	v := args.LLM.Models[k]
+	return "对话模型已切换为 " + v.Name + " [" + v.Model + "]"
+
+}
+
+func GetUserModel(id string) *args.LLModel {
+
+	if len(args.LLM.Models) == 0 {
+		return nil
+	}
+	if UserModels[id] >= len(args.LLM.Models) {
+		return nil
+	}
+
+	return args.LLM.Models[UserModels[id]]
 
 }

@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"math/rand"
 	"regexp"
 	"strconv"
 	"strings"
@@ -20,16 +21,22 @@ func initHandler() {
 	handlers["/ai"] = model.AiChat
 
 	helper = append(helper, "/new 重置上下文内容")
-	handlers["/new"] = model.Clear
+	handlers["/new"] = func(id, msg string) string {
+		return model.ClearHistory(id)
+	}
+
+	helper = append(helper, "/m 随机选择一个模型")
+	handlers["/m"] = func(id, msg string) string {
+		k := rand.Intn(len(args.LLM.Models))
+		return model.SetUserModel(id, k)
+	}
 
 	for k, v := range args.LLM.Models {
 		k, v := k, v // copy it
 		cmdkey := "/m:" + v.Name
 		helper = append(helper, cmdkey+" 切换为 "+v.Model+" 模型")
 		handlers[cmdkey] = func(id, msg string) string {
-			model.Clear(id, "")
-			model.Models[id] = k
-			return "对话模型已切换为 " + v.Name + " [" + v.Model + "]"
+			return model.SetUserModel(id, k)
 		}
 	}
 
@@ -50,8 +57,8 @@ func initHandler() {
 	helper = append(helper, "/help 查看帮助信息")
 	handlers["/help"] = func(id, msg string) string {
 		text := strings.Join(helper, "\n") + "\n"
-		text += "当前对话模型 " + model.Model(id).Name + "，"
-		text += "上下文长度 " + strconv.Itoa(len(model.History[id])) + "/" + strconv.Itoa(args.LLM.HistoryNum)
+		text += "对话模型 " + model.GetUserModel(id).Name + "，"
+		text += "上下文长度 " + strconv.Itoa(model.CountHistory(id)) + "/" + strconv.Itoa(args.LLM.HistoryNum)
 		return text
 	}
 
