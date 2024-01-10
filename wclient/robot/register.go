@@ -7,7 +7,6 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient"
-	"github.com/opentdp/wechat-rest/wclient/cache"
 	"github.com/opentdp/wechat-rest/wclient/proto"
 )
 
@@ -18,8 +17,8 @@ func Register() {
 	wc = wclient.Register()
 	wc.EnrollReceiver(true, reciver)
 
-	if len(cache.Handlers) == 0 {
-		initHandlers()
+	if len(handlers) == 0 {
+		initHandler()
 	}
 
 }
@@ -38,7 +37,7 @@ func reciver(msg *wcferry.WxMsg) {
 		}
 		return
 	case 37:
-		// 自动接受好友请求
+		// 接受好友请求
 		ret := &proto.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {

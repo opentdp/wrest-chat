@@ -7,9 +7,53 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/cache"
 	"github.com/opentdp/wechat-rest/wclient/model"
 )
+
+var handlers = make(map[string]func(id, msg string) string)
+
+func initHandler() {
+
+	helper := []string{}
+
+	helper = append(helper, "/ai 提问或交谈")
+	handlers["/ai"] = model.AiChat
+
+	helper = append(helper, "/new 重置上下文内容")
+	handlers["/new"] = model.Clear
+
+	for k, v := range args.LLM.Models {
+		cmdkey := "/m:" + v.Name
+		helper = append(helper, cmdkey+" 切换对话模型 "+v.Model)
+		handlers[cmdkey] = func(id, msg string) string {
+			model.Clear(id, "")
+			model.Models[id] = k
+			return "对话模型已切换为" + v.Name + "[" + v.Model + "]"
+		}
+	}
+
+	for k, v := range args.Bot.InvitableRooms {
+		cmdkey := "/room:" + strconv.Itoa(k+1)
+		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
+		handlers[cmdkey] = func(id, msg string) string {
+			resp := wc.CmdClient.InviteChatroomMembers(v.Id, id)
+			if resp == 1 {
+				return "已发送群邀请，稍后请点击进入"
+			} else {
+				return "发送群邀请失败"
+			}
+		}
+	}
+
+	helper = append(helper, "/help 查看帮助信息")
+	handlers["/help"] = func(id, msg string) string {
+		text := strings.Join(helper, "\n") + "\n"
+		text += "当前对话模型 " + model.Model(id).Name + "，"
+		text += "上下文长度 " + strconv.Itoa(len(model.History[id])) + "/" + strconv.Itoa(args.LLM.HistoryNum)
+		return text
+	}
+
+}
 
 func chatHandler(msg *wcferry.WxMsg) bool {
 
@@ -23,7 +67,7 @@ func chatHandler(msg *wcferry.WxMsg) bool {
 	command := matches[1]
 	content := msg.Content[len(matches[0]):]
 
-	if fn, ok := cache.Handlers[command]; ok {
+	if fn, ok := handlers[command]; ok {
 		output = fn(msg.Sender, content)
 	} else {
 		output = "指令或参数错误"
@@ -37,75 +81,5 @@ func chatHandler(msg *wcferry.WxMsg) bool {
 	}
 
 	return true
-
-}
-
-func initHandlers() {
-
-	helper := []string{
-		"/ai 提问或交谈",
-		"/new 重置上下文内容",
-		"/m:gpt35 切换为 Openai GPT-3.5 模型",
-		"/m:gemini 切换为 Google Gemini 模型",
-	}
-
-	cache.Handlers["/ai"] = func(id, msg string) string {
-		var err error
-		var res string
-		if _, exists := cache.Models[id]; !exists {
-			cache.Models[id] = "gemini-pro"
-		}
-		if _, exists := cache.History[id]; !exists {
-			cache.History[id] = []cache.HistoryItem{}
-		}
-		str := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
-		switch cache.Models[id] {
-		case "gpt-3.5-turbo":
-			res, err = model.OpenaiChat(id, str)
-		case "gemini-pro":
-			res, err = model.GeminiChat(id, str)
-		}
-		if err != nil {
-			return err.Error()
-		}
-		return res
-	}
-
-	cache.Handlers["/new"] = func(id, msg string) string {
-		cache.History[id] = []cache.HistoryItem{}
-		return "已清空上下文"
-	}
-
-	cache.Handlers["/m:gpt35"] = func(id, msg string) string {
-		cache.Models[id] = "gpt-3.5-turbo"
-		cache.History[id] = []cache.HistoryItem{}
-		return "对话模型已切换为 Openai GPT-3.5"
-	}
-
-	cache.Handlers["/m:gemini"] = func(id, msg string) string {
-		cache.Models[id] = "gemini-pro"
-		cache.History[id] = []cache.HistoryItem{}
-		return "对话模型已切换为 Google Gemini"
-	}
-
-	cache.Handlers["/help"] = func(id, msg string) string {
-		text := strings.Join(helper, "\n")
-		text += "\n/help 显示此帮助信息"
-		text += "\n当前对话模型 " + cache.Models[id] + "，上下文长度 " + strconv.Itoa(len(cache.History[id]))
-		return text
-	}
-
-	for k, v := range args.Bot.InvitableRooms {
-		cmdkey := "/room:" + strconv.Itoa(k+1)
-		helper = append(helper, cmdkey+" 加入群聊 "+v.Name)
-		cache.Handlers[cmdkey] = func(id, msg string) string {
-			resp := wc.CmdClient.InviteChatroomMembers(v.Id, id)
-			if resp == 1 {
-				return "已发送群邀请，稍后请点击进入"
-			} else {
-				return "发送群邀请失败"
-			}
-		}
-	}
 
 }

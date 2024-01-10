@@ -14,14 +14,16 @@ var Efs *embed.FS
 
 // 机器人参数
 
+type BotRoom struct {
+	Id      string `yaml:"id"`
+	Name    string `yaml:"name"`
+	Welcome string `yaml:"welcome"`
+}
+
 var Bot = struct {
-	Enable         bool   `yaml:"enable"`
-	Welcome        string `yaml:"welcome"`
-	InvitableRooms []struct {
-		Id      string `yaml:"id"`
-		Name    string `yaml:"name"`
-		Welcome string `yaml:"welcome"`
-	} `yaml:"invitableRooms"`
+	Enable         bool       `yaml:"enable"`
+	Welcome        string     `yaml:"welcome"`
+	InvitableRooms []*BotRoom `yaml:"invitableRooms"`
 }{
 	Enable: true,
 }
@@ -39,14 +41,19 @@ var Httpd = struct {
 
 // 大语言模型参数
 
+type LLMModel struct {
+	Name     string `yaml:"name"`
+	Provider string `yaml:"provider"`
+	Endpoint string `yaml:"endpoint"`
+	Model    string `yaml:"model"`
+	Key      string `yaml:"key"`
+}
+
 var LLM = struct {
-	GoogleAiUrl string `yaml:"googleAiUrl"`
-	GoogleAiKey string `yaml:"googleAiKey"`
-	OpenAiUrl   string `yaml:"openaiUrl"`
-	OpenAiKey   string `yaml:"openaiKey"`
+	HistoryNum int `yaml:"historyNum"`
+	Models     []*LLMModel
 }{
-	GoogleAiUrl: "https://generativelanguage.googleapis.com",
-	OpenAiUrl:   "https://api.openai.com",
+	HistoryNum: 20,
 }
 
 // 日志参数
