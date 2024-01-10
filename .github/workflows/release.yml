@@ -1,4 +1,4 @@
-name: Wechat Rest Builder
+name: WeChat Rest Builder
 
 on:
   push:

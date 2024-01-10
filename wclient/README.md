@@ -1,4 +1,4 @@
-# 微信机器人
+# WeChat Rest Bot
 
 基于 [wcferry](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已实现如下功能：
 

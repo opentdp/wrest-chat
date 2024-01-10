@@ -1,4 +1,4 @@
-# 微信 REST API
+# WeChat Rest
 
 基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，主要特性如下：
 
@@ -12,7 +12,7 @@
 
 ## 使用方法
 
-1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [Wechat-rest](https://github.com/opentdp/wechat-rest/releases)
+1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
 2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
 
@@ -47,12 +47,3 @@
 ### 编译须知
 
 由于微信和WCF均为32位应用，所以`go`也必须以`32`位模式编译，务必设置 `GOARCH` 环境变量为 `386`
-
-### 生成 OpenApi 文档
-
-```shell
-go get github.com/swaggo/swag/cmd/swag
-go install github.com/swaggo/swag/cmd/swag
-
-swag init --parseDependency -g httpd/server.go -o public/swag -ot json
-```

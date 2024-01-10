@@ -1,4 +1,4 @@
-# 微信 REST API
+# WeChat Rest Api
 
 基于 [wcferry](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的 HTTP 接口服务，已实现如下功能：
 
@@ -30,3 +30,12 @@
 - 拍一拍群友
 - 转发消息给好友
 - 转发收到的消息到URL
+
+## 生成 OpenApi 文档
+
+```shell
+go get github.com/swaggo/swag/cmd/swag
+go install github.com/swaggo/swag/cmd/swag
+
+swag init --parseDependency -g httpd/server.go -o public/swag -ot json
+```
