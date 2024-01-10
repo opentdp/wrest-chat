@@ -16,34 +16,33 @@
 
 2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
 
-> 初始化时出现 **Attempt to access invalid address** 错误信息可以忽略
+> 初始化时出现 *Attempt to access invalid address* 错误信息可以忽略
 
 3、浏览器打开 `http://localhost:7600` 查看支持的接口
 
-4、修改 `config.yml` 配置机器人参数，重启 wrest 和 wechat 后生效
+4、修改 `config.yml` 配置机器人参数，重启 **wrest** 后生效
+
+> 请使用 `Ctrl + C` 终止 **wrest**，切勿直接关闭任务窗口
 
 ## 配置说明
 
 启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](./config.yml)
 
-- 应使用 `Ctrl + C` 终止 **wrest**，而非直接关闭 **wrest** 窗口
 - 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
 - 免费申请 `Google AI API` 请登录 <https://makersuite.google.com>
 
-## API 模块
+## 开发说明
+
+由于微信和WCF均为32位应用，所以`go`也必须以`32`位模式编译，务必设置 `GOARCH` 环境变量为 `386`
+
+### API 模块
 
 实现了 HTTP 接口，详情查看 [httpd/README.md](./httpd/README.md)
 
-## BOT 模块
+### BOT 模块
 
 实现了群聊机器人，详情查看 [wclient/README.md](./wclient/README.md)
 
-## SDK 模块
+### SDK 模块
 
 实现了 WCF 客户端，详情查看 [wcferry/README.md](./wcferry/README.md)
-
-## 开发说明
-
-### 编译须知
-
-由于微信和WCF均为32位应用，所以`go`也必须以`32`位模式编译，务必设置 `GOARCH` 环境变量为 `386`
