@@ -55,7 +55,7 @@ func initHandlers() {
 		RoomAble: true,
 		Describe: "禁止用户使用Ai服务",
 		Callback: func(msg *wcferry.WxMsg) string {
-			ret := &proto.AtMsgSource{}
+			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
 				users := strings.Split(ret.AtUserList, ",")

@@ -1,4 +1,4 @@
-package proto
+package types
 
 type AtMsgSource struct {
 	AtUserList  string  `xml:"atuserlist"`

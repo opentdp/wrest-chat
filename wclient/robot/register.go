@@ -44,7 +44,7 @@ func reciver(msg *wcferry.WxMsg) {
 		return
 	case 37:
 		// 自动接受好友请求
-		ret := &proto.FriendRequestMsg{}
+		ret := &types.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
 			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)

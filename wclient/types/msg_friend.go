@@ -1,4 +1,4 @@
-package proto
+package types
 
 type FriendRequestMsg struct {
 	FromUserName      string    `xml:"fromusername,attr"`
