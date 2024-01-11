@@ -269,20 +269,20 @@
                 }
             }
         },
-        "/disable_forward_msg": {
+        "/disable_receiver": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "关闭转发消息到URL",
+                "summary": "关闭推送消息到URL",
                 "parameters": [
                     {
-                        "description": "消息转发请求参数",
+                        "description": "消息推送请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
+                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
                         }
                     }
                 ],
@@ -350,20 +350,20 @@
                 }
             }
         },
-        "/enable_forward_msg": {
+        "/enable_receiver": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "开启转发消息到URL",
+                "summary": "开启推送消息到URL",
                 "parameters": [
                     {
-                        "description": "消息转发请求参数",
+                        "description": "消息推送请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
+                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
                         }
                     }
                 ],
@@ -1059,14 +1059,6 @@
                 }
             }
         },
-        "wcfrest.ForwardMsgRequest": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
         "wcfrest.GetAudioMsgRequest": {
             "type": "object",
             "properties": {
@@ -1089,6 +1081,14 @@
                 },
                 "timeout": {
                     "type": "integer"
+                }
+            }
+        },
+        "wcfrest.ReceiverRequest": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
                 }
             }
         },
