@@ -3,37 +3,38 @@
 基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，主要特性如下：
 
 - 使用 Go 语言编写，无运行时依赖
-- 基于 HTTP 提供操作接口，无缝对接大多数编程语言
+- 提供 HTTP 操作接口，无缝对接各类编程语言
 - 支持作为标准 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
 - 内置互动机器人，参见 [wclient/README.md](./wclient/README.md)
 - 内置 OpenApi 文档，参见 `http://localhost:7600`
 - 支持 HTTP 接口授权，参见 [配置说明](#配置说明)
 - 消息中的 Xml 尽可能转为 Object
 
-## 使用方法
+## 快速开始
 
 1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest](https://github.com/opentdp/wechat-rest/releases)
 
 2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
 
-> 初始化时出现 *Attempt to access invalid address* 错误信息可以忽略
+- 初始化时出现 *Attempt to access invalid address* 错误信息可以忽略
 
-3、浏览器打开 `http://localhost:7600` 查看支持的接口
+3、修改 `config.yml` 配置机器人参数，重启 **wrest** 后生效
 
-4、修改 `config.yml` 配置机器人参数，重启 **wrest** 后生效
-
-> 请使用 `Ctrl + C` 终止 **wrest**，切勿直接关闭任务窗口
+- 请使用 `Ctrl + C` 终止 **wrest**，切勿直接关闭任务窗口
 
 ## 配置说明
 
 启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](./config.yml)
 
-- 若设置了 `token`，请求时需携带 **header** 信息: `Authorization: Bearer $token`
-- 免费申请 `Google AI API` 请登录 <https://makersuite.google.com>
+- 如设置了 `token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
+
+- `Google AI` 免费申请入口 <https://makersuite.google.com>
 
 ## 开发说明
 
-由于微信和WCF均为32位应用，所以`go`也必须以`32`位模式编译，务必设置 `GOARCH` 环境变量为 `386`
+- 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600` 
+
+- 由于微信和*WCF*均为32位应用，对接*bot*和*sdk*部分，必须设置环境变量 `GOARCH=386`
 
 ### API 模块
 
