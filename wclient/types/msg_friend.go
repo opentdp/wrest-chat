@@ -1,5 +1,8 @@
 package types
 
+// 微信好友请求消息
+// @field Msg.Content
+
 type FriendRequestMsg struct {
 	FromUserName      string    `xml:"fromusername,attr"`
 	EncryptUserName   string    `xml:"encryptusername,attr"`

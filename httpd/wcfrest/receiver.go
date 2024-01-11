@@ -16,7 +16,7 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 
 	if !urlReceiverStat {
 		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
-			ret := wcferry.WxMsgParser(msg)
+			ret := wcferry.ParseWxMsg(msg)
 			for url := range urlReceiverList {
 				logman.Info("forward msg", "url", url, "Id", ret.Id)
 				go request.JsonPost(url, ret, request.H{})

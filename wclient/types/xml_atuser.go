@@ -1,5 +1,8 @@
 package types
 
+// 群里At用户消息
+// @field Msg.Xml
+
 type AtMsgSource struct {
 	AtUserList  string  `xml:"atuserlist"`
 	Silence     int32   `xml:"silence"`

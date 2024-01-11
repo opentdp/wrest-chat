@@ -117,8 +117,8 @@ func (c *CmdClient) GetDbTables(db string) []*DbTable {
 // 执行 SQL 查询，如果数据量大注意分页
 // param db string 要查询的数据库
 // param sql string 要执行的 SQL
-// return []*DbRow 查询结果
-func (c *CmdClient) DbSqlQuery(db, sql string) []*DbRow {
+// return [][]*FlexDbField 查询结果
+func (c *CmdClient) DbSqlQuery(db, sql string) []map[string]any {
 	req := &Request{Func: Functions_FUNC_EXEC_DB_QUERY}
 	req.Msg = &Request_Query{
 		Query: &DbQuery{
@@ -127,22 +127,16 @@ func (c *CmdClient) DbSqlQuery(db, sql string) []*DbRow {
 		},
 	}
 	recv := c.call(req)
-	return recv.GetRows().GetRows()
-}
-
-// 执行 SQL 查询，如果数据量大注意分页
-// param db string 要查询的数据库
-// param sql string 要执行的 SQL
-// return map[string]any 查询结果
-func (c *CmdClient) DbSqlQueryMap(db, sql string) map[string]any {
-	rows := c.DbSqlQuery(db, sql)
-	data := map[string]any{}
-	for _, row := range rows {
+	rows := []map[string]any{}
+	for _, row := range recv.GetRows().GetRows() {
+		fields := map[string]any{}
 		for _, field := range row.Fields {
-			data[field.Column] = field.Content
+			ret, _ := ParseDbField(field.Type, field.Content)
+			fields[field.Column] = ret
 		}
+		rows = append(rows, fields)
 	}
-	return data
+	return rows
 }
 
 // 获取所有消息类型
@@ -186,16 +180,16 @@ func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
 	userMap := map[string]string{}
 	for _, user := range userRds {
-		wxid := string(user.Fields[0].Content)
-		userMap[wxid] = string(user.Fields[1].Content)
+		wxid := user["NickName"].(string)
+		userMap[wxid] = user["UserName"].(string)
 	}
 	// get room data
 	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
+	if len(roomRds) == 0 || len(roomRds[0]) == 0 {
 		return members
 	}
 	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
+	if err := proto.Unmarshal(roomRds[0]["RoomData"].([]byte), roomData); err != nil {
 		return members
 	}
 	// fix user name
@@ -219,16 +213,16 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	// get user data
 	nickName := ""
 	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
-	if len(userRds) > 0 && len(userRds[0].Fields) > 0 {
-		nickName = string(userRds[0].Fields[0].Content)
+	if len(userRds) > 0 && len(userRds[0]) > 0 {
+		nickName = userRds[0]["NickName"].(string)
 	}
 	// get room data
 	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0].Fields) == 0 {
+	if len(roomRds) == 0 || len(roomRds[0]) == 0 {
 		return nickName
 	}
 	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0].Fields[0].Content, roomData); err != nil {
+	if err := proto.Unmarshal(roomRds[0]["RoomData"].([]byte), roomData); err != nil {
 		return nickName
 	}
 	// fix user name

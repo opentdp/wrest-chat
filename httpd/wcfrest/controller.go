@@ -110,7 +110,7 @@ func (wc *Controller) dbSqlQuery(c *gin.Context) {
 		return
 	}
 
-	c.Set("Payload", wc.CmdClient.DbSqlQueryMap(req.Db, req.Sql))
+	c.Set("Payload", wc.CmdClient.DbSqlQuery(req.Db, req.Sql))
 
 }
 
