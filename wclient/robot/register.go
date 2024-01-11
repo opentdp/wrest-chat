@@ -7,7 +7,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient"
-	"github.com/opentdp/wechat-rest/wclient/proto"
+	"github.com/opentdp/wechat-rest/wclient/types"
 )
 
 var wc *wcferry.Client

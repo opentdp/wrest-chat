@@ -11,7 +11,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/model"
-	"github.com/opentdp/wechat-rest/wclient/proto"
+	"github.com/opentdp/wechat-rest/wclient/types"
 )
 
 type Handler struct {
