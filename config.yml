@@ -22,10 +22,11 @@ httpd:
 # 大语言模型
 llm:
     historyNum: 20 # 历史消息数量
+    roleContext: # 身份上下文定义
     models: # 模型列表
         - name: gemini # 模型名
           provider: google # 服务商
-          endpoint: https://googai.173371.xyz # 留空使用官方接口
+          endpoint: https://gemini.451024.xyz # 留空使用官方接口
           model: gemini-pro # 模型
           key: YOUR-API-KEY # 密钥
         - name: gpt

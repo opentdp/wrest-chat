@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/generative-ai-go/genai"
+	"github.com/opentdp/wechat-rest/args"
 	"google.golang.org/api/option"
 )
 
@@ -27,21 +28,25 @@ func GoogleChat(id, msg string) (string, error) {
 
 	defer client.Close()
 
-	// 构造请求参数
+	// 初始化对话模型
 
 	model := client.GenerativeModel(llmc.Model)
 
 	cs := model.StartChat()
 	cs.History = []*genai.Content{}
 
-	for _, msg := range MsgHistory[id] {
-		role := "model"
-		if msg.Role == "user" {
-			role = "user"
+	// 设置对话上下文
+
+	if args.LLM.RoleContext != "" {
+		cs.History = []*genai.Content{
+			{Parts: []genai.Part{genai.Text(args.LLM.RoleContext)}, Role: "user"},
+			{Parts: []genai.Part{genai.Text("OK")}, Role: "model"},
 		}
+	}
+
+	for _, msg := range MsgHistory[id] {
 		cs.History = append(cs.History, &genai.Content{
-			Parts: []genai.Part{genai.Text(msg.Content)},
-			Role:  role,
+			Parts: []genai.Part{genai.Text(msg.Content)}, Role: msg.Role,
 		})
 	}
 
@@ -58,15 +63,8 @@ func GoogleChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &HistoryItem{
-		Content: msg,
-		Role:    "user",
-	}
-
-	item2 := &HistoryItem{
-		Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]),
-		Role:    "model",
-	}
+	item1 := &HistoryItem{Content: msg, Role: "user"}
+	item2 := &HistoryItem{Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]), Role: "model"}
 
 	AppendHistory(id, item1, item2)
 

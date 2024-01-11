@@ -54,8 +54,9 @@ type LLModel struct {
 }
 
 var LLM = struct {
-	HistoryNum int `yaml:"historyNum"`
-	Models     []*LLModel
+	HistoryNum  int    `yaml:"historyNum"`
+	RoleContext string `yaml:"roleContext"`
+	Models      []*LLModel
 }{
 	HistoryNum: 20,
 }
