@@ -87,14 +87,14 @@ func initHandlers() {
 	handlers["/wake"] = &Handler{
 		Level:    0,
 		ChatAble: true,
-		RoomAble: false,
-		Describe: "设置唤醒词",
+		RoomAble: true,
+		Describe: "设置或禁用唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			model.GetUserConfig(msg.Sender).WakeWord = msg.Content
 			if msg.Content != "" {
 				return "唤醒词设置为 " + msg.Content
 			}
-			return "已禁用唤醒词"
+			return "已禁用唤醒词，群内无效"
 		},
 	}
 
