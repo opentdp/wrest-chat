@@ -16,12 +16,6 @@ type FlexWxMsg struct {
 	Xml     any `json:"xml,omitempty"`
 }
 
-type FlexDbField struct {
-	Type    int32  `json:"type,omitempty"`    // 字段类型
-	Column  string `json:"column,omitempty"`  // 字段名称
-	Content any    `json:"content,omitempty"` // 字段内容
-}
-
 // 解析消息数据
 // param msg *WxMsg 消息
 // return *FlexWxMsg 转换后的消息
@@ -55,22 +49,23 @@ func ParseWxMsg(msg *WxMsg) *FlexWxMsg {
 }
 
 // 解析数据库字段
-// param fieldType int 字段类型
-// param content []byte 字段内容
+// param field *DbField 字段
 // return any 解析结果
-func ParseDbField(fieldType int32, content []byte) (any, error) {
-	str := string(content)
-	switch fieldType {
+func ParseDbField(field *DbField) any {
+	str := string(field.Content)
+	switch field.Type {
 	case 1:
-		return strconv.ParseInt(str, 10, 64)
+		n, _ := strconv.ParseInt(str, 10, 64)
+		return n
 	case 2:
-		return strconv.ParseFloat(str, 64)
+		n, _ := strconv.ParseFloat(str, 64)
+		return n
 	case 4:
-		return content, nil
+		return field.Content
 	case 5:
-		return nil, nil
+		return nil
 	default:
-		return str, nil
+		return str
 	}
 }
 

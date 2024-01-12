@@ -117,7 +117,7 @@ func (c *CmdClient) GetDbTables(db string) []*DbTable {
 // 执行 SQL 查询，如果数据量大注意分页
 // param db string 要查询的数据库
 // param sql string 要执行的 SQL
-// return [][]*FlexDbField 查询结果
+// return []map[string]any 查询结果
 func (c *CmdClient) DbSqlQuery(db, sql string) []map[string]any {
 	req := &Request{Func: Functions_FUNC_EXEC_DB_QUERY}
 	req.Msg = &Request_Query{
@@ -131,8 +131,7 @@ func (c *CmdClient) DbSqlQuery(db, sql string) []map[string]any {
 	for _, row := range recv.GetRows().GetRows() {
 		fields := map[string]any{}
 		for _, field := range row.Fields {
-			ret, _ := ParseDbField(field.Type, field.Content)
-			fields[field.Column] = ret
+			fields[field.Column] = ParseDbField(field)
 		}
 		rows = append(rows, fields)
 	}
