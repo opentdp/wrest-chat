@@ -11,7 +11,7 @@ import (
 
 func GoogleChat(id, msg string) (string, error) {
 
-	llmc := GetUserModel(id)
+	llmc := GetUserConfig(id).LLModel
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),
@@ -44,7 +44,7 @@ func GoogleChat(id, msg string) (string, error) {
 		}
 	}
 
-	for _, msg := range MsgHistory[id] {
+	for _, msg := range msgHistoryMap[id] {
 		cs.History = append(cs.History, &genai.Content{
 			Parts: []genai.Part{genai.Text(msg.Content)}, Role: msg.Role,
 		})
@@ -63,8 +63,8 @@ func GoogleChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &HistoryItem{Content: msg, Role: "user"}
-	item2 := &HistoryItem{Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]), Role: "model"}
+	item1 := &MsgHistory{Content: msg, Role: "user"}
+	item2 := &MsgHistory{Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]), Role: "model"}
 
 	AppendHistory(id, item1, item2)
 

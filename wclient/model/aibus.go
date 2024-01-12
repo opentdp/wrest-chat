@@ -16,7 +16,7 @@ func AiChat(id, msg string) string {
 	}
 
 	// 预设模型参数
-	llmc, _ := GetUserModel(id), CountHistory(id)
+	llmc, _ := GetUserConfig(id).LLModel, CountHistory(id)
 	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
 
 	// 调用接口生成文本
@@ -37,61 +37,56 @@ func AiChat(id, msg string) string {
 
 }
 
-// User Models
+// User Config
 
-var UserModels = make(map[string]*args.LLModel)
-
-func SetUserModel(id string, m *args.LLModel) string {
-
-	ResetHistory(id)
-	UserModels[id] = m
-
-	return "对话模型已切换为 " + m.Name + " [" + m.Model + "]"
-
+type UserConfig struct {
+	WakeWord string
+	LLModel  *args.LLModel
 }
 
-func GetUserModel(id string) *args.LLModel {
+var userConfigMap = make(map[string]*UserConfig)
 
-	if _, exists := UserModels[id]; !exists {
-		SetUserModel(id, args.LLM.Models[0])
+func GetUserConfig(id string) *UserConfig {
+
+	if _, exists := userConfigMap[id]; !exists {
+		userConfigMap[id] = &UserConfig{"/ai", args.LLM.Models[0]}
 	}
 
-	return UserModels[id]
+	return userConfigMap[id]
 
 }
 
 // Message History
 
-type HistoryItem struct {
+type MsgHistory struct {
 	Content string
 	Role    string
 }
 
-var MsgHistory = make(map[string][]*HistoryItem)
+var msgHistoryMap = make(map[string][]*MsgHistory)
 
-func ResetHistory(id string) string {
+func ResetHistory(id string) {
 
-	MsgHistory[id] = []*HistoryItem{}
-	return "已重置上下文"
+	msgHistoryMap[id] = []*MsgHistory{}
 
 }
 
 func CountHistory(id string) int {
 
-	if _, exists := MsgHistory[id]; !exists {
+	if _, exists := msgHistoryMap[id]; !exists {
 		ResetHistory(id)
 	}
 
-	return len(MsgHistory[id])
+	return len(msgHistoryMap[id])
 
 }
 
-func AppendHistory(id string, items ...*HistoryItem) {
+func AppendHistory(id string, items ...*MsgHistory) {
 
-	if len(MsgHistory[id]) >= args.LLM.HistoryNum {
-		MsgHistory[id] = MsgHistory[id][len(items):]
+	if len(msgHistoryMap[id]) >= args.LLM.HistoryNum {
+		msgHistoryMap[id] = msgHistoryMap[id][len(items):]
 	}
 
-	MsgHistory[id] = append(MsgHistory[id], items...)
+	msgHistoryMap[id] = append(msgHistoryMap[id], items...)
 
 }

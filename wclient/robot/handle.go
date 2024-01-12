@@ -45,7 +45,8 @@ func initHandlers() {
 		RoomAble: true,
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
-			return model.ResetHistory(msg.Sender)
+			model.ResetHistory(msg.Sender)
+			return "已重置上下文"
 		},
 	}
 
@@ -53,7 +54,7 @@ func initHandlers() {
 		Level:    1,
 		ChatAble: true,
 		RoomAble: true,
-		Describe: "禁止用户使用Ai服务",
+		Describe: "禁止用户使用助手",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
@@ -64,7 +65,7 @@ func initHandlers() {
 						args.Bot.BlackList = append(args.Bot.BlackList, v)
 					}
 				}
-				return fmt.Sprintf("操作完成，已禁止用户数：%d", len(args.Bot.BlackList))
+				return fmt.Sprintf("已禁止用户数：%d", len(args.Bot.BlackList))
 			}
 			return "参数错误"
 		},
@@ -74,10 +75,26 @@ func initHandlers() {
 		Level:    0,
 		ChatAble: true,
 		RoomAble: true,
-		Describe: "随机选择一个模型",
+		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
 			k := rand.Intn(len(args.LLM.Models))
-			return model.SetUserModel(msg.Sender, args.LLM.Models[k])
+			v := args.LLM.Models[k]
+			model.GetUserConfig(msg.Sender).LLModel = v
+			return "对话模型切换为 " + v.Name + " [" + v.Model + "]"
+		},
+	}
+
+	handlers["/wake"] = &Handler{
+		Level:    0,
+		ChatAble: true,
+		RoomAble: false,
+		Describe: "设置唤醒词",
+		Callback: func(msg *wcferry.WxMsg) string {
+			model.GetUserConfig(msg.Sender).WakeWord = msg.Content
+			if msg.Content == "" {
+				return "唤醒词设置为 " + msg.Content
+			}
+			return "已禁用唤醒词"
 		},
 	}
 
@@ -90,7 +107,8 @@ func initHandlers() {
 			RoomAble: true,
 			Describe: "切换为 " + v.Model + " 模型",
 			Callback: func(msg *wcferry.WxMsg) string {
-				return model.SetUserModel(msg.Sender, v)
+				model.GetUserConfig(msg.Sender).LLModel = v
+				return "对话模型切换为 " + v.Name + " [" + v.Model + "]"
 			},
 		}
 	}
@@ -126,7 +144,7 @@ func initHandlers() {
 			} else {
 				text += strings.Join(helper1, "\n") + "\n"
 			}
-			text += "对话模型 " + model.GetUserModel(msg.Sender).Name + "，"
+			text += "对话模型 " + model.GetUserConfig(msg.Sender).LLModel.Name + "，"
 			text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
 			return text
 		},
@@ -158,8 +176,24 @@ func applyHandler(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
+	// 定制唤醒
+	if msg.Content[0:1] != "/" {
+		if strings.Contains(msg.Content, "@"+selfInfo.Name) {
+			msg.Content = "/ai " + msg.Content
+		} else {
+			wakeWord := model.GetUserConfig(msg.Sender).WakeWord
+			if wakeWord == "" {
+				if !msg.IsGroup {
+					msg.Content = "/ai " + msg.Content
+				}
+			} else if strings.HasPrefix(msg.Content, wakeWord) {
+				msg.Content = "/ai " + strings.Replace(msg.Content, wakeWord, "", 1)
+			}
+		}
+	}
+
 	// 解析指令
-	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s|$)`)
+	re := regexp.MustCompile(`^(/[\w:-]{2,20})(\s+|$)`)
 	matches := re.FindStringSubmatch(msg.Content)
 	if matches == nil || len(matches) < 2 {
 		return ""

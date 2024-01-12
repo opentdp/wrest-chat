@@ -9,7 +9,7 @@ import (
 
 func OpenaiChat(id, msg string) (string, error) {
 
-	llmc := GetUserModel(id)
+	llmc := GetUserConfig(id).LLModel
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {
@@ -34,7 +34,7 @@ func OpenaiChat(id, msg string) (string, error) {
 		}
 	}
 
-	for _, msg := range MsgHistory[id] {
+	for _, msg := range msgHistoryMap[id] {
 		role := msg.Role
 		if role == "model" {
 			role = "assistant"
@@ -57,8 +57,8 @@ func OpenaiChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &HistoryItem{Content: msg, Role: "user"}
-	item2 := &HistoryItem{Content: resp.Choices[0].Message.Content, Role: "model"}
+	item1 := &MsgHistory{Content: msg, Role: "user"}
+	item2 := &MsgHistory{Content: resp.Choices[0].Message.Content, Role: "model"}
 
 	AppendHistory(id, item1, item2)
 

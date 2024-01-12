@@ -11,11 +11,14 @@ import (
 )
 
 var wc *wcferry.Client
+var selfInfo *wcferry.UserInfo
 
 func Register() {
 
 	wc = wclient.Register()
 	wc.EnrollReceiver(true, reciver)
+
+	selfInfo = wc.CmdClient.GetSelfInfo()
 
 	if len(handlers) == 0 {
 		initHandlers()
