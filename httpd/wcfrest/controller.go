@@ -100,7 +100,7 @@ func (wc *Controller) getDbTables(c *gin.Context) {
 // @Summary 执行数据库查询
 // @Produce json
 // @Param body body DbSqlQueryRequest true "数据库查询请求参数"
-// @Success 200 {object} map[string]any
+// @Success 200 {object} []map[string]any
 // @Router /db_query_sql [post]
 func (wc *Controller) dbSqlQuery(c *gin.Context) {
 
@@ -133,7 +133,6 @@ func (wc *Controller) refreshPyq(c *gin.Context) {
 
 	id := c.Param("id")
 	pyqid := uint64(strutil.ToUint(id))
-
 	status := wc.CmdClient.RefreshPyq(pyqid)
 
 	c.Set("Payload", RespPayload{
@@ -250,7 +249,6 @@ func (wc *Controller) revokeMsg(c *gin.Context) {
 
 	id := c.Param("msgid")
 	msgid := uint64(strutil.ToUint(id))
-
 	status := wc.CmdClient.RevokeMsg(msgid)
 
 	c.Set("Payload", RespPayload{
