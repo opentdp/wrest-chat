@@ -335,8 +335,6 @@ func (c *CmdClient) SendImg(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
 		defer os.Remove(tmp)
 		path = tmp
-	} else {
-		return -1
 	}
 	req := &Request{Func: Functions_FUNC_SEND_IMG}
 	req.Msg = &Request_File{
@@ -357,8 +355,6 @@ func (c *CmdClient) SendFile(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
 		defer os.Remove(tmp)
 		path = tmp
-	} else {
-		return -1
 	}
 	req := &Request{Func: Functions_FUNC_SEND_FILE}
 	req.Msg = &Request_File{
@@ -381,8 +377,6 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
 		defer os.Remove(tmp)
 		path = tmp
-	} else {
-		return -1
 	}
 	req := &Request{Func: Functions_FUNC_SEND_XML}
 	req.Msg = &Request_Xml{
@@ -405,8 +399,6 @@ func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
 		defer os.Remove(tmp)
 		path = tmp
-	} else {
-		return -1
 	}
 	req := &Request{Func: Functions_FUNC_SEND_EMOTION}
 	req.Msg = &Request_File{
