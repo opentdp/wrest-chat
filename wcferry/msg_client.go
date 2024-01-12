@@ -7,10 +7,9 @@ import (
 )
 
 type MsgClient struct {
-	*pbSocket                 // RPC 客户端
-	receiving   bool          // 接收消息中
-	callbacks   []MsgCallback // 消息回调函数
-	msgXmlToMap bool          // 转换消息中的Xml为Map
+	*pbSocket               // RPC 客户端
+	receiving bool          // 接收消息中
+	callbacks []MsgCallback // 消息回调函数
 }
 
 // 消息回调函数

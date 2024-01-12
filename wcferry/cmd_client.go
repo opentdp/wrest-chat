@@ -24,10 +24,7 @@ func (c *CmdClient) Destroy() error {
 func (c *CmdClient) IsLogin() bool {
 	req := &Request{Func: Functions_FUNC_IS_LOGIN}
 	recv := c.call(req)
-	if recv.GetStatus() == 1 {
-		return true
-	}
-	return false
+	return recv.GetStatus() == 1
 }
 
 // 获取登录账号wxid
