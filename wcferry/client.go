@@ -52,7 +52,7 @@ func (c *Client) Connect() error {
 		}
 	})
 	// 返回连接结果
-	return c.CmdClient.init(0)
+	return c.CmdClient.init(25)
 }
 
 // 启动消息接收器
