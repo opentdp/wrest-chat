@@ -176,18 +176,18 @@ func (c *CmdClient) GetChatRooms() []*RpcContact {
 func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	members := []*RpcContact{}
 	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0]) == 0 {
+	roomList := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
+	if len(roomList) == 0 || len(roomList[0]) == 0 {
 		return members
 	}
 	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0]["RoomData"].([]byte), roomData); err != nil {
+	if err := proto.Unmarshal(roomList[0]["RoomData"].([]byte), roomData); err != nil {
 		return members
 	}
 	// get user data
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
+	userList := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
 	userMap := map[string]string{}
-	for _, user := range userRds {
+	for _, user := range userList {
 		wxid := user["UserName"].(string)
 		userMap[wxid] = user["NickName"].(string)
 	}
@@ -211,17 +211,17 @@ func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	// get user data
 	nickName := ""
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
-	if len(userRds) > 0 && len(userRds[0]) > 0 {
-		nickName = userRds[0]["NickName"].(string)
+	userList := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
+	if len(userList) > 0 && len(userList[0]) > 0 {
+		nickName = userList[0]["NickName"].(string)
 	}
 	// get room data
-	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomRds) == 0 || len(roomRds[0]) == 0 {
+	roomList := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
+	if len(roomList) == 0 || len(roomList[0]) == 0 {
 		return nickName
 	}
 	roomData := &RoomData{}
-	if err := proto.Unmarshal(roomRds[0]["RoomData"].([]byte), roomData); err != nil {
+	if err := proto.Unmarshal(roomList[0]["RoomData"].([]byte), roomData); err != nil {
 		return nickName
 	}
 	// fix user name
