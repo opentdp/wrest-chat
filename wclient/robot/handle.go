@@ -91,7 +91,7 @@ func initHandlers() {
 		Describe: "设置唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			model.GetUserConfig(msg.Sender).WakeWord = msg.Content
-			if msg.Content == "" {
+			if msg.Content != "" {
 				return "唤醒词设置为 " + msg.Content
 			}
 			return "已禁用唤醒词"
