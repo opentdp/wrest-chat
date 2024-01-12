@@ -176,13 +176,6 @@ func (c *CmdClient) GetChatRooms() []*RpcContact {
 // return []*RpcContact 群成员列表
 func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	members := []*RpcContact{}
-	// get user data
-	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
-	userMap := map[string]string{}
-	for _, user := range userRds {
-		wxid := user["NickName"].(string)
-		userMap[wxid] = user["UserName"].(string)
-	}
 	// get room data
 	roomRds := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
 	if len(roomRds) == 0 || len(roomRds[0]) == 0 {
@@ -191,6 +184,13 @@ func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	roomData := &RoomData{}
 	if err := proto.Unmarshal(roomRds[0]["RoomData"].([]byte), roomData); err != nil {
 		return members
+	}
+	// get user data
+	userRds := c.DbSqlQuery("MicroMsg.db", "SELECT UserName, NickName FROM Contact;")
+	userMap := map[string]string{}
+	for _, user := range userRds {
+		wxid := user["UserName"].(string)
+		userMap[wxid] = user["NickName"].(string)
 	}
 	// fix user name
 	for _, member := range roomData.Members {
