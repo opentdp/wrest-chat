@@ -94,7 +94,7 @@ func initHandlers() {
 			if msg.Content != "" {
 				return "唤醒词设置为 " + msg.Content
 			}
-			return "已禁用唤醒词，群内无效"
+			return "已禁用唤醒词（群内无效）"
 		},
 	}
 
@@ -143,6 +143,9 @@ func initHandlers() {
 				text += strings.Join(helper2, "\n") + "\n"
 			} else {
 				text += strings.Join(helper1, "\n") + "\n"
+			}
+			if model.GetUserConfig(msg.Sender).WakeWord != "" {
+				text += "唤醒词 " + model.GetUserConfig(msg.Sender).WakeWord + "，"
 			}
 			text += "对话模型 " + model.GetUserConfig(msg.Sender).LLModel.Name + "，"
 			text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
