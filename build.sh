@@ -18,10 +18,7 @@ RUN_NUMBER=${GITHUB_RUN_NUMBER:-0}
 
 last_tag=`git tag | sort -V | tail -n 1`
 prev_tag=`git tag | sort -V | tail -n 2 | head -n 1`
-git tag -l $last_tag -n | cut -d' ' -f2- | sed 's/^ *//' > RELEASE.md
-git log $prev_tag..$last_tag --pretty=format:"%s" | grep -v "^release" | sed 's/^/- /' | sort >> RELEASE.md
-
-sed -i '/./,$!d' RELEASE.md
+git log $prev_tag..$last_tag --pretty=format:"%s" | grep -v "^release" | sed 's/^/- /' | sort > RELEASE.md
 
 ####################################################################
 
