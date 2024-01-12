@@ -2,8 +2,10 @@ package wcferry
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/clbanning/mxj"
 	"github.com/opentdp/go-helper/request"
@@ -70,11 +72,14 @@ func ParseDbField(field *DbField) any {
 }
 
 // 获取网络文件
-// param url string 文件URL或路径
+// param str string 文件URL或路径
 // return string 失败则返回空字符串
-func DownloadFile(url string) string {
-	if strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://") {
-		if tmp, err := request.Download(url, "", false); err == nil {
+func DownloadFile(str string) string {
+	if strings.HasPrefix(str, "http://") || strings.HasPrefix(str, "https://") {
+		if tmp, err := request.Download(str, "", false); err == nil {
+			time.AfterFunc(15*time.Minute, func() {
+				os.RemoveAll(tmp)
+			})
 			return tmp
 		}
 	}

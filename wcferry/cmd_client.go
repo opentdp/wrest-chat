@@ -2,7 +2,6 @@ package wcferry
 
 import (
 	"errors"
-	"os"
 	"strings"
 	"time"
 
@@ -333,7 +332,6 @@ func (c *CmdClient) SendTxt(msg, receiver, aters string) int32 {
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendImg(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
-		defer os.Remove(tmp)
 		path = tmp
 	}
 	req := &Request{Func: Functions_FUNC_SEND_IMG}
@@ -353,7 +351,6 @@ func (c *CmdClient) SendImg(path, receiver string) int32 {
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendFile(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
-		defer os.Remove(tmp)
 		path = tmp
 	}
 	req := &Request{Func: Functions_FUNC_SEND_FILE}
@@ -375,7 +372,6 @@ func (c *CmdClient) SendFile(path, receiver string) int32 {
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
-		defer os.Remove(tmp)
 		path = tmp
 	}
 	req := &Request{Func: Functions_FUNC_SEND_XML}
@@ -397,7 +393,6 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 // return int32 0 为成功，其他失败
 func (c *CmdClient) SendEmotion(path, receiver string) int32 {
 	if tmp := DownloadFile(path); tmp != "" {
-		defer os.Remove(tmp)
 		path = tmp
 	}
 	req := &Request{Func: Functions_FUNC_SEND_EMOTION}

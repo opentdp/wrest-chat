@@ -8,7 +8,7 @@ require (
 	github.com/google/generative-ai-go v0.5.0
 	github.com/knadh/koanf v1.5.0
 	github.com/knadh/koanf/v2 v2.0.1
-	github.com/opentdp/go-helper v0.5.5-0.20240109013403-7323088c3f39
+	github.com/opentdp/go-helper v0.5.5-0.20240112084013-142cd0aa9aa2
 	github.com/sashabaranov/go-openai v1.17.10
 	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2
