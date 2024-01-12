@@ -36,58 +36,18 @@ func (c *CmdClient) GetSelfWxid() string {
 
 // 获取登录账号个人信息
 // return *UserInfo 登录账号个人信息
-func (c *CmdClient) GetUserInfo() *UserInfo {
+func (c *CmdClient) GetSelfInfo() *UserInfo {
 	req := &Request{Func: Functions_FUNC_GET_USER_INFO}
 	recv := c.call(req)
 	return recv.GetUi()
 }
 
-// 获取完整通讯录
-// return []*RpcContact 完整通讯录
-func (c *CmdClient) GetContacts() []*RpcContact {
-	req := &Request{Func: Functions_FUNC_GET_CONTACTS}
+// 获取所有消息类型
+// return map[int32]string 所有消息类型
+func (c *CmdClient) GetMsgTypes() map[int32]string {
+	req := &Request{Func: Functions_FUNC_GET_MSG_TYPES}
 	recv := c.call(req)
-	return recv.GetContacts().GetContacts()
-}
-
-// 获取好友列表
-// return []*RpcContact 好友列表
-func (c *CmdClient) GetFriends() []*RpcContact {
-	notFriends := map[string]string{
-		"mphelper":    "公众平台助手",
-		"fmessage":    "朋友推荐消息",
-		"medianote":   "语音记事本",
-		"floatbottle": "漂流瓶",
-		"filehelper":  "文件传输助手",
-		"newsapp":     "新闻",
-	}
-	friends := []*RpcContact{}
-	for _, cnt := range c.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") || strings.HasPrefix(cnt.Wxid, "gh_") || notFriends[cnt.Wxid] != "" {
-			continue
-		}
-		friends = append(friends, cnt)
-	}
-	return friends
-}
-
-// 通过 wxid 查询微信号昵称等信息
-// param wxid (str): 联系人 wxid
-// return *RpcContact
-func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
-	req := &Request{Func: Functions_FUNC_GET_CONTACT_INFO}
-	req.Msg = &Request_Str{
-		Str: wxid,
-	}
-	recv := c.call(req)
-	contacts := recv.GetContacts()
-	if contacts != nil {
-		contacts := contacts.GetContacts()
-		if contacts != nil {
-			return contacts[0]
-		}
-	}
-	return nil
+	return recv.GetTypes().GetTypes()
 }
 
 // 获取所有数据库
@@ -132,26 +92,6 @@ func (c *CmdClient) DbSqlQuery(db, sql string) []map[string]any {
 		rows = append(rows, fields)
 	}
 	return rows
-}
-
-// 获取所有消息类型
-// return map[int32]string 所有消息类型
-func (c *CmdClient) GetMsgTypes() map[int32]string {
-	req := &Request{Func: Functions_FUNC_GET_MSG_TYPES}
-	recv := c.call(req)
-	return recv.GetTypes().GetTypes()
-}
-
-// 刷新朋友圈
-// param id int32 开始 id，0 为最新页
-// return int32 1 为成功，其他失败
-func (c *CmdClient) RefreshPyq(id uint64) int32 {
-	req := &Request{Func: Functions_FUNC_REFRESH_PYQ}
-	req.Msg = &Request_Ui64{
-		Ui64: id,
-	}
-	recv := c.call(req)
-	return recv.GetStatus()
 }
 
 // 获取群聊列表
@@ -364,7 +304,7 @@ func (c *CmdClient) SendFile(path, receiver string) int32 {
 	return recv.GetStatus()
 }
 
-// 发送 XML
+// 发送 XML（暂不支持）
 // param path string 封面图片路径
 // param content string xml 内容
 // param receiver string 消息接收人，wxid 或者 roomid
@@ -387,7 +327,7 @@ func (c *CmdClient) SendXml(path, content, receiver string, Type int32) int32 {
 	return recv.GetStatus()
 }
 
-// 发送表情
+// 发送表情（暂不支持）
 // param path string 本地表情路径，如：`C:/Projs/WeChatRobot/emo.gif`
 // param receiver string 消息接收人，wxid 或者 roomid
 // return int32 0 为成功，其他失败
@@ -476,7 +416,7 @@ func (c *CmdClient) GetAudioMsg(msgid uint64, dir string) string {
 // 获取语音消息并转成 MP3
 // param msgid 语音消息 id
 // param dir MP3 保存目录（目录不存在会出错）
-// param timeout 超时时间（秒）
+// param timeout 超时重试次数（每次重试间隔1秒）
 // return string 成功返回存储路径；空字符串为失败
 func (c *CmdClient) GetAudioMsgTimeout(msgid uint64, dir string, timeout int) (string, error) {
 	cnt := 0
@@ -528,7 +468,7 @@ func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) (string, erro
 // param msgid uint64 消息 id
 // param extra string 消息中的 extra
 // param dir string 存放图片的目录（目录不存在会出错）
-// param timeout int 超时时间（秒）
+// param timeout int 超时重试次数（每次重试间隔1秒）
 // return string 成功返回存储路径
 func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) (string, error) {
 	if c.DownloadAttach(msgid, "", extra) != 0 {
@@ -579,6 +519,66 @@ func (c *CmdClient) DecryptImage(src, dir string) string {
 	}
 	recv := c.call(req)
 	return recv.GetStr()
+}
+
+// 获取完整通讯录
+// return []*RpcContact 完整通讯录
+func (c *CmdClient) GetContacts() []*RpcContact {
+	req := &Request{Func: Functions_FUNC_GET_CONTACTS}
+	recv := c.call(req)
+	return recv.GetContacts().GetContacts()
+}
+
+// 获取好友列表
+// return []*RpcContact 好友列表
+func (c *CmdClient) GetFriends() []*RpcContact {
+	notFriends := map[string]string{
+		"mphelper":    "公众平台助手",
+		"fmessage":    "朋友推荐消息",
+		"medianote":   "语音记事本",
+		"floatbottle": "漂流瓶",
+		"filehelper":  "文件传输助手",
+		"newsapp":     "新闻",
+	}
+	friends := []*RpcContact{}
+	for _, cnt := range c.GetContacts() {
+		if strings.HasSuffix(cnt.Wxid, "@chatroom") || strings.HasPrefix(cnt.Wxid, "gh_") || notFriends[cnt.Wxid] != "" {
+			continue
+		}
+		friends = append(friends, cnt)
+	}
+	return friends
+}
+
+// 通过 wxid 查询微信号昵称等信息
+// param wxid (str): 联系人 wxid
+// return *RpcContact
+func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
+	req := &Request{Func: Functions_FUNC_GET_CONTACT_INFO}
+	req.Msg = &Request_Str{
+		Str: wxid,
+	}
+	recv := c.call(req)
+	contacts := recv.GetContacts()
+	if contacts != nil {
+		contacts := contacts.GetContacts()
+		if contacts != nil {
+			return contacts[0]
+		}
+	}
+	return nil
+}
+
+// 刷新朋友圈
+// param id int32 开始 id，0 为最新页
+// return int32 1 为成功，其他失败
+func (c *CmdClient) RefreshPyq(id uint64) int32 {
+	req := &Request{Func: Functions_FUNC_REFRESH_PYQ}
+	req.Msg = &Request_Ui64{
+		Ui64: id,
+	}
+	recv := c.call(req)
+	return recv.GetStatus()
 }
 
 // 接受好友申请

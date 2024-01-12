@@ -619,6 +619,22 @@
                 }
             }
         },
+        "/self_info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取登录账号个人信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcferry.UserInfo"
+                        }
+                    }
+                }
+            }
+        },
         "/self_wxid": {
             "get": {
                 "produces": [
@@ -765,22 +781,6 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/user_info": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "获取登录账号个人信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcferry.UserInfo"
                         }
                     }
                 }

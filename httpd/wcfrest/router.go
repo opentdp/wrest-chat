@@ -11,17 +11,12 @@ func Route(rg *gin.RouterGroup) {
 
 	rg.GET("is_login", ctrl.isLogin)
 	rg.GET("self_wxid", ctrl.getSelfWxid)
-	rg.GET("user_info", ctrl.getUserInfo)
-	rg.GET("contacts", ctrl.getContacts)
-	rg.GET("friends", ctrl.getFriends)
-	rg.GET("user_info/:wxid", ctrl.getUserInfoByWxid)
+	rg.GET("self_info", ctrl.getSelfInfo)
+	rg.GET("msg_types", ctrl.getMsgTypes)
 
 	rg.GET("db_names", ctrl.getDbNames)
 	rg.GET("db_tables/:db", ctrl.getDbTables)
 	rg.POST("db_query_sql", ctrl.dbSqlQuery)
-
-	rg.GET("msg_types", ctrl.getMsgTypes)
-	rg.GET("refresh_pyq/:id", ctrl.refreshPyq)
 
 	rg.GET("chatrooms", ctrl.getChatRooms)
 	rg.GET("chatroom_members/:roomid", ctrl.getChatRoomMembers)
@@ -37,11 +32,15 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("send_file", ctrl.sendFile)
 	rg.POST("send_rich_text", ctrl.sendRichText)
 	rg.POST("send_pat_msg", ctrl.sendPatMsg)
-	rg.POST("get_audio_msg", ctrl.getAudioMsg)
-	rg.POST("get_ocr_result", ctrl.getOcrResult)
+	rg.POST("audio_msg", ctrl.getAudioMsg)
+	rg.POST("ocr_result", ctrl.getOcrResult)
 	rg.POST("download_image", ctrl.downloadImage)
 	rg.POST("download_attach", ctrl.downloadAttach)
 
+	rg.GET("contacts", ctrl.getContacts)
+	rg.GET("friends", ctrl.getFriends)
+	rg.GET("user_info/:wxid", ctrl.getInfoByWxid)
+	rg.GET("refresh_pyq/:id", ctrl.refreshPyq)
 	rg.POST("accept_new_friend", ctrl.acceptNewFriend)
 	rg.POST("receive_transfer", ctrl.receiveTransfer)
 

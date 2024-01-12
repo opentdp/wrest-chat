@@ -36,42 +36,20 @@ func (wc *Controller) getSelfWxid(c *gin.Context) {
 // @Summary 获取登录账号个人信息
 // @Produce json
 // @Success 200 {object} wcferry.UserInfo
-// @Router /user_info [get]
-func (wc *Controller) getUserInfo(c *gin.Context) {
+// @Router /self_info [get]
+func (wc *Controller) getSelfInfo(c *gin.Context) {
 
-	c.Set("Payload", wc.CmdClient.GetUserInfo())
-
-}
-
-// @Summary 获取完整通讯录
-// @Produce json
-// @Success 200 {object} []wcferry.RpcContact
-// @Router /contacts [get]
-func (wc *Controller) getContacts(c *gin.Context) {
-
-	c.Set("Payload", wc.CmdClient.GetContacts())
+	c.Set("Payload", wc.CmdClient.GetSelfInfo())
 
 }
 
-// @Summary 获取好友列表
+// @Summary 获取所有消息类型
 // @Produce json
-// @Success 200 {object} []wcferry.RpcContact
-// @Router /friends [get]
-func (wc *Controller) getFriends(c *gin.Context) {
+// @Success 200 {object} map[int32]string
+// @Router /msg_types [get]
+func (wc *Controller) getMsgTypes(c *gin.Context) {
 
-	c.Set("Payload", wc.CmdClient.GetFriends())
-
-}
-
-// @Summary 根据wxid获取个人信息
-// @Produce json
-// @Param wxid path string true "wxid"
-// @Success 200 {object} wcferry.RpcContact
-// @Router /user_info/{wxid} [get]
-func (wc *Controller) getUserInfoByWxid(c *gin.Context) {
-
-	wxid := c.Param("wxid")
-	c.Set("Payload", wc.CmdClient.GetInfoByWxid(wxid))
+	c.Set("Payload", wc.CmdClient.GetMsgTypes())
 
 }
 
@@ -111,33 +89,6 @@ func (wc *Controller) dbSqlQuery(c *gin.Context) {
 	}
 
 	c.Set("Payload", wc.CmdClient.DbSqlQuery(req.Db, req.Sql))
-
-}
-
-// @Summary 获取所有消息类型
-// @Produce json
-// @Success 200 {object} map[int32]string
-// @Router /msg_types [get]
-func (wc *Controller) getMsgTypes(c *gin.Context) {
-
-	c.Set("Payload", wc.CmdClient.GetMsgTypes())
-
-}
-
-// @Summary 刷新朋友圈
-// @Produce json
-// @Param id path int true "朋友圈id"
-// @Success 200 {object} RespPayload
-// @Router /refresh_pyq/{id} [get]
-func (wc *Controller) refreshPyq(c *gin.Context) {
-
-	id := c.Param("id")
-	pyqid := uint64(strutil.ToUint(id))
-	status := wc.CmdClient.RefreshPyq(pyqid)
-
-	c.Set("Payload", RespPayload{
-		Success: status == 1,
-	})
 
 }
 
@@ -483,6 +434,55 @@ func (wc *Controller) downloadAttach(c *gin.Context) {
 
 	c.Set("Payload", RespPayload{
 		Success: status == 0,
+	})
+
+}
+
+// @Summary 获取完整通讯录
+// @Produce json
+// @Success 200 {object} []wcferry.RpcContact
+// @Router /contacts [get]
+func (wc *Controller) getContacts(c *gin.Context) {
+
+	c.Set("Payload", wc.CmdClient.GetContacts())
+
+}
+
+// @Summary 获取好友列表
+// @Produce json
+// @Success 200 {object} []wcferry.RpcContact
+// @Router /friends [get]
+func (wc *Controller) getFriends(c *gin.Context) {
+
+	c.Set("Payload", wc.CmdClient.GetFriends())
+
+}
+
+// @Summary 根据wxid获取个人信息
+// @Produce json
+// @Param wxid path string true "wxid"
+// @Success 200 {object} wcferry.RpcContact
+// @Router /user_info/{wxid} [get]
+func (wc *Controller) getInfoByWxid(c *gin.Context) {
+
+	wxid := c.Param("wxid")
+	c.Set("Payload", wc.CmdClient.GetInfoByWxid(wxid))
+
+}
+
+// @Summary 刷新朋友圈
+// @Produce json
+// @Param id path int true "朋友圈id"
+// @Success 200 {object} RespPayload
+// @Router /refresh_pyq/{id} [get]
+func (wc *Controller) refreshPyq(c *gin.Context) {
+
+	id := c.Param("id")
+	pyqid := uint64(strutil.ToUint(id))
+	status := wc.CmdClient.RefreshPyq(pyqid)
+
+	c.Set("Payload", RespPayload{
+		Success: status == 1,
 	})
 
 }
