@@ -37,5 +37,5 @@
 go get github.com/swaggo/swag/cmd/swag
 go install github.com/swaggo/swag/cmd/swag
 
-swag init --parseDependency -g httpd/server.go -o public/swag -ot json
+swag init --parseDependency -g httpd/server.go -o public/swagger -ot json
 ```
