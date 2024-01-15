@@ -3,6 +3,7 @@
 .DS_Store
 .local.yml
 
-build/*
-docs/*
-logs/*
+node_modules/
+build/
+docs/
+logs/
