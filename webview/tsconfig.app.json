@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./public/tsc",
+        "types": [
+            "@angular/localize"
+        ]
+    },
+    "files": [
+        "src/index.ts",
+    ],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.html"
+    ]
+}
