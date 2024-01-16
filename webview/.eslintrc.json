@@ -6,7 +6,8 @@
                 "browser": true
             },
             "files": [
-                "src/**/*.ts"
+                "src/**/*.ts",
+                "src/**/*.d.ts"
             ],
             "parserOptions": {
                 "project": [
