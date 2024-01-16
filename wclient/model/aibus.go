@@ -49,7 +49,11 @@ var userConfigMap = make(map[string]*UserConfig)
 func GetUserConfig(id string) *UserConfig {
 
 	if _, exists := userConfigMap[id]; !exists {
-		userConfigMap[id] = &UserConfig{"/ai", args.LLM.Models[0]}
+		if len(args.LLM.Models) > 0 {
+			userConfigMap[id] = &UserConfig{"/ai", args.LLM.Models[0]}
+		} else {
+			userConfigMap[id] = &UserConfig{"/ai", &args.LLModel{}}
+		}
 	}
 
 	return userConfigMap[id]

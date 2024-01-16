@@ -77,8 +77,11 @@ func initHandlers() {
 		RoomAble: true,
 		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
-			k := rand.Intn(len(args.LLM.Models))
-			v := args.LLM.Models[k]
+			l := len(args.LLM.Models)
+			if l == 0 {
+				return "没有可用模型"
+			}
+			v := args.LLM.Models[rand.Intn(l)]
 			model.GetUserConfig(msg.Sender).LLModel = v
 			return "对话模型切换为 " + v.Name + " [" + v.Model + "]"
 		},
