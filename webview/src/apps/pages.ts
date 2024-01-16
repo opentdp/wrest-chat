@@ -1,11 +1,11 @@
-import { ChatsComponent } from './chats';
+import { ChatroomsComponent } from './chatrooms';
 import { ContactsComponent } from './contacts';
 
 import { ErrorComponent } from './error';
 
 
 export const AppComponents = [
-    ChatsComponent,
+    ChatroomsComponent,
     ContactsComponent,
     ErrorComponent,
 ];
@@ -15,8 +15,8 @@ export const AppComponents = [
 import { Routes } from '@angular/router';
 
 export const AppRoutes: Routes = [
-    { path: '', redirectTo: 'chats', pathMatch: 'full' },
-    { path: 'chats', component: ChatsComponent },
+    { path: '', redirectTo: 'chatrooms', pathMatch: 'full' },
+    { path: 'chatrooms', component: ChatroomsComponent },
     { path: 'contacts', component: ContactsComponent },
     { path: '**', component: ErrorComponent, data: { error: 404 } }
 ];

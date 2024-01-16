@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { WrestApi, WcferryRpcContact } from '../../openapi/wcfrest';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { WrestApi, WcferryRpcContact } from '../../openapi/wcfrest';
 })
 export class ContactsComponent {
 
-    public contacts: Array<WcferryRpcContact> = [];
+    public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 
     public contactTypes: Record<string, RegExp> = {
         '公众平台助手': /^mphelper$/,
@@ -21,16 +21,22 @@ export class ContactsComponent {
         '新闻': /^newsapp$/,
         '公众号': /^gh_/,
         '群聊': /@chatroom$/,
-        '企微好友': /@openim$/,
+        '企业微信': /@openim$/,
     };
 
     constructor() {
+        this.getContacts();
+    }
+
+    public getContacts() {
         WrestApi.contacts().then((contacts) => {
-            this.contacts = contacts;
+            this.contacts = contacts.map(contact => ({
+                ...contact, type: this.getContactType(contact)
+            }));
         });
     }
 
-    public getContactType(contact: WcferryRpcContact) {
+    public getContactType(contact: WcfrestContactPayload) {
         for (const type in this.contactTypes) {
             const regex = this.contactTypes[type];
             if (regex && regex.test(String(contact.wxid))) {

@@ -634,7 +634,7 @@ func (wc *Controller) getAvatars(c *gin.Context) {
 	res := wc.CmdClient.DbSqlQuery("MicroMsg.db", sql)
 
 	var result []AvatarPayload
-	if mapstructure.Decode(res, &result) != nil {
+	if mapstructure.Decode(res, &result) == nil {
 		c.Set("Payload", result)
 	} else {
 		c.Set("Payload", res)

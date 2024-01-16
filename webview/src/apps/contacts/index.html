@@ -1,8 +1,8 @@
 <layout-header></layout-header>
 
 <div class="container-lg mt-3">
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">type</th>
@@ -15,10 +15,10 @@
                 <th scope="col">remark</th>
             </tr>
         </thead>
-        <tbody *ngFor="let item of contacts; let i = index">
-            <tr>
+        <tbody>
+            <tr *ngFor="let item of contacts; let i = index">
                 <th scope="row">{{i+1}}</th>
-                <td>{{getContactType(item)}}</td>
+                <td>{{item.type}}</td>
                 <td>{{item.wxid}}</td>
                 <td>{{item.code}}</td>
                 <td>{{item.name}}</td>

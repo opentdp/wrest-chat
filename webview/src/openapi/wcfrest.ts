@@ -23,22 +23,22 @@ export function httpRequest(input: string, options: RequestInit = {}) {
 export const WrestApi = {
     /**
      * @summary 接受好友请求
-     * @param {WcferryVerification} body 接受好友参数
+     * @param {WcfrestAcceptNewFriendRequest} body 接受好友参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    acceptNewFriend(body: WcferryVerification, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    acceptNewFriend(body: WcfrestAcceptNewFriendRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/accept_new_friend', options);
     },
     /**
      * @summary 添加群成员
-     * @param {WcferryMemberMgmt} body 管理群成员参数
+     * @param {WcfrestChatroomMembersRequest} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    addChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/add_chatroom_members', options);
@@ -56,11 +56,11 @@ export const WrestApi = {
     },
     /**
      * @summary 获取头像列表
-     * @param {unknown} [options] body 获取头像列表参数
+     * @param {WcfrestGetAvatarsRequest} body 获取头像列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    avatarsPost(body?: unknown, options: RequestInit = {}): Promise<WcferryContactHeadImgUrlTable> {
+    avatarsPost(body: WcfrestGetAvatarsRequest, options: RequestInit = {}): Promise<WcfrestAvatarPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/avatars', options);
@@ -71,7 +71,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    chatroomMembers(body: WcfrestGetChatRoomMembersRequest, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+    chatroomMembers(body: WcfrestGetChatRoomMembersRequest, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/chatroom_members', options);
@@ -82,7 +82,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    chatrooms(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+    chatrooms(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/chatrooms', options);
@@ -93,7 +93,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    contacts(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+    contacts(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/contacts', options);
@@ -126,18 +126,18 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    dbTables(body: WcfrestGetDbTablesRequest, options: RequestInit = {}): Promise<Array<WcferryDbTable>> {
+    dbTables(body: WcfrestGetDbTablesRequest, options: RequestInit = {}): Promise<Array<WcfrestDbTablePayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/db_tables', options);
     },
     /**
      * @summary 删除群成员
-     * @param {WcferryMemberMgmt} body 管理群成员参数
+     * @param {WcfrestChatroomMembersRequest} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    delChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    delChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/del_chatroom_members', options);
@@ -188,11 +188,11 @@ export const WrestApi = {
     },
     /**
      * @summary 转发消息
-     * @param {WcferryForwardMsg} body 转发消息参数
+     * @param {WcfrestForwardMsgRequest} body 转发消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    forwardMsg(body: WcferryForwardMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    forwardMsg(body: WcfrestForwardMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/forward_msg', options);
@@ -203,7 +203,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    friends(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+    friends(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/friends', options);
@@ -232,11 +232,11 @@ export const WrestApi = {
     },
     /**
      * @summary 邀请群成员
-     * @param {WcferryMemberMgmt} body 管理群成员参数
+     * @param {WcfrestChatroomMembersRequest} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    inviteChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    inviteChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/invite_chatroom_members', options);
@@ -265,11 +265,11 @@ export const WrestApi = {
     },
     /**
      * @summary 接受转账
-     * @param {WcferryTransfer} body 接受转账参数
+     * @param {WcfrestReceiveTransferRequest} body 接受转账参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    receiveTransfer(body: WcferryTransfer, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    receiveTransfer(body: WcfrestReceiveTransferRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/receive_transfer', options);
@@ -302,7 +302,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    selfInfo(body?: unknown, options: RequestInit = {}): Promise<WcferryUserInfo> {
+    selfInfo(body?: unknown, options: RequestInit = {}): Promise<WcfrestUserInfoPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/self_info', options);
@@ -320,55 +320,55 @@ export const WrestApi = {
     },
     /**
      * @summary 发送文件消息
-     * @param {WcferryPathMsg} body 发送文件消息参数
+     * @param {WcfrestSendFileRequest} body 发送文件消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendFile(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendFile(body: WcfrestSendFileRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/send_file', options);
     },
     /**
      * @summary 发送图片消息
-     * @param {WcferryPathMsg} body 发送图片消息参数
+     * @param {WcfrestSendImgRequest} body 发送图片消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendImg(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendImg(body: WcfrestSendImgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/send_img', options);
     },
     /**
      * @summary 拍一拍群友
-     * @param {WcferryPatMsg} body 拍一拍群友参数
+     * @param {WcfrestSendPatMsgRequest} body 拍一拍群友参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendPatMsg(body: WcferryPatMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendPatMsg(body: WcfrestSendPatMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/send_pat_msg', options);
     },
     /**
      * @summary 发送卡片消息
-     * @param {WcferryRichText} body 发送卡片消息参数
+     * @param {WcfrestSendRichTextRequest} body 发送卡片消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendRichText(body: WcferryRichText, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendRichText(body: WcfrestSendRichTextRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/send_rich_text', options);
     },
     /**
      * @summary 发送文本消息
-     * @param {WcferryTextMsg} body 发送文本消息参数
+     * @param {WcfrestSendTxtRequest} body 发送文本消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendTxt(body: WcferryTextMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendTxt(body: WcfrestSendTxtRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/send_txt', options);
@@ -379,7 +379,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    userInfo(body: WcfrestGetInfoByWxidRequest, options: RequestInit = {}): Promise<WcferryRpcContact> {
+    userInfo(body: WcfrestGetInfoByWxidRequest, options: RequestInit = {}): Promise<WcfrestContactPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/user_info', options);
@@ -388,344 +388,71 @@ export const WrestApi = {
 
 /**
  * @export
- * @interface WcferryContactHeadImgUrlTable
+ * @interface WcfrestAcceptNewFriendRequest
  */
-export interface WcferryContactHeadImgUrlTable {
+export interface WcfrestAcceptNewFriendRequest {
     /**
+     * 添加方式：17 名片，30 扫码
+     * @type {number}
+     * @memberof WcfrestAcceptNewFriendRequest
+     */
+    scene?: number;
+    /**
+     * 加密的用户名
      * @type {string}
-     * @memberof WcferryContactHeadImgUrlTable
+     * @memberof WcfrestAcceptNewFriendRequest
+     */
+    v3?: string;
+    /**
+     * 验证信息 Ticket
+     * @type {string}
+     * @memberof WcfrestAcceptNewFriendRequest
+     */
+    v4?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestAvatarPayload
+ */
+export interface WcfrestAvatarPayload {
+    /**
+     * 大头像 url
+     * @type {string}
+     * @memberof WcfrestAvatarPayload
      */
     bigHeadImgUrl?: string;
     /**
+     * 小头像 url
      * @type {string}
-     * @memberof WcferryContactHeadImgUrlTable
-     */
-    headImgMd5?: string;
-    /**
-     * @type {number}
-     * @memberof WcferryContactHeadImgUrlTable
-     */
-    reverse0?: number;
-    /**
-     * @type {unknown}
-     * @memberof WcferryContactHeadImgUrlTable
-     */
-    reverse1?: unknown;
-    /**
-     * @type {string}
-     * @memberof WcferryContactHeadImgUrlTable
+     * @memberof WcfrestAvatarPayload
      */
     smallHeadImgUrl?: string;
     /**
+     * 用户 id
      * @type {string}
-     * @memberof WcferryContactHeadImgUrlTable
+     * @memberof WcfrestAvatarPayload
      */
     usrName?: string;
 }
 
 /**
  * @export
- * @interface WcferryDbTable
+ * @interface WcfrestChatroomMembersRequest
  */
-export interface WcferryDbTable {
+export interface WcfrestChatroomMembersRequest {
     /**
-     * 表名
+     * 群聊 id
      * @type {string}
-     * @memberof WcferryDbTable
-     */
-    name?: string;
-    /**
-     * 建表 SQL
-     * @type {string}
-     * @memberof WcferryDbTable
-     */
-    sql?: string;
-}
-
-/**
- * @export
- * @interface WcferryForwardMsg
- */
-export interface WcferryForwardMsg {
-    /**
-     * 待转发消息 ID
-     * @type {number}
-     * @memberof WcferryForwardMsg
-     */
-    id?: number;
-    /**
-     * 转发接收目标，群为 roomId，个人为 wxid
-     * @type {string}
-     * @memberof WcferryForwardMsg
-     */
-    receiver?: string;
-}
-
-/**
- * @export
- * @interface WcferryMemberMgmt
- */
-export interface WcferryMemberMgmt {
-    /**
-     * 要加的群ID
-     * @type {string}
-     * @memberof WcferryMemberMgmt
+     * @memberof WcfrestChatroomMembersRequest
      */
     roomid?: string;
     /**
-     * 要加群的人列表，逗号分隔
-     * @type {string}
-     * @memberof WcferryMemberMgmt
+     * 用户 id 列表
+     * @type {Array<string>}
+     * @memberof WcfrestChatroomMembersRequest
      */
-    wxids?: string;
-}
-
-/**
- * @export
- * @interface WcferryPatMsg
- */
-export interface WcferryPatMsg {
-    /**
-     * 群 id
-     * @type {string}
-     * @memberof WcferryPatMsg
-     */
-    roomid?: string;
-    /**
-     * wxid
-     * @type {string}
-     * @memberof WcferryPatMsg
-     */
-    wxid?: string;
-}
-
-/**
- * @export
- * @interface WcferryPathMsg
- */
-export interface WcferryPathMsg {
-    /**
-     * 要发送的图片的路径
-     * @type {string}
-     * @memberof WcferryPathMsg
-     */
-    path?: string;
-    /**
-     * 消息接收人
-     * @type {string}
-     * @memberof WcferryPathMsg
-     */
-    receiver?: string;
-}
-
-/**
- * @export
- * @interface WcferryRichText
- */
-export interface WcferryRichText {
-    /**
-     * 公众号 id
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    account?: string;
-    /**
-     * 摘要
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    digest?: string;
-    /**
-     * 显示名字
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    name?: string;
-    /**
-     * 接收人
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    receiver?: string;
-    /**
-     * 缩略图
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    thumburl?: string;
-    /**
-     * 标题
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    title?: string;
-    /**
-     * 链接
-     * @type {string}
-     * @memberof WcferryRichText
-     */
-    url?: string;
-}
-
-/**
- * @export
- * @interface WcferryRpcContact
- */
-export interface WcferryRpcContact {
-    /**
-     * 城市
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    city?: string;
-    /**
-     * 微信号
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    code?: string;
-    /**
-     * 国家
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    country?: string;
-    /**
-     * 性别
-     * @type {number}
-     * @memberof WcferryRpcContact
-     */
-    gender?: number;
-    /**
-     * 微信昵称
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    name?: string;
-    /**
-     * 省/州
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    province?: string;
-    /**
-     * 备注
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    remark?: string;
-    /**
-     * 微信 id
-     * @type {string}
-     * @memberof WcferryRpcContact
-     */
-    wxid?: string;
-}
-
-/**
- * @export
- * @interface WcferryTextMsg
- */
-export interface WcferryTextMsg {
-    /**
-     * 要@的人列表，逗号分隔
-     * @type {string}
-     * @memberof WcferryTextMsg
-     */
-    aters?: string;
-    /**
-     * 要发送的消息内容
-     * @type {string}
-     * @memberof WcferryTextMsg
-     */
-    msg?: string;
-    /**
-     * 消息接收人，当为群时可@
-     * @type {string}
-     * @memberof WcferryTextMsg
-     */
-    receiver?: string;
-}
-
-/**
- * @export
- * @interface WcferryTransfer
- */
-export interface WcferryTransfer {
-    /**
-     * Transaction id
-     * @type {string}
-     * @memberof WcferryTransfer
-     */
-    taid?: string;
-    /**
-     * 转账id transferid
-     * @type {string}
-     * @memberof WcferryTransfer
-     */
-    tfid?: string;
-    /**
-     * 转账人
-     * @type {string}
-     * @memberof WcferryTransfer
-     */
-    wxid?: string;
-}
-
-/**
- * @export
- * @interface WcferryUserInfo
- */
-export interface WcferryUserInfo {
-    /**
-     * 文件/图片等父路径
-     * @type {string}
-     * @memberof WcferryUserInfo
-     */
-    home?: string;
-    /**
-     * 手机号
-     * @type {string}
-     * @memberof WcferryUserInfo
-     */
-    mobile?: string;
-    /**
-     * 昵称
-     * @type {string}
-     * @memberof WcferryUserInfo
-     */
-    name?: string;
-    /**
-     * 微信ID
-     * @type {string}
-     * @memberof WcferryUserInfo
-     */
-    wxid?: string;
-}
-
-/**
- * @export
- * @interface WcferryVerification
- */
-export interface WcferryVerification {
-    /**
-     * 添加方式：17 名片，30 扫码
-     * @type {number}
-     * @memberof WcferryVerification
-     */
-    scene?: number;
-    /**
-     * 加密的用户名
-     * @type {string}
-     * @memberof WcferryVerification
-     */
-    v3?: string;
-    /**
-     * Ticket
-     * @type {string}
-     * @memberof WcferryVerification
-     */
-    v4?: string;
+    wxids?: Array<string>;
 }
 
 /**
@@ -734,16 +461,19 @@ export interface WcferryVerification {
  */
 export interface WcfrestCommonPayload {
     /**
+     * 错误信息
      * @type {unknown}
      * @memberof WcfrestCommonPayload
      */
     error?: unknown;
     /**
+     * 返回结果
      * @type {string}
      * @memberof WcfrestCommonPayload
      */
     result?: string;
     /**
+     * 是否成功
      * @type {boolean}
      * @memberof WcfrestCommonPayload
      */
@@ -752,17 +482,93 @@ export interface WcfrestCommonPayload {
 
 /**
  * @export
+ * @interface WcfrestContactPayload
+ */
+export interface WcfrestContactPayload {
+    /**
+     * 城市
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    city?: string;
+    /**
+     * 微信号
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    code?: string;
+    /**
+     * 国家
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    country?: string;
+    /**
+     * 性别
+     * @type {number}
+     * @memberof WcfrestContactPayload
+     */
+    gender?: number;
+    /**
+     * 昵称
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    name?: string;
+    /**
+     * 省/州
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    province?: string;
+    /**
+     * 备注
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    remark?: string;
+    /**
+     * 用户 id
+     * @type {string}
+     * @memberof WcfrestContactPayload
+     */
+    wxid?: string;
+}
+
+/**
+ * @export
  * @interface WcfrestDbSqlQueryRequest
  */
 export interface WcfrestDbSqlQueryRequest {
     /**
+     * 数据库名称
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
      */
     db?: string;
     /**
+     * 待执行的 SQL
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
+     */
+    sql?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestDbTablePayload
+ */
+export interface WcfrestDbTablePayload {
+    /**
+     * 表名
+     * @type {string}
+     * @memberof WcfrestDbTablePayload
+     */
+    name?: string;
+    /**
+     * 建表 SQL
+     * @type {string}
+     * @memberof WcfrestDbTablePayload
      */
     sql?: string;
 }
@@ -773,16 +579,19 @@ export interface WcfrestDbSqlQueryRequest {
  */
 export interface WcfrestDownloadAttachRequest {
     /**
+     * 消息中的 extra 字段
      * @type {string}
      * @memberof WcfrestDownloadAttachRequest
      */
     extra?: string;
     /**
+     * 消息 id
      * @type {number}
      * @memberof WcfrestDownloadAttachRequest
      */
     msgid?: number;
     /**
+     * 消息中的 thumb 字段
      * @type {string}
      * @memberof WcfrestDownloadAttachRequest
      */
@@ -795,21 +604,25 @@ export interface WcfrestDownloadAttachRequest {
  */
 export interface WcfrestDownloadImageRequest {
     /**
+     * 存储路径
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
     dir?: string;
     /**
+     * 消息中的 extra 字段
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
     extra?: string;
     /**
+     * 消息 id
      * @type {number}
      * @memberof WcfrestDownloadImageRequest
      */
     msgid?: number;
     /**
+     * 超时重试次数
      * @type {number}
      * @memberof WcfrestDownloadImageRequest
      */
@@ -818,15 +631,36 @@ export interface WcfrestDownloadImageRequest {
 
 /**
  * @export
+ * @interface WcfrestForwardMsgRequest
+ */
+export interface WcfrestForwardMsgRequest {
+    /**
+     * 待转发消息 id
+     * @type {number}
+     * @memberof WcfrestForwardMsgRequest
+     */
+    id?: number;
+    /**
+     * 转发接收人或群的 id 列表
+     * @type {Array<string>}
+     * @memberof WcfrestForwardMsgRequest
+     */
+    receiver?: Array<string>;
+}
+
+/**
+ * @export
  * @interface WcfrestGetAliasInChatRoomRequest
  */
 export interface WcfrestGetAliasInChatRoomRequest {
     /**
+     * 群聊 id
      * @type {string}
      * @memberof WcfrestGetAliasInChatRoomRequest
      */
     roomid?: string;
     /**
+     * 用户 id
      * @type {string}
      * @memberof WcfrestGetAliasInChatRoomRequest
      */
@@ -839,16 +673,19 @@ export interface WcfrestGetAliasInChatRoomRequest {
  */
 export interface WcfrestGetAudioMsgRequest {
     /**
+     * 消息 id
      * @type {number}
      * @memberof WcfrestGetAudioMsgRequest
      */
     msgid?: number;
     /**
+     * 存储路径
      * @type {string}
      * @memberof WcfrestGetAudioMsgRequest
      */
     path?: string;
     /**
+     * 超时重试次数
      * @type {number}
      * @memberof WcfrestGetAudioMsgRequest
      */
@@ -857,10 +694,24 @@ export interface WcfrestGetAudioMsgRequest {
 
 /**
  * @export
+ * @interface WcfrestGetAvatarsRequest
+ */
+export interface WcfrestGetAvatarsRequest {
+    /**
+     * 用户 id 列表
+     * @type {Array<string>}
+     * @memberof WcfrestGetAvatarsRequest
+     */
+    wxids?: Array<string>;
+}
+
+/**
+ * @export
  * @interface WcfrestGetChatRoomMembersRequest
  */
 export interface WcfrestGetChatRoomMembersRequest {
     /**
+     * 群聊 id
      * @type {string}
      * @memberof WcfrestGetChatRoomMembersRequest
      */
@@ -873,6 +724,7 @@ export interface WcfrestGetChatRoomMembersRequest {
  */
 export interface WcfrestGetDbTablesRequest {
     /**
+     * 数据库名称
      * @type {string}
      * @memberof WcfrestGetDbTablesRequest
      */
@@ -885,6 +737,7 @@ export interface WcfrestGetDbTablesRequest {
  */
 export interface WcfrestGetInfoByWxidRequest {
     /**
+     * 用户 id
      * @type {string}
      * @memberof WcfrestGetInfoByWxidRequest
      */
@@ -897,11 +750,13 @@ export interface WcfrestGetInfoByWxidRequest {
  */
 export interface WcfrestGetOcrRequest {
     /**
+     * 消息中的 extra 字段
      * @type {string}
      * @memberof WcfrestGetOcrRequest
      */
     extra?: string;
     /**
+     * 超时重试次数
      * @type {number}
      * @memberof WcfrestGetOcrRequest
      */
@@ -910,10 +765,36 @@ export interface WcfrestGetOcrRequest {
 
 /**
  * @export
+ * @interface WcfrestReceiveTransferRequest
+ */
+export interface WcfrestReceiveTransferRequest {
+    /**
+     * Transaction id
+     * @type {string}
+     * @memberof WcfrestReceiveTransferRequest
+     */
+    taid?: string;
+    /**
+     * 转账id transferid
+     * @type {string}
+     * @memberof WcfrestReceiveTransferRequest
+     */
+    tfid?: string;
+    /**
+     * 转账人
+     * @type {string}
+     * @memberof WcfrestReceiveTransferRequest
+     */
+    wxid?: string;
+}
+
+/**
+ * @export
  * @interface WcfrestReceiverRequest
  */
 export interface WcfrestReceiverRequest {
     /**
+     * 接收推送消息的 url
      * @type {string}
      * @memberof WcfrestReceiverRequest
      */
@@ -926,6 +807,7 @@ export interface WcfrestReceiverRequest {
  */
 export interface WcfrestRefreshPyqRequest {
     /**
+     * 分页 id
      * @type {number}
      * @memberof WcfrestRefreshPyqRequest
      */
@@ -938,8 +820,171 @@ export interface WcfrestRefreshPyqRequest {
  */
 export interface WcfrestRevokeMsgRequest {
     /**
+     * 消息 id
      * @type {number}
      * @memberof WcfrestRevokeMsgRequest
      */
     msgid?: number;
+}
+
+/**
+ * @export
+ * @interface WcfrestSendFileRequest
+ */
+export interface WcfrestSendFileRequest {
+    /**
+     * 文件路径
+     * @type {string}
+     * @memberof WcfrestSendFileRequest
+     */
+    path?: string;
+    /**
+     * 接收人或群的 id
+     * @type {string}
+     * @memberof WcfrestSendFileRequest
+     */
+    receiver?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestSendImgRequest
+ */
+export interface WcfrestSendImgRequest {
+    /**
+     * 图片路径
+     * @type {string}
+     * @memberof WcfrestSendImgRequest
+     */
+    path?: string;
+    /**
+     * 接收人或群的 id
+     * @type {string}
+     * @memberof WcfrestSendImgRequest
+     */
+    receiver?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestSendPatMsgRequest
+ */
+export interface WcfrestSendPatMsgRequest {
+    /**
+     * 群 id
+     * @type {string}
+     * @memberof WcfrestSendPatMsgRequest
+     */
+    roomid?: string;
+    /**
+     * 用户 id
+     * @type {string}
+     * @memberof WcfrestSendPatMsgRequest
+     */
+    wxid?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestSendRichTextRequest
+ */
+export interface WcfrestSendRichTextRequest {
+    /**
+     * 填公众号 id 可以显示对应的头像（gh_ 开头的）
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    account?: string;
+    /**
+     * 摘要，三行
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    digest?: string;
+    /**
+     * 左下显示的名字
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    name?: string;
+    /**
+     * 接收人或群的 id
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    receiver?: string;
+    /**
+     * 缩略图的链接
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    thumburl?: string;
+    /**
+     * 标题，最多两行
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    title?: string;
+    /**
+     * 点击后跳转的链接
+     * @type {string}
+     * @memberof WcfrestSendRichTextRequest
+     */
+    url?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestSendTxtRequest
+ */
+export interface WcfrestSendTxtRequest {
+    /**
+     * 需要 At 的用户 id 列表
+     * @type {Array<string>}
+     * @memberof WcfrestSendTxtRequest
+     */
+    aters?: Array<string>;
+    /**
+     * 消息内容
+     * @type {string}
+     * @memberof WcfrestSendTxtRequest
+     */
+    msg?: string;
+    /**
+     * 接收人或群的 id
+     * @type {string}
+     * @memberof WcfrestSendTxtRequest
+     */
+    receiver?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestUserInfoPayload
+ */
+export interface WcfrestUserInfoPayload {
+    /**
+     * 文件/图片等父路径
+     * @type {string}
+     * @memberof WcfrestUserInfoPayload
+     */
+    home?: string;
+    /**
+     * 手机号
+     * @type {string}
+     * @memberof WcfrestUserInfoPayload
+     */
+    mobile?: string;
+    /**
+     * 昵称
+     * @type {string}
+     * @memberof WcfrestUserInfoPayload
+     */
+    name?: string;
+    /**
+     * 用户 id
+     * @type {string}
+     * @memberof WcfrestUserInfoPayload
+     */
+    wxid?: string;
 }
