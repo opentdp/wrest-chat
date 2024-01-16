@@ -420,7 +420,6 @@ type GetAudioMsgRequest struct {
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
 // @Router /get_ocr_result [post]
-
 func (wc *Controller) getOcrResult(c *gin.Context) {
 
 	var req GetOcrRequest
@@ -456,7 +455,6 @@ type GetOcrRequest struct {
 // @Param body body DownloadImageRequest true "下载图片参数"
 // @Success 200 {object} CommonPayload
 // @Router /download_image [post]
-
 func (wc *Controller) downloadImage(c *gin.Context) {
 
 	var req DownloadImageRequest
@@ -487,7 +485,6 @@ type DownloadImageRequest struct {
 // @Param body body DownloadAttachRequest true "下载附件参数"
 // @Success 200 {object} CommonPayload
 // @Router /download_attach [post]
-
 func (wc *Controller) downloadAttach(c *gin.Context) {
 
 	var req DownloadAttachRequest
@@ -636,7 +633,6 @@ func (wc *Controller) receiveTransfer(c *gin.Context) {
 // @Param body body ReceiverRequest true "推送消息到URL参数"
 // @Success 200 {object} CommonPayload
 // @Router /enable_receiver [post]
-
 func (wc *Controller) enabledReceiver(c *gin.Context) {
 
 	var req ReceiverRequest

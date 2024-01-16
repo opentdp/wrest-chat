@@ -22,535 +22,474 @@ export function httpRequest(input: string, options?: RequestInit) {
 
 export const WrestApi = {
     /**
-     * 
      * @summary 接受好友请求
-     * @param {WcferryVerification} body 接受好友请求参数
+     * @param {WcferryVerification} body 接受好友参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    acceptNewFriend(body: WcferryVerification, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling acceptNewFriendPost.');
-        }
-
+    acceptNewFriend(body: WcferryVerification, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/accept_new_friend`, options);
+        return httpRequest('/accept_new_friend', options);
     },
     /**
-     * 
      * @summary 添加群成员
-     * @param {WcferryMemberMgmt} body 增删群成员请求参数
+     * @param {WcferryMemberMgmt} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling addChatroomMembersPost.');
-        }
-
+    addChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/add_chatroom_members`, options);
+        return httpRequest('/add_chatroom_members', options);
     },
     /**
-     * 
      * @summary 获取群成员昵称
-     * @param {string} wxid wxid
-     * @param {string} roomid 群id
+     * @param {WcfrestGetAliasInChatRoomRequest} body 获取群成员昵称参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    aliasInChatroomWxidRoomid(wxid: string, roomid: string, options: RequestInit = {}): Promise<string> {
-        if (wxid === null || wxid === undefined) {
-            throw new RequiredError('wxid', 'Required parameter wxid was null or undefined when calling aliasInChatroomWxidRoomidGet.');
-        }
-        if (roomid === null || roomid === undefined) {
-            throw new RequiredError('roomid', 'Required parameter roomid was null or undefined when calling aliasInChatroomWxidRoomidGet.');
-        }
+    aliasInChatroom(body: WcfrestGetAliasInChatRoomRequest, options: RequestInit = {}): Promise<string> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/alias_in_chatroom/${wxid}/${roomid}`, options);
+        return httpRequest('/alias_in_chatroom', options);
     },
     /**
-     * 
+     * @summary 获取头像列表
+     * @param {unknown} [options] body 获取头像列表参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    avatarsPost(body?: unknown, options: RequestInit = {}): Promise<WcferryContactHeadImgUrlTable> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
+
+        return httpRequest('/avatars', options);
+    },
+    /**
      * @summary 获取群成员列表
-     * @param {string} roomid 群id
+     * @param {WcfrestGetChatRoomMembersRequest} body 获取群成员列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    chatroomMembersRoomid(roomid: string, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        if (roomid === null || roomid === undefined) {
-            throw new RequiredError('roomid', 'Required parameter roomid was null or undefined when calling chatroomMembersRoomidGet.');
-        }
+    chatroomMembers(body: WcfrestGetChatRoomMembersRequest, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/chatroom_members/${roomid}`, options);
+        return httpRequest('/chatroom_members', options);
     },
     /**
-     * 
      * @summary 获取群列表
+     * @param {unknown} [options] body 获取群列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    chatrooms(options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    chatrooms(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/chatrooms`, options);
+        return httpRequest('/chatrooms', options);
     },
     /**
-     * 
      * @summary 获取完整通讯录
+     * @param {unknown} [options] body 获取完整通讯录参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    contacts(options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    contacts(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/contacts`, options);
+        return httpRequest('/contacts', options);
     },
     /**
-     * 
      * @summary 获取数据库列表
+     * @param {unknown} [options] body 获取数据库列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    dbNames(options: RequestInit = {}): Promise<Array<string>> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    dbNames(body?: unknown, options: RequestInit = {}): Promise<Array<string>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/db_names`, options);
+        return httpRequest('/db_names', options);
     },
     /**
-     * 
      * @summary 执行数据库查询
-     * @param {WcfrestDbSqlQueryRequest} body 数据库查询请求参数
+     * @param {WcfrestDbSqlQueryRequest} body 数据库查询参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     dbQuerySql(body: WcfrestDbSqlQueryRequest, options: RequestInit = {}): Promise<Array<{ [key: string]: unknown; }>> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling dbQuerySqlPost.');
-        }
-
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/db_query_sql`, options);
+        return httpRequest('/db_query_sql', options);
     },
     /**
-     * 
      * @summary 获取数据库表列表
-     * @param {string} db 数据库名
+     * @param {WcfrestGetDbTablesRequest} body 获取数据库表列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    dbTablesDb(db: string, options: RequestInit = {}): Promise<Array<WcferryDbTable>> {
-        if (db === null || db === undefined) {
-            throw new RequiredError('db', 'Required parameter db was null or undefined when calling dbTablesDbGet.');
-        }
+    dbTables(body: WcfrestGetDbTablesRequest, options: RequestInit = {}): Promise<Array<WcferryDbTable>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/db_tables/${db}`, options);
+        return httpRequest('/db_tables', options);
     },
     /**
-     * 
      * @summary 删除群成员
-     * @param {WcferryMemberMgmt} body 增删群成员请求参数
+     * @param {WcferryMemberMgmt} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    delChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling delChatroomMembersPost.');
-        }
-
+    delChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/del_chatroom_members`, options);
+        return httpRequest('/del_chatroom_members', options);
     },
     /**
-     * 
      * @summary 关闭推送消息到URL
-     * @param {WcfrestReceiverRequest} body 消息推送请求参数
+     * @param {WcfrestReceiverRequest} body 推送消息到URL参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    disableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling disableReceiverPost.');
-        }
-
+    disableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/disable_receiver`, options);
+        return httpRequest('/disable_receiver', options);
     },
     /**
-     * 
      * @summary 下载附件
      * @param {WcfrestDownloadAttachRequest} body 下载附件参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    downloadAttach(body: WcfrestDownloadAttachRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling downloadAttachPost.');
-        }
-
+    downloadAttach(body: WcfrestDownloadAttachRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/download_attach`, options);
+        return httpRequest('/download_attach', options);
     },
     /**
-     * 
      * @summary 下载图片
      * @param {WcfrestDownloadImageRequest} body 下载图片参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    downloadImage(body: WcfrestDownloadImageRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling downloadImagePost.');
-        }
-
+    downloadImage(body: WcfrestDownloadImageRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/download_image`, options);
+        return httpRequest('/download_image', options);
     },
     /**
-     * 
      * @summary 开启推送消息到URL
-     * @param {WcfrestReceiverRequest} body 消息推送请求参数
+     * @param {WcfrestReceiverRequest} body 推送消息到URL参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    enableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling enableReceiverPost.');
-        }
-
+    enableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/enable_receiver`, options);
+        return httpRequest('/enable_receiver', options);
     },
     /**
-     * 
      * @summary 转发消息
-     * @param {WcferryForwardMsg} body 转发消息请求参数
+     * @param {WcferryForwardMsg} body 转发消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    forwardMsg(body: WcferryForwardMsg, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling forwardMsgPost.');
-        }
-
+    forwardMsg(body: WcferryForwardMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/forward_msg`, options);
+        return httpRequest('/forward_msg', options);
     },
     /**
-     * 
      * @summary 获取好友列表
+     * @param {unknown} [options] body 获取好友列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    friends(options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    friends(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/friends`, options);
+        return httpRequest('/friends', options);
     },
     /**
-     * 
      * @summary 获取语音消息
-     * @param {WcfrestGetAudioMsgRequest} body 语音消息请求参数
+     * @param {WcfrestGetAudioMsgRequest} body 获取语音消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getAudioMsg(body: WcfrestGetAudioMsgRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling getAudioMsgPost.');
-        }
-
+    getAudioMsg(body: WcfrestGetAudioMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/get_audio_msg`, options);
+        return httpRequest('/get_audio_msg', options);
     },
     /**
-     * 
      * @summary 获取OCR识别结果
-     * @param {WcfrestGetOcrRequest} body 文本请求参数
+     * @param {WcfrestGetOcrRequest} body 获取OCR识别结果参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getOcrResult(body: WcfrestGetOcrRequest, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling getOcrResultPost.');
-        }
-
+    getOcrResult(body: WcfrestGetOcrRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/get_ocr_result`, options);
+        return httpRequest('/get_ocr_result', options);
     },
     /**
-     * 
      * @summary 邀请群成员
-     * @param {WcferryMemberMgmt} body 增删群成员请求参数
+     * @param {WcferryMemberMgmt} body 管理群成员参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    inviteChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling inviteChatroomMembersPost.');
-        }
-
+    inviteChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/invite_chatroom_members`, options);
+        return httpRequest('/invite_chatroom_members', options);
     },
     /**
-     * 
      * @summary 检查登录状态
+     * @param {unknown} [options] body 检查登录状态参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    isLogin(options: RequestInit = {}): Promise<boolean> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    isLogin(body?: unknown, options: RequestInit = {}): Promise<boolean> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/is_login`, options);
+        return httpRequest('/is_login', options);
     },
     /**
-     * 
      * @summary 获取所有消息类型
+     * @param {unknown} [options] body 获取所有消息类型参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    msgTypes(options: RequestInit = {}): Promise<{ [key: string]: string; }> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    msgTypes(body?: unknown, options: RequestInit = {}): Promise<{ [key: string]: string; }> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/msg_types`, options);
+        return httpRequest('/msg_types', options);
     },
     /**
-     * 
      * @summary 接受转账
-     * @param {WcferryTransfer} body 接受转账请求参数
+     * @param {WcferryTransfer} body 接受转账参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    receiveTransfer(body: WcferryTransfer, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling receiveTransferPost.');
-        }
-
+    receiveTransfer(body: WcferryTransfer, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/receive_transfer`, options);
+        return httpRequest('/receive_transfer', options);
     },
     /**
-     * 
      * @summary 刷新朋友圈
-     * @param {number} id 朋友圈id
+     * @param {WcfrestRefreshPyqRequest} body 刷新朋友圈参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    refreshPyqId(id: number, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (id === null || id === undefined) {
-            throw new RequiredError('id', 'Required parameter id was null or undefined when calling refreshPyqIdGet.');
-        }
+    refreshPyq(body: WcfrestRefreshPyqRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/refresh_pyq/${id}`, options);
+        return httpRequest('/refresh_pyq', options);
     },
     /**
-     * 
      * @summary 撤回消息
-     * @param {number} msgid 消息id
+     * @param {WcfrestRevokeMsgRequest} body 撤回消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    revokeMsgMsgid(msgid: number, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (msgid === null || msgid === undefined) {
-            throw new RequiredError('msgid', 'Required parameter msgid was null or undefined when calling revokeMsgMsgidGet.');
-        }
+    revokeMsg(body: WcfrestRevokeMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/revoke_msg/${msgid}`, options);
+        return httpRequest('/revoke_msg', options);
     },
     /**
-     * 
      * @summary 获取登录账号个人信息
+     * @param {unknown} [options] body 获取数据库列表参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    selfInfo(options: RequestInit = {}): Promise<WcferryUserInfo> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    selfInfo(body?: unknown, options: RequestInit = {}): Promise<WcferryUserInfo> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/self_info`, options);
+        return httpRequest('/self_info', options);
     },
     /**
-     * 
      * @summary 获取登录账号wxid
+     * @param {unknown} [options] body 获取登录账号wxid参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    selfWxid(options: RequestInit = {}): Promise<string> {
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
+    selfWxid(body?: unknown, options: RequestInit = {}): Promise<string> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/self_wxid`, options);
+        return httpRequest('/self_wxid', options);
     },
     /**
-     * 
      * @summary 发送文件消息
-     * @param {WcferryPathMsg} body 文件消息请求参数
+     * @param {WcferryPathMsg} body 发送文件消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendFile(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling sendFilePost.');
-        }
-
+    sendFile(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/send_file`, options);
+        return httpRequest('/send_file', options);
     },
     /**
-     * 
      * @summary 发送图片消息
-     * @param {WcferryPathMsg} body 图片消息请求参数
+     * @param {WcferryPathMsg} body 发送图片消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendImg(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling sendImgPost.');
-        }
-
+    sendImg(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/send_img`, options);
+        return httpRequest('/send_img', options);
     },
     /**
-     * 
      * @summary 拍一拍群友
-     * @param {WcferryPatMsg} body 拍一拍请求参数
+     * @param {WcferryPatMsg} body 拍一拍群友参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendPatMsg(body: WcferryPatMsg, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling sendPatMsgPost.');
-        }
-
+    sendPatMsg(body: WcferryPatMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/send_pat_msg`, options);
+        return httpRequest('/send_pat_msg', options);
     },
     /**
-     * 
      * @summary 发送卡片消息
-     * @param {WcferryRichText} body 卡片消息请求参数
+     * @param {WcferryRichText} body 发送卡片消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendRichText(body: WcferryRichText, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling sendRichTextPost.');
-        }
-
+    sendRichText(body: WcferryRichText, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/send_rich_text`, options);
+        return httpRequest('/send_rich_text', options);
     },
     /**
-     * 
      * @summary 发送文本消息
-     * @param {WcferryTextMsg} body 文本消息请求参数
+     * @param {WcferryTextMsg} body 发送文本消息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    sendTxt(body: WcferryTextMsg, options: RequestInit = {}): Promise<WcfrestRespPayload> {
-        if (body === null || body === undefined) {
-            throw new RequiredError('body', 'Required parameter body was null or undefined when calling sendTxtPost.');
-        }
-
+    sendTxt(body: WcferryTextMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = Object.assign({ method: 'POST' }, options);
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         options.body = JSON.stringify(body || {});
 
-        return httpRequest(`/send_txt`, options);
+        return httpRequest('/send_txt', options);
     },
     /**
-     * 
      * @summary 根据wxid获取个人信息
-     * @param {string} wxid wxid
+     * @param {WcfrestGetInfoByWxidRequest} body 根据wxid获取个人信息参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    userInfoWxid(wxid: string, options: RequestInit = {}): Promise<WcferryRpcContact> {
-        if (wxid === null || wxid === undefined) {
-            throw new RequiredError('wxid', 'Required parameter wxid was null or undefined when calling userInfoWxidGet.');
-        }
+    userInfo(body: WcfrestGetInfoByWxidRequest, options: RequestInit = {}): Promise<WcferryRpcContact> {
+        options = Object.assign({ method: 'POST' }, options);
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        options.body = JSON.stringify(body || {});
 
-        options = Object.assign({ method: 'GET' }, options);
-        options.headers = Object.assign({}, options.headers);
-
-        return httpRequest(`/user_info/${wxid}`, options);
+        return httpRequest('/user_info', options);
     },
 };
 
 /**
- * 
+ * @export
+ * @interface WcferryContactHeadImgUrlTable
+ */
+export interface WcferryContactHeadImgUrlTable {
+    /**
+     * @type {string}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    bigHeadImgUrl?: string;
+    /**
+     * @type {string}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    headImgMd5?: string;
+    /**
+     * @type {number}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    reverse0?: number;
+    /**
+     * @type {unknown}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    reverse1?: unknown;
+    /**
+     * @type {string}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    smallHeadImgUrl?: string;
+    /**
+     * @type {string}
+     * @memberof WcferryContactHeadImgUrlTable
+     */
+    usrName?: string;
+}
+
+/**
  * @export
  * @interface WcferryDbTable
  */
@@ -570,7 +509,6 @@ export interface WcferryDbTable {
 }
 
 /**
- * 
  * @export
  * @interface WcferryForwardMsg
  */
@@ -590,7 +528,6 @@ export interface WcferryForwardMsg {
 }
 
 /**
- * 
  * @export
  * @interface WcferryMemberMgmt
  */
@@ -610,7 +547,6 @@ export interface WcferryMemberMgmt {
 }
 
 /**
- * 
  * @export
  * @interface WcferryPatMsg
  */
@@ -630,7 +566,6 @@ export interface WcferryPatMsg {
 }
 
 /**
- * 
  * @export
  * @interface WcferryPathMsg
  */
@@ -650,7 +585,6 @@ export interface WcferryPathMsg {
 }
 
 /**
- * 
  * @export
  * @interface WcferryRichText
  */
@@ -700,7 +634,6 @@ export interface WcferryRichText {
 }
 
 /**
- * 
  * @export
  * @interface WcferryRpcContact
  */
@@ -756,7 +689,6 @@ export interface WcferryRpcContact {
 }
 
 /**
- * 
  * @export
  * @interface WcferryTextMsg
  */
@@ -782,7 +714,6 @@ export interface WcferryTextMsg {
 }
 
 /**
- * 
  * @export
  * @interface WcferryTransfer
  */
@@ -808,7 +739,6 @@ export interface WcferryTransfer {
 }
 
 /**
- * 
  * @export
  * @interface WcferryUserInfo
  */
@@ -840,7 +770,6 @@ export interface WcferryUserInfo {
 }
 
 /**
- * 
  * @export
  * @interface WcferryVerification
  */
@@ -866,19 +795,38 @@ export interface WcferryVerification {
 }
 
 /**
- * 
+ * @export
+ * @interface WcfrestCommonPayload
+ */
+export interface WcfrestCommonPayload {
+    /**
+     * @type {unknown}
+     * @memberof WcfrestCommonPayload
+     */
+    error?: unknown;
+    /**
+     * @type {string}
+     * @memberof WcfrestCommonPayload
+     */
+    result?: string;
+    /**
+     * @type {boolean}
+     * @memberof WcfrestCommonPayload
+     */
+    success?: boolean;
+}
+
+/**
  * @export
  * @interface WcfrestDbSqlQueryRequest
  */
 export interface WcfrestDbSqlQueryRequest {
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
      */
     db?: string;
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
      */
@@ -886,25 +834,21 @@ export interface WcfrestDbSqlQueryRequest {
 }
 
 /**
- * 
  * @export
  * @interface WcfrestDownloadAttachRequest
  */
 export interface WcfrestDownloadAttachRequest {
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDownloadAttachRequest
      */
     extra?: string;
     /**
-     * 
      * @type {number}
      * @memberof WcfrestDownloadAttachRequest
      */
     msgid?: number;
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDownloadAttachRequest
      */
@@ -912,31 +856,26 @@ export interface WcfrestDownloadAttachRequest {
 }
 
 /**
- * 
  * @export
  * @interface WcfrestDownloadImageRequest
  */
 export interface WcfrestDownloadImageRequest {
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
     dir?: string;
     /**
-     * 
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
     extra?: string;
     /**
-     * 
      * @type {number}
      * @memberof WcfrestDownloadImageRequest
      */
     msgid?: number;
     /**
-     * 
      * @type {number}
      * @memberof WcfrestDownloadImageRequest
      */
@@ -944,25 +883,38 @@ export interface WcfrestDownloadImageRequest {
 }
 
 /**
- * 
+ * @export
+ * @interface WcfrestGetAliasInChatRoomRequest
+ */
+export interface WcfrestGetAliasInChatRoomRequest {
+    /**
+     * @type {string}
+     * @memberof WcfrestGetAliasInChatRoomRequest
+     */
+    roomid?: string;
+    /**
+     * @type {string}
+     * @memberof WcfrestGetAliasInChatRoomRequest
+     */
+    wxid?: string;
+}
+
+/**
  * @export
  * @interface WcfrestGetAudioMsgRequest
  */
 export interface WcfrestGetAudioMsgRequest {
     /**
-     * 
      * @type {number}
      * @memberof WcfrestGetAudioMsgRequest
      */
     msgid?: number;
     /**
-     * 
      * @type {string}
      * @memberof WcfrestGetAudioMsgRequest
      */
     path?: string;
     /**
-     * 
      * @type {number}
      * @memberof WcfrestGetAudioMsgRequest
      */
@@ -970,19 +922,52 @@ export interface WcfrestGetAudioMsgRequest {
 }
 
 /**
- * 
+ * @export
+ * @interface WcfrestGetChatRoomMembersRequest
+ */
+export interface WcfrestGetChatRoomMembersRequest {
+    /**
+     * @type {string}
+     * @memberof WcfrestGetChatRoomMembersRequest
+     */
+    roomid?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestGetDbTablesRequest
+ */
+export interface WcfrestGetDbTablesRequest {
+    /**
+     * @type {string}
+     * @memberof WcfrestGetDbTablesRequest
+     */
+    db?: string;
+}
+
+/**
+ * @export
+ * @interface WcfrestGetInfoByWxidRequest
+ */
+export interface WcfrestGetInfoByWxidRequest {
+    /**
+     * @type {string}
+     * @memberof WcfrestGetInfoByWxidRequest
+     */
+    wxid?: string;
+}
+
+/**
  * @export
  * @interface WcfrestGetOcrRequest
  */
 export interface WcfrestGetOcrRequest {
     /**
-     * 
      * @type {string}
      * @memberof WcfrestGetOcrRequest
      */
     extra?: string;
     /**
-     * 
      * @type {number}
      * @memberof WcfrestGetOcrRequest
      */
@@ -990,13 +975,11 @@ export interface WcfrestGetOcrRequest {
 }
 
 /**
- * 
  * @export
  * @interface WcfrestReceiverRequest
  */
 export interface WcfrestReceiverRequest {
     /**
-     * 
      * @type {string}
      * @memberof WcfrestReceiverRequest
      */
@@ -1004,27 +987,25 @@ export interface WcfrestReceiverRequest {
 }
 
 /**
- * 
  * @export
- * @interface WcfrestRespPayload
+ * @interface WcfrestRefreshPyqRequest
  */
-export interface WcfrestRespPayload {
+export interface WcfrestRefreshPyqRequest {
     /**
-     * 
-     * @type {unknown}
-     * @memberof WcfrestRespPayload
+     * @type {number}
+     * @memberof WcfrestRefreshPyqRequest
      */
-    error?: unknown;
+    id?: number;
+}
+
+/**
+ * @export
+ * @interface WcfrestRevokeMsgRequest
+ */
+export interface WcfrestRevokeMsgRequest {
     /**
-     * 
-     * @type {string}
-     * @memberof WcfrestRespPayload
+     * @type {number}
+     * @memberof WcfrestRevokeMsgRequest
      */
-    result?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WcfrestRespPayload
-     */
-    success?: boolean;
+    msgid?: number;
 }

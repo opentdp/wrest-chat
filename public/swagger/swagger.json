@@ -317,6 +317,87 @@
                 }
             }
         },
+        "/download_attach": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "下载附件",
+                "parameters": [
+                    {
+                        "description": "下载附件参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.DownloadAttachRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/download_image": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "下载图片",
+                "parameters": [
+                    {
+                        "description": "下载图片参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.DownloadImageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/enable_receiver": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "开启推送消息到URL",
+                "parameters": [
+                    {
+                        "description": "推送消息到URL参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
         "/forward_msg": {
             "post": {
                 "produces": [
@@ -377,6 +458,33 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/get_ocr_result": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取OCR识别结果",
+                "parameters": [
+                    {
+                        "description": "获取OCR识别结果参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
                         }
                     }
                 ],
@@ -980,6 +1088,37 @@
                 }
             }
         },
+        "wcfrest.DownloadAttachRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "type": "string"
+                },
+                "msgid": {
+                    "type": "integer"
+                },
+                "thumb": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.DownloadImageRequest": {
+            "type": "object",
+            "properties": {
+                "dir": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "string"
+                },
+                "msgid": {
+                    "type": "integer"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
         "wcfrest.GetAliasInChatRoomRequest": {
             "type": "object",
             "properties": {
@@ -1026,6 +1165,17 @@
             "properties": {
                 "wxid": {
                     "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetOcrRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
                 }
             }
         },
