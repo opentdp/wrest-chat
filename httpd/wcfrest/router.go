@@ -48,7 +48,4 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("enable_receiver", ctrl.enabledReceiver)
 	rg.POST("disable_receiver", ctrl.disableReceiver)
 
-	// 弃用的接口
-	deprecated(rg, ctrl)
-
 }

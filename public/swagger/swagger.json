@@ -28,7 +28,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.Verification"
+                            "$ref": "#/definitions/wcfrest.AcceptNewFriendRequest"
                         }
                     }
                 ],
@@ -55,7 +55,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.MemberMgmt"
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
                         }
                     }
                 ],
@@ -102,13 +102,24 @@
                     "application/json"
                 ],
                 "summary": "获取头像列表",
+                "parameters": [
+                    {
+                        "description": "获取头像列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAvatarsRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.ContactHeadImgUrlTable"
+                                "$ref": "#/definitions/wcfrest.AvatarPayload"
                             }
                         }
                     }
@@ -138,7 +149,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.RpcContact"
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
                             }
                         }
                     }
@@ -157,7 +168,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.RpcContact"
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
                             }
                         }
                     }
@@ -176,7 +187,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.RpcContact"
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
                             }
                         }
                     }
@@ -256,7 +267,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.DbTable"
+                                "$ref": "#/definitions/wcfrest.DbTablePayload"
                             }
                         }
                     }
@@ -276,7 +287,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.MemberMgmt"
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
                         }
                     }
                 ],
@@ -411,7 +422,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.ForwardMsg"
+                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
                         }
                     }
                 ],
@@ -437,7 +448,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcferry.RpcContact"
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
                             }
                         }
                     }
@@ -511,7 +522,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.MemberMgmt"
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
                         }
                     }
                 ],
@@ -573,7 +584,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.Transfer"
+                            "$ref": "#/definitions/wcfrest.ReceiveTransferRequest"
                         }
                     }
                 ],
@@ -651,7 +662,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcferry.UserInfo"
+                            "$ref": "#/definitions/wcfrest.UserInfoPayload"
                         }
                     }
                 }
@@ -686,7 +697,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.PathMsg"
+                            "$ref": "#/definitions/wcfrest.SendFileRequest"
                         }
                     }
                 ],
@@ -713,7 +724,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.PathMsg"
+                            "$ref": "#/definitions/wcfrest.SendImgRequest"
                         }
                     }
                 ],
@@ -740,7 +751,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.PatMsg"
+                            "$ref": "#/definitions/wcfrest.SendPatMsgRequest"
                         }
                     }
                 ],
@@ -767,7 +778,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.RichText"
+                            "$ref": "#/definitions/wcfrest.SendRichTextRequest"
                         }
                     }
                 ],
@@ -794,7 +805,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcferry.TextMsg"
+                            "$ref": "#/definitions/wcfrest.SendTxtRequest"
                         }
                     }
                 ],
@@ -829,7 +840,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcferry.RpcContact"
+                            "$ref": "#/definitions/wcfrest.ContactPayload"
                         }
                     }
                 }
@@ -837,126 +848,73 @@
         }
     },
     "definitions": {
-        "wcferry.ContactHeadImgUrlTable": {
+        "wcfrest.AcceptNewFriendRequest": {
             "type": "object",
             "properties": {
-                "bigHeadImgUrl": {
-                    "type": "string"
-                },
-                "headImgMd5": {
-                    "type": "string"
-                },
-                "reverse0": {
+                "scene": {
+                    "description": "添加方式：17 名片，30 扫码",
                     "type": "integer"
                 },
-                "reverse1": {},
-                "smallHeadImgUrl": {
+                "v3": {
+                    "description": "加密的用户名",
                     "type": "string"
                 },
-                "usrName": {
+                "v4": {
+                    "description": "验证信息 Ticket",
                     "type": "string"
                 }
             }
         },
-        "wcferry.DbTable": {
+        "wcfrest.AvatarPayload": {
             "type": "object",
             "properties": {
-                "name": {
-                    "description": "表名",
+                "big_head_img_url": {
+                    "description": "大头像 url",
                     "type": "string"
                 },
-                "sql": {
-                    "description": "建表 SQL",
+                "small_head_img_url": {
+                    "description": "小头像 url",
+                    "type": "string"
+                },
+                "usr_name": {
+                    "description": "用户 id",
                     "type": "string"
                 }
             }
         },
-        "wcferry.ForwardMsg": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "待转发消息 ID",
-                    "type": "integer"
-                },
-                "receiver": {
-                    "description": "转发接收目标，群为 roomId，个人为 wxid",
-                    "type": "string"
-                }
-            }
-        },
-        "wcferry.MemberMgmt": {
+        "wcfrest.ChatroomMembersRequest": {
             "type": "object",
             "properties": {
                 "roomid": {
-                    "description": "要加的群ID",
+                    "description": "群聊 id",
                     "type": "string"
                 },
                 "wxids": {
-                    "description": "要加群的人列表，逗号分隔",
-                    "type": "string"
+                    "description": "用户 id 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
-        "wcferry.PatMsg": {
+        "wcfrest.CommonPayload": {
             "type": "object",
             "properties": {
-                "roomid": {
-                    "description": "群 id",
+                "error": {
+                    "description": "错误信息"
+                },
+                "result": {
+                    "description": "返回结果",
                     "type": "string"
                 },
-                "wxid": {
-                    "description": "wxid",
-                    "type": "string"
+                "success": {
+                    "description": "是否成功",
+                    "type": "boolean"
                 }
             }
         },
-        "wcferry.PathMsg": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "description": "要发送的图片的路径",
-                    "type": "string"
-                },
-                "receiver": {
-                    "description": "消息接收人",
-                    "type": "string"
-                }
-            }
-        },
-        "wcferry.RichText": {
-            "type": "object",
-            "properties": {
-                "account": {
-                    "description": "公众号 id",
-                    "type": "string"
-                },
-                "digest": {
-                    "description": "摘要",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "显示名字",
-                    "type": "string"
-                },
-                "receiver": {
-                    "description": "接收人",
-                    "type": "string"
-                },
-                "thumburl": {
-                    "description": "缩略图",
-                    "type": "string"
-                },
-                "title": {
-                    "description": "标题",
-                    "type": "string"
-                },
-                "url": {
-                    "description": "链接",
-                    "type": "string"
-                }
-            }
-        },
-        "wcferry.RpcContact": {
+        "wcfrest.ContactPayload": {
             "type": "object",
             "properties": {
                 "city": {
@@ -976,7 +934,7 @@
                     "type": "integer"
                 },
                 "name": {
-                    "description": "微信昵称",
+                    "description": "昵称",
                     "type": "string"
                 },
                 "province": {
@@ -988,29 +946,174 @@
                     "type": "string"
                 },
                 "wxid": {
-                    "description": "微信 id",
+                    "description": "用户 id",
                     "type": "string"
                 }
             }
         },
-        "wcferry.TextMsg": {
+        "wcfrest.DbSqlQueryRequest": {
             "type": "object",
             "properties": {
-                "aters": {
-                    "description": "要@的人列表，逗号分隔",
+                "db": {
+                    "description": "数据库名称",
                     "type": "string"
                 },
-                "msg": {
-                    "description": "要发送的消息内容",
-                    "type": "string"
-                },
-                "receiver": {
-                    "description": "消息接收人，当为群时可@",
+                "sql": {
+                    "description": "待执行的 SQL",
                     "type": "string"
                 }
             }
         },
-        "wcferry.Transfer": {
+        "wcfrest.DbTablePayload": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "表名",
+                    "type": "string"
+                },
+                "sql": {
+                    "description": "建表 SQL",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.DownloadAttachRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "description": "消息中的 extra 字段",
+                    "type": "string"
+                },
+                "msgid": {
+                    "description": "消息 id",
+                    "type": "integer"
+                },
+                "thumb": {
+                    "description": "消息中的 thumb 字段",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.DownloadImageRequest": {
+            "type": "object",
+            "properties": {
+                "dir": {
+                    "description": "存储路径",
+                    "type": "string"
+                },
+                "extra": {
+                    "description": "消息中的 extra 字段",
+                    "type": "string"
+                },
+                "msgid": {
+                    "description": "消息 id",
+                    "type": "integer"
+                },
+                "timeout": {
+                    "description": "超时重试次数",
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.ForwardMsgRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "待转发消息 id",
+                    "type": "integer"
+                },
+                "receiver": {
+                    "description": "转发接收人或群的 id 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "wcfrest.GetAliasInChatRoomRequest": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "用户 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetAudioMsgRequest": {
+            "type": "object",
+            "properties": {
+                "msgid": {
+                    "description": "消息 id",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "存储路径",
+                    "type": "string"
+                },
+                "timeout": {
+                    "description": "超时重试次数",
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.GetAvatarsRequest": {
+            "type": "object",
+            "properties": {
+                "wxids": {
+                    "description": "用户 id 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "wcfrest.GetChatRoomMembersRequest": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetDbTablesRequest": {
+            "type": "object",
+            "properties": {
+                "db": {
+                    "description": "数据库名称",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetInfoByWxidRequest": {
+            "type": "object",
+            "properties": {
+                "wxid": {
+                    "description": "用户 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetOcrRequest": {
+            "type": "object",
+            "properties": {
+                "extra": {
+                    "description": "消息中的 extra 字段",
+                    "type": "string"
+                },
+                "timeout": {
+                    "description": "超时重试次数",
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.ReceiveTransferRequest": {
             "type": "object",
             "properties": {
                 "taid": {
@@ -1027,7 +1130,126 @@
                 }
             }
         },
-        "wcferry.UserInfo": {
+        "wcfrest.ReceiverRequest": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "description": "接收推送消息的 url",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.RefreshPyqRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "分页 id",
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.RevokeMsgRequest": {
+            "type": "object",
+            "properties": {
+                "msgid": {
+                    "description": "消息 id",
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.SendFileRequest": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "文件路径",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "接收人或群的 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.SendImgRequest": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "图片路径",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "接收人或群的 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.SendPatMsgRequest": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "description": "群 id",
+                    "type": "string"
+                },
+                "wxid": {
+                    "description": "用户 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.SendRichTextRequest": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "description": "填公众号 id 可以显示对应的头像（gh_ 开头的）",
+                    "type": "string"
+                },
+                "digest": {
+                    "description": "摘要，三行",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "左下显示的名字",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "接收人或群的 id",
+                    "type": "string"
+                },
+                "thumburl": {
+                    "description": "缩略图的链接",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题，最多两行",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "点击后跳转的链接",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.SendTxtRequest": {
+            "type": "object",
+            "properties": {
+                "aters": {
+                    "description": "需要 At 的用户 id 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "msg": {
+                    "description": "消息内容",
+                    "type": "string"
+                },
+                "receiver": {
+                    "description": "接收人或群的 id",
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.UserInfoPayload": {
             "type": "object",
             "properties": {
                 "home": {
@@ -1043,163 +1265,8 @@
                     "type": "string"
                 },
                 "wxid": {
-                    "description": "微信ID",
+                    "description": "用户 id",
                     "type": "string"
-                }
-            }
-        },
-        "wcferry.Verification": {
-            "type": "object",
-            "properties": {
-                "scene": {
-                    "description": "添加方式：17 名片，30 扫码",
-                    "type": "integer"
-                },
-                "v3": {
-                    "description": "加密的用户名",
-                    "type": "string"
-                },
-                "v4": {
-                    "description": "Ticket",
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.CommonPayload": {
-            "type": "object",
-            "properties": {
-                "error": {},
-                "result": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "wcfrest.DbSqlQueryRequest": {
-            "type": "object",
-            "properties": {
-                "db": {
-                    "type": "string"
-                },
-                "sql": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.DownloadAttachRequest": {
-            "type": "object",
-            "properties": {
-                "extra": {
-                    "type": "string"
-                },
-                "msgid": {
-                    "type": "integer"
-                },
-                "thumb": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.DownloadImageRequest": {
-            "type": "object",
-            "properties": {
-                "dir": {
-                    "type": "string"
-                },
-                "extra": {
-                    "type": "string"
-                },
-                "msgid": {
-                    "type": "integer"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcfrest.GetAliasInChatRoomRequest": {
-            "type": "object",
-            "properties": {
-                "roomid": {
-                    "type": "string"
-                },
-                "wxid": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.GetAudioMsgRequest": {
-            "type": "object",
-            "properties": {
-                "msgid": {
-                    "type": "integer"
-                },
-                "path": {
-                    "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcfrest.GetChatRoomMembersRequest": {
-            "type": "object",
-            "properties": {
-                "roomid": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.GetDbTablesRequest": {
-            "type": "object",
-            "properties": {
-                "db": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.GetInfoByWxidRequest": {
-            "type": "object",
-            "properties": {
-                "wxid": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.GetOcrRequest": {
-            "type": "object",
-            "properties": {
-                "extra": {
-                    "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcfrest.ReceiverRequest": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.RefreshPyqRequest": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "wcfrest.RevokeMsgRequest": {
-            "type": "object",
-            "properties": {
-                "msgid": {
-                    "type": "integer"
                 }
             }
         }
