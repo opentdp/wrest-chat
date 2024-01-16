@@ -5,14 +5,26 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">名称</th>
-                <th scope="col">备注</th>
+                <th scope="col">type</th>
+                <th scope="col">wxid</th>
+                <th scope="col">code</th>
+                <th scope="col">name</th>
+                <th scope="col">gender</th>
+                <th scope="col">country</th>
+                <th scope="col">province</th>
+                <th scope="col">remark</th>
             </tr>
         </thead>
         <tbody *ngFor="let item of contacts; let i = index">
             <tr>
                 <th scope="row">{{i+1}}</th>
+                <td>{{getContactType(item)}}</td>
+                <td>{{item.wxid}}</td>
+                <td>{{item.code}}</td>
                 <td>{{item.name}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.country}}</td>
+                <td>{{item.province}}</td>
                 <td>{{item.remark}}</td>
             </tr>
         </tbody>
