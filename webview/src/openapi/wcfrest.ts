@@ -60,7 +60,7 @@ export const WrestApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    avatarsPost(body: WcfrestGetAvatarsRequest, options: RequestInit = {}): Promise<WcfrestAvatarPayload> {
+    avatars(body: WcfrestGetAvatarsRequest, options: RequestInit = {}): Promise<Array<WcfrestAvatarPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
         return httpRequest('/avatars', options);
@@ -396,19 +396,19 @@ export interface WcfrestAcceptNewFriendRequest {
      * @type {number}
      * @memberof WcfrestAcceptNewFriendRequest
      */
-    scene?: number;
+    scene: number;
     /**
      * 加密的用户名
      * @type {string}
      * @memberof WcfrestAcceptNewFriendRequest
      */
-    v3?: string;
+    v3: string;
     /**
      * 验证信息 Ticket
      * @type {string}
      * @memberof WcfrestAcceptNewFriendRequest
      */
-    v4?: string;
+    v4: string;
 }
 
 /**
@@ -421,19 +421,19 @@ export interface WcfrestAvatarPayload {
      * @type {string}
      * @memberof WcfrestAvatarPayload
      */
-    bigHeadImgUrl?: string;
+    big_head_img_url: string;
     /**
      * 小头像 url
      * @type {string}
      * @memberof WcfrestAvatarPayload
      */
-    smallHeadImgUrl?: string;
+    small_head_img_url: string;
     /**
      * 用户 id
      * @type {string}
      * @memberof WcfrestAvatarPayload
      */
-    usrName?: string;
+    usr_name: string;
 }
 
 /**
@@ -446,13 +446,13 @@ export interface WcfrestChatroomMembersRequest {
      * @type {string}
      * @memberof WcfrestChatroomMembersRequest
      */
-    roomid?: string;
+    roomid: string;
     /**
      * 用户 id 列表
      * @type {Array<string>}
      * @memberof WcfrestChatroomMembersRequest
      */
-    wxids?: Array<string>;
+    wxids: Array<string>;
 }
 
 /**
@@ -490,49 +490,49 @@ export interface WcfrestContactPayload {
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    city?: string;
+    city: string;
     /**
      * 微信号
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    code?: string;
+    code: string;
     /**
      * 国家
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    country?: string;
+    country: string;
     /**
      * 性别
      * @type {number}
      * @memberof WcfrestContactPayload
      */
-    gender?: number;
+    gender: number;
     /**
      * 昵称
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    name?: string;
+    name: string;
     /**
      * 省/州
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    province?: string;
+    province: string;
     /**
      * 备注
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    remark?: string;
+    remark: string;
     /**
      * 用户 id
      * @type {string}
      * @memberof WcfrestContactPayload
      */
-    wxid?: string;
+    wxid: string;
 }
 
 /**
@@ -545,13 +545,13 @@ export interface WcfrestDbSqlQueryRequest {
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
      */
-    db?: string;
+    db: string;
     /**
      * 待执行的 SQL
      * @type {string}
      * @memberof WcfrestDbSqlQueryRequest
      */
-    sql?: string;
+    sql: string;
 }
 
 /**
@@ -564,13 +564,13 @@ export interface WcfrestDbTablePayload {
      * @type {string}
      * @memberof WcfrestDbTablePayload
      */
-    name?: string;
+    name: string;
     /**
      * 建表 SQL
      * @type {string}
      * @memberof WcfrestDbTablePayload
      */
-    sql?: string;
+    sql: string;
 }
 
 /**
@@ -583,13 +583,13 @@ export interface WcfrestDownloadAttachRequest {
      * @type {string}
      * @memberof WcfrestDownloadAttachRequest
      */
-    extra?: string;
+    extra: string;
     /**
      * 消息 id
      * @type {number}
      * @memberof WcfrestDownloadAttachRequest
      */
-    msgid?: number;
+    msgid: number;
     /**
      * 消息中的 thumb 字段
      * @type {string}
@@ -608,19 +608,19 @@ export interface WcfrestDownloadImageRequest {
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
-    dir?: string;
+    dir: string;
     /**
      * 消息中的 extra 字段
      * @type {string}
      * @memberof WcfrestDownloadImageRequest
      */
-    extra?: string;
+    extra: string;
     /**
      * 消息 id
      * @type {number}
      * @memberof WcfrestDownloadImageRequest
      */
-    msgid?: number;
+    msgid: number;
     /**
      * 超时重试次数
      * @type {number}
@@ -639,13 +639,13 @@ export interface WcfrestForwardMsgRequest {
      * @type {number}
      * @memberof WcfrestForwardMsgRequest
      */
-    id?: number;
+    id: number;
     /**
      * 转发接收人或群的 id 列表
      * @type {Array<string>}
      * @memberof WcfrestForwardMsgRequest
      */
-    receiver?: Array<string>;
+    receiver: Array<string>;
 }
 
 /**
@@ -658,13 +658,13 @@ export interface WcfrestGetAliasInChatRoomRequest {
      * @type {string}
      * @memberof WcfrestGetAliasInChatRoomRequest
      */
-    roomid?: string;
+    roomid: string;
     /**
      * 用户 id
      * @type {string}
      * @memberof WcfrestGetAliasInChatRoomRequest
      */
-    wxid?: string;
+    wxid: string;
 }
 
 /**
@@ -677,13 +677,13 @@ export interface WcfrestGetAudioMsgRequest {
      * @type {number}
      * @memberof WcfrestGetAudioMsgRequest
      */
-    msgid?: number;
+    msgid: number;
     /**
      * 存储路径
      * @type {string}
      * @memberof WcfrestGetAudioMsgRequest
      */
-    path?: string;
+    path: string;
     /**
      * 超时重试次数
      * @type {number}
@@ -702,7 +702,7 @@ export interface WcfrestGetAvatarsRequest {
      * @type {Array<string>}
      * @memberof WcfrestGetAvatarsRequest
      */
-    wxids?: Array<string>;
+    wxids: Array<string>;
 }
 
 /**
@@ -715,7 +715,7 @@ export interface WcfrestGetChatRoomMembersRequest {
      * @type {string}
      * @memberof WcfrestGetChatRoomMembersRequest
      */
-    roomid?: string;
+    roomid: string;
 }
 
 /**
@@ -728,7 +728,7 @@ export interface WcfrestGetDbTablesRequest {
      * @type {string}
      * @memberof WcfrestGetDbTablesRequest
      */
-    db?: string;
+    db: string;
 }
 
 /**
@@ -741,7 +741,7 @@ export interface WcfrestGetInfoByWxidRequest {
      * @type {string}
      * @memberof WcfrestGetInfoByWxidRequest
      */
-    wxid?: string;
+    wxid: string;
 }
 
 /**
@@ -754,7 +754,7 @@ export interface WcfrestGetOcrRequest {
      * @type {string}
      * @memberof WcfrestGetOcrRequest
      */
-    extra?: string;
+    extra: string;
     /**
      * 超时重试次数
      * @type {number}
@@ -773,19 +773,19 @@ export interface WcfrestReceiveTransferRequest {
      * @type {string}
      * @memberof WcfrestReceiveTransferRequest
      */
-    taid?: string;
+    taid: string;
     /**
      * 转账id transferid
      * @type {string}
      * @memberof WcfrestReceiveTransferRequest
      */
-    tfid?: string;
+    tfid: string;
     /**
      * 转账人
      * @type {string}
      * @memberof WcfrestReceiveTransferRequest
      */
-    wxid?: string;
+    wxid: string;
 }
 
 /**
@@ -798,7 +798,7 @@ export interface WcfrestReceiverRequest {
      * @type {string}
      * @memberof WcfrestReceiverRequest
      */
-    url?: string;
+    url: string;
 }
 
 /**
@@ -811,7 +811,7 @@ export interface WcfrestRefreshPyqRequest {
      * @type {number}
      * @memberof WcfrestRefreshPyqRequest
      */
-    id?: number;
+    id: number;
 }
 
 /**
@@ -824,7 +824,7 @@ export interface WcfrestRevokeMsgRequest {
      * @type {number}
      * @memberof WcfrestRevokeMsgRequest
      */
-    msgid?: number;
+    msgid: number;
 }
 
 /**
@@ -837,13 +837,13 @@ export interface WcfrestSendFileRequest {
      * @type {string}
      * @memberof WcfrestSendFileRequest
      */
-    path?: string;
+    path: string;
     /**
      * 接收人或群的 id
      * @type {string}
      * @memberof WcfrestSendFileRequest
      */
-    receiver?: string;
+    receiver: string;
 }
 
 /**
@@ -856,13 +856,13 @@ export interface WcfrestSendImgRequest {
      * @type {string}
      * @memberof WcfrestSendImgRequest
      */
-    path?: string;
+    path: string;
     /**
      * 接收人或群的 id
      * @type {string}
      * @memberof WcfrestSendImgRequest
      */
-    receiver?: string;
+    receiver: string;
 }
 
 /**
@@ -875,13 +875,13 @@ export interface WcfrestSendPatMsgRequest {
      * @type {string}
      * @memberof WcfrestSendPatMsgRequest
      */
-    roomid?: string;
+    roomid: string;
     /**
      * 用户 id
      * @type {string}
      * @memberof WcfrestSendPatMsgRequest
      */
-    wxid?: string;
+    wxid: string;
 }
 
 /**
@@ -894,43 +894,43 @@ export interface WcfrestSendRichTextRequest {
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    account?: string;
+    account: string;
     /**
      * 摘要，三行
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    digest?: string;
+    digest: string;
     /**
      * 左下显示的名字
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    name?: string;
+    name: string;
     /**
      * 接收人或群的 id
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    receiver?: string;
+    receiver: string;
     /**
      * 缩略图的链接
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    thumburl?: string;
+    thumburl: string;
     /**
      * 标题，最多两行
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    title?: string;
+    title: string;
     /**
      * 点击后跳转的链接
      * @type {string}
      * @memberof WcfrestSendRichTextRequest
      */
-    url?: string;
+    url: string;
 }
 
 /**
@@ -949,13 +949,13 @@ export interface WcfrestSendTxtRequest {
      * @type {string}
      * @memberof WcfrestSendTxtRequest
      */
-    msg?: string;
+    msg: string;
     /**
      * 接收人或群的 id
      * @type {string}
      * @memberof WcfrestSendTxtRequest
      */
-    receiver?: string;
+    receiver: string;
 }
 
 /**
@@ -968,23 +968,23 @@ export interface WcfrestUserInfoPayload {
      * @type {string}
      * @memberof WcfrestUserInfoPayload
      */
-    home?: string;
+    home: string;
     /**
      * 手机号
      * @type {string}
      * @memberof WcfrestUserInfoPayload
      */
-    mobile?: string;
+    mobile: string;
     /**
      * 昵称
      * @type {string}
      * @memberof WcfrestUserInfoPayload
      */
-    name?: string;
+    name: string;
     /**
      * 用户 id
      * @type {string}
      * @memberof WcfrestUserInfoPayload
      */
-    wxid?: string;
+    wxid: string;
 }

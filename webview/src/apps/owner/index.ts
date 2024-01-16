@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { WrestApi, WcfrestUserInfoPayload } from '../../openapi/wcfrest';
+import { WrestApi, WcfrestUserInfoPayload, WcfrestAvatarPayload } from '../../openapi/wcfrest';
 
 
 @Component({
@@ -11,14 +11,20 @@ import { WrestApi, WcfrestUserInfoPayload } from '../../openapi/wcfrest';
 export class OwnerComponent {
 
     public user!: WcfrestUserInfoPayload;
+    public avatar!: WcfrestAvatarPayload;
 
     constructor() {
         this.getSelfInfo();
     }
 
-    public getSelfInfo() {
-        WrestApi.selfInfo().then((user) => {
+    public async getSelfInfo() {
+        await WrestApi.selfInfo().then((user) => {
             this.user = user;
+        });
+        WrestApi.avatars({ wxids: [this.user.wxid] }).then((avatars) => {
+            if (avatars && avatars.length > 0) {
+                this.avatar = avatars[0];
+            }
         });
     }
 
