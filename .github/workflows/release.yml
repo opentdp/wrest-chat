@@ -20,6 +20,16 @@ jobs:
         with:
           go-version: 1.21
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build webview
+        working-directory: webview
+        run: |
+          sh build.sh
+
       - name: Build binary
         run: |
           sh build.sh

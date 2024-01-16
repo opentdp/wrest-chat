@@ -22,6 +22,10 @@ git log $prev_tag..$last_tag --pretty=format:"%s" | grep -v "^release" | sed 's/
 
 ####################################################################
 
+if [ -d webview/public/browser ]; then
+    cp -av webview/public/browser/ public
+fi
+
 echo building for $GOOS/$GOARCH
 
 target=build/wrest.exe
