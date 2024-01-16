@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { WrestApi, WcferryRpcContact } from '../../openapi/wcfrest';
 
+
 @Component({
     selector: 'page-contacts',
     templateUrl: 'index.html',

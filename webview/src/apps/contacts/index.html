@@ -1,22 +1,20 @@
 <layout-header></layout-header>
 
 <div class="container-lg mt-3">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="list-group">
-                <div *ngFor="let item of contacts" class="list-group-item d-flex align-items-center">
-                    <div class="avatar">
-                        <img class="rounded" src="assets/icon192.png" />
-                    </div>
-                    <div class="ms-3">
-                        <div class="fw-bold">{{item.name}}</div>
-                        {{item.remark}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-8">
-            router
-        </div>
-    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">名称</th>
+                <th scope="col">备注</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let item of contacts; let i = index">
+            <tr>
+                <th scope="row">{{i+1}}</th>
+                <td>{{item.name}}</td>
+                <td>{{item.remark}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
