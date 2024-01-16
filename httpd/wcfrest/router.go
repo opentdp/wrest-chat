@@ -15,17 +15,17 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("msg_types", ctrl.getMsgTypes)
 
 	rg.POST("db_names", ctrl.getDbNames)
-	rg.POST("db_tables/:db", ctrl.getDbTables)
+	rg.POST("db_tables", ctrl.getDbTables)
 	rg.POST("db_query_sql", ctrl.dbSqlQuery)
 
 	rg.POST("chatrooms", ctrl.getChatRooms)
-	rg.POST("chatroom_members/:roomid", ctrl.getChatRoomMembers)
-	rg.POST("alias_in_chatroom/:wxid/:roomid", ctrl.getAliasInChatRoom)
+	rg.POST("chatroom_members", ctrl.getChatRoomMembers)
+	rg.POST("alias_in_chatroom", ctrl.getAliasInChatRoom)
 	rg.POST("invite_chatroom_members", ctrl.inviteChatroomMembers)
 	rg.POST("add_chatroom_members", ctrl.addChatRoomMembers)
 	rg.POST("del_chatroom_members", ctrl.delChatRoomMembers)
 
-	rg.POST("revoke_msg/:msgid", ctrl.revokeMsg)
+	rg.POST("revoke_msg", ctrl.revokeMsg)
 	rg.POST("forward_msg", ctrl.forwardMsg)
 	rg.POST("send_txt", ctrl.sendTxt)
 	rg.POST("send_img", ctrl.sendImg)
@@ -40,8 +40,8 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("avatars", ctrl.getAvatars)
 	rg.POST("contacts", ctrl.getContacts)
 	rg.POST("friends", ctrl.getFriends)
-	rg.POST("user_info/:wxid", ctrl.getInfoByWxid)
-	rg.POST("refresh_pyq/:id", ctrl.refreshPyq)
+	rg.POST("user_info", ctrl.getInfoByWxid)
+	rg.POST("refresh_pyq", ctrl.refreshPyq)
 	rg.POST("accept_new_friend", ctrl.acceptNewFriend)
 	rg.POST("receive_transfer", ctrl.receiveTransfer)
 
