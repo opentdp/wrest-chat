@@ -6,9 +6,14 @@ export class RequiredError extends Error {
 }
 
 export function httpRequest(input: string, options?: RequestInit) {
-    return fetch('/api' + input, options).then((response) => {
+    return fetch('/api' + input, options).then(response => {
         if (response.status >= 200 && response.status < 300) {
-            return response.json();
+            return response.json().then(data => {
+                if (data.Error) {
+                    throw data.Error;
+                }
+                return data.Payload;
+            });
         } else {
             throw response;
         }
