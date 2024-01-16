@@ -6,11 +6,7 @@ export class RequiredError extends Error {
 }
 
 export function httpRequest(input: string, options: RequestInit = {}) {
-    if (options.method == 'POST' && typeof options.body != 'string') {
-        options.body = JSON.stringify(options.body || {});
-        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
-    }
-    return fetch('/api' + input, { method: 'POST', ...options }).then(response => {
+    return fetch('/api' + input, options).then(response => {
         if (response.status >= 200 && response.status < 300) {
             return response.json().then(data => {
                 if (data.Error) {
@@ -32,7 +28,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     acceptNewFriend(body: WcferryVerification, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/accept_new_friend', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/accept_new_friend', options);
     },
     /**
      * @summary 添加群成员
@@ -41,7 +39,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     addChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/add_chatroom_members', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/add_chatroom_members', options);
     },
     /**
      * @summary 获取群成员昵称
@@ -50,7 +50,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     aliasInChatroom(body: WcfrestGetAliasInChatRoomRequest, options: RequestInit = {}): Promise<string> {
-        return httpRequest('/alias_in_chatroom', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/alias_in_chatroom', options);
     },
     /**
      * @summary 获取头像列表
@@ -59,7 +61,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     avatarsPost(body?: unknown, options: RequestInit = {}): Promise<WcferryContactHeadImgUrlTable> {
-        return httpRequest('/avatars', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/avatars', options);
     },
     /**
      * @summary 获取群成员列表
@@ -68,7 +72,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     chatroomMembers(body: WcfrestGetChatRoomMembersRequest, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        return httpRequest('/chatroom_members', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/chatroom_members', options);
     },
     /**
      * @summary 获取群列表
@@ -77,7 +83,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     chatrooms(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        return httpRequest('/chatrooms', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/chatrooms', options);
     },
     /**
      * @summary 获取完整通讯录
@@ -86,7 +94,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     contacts(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        return httpRequest('/contacts', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/contacts', options);
     },
     /**
      * @summary 获取数据库列表
@@ -95,7 +105,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     dbNames(body?: unknown, options: RequestInit = {}): Promise<Array<string>> {
-        return httpRequest('/db_names', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/db_names', options);
     },
     /**
      * @summary 执行数据库查询
@@ -104,7 +116,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     dbQuerySql(body: WcfrestDbSqlQueryRequest, options: RequestInit = {}): Promise<Array<{ [key: string]: unknown; }>> {
-        return httpRequest('/db_query_sql', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/db_query_sql', options);
     },
     /**
      * @summary 获取数据库表列表
@@ -113,7 +127,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     dbTables(body: WcfrestGetDbTablesRequest, options: RequestInit = {}): Promise<Array<WcferryDbTable>> {
-        return httpRequest('/db_tables', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/db_tables', options);
     },
     /**
      * @summary 删除群成员
@@ -122,7 +138,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     delChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/del_chatroom_members', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/del_chatroom_members', options);
     },
     /**
      * @summary 关闭推送消息到URL
@@ -131,7 +149,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     disableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/disable_receiver', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/disable_receiver', options);
     },
     /**
      * @summary 下载附件
@@ -140,7 +160,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     downloadAttach(body: WcfrestDownloadAttachRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/download_attach', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/download_attach', options);
     },
     /**
      * @summary 下载图片
@@ -149,7 +171,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     downloadImage(body: WcfrestDownloadImageRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/download_image', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/download_image', options);
     },
     /**
      * @summary 开启推送消息到URL
@@ -158,7 +182,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     enableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/enable_receiver', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/enable_receiver', options);
     },
     /**
      * @summary 转发消息
@@ -167,7 +193,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     forwardMsg(body: WcferryForwardMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/forward_msg', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/forward_msg', options);
     },
     /**
      * @summary 获取好友列表
@@ -176,7 +204,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     friends(body?: unknown, options: RequestInit = {}): Promise<Array<WcferryRpcContact>> {
-        return httpRequest('/friends', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/friends', options);
     },
     /**
      * @summary 获取语音消息
@@ -185,7 +215,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     getAudioMsg(body: WcfrestGetAudioMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/get_audio_msg', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/get_audio_msg', options);
     },
     /**
      * @summary 获取OCR识别结果
@@ -194,7 +226,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     getOcrResult(body: WcfrestGetOcrRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/get_ocr_result', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/get_ocr_result', options);
     },
     /**
      * @summary 邀请群成员
@@ -203,7 +237,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     inviteChatroomMembers(body: WcferryMemberMgmt, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/invite_chatroom_members', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/invite_chatroom_members', options);
     },
     /**
      * @summary 检查登录状态
@@ -212,7 +248,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     isLogin(body?: unknown, options: RequestInit = {}): Promise<boolean> {
-        return httpRequest('/is_login', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/is_login', options);
     },
     /**
      * @summary 获取所有消息类型
@@ -221,7 +259,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     msgTypes(body?: unknown, options: RequestInit = {}): Promise<{ [key: string]: string; }> {
-        return httpRequest('/msg_types', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/msg_types', options);
     },
     /**
      * @summary 接受转账
@@ -230,7 +270,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     receiveTransfer(body: WcferryTransfer, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/receive_transfer', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/receive_transfer', options);
     },
     /**
      * @summary 刷新朋友圈
@@ -239,7 +281,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     refreshPyq(body: WcfrestRefreshPyqRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/refresh_pyq', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/refresh_pyq', options);
     },
     /**
      * @summary 撤回消息
@@ -248,7 +292,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     revokeMsg(body: WcfrestRevokeMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/revoke_msg', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/revoke_msg', options);
     },
     /**
      * @summary 获取登录账号个人信息
@@ -257,7 +303,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     selfInfo(body?: unknown, options: RequestInit = {}): Promise<WcferryUserInfo> {
-        return httpRequest('/self_info', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/self_info', options);
     },
     /**
      * @summary 获取登录账号wxid
@@ -266,7 +314,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     selfWxid(body?: unknown, options: RequestInit = {}): Promise<string> {
-        return httpRequest('/self_wxid', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/self_wxid', options);
     },
     /**
      * @summary 发送文件消息
@@ -275,7 +325,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     sendFile(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/send_file', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/send_file', options);
     },
     /**
      * @summary 发送图片消息
@@ -284,7 +336,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     sendImg(body: WcferryPathMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/send_img', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/send_img', options);
     },
     /**
      * @summary 拍一拍群友
@@ -293,7 +347,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     sendPatMsg(body: WcferryPatMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/send_pat_msg', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/send_pat_msg', options);
     },
     /**
      * @summary 发送卡片消息
@@ -302,7 +358,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     sendRichText(body: WcferryRichText, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/send_rich_text', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/send_rich_text', options);
     },
     /**
      * @summary 发送文本消息
@@ -311,7 +369,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     sendTxt(body: WcferryTextMsg, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
-        return httpRequest('/send_txt', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/send_txt', options);
     },
     /**
      * @summary 根据wxid获取个人信息
@@ -320,7 +380,9 @@ export const WrestApi = {
      * @throws {RequiredError}
      */
     userInfo(body: WcfrestGetInfoByWxidRequest, options: RequestInit = {}): Promise<WcferryRpcContact> {
-        return httpRequest('/user_info', { method: 'POST', ...options });
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/user_info', options);
     },
 };
 
