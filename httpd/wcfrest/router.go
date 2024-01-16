@@ -7,25 +7,25 @@ import (
 
 func Route(rg *gin.RouterGroup) {
 
-	ctrl := Controller{wclient.Register()}
+	ctrl := &Controller{wclient.Register()}
 
-	rg.GET("is_login", ctrl.isLogin)
-	rg.GET("self_wxid", ctrl.getSelfWxid)
-	rg.GET("self_info", ctrl.getSelfInfo)
-	rg.GET("msg_types", ctrl.getMsgTypes)
+	rg.POST("is_login", ctrl.isLogin)
+	rg.POST("self_wxid", ctrl.getSelfWxid)
+	rg.POST("self_info", ctrl.getSelfInfo)
+	rg.POST("msg_types", ctrl.getMsgTypes)
 
-	rg.GET("db_names", ctrl.getDbNames)
-	rg.GET("db_tables/:db", ctrl.getDbTables)
+	rg.POST("db_names", ctrl.getDbNames)
+	rg.POST("db_tables/:db", ctrl.getDbTables)
 	rg.POST("db_query_sql", ctrl.dbSqlQuery)
 
-	rg.GET("chatrooms", ctrl.getChatRooms)
-	rg.GET("chatroom_members/:roomid", ctrl.getChatRoomMembers)
-	rg.GET("alias_in_chatroom/:wxid/:roomid", ctrl.getAliasInChatRoom)
+	rg.POST("chatrooms", ctrl.getChatRooms)
+	rg.POST("chatroom_members/:roomid", ctrl.getChatRoomMembers)
+	rg.POST("alias_in_chatroom/:wxid/:roomid", ctrl.getAliasInChatRoom)
 	rg.POST("invite_chatroom_members", ctrl.inviteChatroomMembers)
 	rg.POST("add_chatroom_members", ctrl.addChatRoomMembers)
 	rg.POST("del_chatroom_members", ctrl.delChatRoomMembers)
 
-	rg.GET("revoke_msg/:msgid", ctrl.revokeMsg)
+	rg.POST("revoke_msg/:msgid", ctrl.revokeMsg)
 	rg.POST("forward_msg", ctrl.forwardMsg)
 	rg.POST("send_txt", ctrl.sendTxt)
 	rg.POST("send_img", ctrl.sendImg)
@@ -37,14 +37,18 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("download_image", ctrl.downloadImage)
 	rg.POST("download_attach", ctrl.downloadAttach)
 
-	rg.GET("contacts", ctrl.getContacts)
-	rg.GET("friends", ctrl.getFriends)
-	rg.GET("user_info/:wxid", ctrl.getInfoByWxid)
-	rg.GET("refresh_pyq/:id", ctrl.refreshPyq)
+	rg.POST("avatars", ctrl.getAvatars)
+	rg.POST("contacts", ctrl.getContacts)
+	rg.POST("friends", ctrl.getFriends)
+	rg.POST("user_info/:wxid", ctrl.getInfoByWxid)
+	rg.POST("refresh_pyq/:id", ctrl.refreshPyq)
 	rg.POST("accept_new_friend", ctrl.acceptNewFriend)
 	rg.POST("receive_transfer", ctrl.receiveTransfer)
 
 	rg.POST("enable_receiver", ctrl.enabledReceiver)
 	rg.POST("disable_receiver", ctrl.disableReceiver)
+
+	// 弃用的接口
+	deprecated(rg, ctrl)
 
 }

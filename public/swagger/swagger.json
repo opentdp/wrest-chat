@@ -23,7 +23,7 @@
                 "summary": "接受好友请求",
                 "parameters": [
                     {
-                        "description": "接受好友请求参数",
+                        "description": "接受好友参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -36,7 +36,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -50,7 +50,7 @@
                 "summary": "添加群成员",
                 "parameters": [
                     {
-                        "description": "增删群成员请求参数",
+                        "description": "管理群成员参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -63,32 +63,27 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
-        "/alias_in_chatroom/{wxid}/{roomid}": {
-            "get": {
+        "/alias_in_chatroom": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "获取群成员昵称",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "wxid",
-                        "name": "wxid",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "群id",
-                        "name": "roomid",
-                        "in": "path",
-                        "required": true
+                        "description": "获取群成员昵称参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAliasInChatRoomRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -101,19 +96,40 @@
                 }
             }
         },
-        "/chatroom_members/{roomid}": {
-            "get": {
+        "/avatars": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取头像列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcferry.ContactHeadImgUrlTable"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/chatroom_members": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "获取群成员列表",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "群id",
-                        "name": "roomid",
-                        "in": "path",
-                        "required": true
+                        "description": "获取群成员列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetChatRoomMembersRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -130,7 +146,7 @@
             }
         },
         "/chatrooms": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -149,7 +165,7 @@
             }
         },
         "/contacts": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -168,7 +184,7 @@
             }
         },
         "/db_names": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -194,7 +210,7 @@
                 "summary": "执行数据库查询",
                 "parameters": [
                     {
-                        "description": "数据库查询请求参数",
+                        "description": "数据库查询参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -217,19 +233,21 @@
                 }
             }
         },
-        "/db_tables/{db}": {
-            "get": {
+        "/db_tables": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "获取数据库表列表",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "数据库名",
-                        "name": "db",
-                        "in": "path",
-                        "required": true
+                        "description": "获取数据库表列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetDbTablesRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -253,7 +271,7 @@
                 "summary": "删除群成员",
                 "parameters": [
                     {
-                        "description": "增删群成员请求参数",
+                        "description": "管理群成员参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -266,7 +284,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -280,7 +298,7 @@
                 "summary": "关闭推送消息到URL",
                 "parameters": [
                     {
-                        "description": "消息推送请求参数",
+                        "description": "推送消息到URL参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -293,88 +311,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/download_attach": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "下载附件",
-                "parameters": [
-                    {
-                        "description": "下载附件参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.DownloadAttachRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/download_image": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "下载图片",
-                "parameters": [
-                    {
-                        "description": "下载图片参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.DownloadImageRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/enable_receiver": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "开启推送消息到URL",
-                "parameters": [
-                    {
-                        "description": "消息推送请求参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -388,7 +325,7 @@
                 "summary": "转发消息",
                 "parameters": [
                     {
-                        "description": "转发消息请求参数",
+                        "description": "转发消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -401,14 +338,14 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
         "/friends": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -434,7 +371,7 @@
                 "summary": "获取语音消息",
                 "parameters": [
                     {
-                        "description": "语音消息请求参数",
+                        "description": "获取语音消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -447,34 +384,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/get_ocr_result": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "获取OCR识别结果",
-                "parameters": [
-                    {
-                        "description": "文本请求参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -488,7 +398,7 @@
                 "summary": "邀请群成员",
                 "parameters": [
                     {
-                        "description": "增删群成员请求参数",
+                        "description": "管理群成员参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -501,14 +411,14 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
         "/is_login": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -524,7 +434,7 @@
             }
         },
         "/msg_types": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -550,7 +460,7 @@
                 "summary": "接受转账",
                 "parameters": [
                     {
-                        "description": "接受转账请求参数",
+                        "description": "接受转账参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -563,64 +473,68 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
-        "/refresh_pyq/{id}": {
-            "get": {
+        "/refresh_pyq": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "刷新朋友圈",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "朋友圈id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "刷新朋友圈参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.RefreshPyqRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
-        "/revoke_msg/{msgid}": {
-            "get": {
+        "/revoke_msg": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "撤回消息",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "消息id",
-                        "name": "msgid",
-                        "in": "path",
-                        "required": true
+                        "description": "撤回消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.RevokeMsgRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
         "/self_info": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -636,7 +550,7 @@
             }
         },
         "/self_wxid": {
-            "get": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
@@ -659,7 +573,7 @@
                 "summary": "发送文件消息",
                 "parameters": [
                     {
-                        "description": "文件消息请求参数",
+                        "description": "发送文件消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -672,7 +586,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -686,7 +600,7 @@
                 "summary": "发送图片消息",
                 "parameters": [
                     {
-                        "description": "图片消息请求参数",
+                        "description": "发送图片消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -699,7 +613,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -713,7 +627,7 @@
                 "summary": "拍一拍群友",
                 "parameters": [
                     {
-                        "description": "拍一拍请求参数",
+                        "description": "拍一拍群友参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -726,7 +640,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -740,7 +654,7 @@
                 "summary": "发送卡片消息",
                 "parameters": [
                     {
-                        "description": "卡片消息请求参数",
+                        "description": "发送卡片消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -753,7 +667,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -767,7 +681,7 @@
                 "summary": "发送文本消息",
                 "parameters": [
                     {
-                        "description": "文本消息请求参数",
+                        "description": "发送文本消息参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -780,25 +694,27 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.RespPayload"
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
             }
         },
-        "/user_info/{wxid}": {
-            "get": {
+        "/user_info": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
                 "summary": "根据wxid获取个人信息",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "wxid",
-                        "name": "wxid",
-                        "in": "path",
-                        "required": true
+                        "description": "根据wxid获取个人信息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetInfoByWxidRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -813,6 +729,27 @@
         }
     },
     "definitions": {
+        "wcferry.ContactHeadImgUrlTable": {
+            "type": "object",
+            "properties": {
+                "bigHeadImgUrl": {
+                    "type": "string"
+                },
+                "headImgMd5": {
+                    "type": "string"
+                },
+                "reverse0": {
+                    "type": "integer"
+                },
+                "reverse1": {},
+                "smallHeadImgUrl": {
+                    "type": "string"
+                },
+                "usrName": {
+                    "type": "string"
+                }
+            }
+        },
         "wcferry.DbTable": {
             "type": "object",
             "properties": {
@@ -1020,6 +957,18 @@
                 }
             }
         },
+        "wcfrest.CommonPayload": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "result": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "wcfrest.DbSqlQueryRequest": {
             "type": "object",
             "properties": {
@@ -1031,34 +980,14 @@
                 }
             }
         },
-        "wcfrest.DownloadAttachRequest": {
+        "wcfrest.GetAliasInChatRoomRequest": {
             "type": "object",
             "properties": {
-                "extra": {
+                "roomid": {
                     "type": "string"
                 },
-                "msgid": {
-                    "type": "integer"
-                },
-                "thumb": {
+                "wxid": {
                     "type": "string"
-                }
-            }
-        },
-        "wcfrest.DownloadImageRequest": {
-            "type": "object",
-            "properties": {
-                "dir": {
-                    "type": "string"
-                },
-                "extra": {
-                    "type": "string"
-                },
-                "msgid": {
-                    "type": "integer"
-                },
-                "timeout": {
-                    "type": "integer"
                 }
             }
         },
@@ -1076,14 +1005,27 @@
                 }
             }
         },
-        "wcfrest.GetOcrRequest": {
+        "wcfrest.GetChatRoomMembersRequest": {
             "type": "object",
             "properties": {
-                "extra": {
+                "roomid": {
                     "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.GetDbTablesRequest": {
+            "type": "object",
+            "properties": {
+                "db": {
+                    "type": "string"
+                }
+            }
+        },
+        "wcfrest.GetInfoByWxidRequest": {
+            "type": "object",
+            "properties": {
+                "wxid": {
+                    "type": "string"
                 }
             }
         },
@@ -1095,15 +1037,19 @@
                 }
             }
         },
-        "wcfrest.RespPayload": {
+        "wcfrest.RefreshPyqRequest": {
             "type": "object",
             "properties": {
-                "error": {},
-                "result": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wcfrest.RevokeMsgRequest": {
+            "type": "object",
+            "properties": {
+                "msgid": {
+                    "type": "integer"
                 }
             }
         }
