@@ -14,11 +14,13 @@ var urlReceiverList = map[string]bool{}
 
 func (wc *Controller) enableUrlReceiver(url string) error {
 
+	logman.Info("enable receiver", "url", url)
+
 	if !urlReceiverStat {
 		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
 			for url := range urlReceiverList {
-				logman.Info("forward msg", "url", url, "Id", ret.Id)
+				logman.Info("call receiver", "url", url, "Id", ret.Id)
 				go request.JsonPost(url, ret, request.H{})
 			}
 		})
@@ -39,6 +41,8 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 }
 
 func (wc *Controller) disableUrlReceiver(url string) error {
+
+	logman.Info("disable receiver", "url", url)
 
 	if _, ok := urlReceiverList[url]; !ok {
 		return errors.New("url not exists")
