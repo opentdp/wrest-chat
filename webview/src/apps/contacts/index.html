@@ -16,7 +16,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of contacts; let i = index">
+            @for (item of contacts; track item.wxid; let i = $index){
+            <tr>
                 <th scope="row">{{i+1}}</th>
                 <td>{{item.type}}</td>
                 <td>{{item.wxid}}</td>
@@ -27,6 +28,7 @@
                 <td>{{item.province}}</td>
                 <td>{{item.remark}}</td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

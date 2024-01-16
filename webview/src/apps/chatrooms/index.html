@@ -4,7 +4,8 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="list-group">
-                <a *ngFor="let item of chatrooms" [class.active]="selected && selected.wxid == item.wxid" (click)="getChatroom(item)" class="list-group-item list-group-item-action cursor-pointer d-flex align-items-center">
+                @for (item of chatrooms; track item.wxid) {
+                <a [class.active]="selected && selected.wxid == item.wxid" (click)="getChatroom(item)" class="list-group-item list-group-item-action cursor-pointer d-flex align-items-center">
                     <!--div class="avatar me-3">
                             <img class="rounded" src="assets/icon192.png" />
                     </div-->
@@ -13,11 +14,14 @@
                         {{item.remark}}
                     </div>
                 </a>
+                }
             </div>
         </div>
-        <div *ngIf="selected" class="col-sm-8">
+        <div class="col-sm-8">
+            @if (selected) {
             <div>roomid: {{selected.wxid}}</div>
             <div>members: {{members.length}}</div>
+            }
         </div>
     </div>
 </div>
