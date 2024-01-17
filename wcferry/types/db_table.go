@@ -1,4 +1,4 @@
-package wcferry
+package types
 
 // 头像表结构
 type ContactHeadImgUrlTable struct {

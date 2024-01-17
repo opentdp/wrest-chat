@@ -6,8 +6,8 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wechat-rest/wcferry/types"
 	"github.com/opentdp/wechat-rest/wclient"
-	"github.com/opentdp/wechat-rest/wclient/types"
 )
 
 var wc *wcferry.Client
@@ -20,10 +20,6 @@ func Register() {
 
 	selfInfo = wc.CmdClient.GetSelfInfo()
 
-	if len(handlers) == 0 {
-		initHandlers()
-	}
-
 }
 
 func reciver(msg *wcferry.WxMsg) {
@@ -35,7 +31,7 @@ func reciver(msg *wcferry.WxMsg) {
 			return
 		}
 		// 处理聊天指令
-		if output := applyHandler(msg); output != "" {
+		if output := applyHandlers(msg); output != "" {
 			if msg.IsGroup {
 				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
 				wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
