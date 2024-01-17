@@ -48,4 +48,6 @@ func Route(rg *gin.RouterGroup) {
 	rg.POST("enable_receiver", ctrl.enabledReceiver)
 	rg.POST("disable_receiver", ctrl.disableReceiver)
 
+	rg.GET("socket_receiver", ctrl.socketReceiver)
+
 }

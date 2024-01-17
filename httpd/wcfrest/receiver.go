@@ -10,15 +10,18 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
+var urlReceiverKey = ""
 var urlReceiverList = map[string]bool{}
-var wsReceiverList = map[*websocket.Conn]bool{}
+
+var socketReceiverKey = ""
+var socketReceiverList = map[*websocket.Conn]bool{}
 
 func (wc *Controller) enableUrlReceiver(url string) error {
 
 	logman.Info("enable receiver", "url", url)
 
-	if len(urlReceiverList) == 0 {
-		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+	if urlReceiverKey == "" {
+		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
 			for u := range urlReceiverList {
 				logman.Info("call receiver", "url", u, "Id", ret.Id)
@@ -28,6 +31,7 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 		if err != nil {
 			return err
 		}
+		urlReceiverKey = key
 	}
 
 	if _, ok := urlReceiverList[url]; ok {
@@ -49,56 +53,53 @@ func (wc *Controller) disableUrlReceiver(url string) error {
 
 	delete(urlReceiverList, url)
 
-	if len(urlReceiverList) == 0 && len(wsReceiverList) == 0 {
-		if err := wc.DisableReceiver(false); err != nil {
-			return err
-		}
+	if len(urlReceiverList) == 0 {
+		return wc.DisableReceiver(urlReceiverKey)
 	}
 
 	return nil
 
 }
 
-func (wc *Controller) enableWsReceiver(ws *websocket.Conn) error {
+func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
-	logman.Info("enable receiver", "addr", ws.RemoteAddr().String())
+	logman.Info("enable receiver", "socket", ws.RemoteAddr().String())
 
-	if len(wsReceiverList) == 0 {
-		err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+	if len(socketReceiverList) == 0 {
+		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
-			for w := range wsReceiverList {
-				logman.Info("call receiver", "addr", ws.RemoteAddr().String(), "Id", ret.Id)
+			for w := range socketReceiverList {
+				logman.Info("call receiver", "socket", ws.RemoteAddr().String(), "Id", ret.Id)
 				go websocket.JSON.Send(w, ret)
 			}
 		})
 		if err != nil {
 			return err
 		}
+		socketReceiverKey = key
 	}
 
-	if _, ok := wsReceiverList[ws]; ok {
-		return errors.New("ws already exists")
+	if _, ok := socketReceiverList[ws]; ok {
+		return errors.New("socket already exists")
 	}
 
-	wsReceiverList[ws] = true
+	socketReceiverList[ws] = true
 	return nil
 
 }
 
-func (wc *Controller) disableWsReceiver(ws *websocket.Conn) error {
+func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
 
-	logman.Info("disable receiver", "addr", ws.RemoteAddr().String())
+	logman.Info("disable receiver", "socket", ws.RemoteAddr().String())
 
-	if _, ok := wsReceiverList[ws]; !ok {
-		return errors.New("ws not exists")
+	if _, ok := socketReceiverList[ws]; !ok {
+		return errors.New("socket not exists")
 	}
 
-	delete(wsReceiverList, ws)
+	delete(socketReceiverList, ws)
 
-	if len(wsReceiverList) == 0 && len(urlReceiverList) == 0 {
-		if err := wc.DisableReceiver(false); err != nil {
-			return err
-		}
+	if len(socketReceiverList) == 0 {
+		return wc.DisableReceiver(socketReceiverKey)
 	}
 
 	return nil

@@ -7,6 +7,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"golang.org/x/net/websocket"
 
+	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -27,6 +28,8 @@ type CommonPayload struct {
 // @Summary 检查登录状态
 // @Produce json
 // @Success 200 {object} bool
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /is_login [post]
 func (wc *Controller) isLogin(c *gin.Context) {
 
@@ -37,6 +40,8 @@ func (wc *Controller) isLogin(c *gin.Context) {
 // @Summary 获取登录账号wxid
 // @Produce json
 // @Success 200 {object} string
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /self_wxid [post]
 func (wc *Controller) getSelfWxid(c *gin.Context) {
 
@@ -47,6 +52,8 @@ func (wc *Controller) getSelfWxid(c *gin.Context) {
 // @Summary 获取登录账号个人信息
 // @Produce json
 // @Success 200 {object} UserInfoPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /self_info [post]
 func (wc *Controller) getSelfInfo(c *gin.Context) {
 
@@ -68,6 +75,8 @@ type UserInfoPayload struct {
 // @Summary 获取所有消息类型
 // @Produce json
 // @Success 200 {object} map[int32]string
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /msg_types [post]
 func (wc *Controller) getMsgTypes(c *gin.Context) {
 
@@ -78,6 +87,8 @@ func (wc *Controller) getMsgTypes(c *gin.Context) {
 // @Summary 获取数据库列表
 // @Produce json
 // @Success 200 {object} []string
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /db_names [post]
 func (wc *Controller) getDbNames(c *gin.Context) {
 
@@ -89,6 +100,8 @@ func (wc *Controller) getDbNames(c *gin.Context) {
 // @Produce json
 // @Param body body GetDbTablesRequest true "获取数据库表列表参数"
 // @Success 200 {object} []DbTablePayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /db_tables [post]
 func (wc *Controller) getDbTables(c *gin.Context) {
 
@@ -118,6 +131,8 @@ type GetDbTablesRequest struct {
 // @Produce json
 // @Param body body DbSqlQueryRequest true "数据库查询参数"
 // @Success 200 {object} []map[string]any
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /db_query_sql [post]
 func (wc *Controller) dbSqlQuery(c *gin.Context) {
 
@@ -141,6 +156,8 @@ type DbSqlQueryRequest struct {
 // @Summary 获取群列表
 // @Produce json
 // @Success 200 {object} []ContactPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /chatrooms [post]
 func (wc *Controller) getChatRooms(c *gin.Context) {
 
@@ -152,6 +169,8 @@ func (wc *Controller) getChatRooms(c *gin.Context) {
 // @Produce json
 // @Param body body GetChatRoomMembersRequest true "获取群成员列表参数"
 // @Success 200 {object} []ContactPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /chatroom_members [post]
 func (wc *Controller) getChatRoomMembers(c *gin.Context) {
 
@@ -174,6 +193,8 @@ type GetChatRoomMembersRequest struct {
 // @Produce json
 // @Param body body GetAliasInChatRoomRequest true "获取群成员昵称参数"
 // @Success 200 {object} string
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /alias_in_chatroom [post]
 func (wc *Controller) getAliasInChatRoom(c *gin.Context) {
 
@@ -198,6 +219,8 @@ type GetAliasInChatRoomRequest struct {
 // @Produce json
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /invite_chatroom_members [post]
 func (wc *Controller) inviteChatroomMembers(c *gin.Context) {
 
@@ -226,6 +249,8 @@ type ChatroomMembersRequest struct {
 // @Produce json
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /add_chatroom_members [post]
 func (wc *Controller) addChatRoomMembers(c *gin.Context) {
 
@@ -247,6 +272,8 @@ func (wc *Controller) addChatRoomMembers(c *gin.Context) {
 // @Produce json
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /del_chatroom_members [post]
 func (wc *Controller) delChatRoomMembers(c *gin.Context) {
 
@@ -268,6 +295,8 @@ func (wc *Controller) delChatRoomMembers(c *gin.Context) {
 // @Produce json
 // @Param body body RevokeMsgRequest true "撤回消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /revoke_msg [post]
 func (wc *Controller) revokeMsg(c *gin.Context) {
 
@@ -294,6 +323,8 @@ type RevokeMsgRequest struct {
 // @Produce json
 // @Param body body ForwardMsgRequest true "转发消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /forward_msg [post]
 func (wc *Controller) forwardMsg(c *gin.Context) {
 
@@ -322,6 +353,8 @@ type ForwardMsgRequest struct {
 // @Produce json
 // @Param body body SendTxtRequest true "发送文本消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /send_txt [post]
 func (wc *Controller) sendTxt(c *gin.Context) {
 
@@ -352,6 +385,8 @@ type SendTxtRequest struct {
 // @Produce json
 // @Param body body SendImgRequest true "发送图片消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /send_img [post]
 func (wc *Controller) sendImg(c *gin.Context) {
 
@@ -380,6 +415,8 @@ type SendImgRequest struct {
 // @Produce json
 // @Param body body SendFileRequest true "发送文件消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /send_file [post]
 func (wc *Controller) sendFile(c *gin.Context) {
 
@@ -408,6 +445,8 @@ type SendFileRequest struct {
 // @Produce json
 // @Param body body SendRichTextRequest true "发送卡片消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /send_rich_text [post]
 func (wc *Controller) sendRichText(c *gin.Context) {
 
@@ -446,6 +485,8 @@ type SendRichTextRequest struct {
 // @Produce json
 // @Param body body SendPatMsgRequest true "拍一拍群友参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /send_pat_msg [post]
 func (wc *Controller) sendPatMsg(c *gin.Context) {
 
@@ -474,6 +515,8 @@ type SendPatMsgRequest struct {
 // @Produce json
 // @Param body body GetAudioMsgRequest true "获取语音消息参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /get_audio_msg [post]
 func (wc *Controller) getAudioMsg(c *gin.Context) {
 
@@ -513,6 +556,8 @@ type GetAudioMsgRequest struct {
 // @Produce json
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /get_ocr_result [post]
 func (wc *Controller) getOcrResult(c *gin.Context) {
 
@@ -550,6 +595,8 @@ type GetOcrRequest struct {
 // @Produce json
 // @Param body body DownloadImageRequest true "下载图片参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /download_image [post]
 func (wc *Controller) downloadImage(c *gin.Context) {
 
@@ -584,6 +631,8 @@ type DownloadImageRequest struct {
 // @Produce json
 // @Param body body DownloadAttachRequest true "下载附件参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /download_attach [post]
 func (wc *Controller) downloadAttach(c *gin.Context) {
 
@@ -614,6 +663,8 @@ type DownloadAttachRequest struct {
 // @Produce json
 // @Param body body GetAvatarsRequest true "获取头像列表参数"
 // @Success 200 {object} []AvatarPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /avatars [post]
 func (wc *Controller) getAvatars(c *gin.Context) {
 
@@ -660,6 +711,8 @@ type AvatarPayload struct {
 // @Summary 获取完整通讯录
 // @Produce json
 // @Success 200 {object} []ContactPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /contacts [post]
 func (wc *Controller) getContacts(c *gin.Context) {
 
@@ -689,6 +742,8 @@ type ContactPayload struct {
 // @Summary 获取好友列表
 // @Produce json
 // @Success 200 {object} []ContactPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /friends [post]
 func (wc *Controller) getFriends(c *gin.Context) {
 
@@ -700,6 +755,8 @@ func (wc *Controller) getFriends(c *gin.Context) {
 // @Produce json
 // @Param body body GetInfoByWxidRequest true "根据wxid获取个人信息参数"
 // @Success 200 {object} ContactPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /user_info [post]
 func (wc *Controller) getInfoByWxid(c *gin.Context) {
 
@@ -722,6 +779,8 @@ type GetInfoByWxidRequest struct {
 // @Produce json
 // @Param body body RefreshPyqRequest true "刷新朋友圈参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /refresh_pyq [post]
 func (wc *Controller) refreshPyq(c *gin.Context) {
 
@@ -748,6 +807,8 @@ type RefreshPyqRequest struct {
 // @Produce json
 // @Param body body AcceptNewFriendRequest true "接受好友参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /accept_new_friend [post]
 func (wc *Controller) acceptNewFriend(c *gin.Context) {
 
@@ -778,6 +839,8 @@ type AcceptNewFriendRequest struct {
 // @Produce json
 // @Param body body ReceiveTransferRequest true "接受转账参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /receive_transfer [post]
 func (wc *Controller) receiveTransfer(c *gin.Context) {
 
@@ -808,6 +871,8 @@ type ReceiveTransferRequest struct {
 // @Produce json
 // @Param body body ReceiverRequest true "推送消息到URL参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /enable_receiver [post]
 func (wc *Controller) enabledReceiver(c *gin.Context) {
 
@@ -839,6 +904,8 @@ type ReceiverRequest struct {
 // @Produce json
 // @Param body body ReceiverRequest true "推送消息到URL参数"
 // @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
 // @Router /disable_receiver [post]
 func (wc *Controller) disableReceiver(c *gin.Context) {
 
@@ -856,10 +923,25 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 
 }
 
-func (wc *Controller) websocketReceiver(c *gin.Context) {
+// @Summary 推送消息到Socket
+// @Produce json
+// @Tags WebSocket
+// @Success 101 {string} string "Switching Protocols 响应"
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
+// @Router /socket_receiver [get]
+func (wc *Controller) socketReceiver(c *gin.Context) {
 
 	h := websocket.Handler(func(ws *websocket.Conn) {
-		wc.enableWsReceiver(ws)
+		wc.enableSocketReceiver(ws)
+		for {
+			var rq string
+			if err := websocket.Message.Receive(ws, &rq); err != nil {
+				logman.Error("read:error", "error", err)
+				break
+			}
+		}
+		wc.disableSocketReceiver(ws)
 	})
 
 	h.ServeHTTP(c.Writer, c.Request)

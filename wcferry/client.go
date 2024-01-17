@@ -18,7 +18,6 @@ type Client struct {
 	WeChatAuto bool       // 微信自动启停
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
-	msgReciver bool       // 消息接收器
 }
 
 // 启动 wcf 服务
@@ -46,7 +45,7 @@ func (c *Client) Connect() error {
 	// 自动注销 wcf
 	defer onquit.Register(func() {
 		c.CmdClient.Destroy()
-		c.MsgClient.Destroy(true)
+		c.MsgClient.Destroy("")
 		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}
@@ -57,29 +56,29 @@ func (c *Client) Connect() error {
 
 // 启动消息接收器
 // param pyq bool 是否接收朋友圈消息
-// param fn ...MsgCallback 消息回调函数，可选参数
-// return error 错误信息
-func (c *Client) EnrollReceiver(pyq bool, fn ...MsgCallback) error {
-	if !c.msgReciver && c.CmdClient.EnableMsgReciver(true) != 0 {
-		return errors.New("failed to enable msg server")
+// param cb MsgCallback 消息回调函数，可选参数
+// return string 接收器唯一标识
+func (c *Client) EnrollReceiver(pyq bool, cb MsgCallback) (string, error) {
+	if len(c.MsgClient.callbacks) == 0 {
+		if c.CmdClient.EnableMsgReciver(true) != 0 {
+			return "", errors.New("failed to enable msg server")
+		}
 	}
-	c.msgReciver = true
 	time.Sleep(1 * time.Second)
-	if len(fn) > 0 {
-		return c.MsgClient.Register(fn...)
-	}
-	return nil
+	return c.MsgClient.Register(cb)
 }
 
 // 关闭消息接收器
-// param force bool 是否强制关闭
+// param sk 消息接收器标识，为空则关闭所有
 // return error 错误信息
-func (c *Client) DisableReceiver(force bool) error {
-	if c.msgReciver && c.CmdClient.DisableMsgReciver() != 0 {
-		return errors.New("failed to disable msg server")
+func (c *Client) DisableReceiver(ks ...string) error {
+	err := c.MsgClient.Destroy(ks...)
+	if len(c.MsgClient.callbacks) == 0 {
+		if c.CmdClient.DisableMsgReciver() != 0 {
+			return errors.New("failed to disable msg server")
+		}
 	}
-	c.msgReciver = false
-	return c.MsgClient.Destroy(force)
+	return err
 }
 
 // 调用 sdk.dll 中的函数

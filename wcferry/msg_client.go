@@ -1,45 +1,47 @@
 package wcferry
 
 import (
-	"errors"
-
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/strutil"
 )
 
 type MsgClient struct {
-	*pbSocket               // RPC 客户端
-	receiving bool          // 接收消息中
-	callbacks []MsgCallback // 消息回调函数
+	*pbSocket                        // RPC 客户端
+	callbacks map[string]MsgCallback // 消息回调列表
 }
 
 // 消息回调函数
 type MsgCallback func(msg *WxMsg)
 
 // 关闭 RPC 连接
+// param ks 消息接收器标识，空则关闭所有
 // return error 错误信息
-func (c *MsgClient) Destroy(force bool) error {
-	if !force && len(c.callbacks) > 0 {
-		return errors.New("callbacks not empty")
+func (c *MsgClient) Destroy(ks ...string) error {
+	if len(c.callbacks) > 0 && len(ks) > 0 {
+		for _, k := range ks {
+			delete(c.callbacks, k)
+		}
+		if len(c.callbacks) > 0 {
+			return nil
+		}
 	}
-	c.callbacks = []MsgCallback{}
-	c.receiving = false
+	// 关闭消息推送
+	c.callbacks = map[string]MsgCallback{}
 	return c.close()
 }
 
 // 创建消息接收器
-// param fn ...MsgCallback 消息回调函数
-func (c *MsgClient) Register(fn ...MsgCallback) error {
-	if !c.receiving {
-		// 连接消息服务
+// param cb ...MsgCallback 消息回调函数
+func (c *MsgClient) Register(cb MsgCallback) (string, error) {
+	// 连接消息服务
+	if len(c.callbacks) == 0 {
 		if err := c.init(0); err != nil {
 			logman.Error("msg receiver", "error", err)
-			return err
+			return "", err
 		}
-		// 开始接收消息
-		c.receiving = true
 		go func() {
-			defer c.Destroy(true)
-			for c.receiving {
+			defer c.Destroy("")
+			for len(c.callbacks) > 0 {
 				if resp, err := c.recv(); err == nil {
 					msg := resp.GetWxmsg()
 					for _, f := range c.callbacks {
@@ -53,6 +55,7 @@ func (c *MsgClient) Register(fn ...MsgCallback) error {
 		}()
 	}
 	// 注册回调函数
-	c.callbacks = append(c.callbacks, fn...)
-	return nil
+	k := strutil.Rand(16)
+	c.callbacks[k] = cb
+	return k, nil
 }
