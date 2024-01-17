@@ -59,7 +59,7 @@ func (c *Client) Connect() error {
 // param cb MsgCallback 消息回调函数，可选参数
 // return string 接收器唯一标识
 func (c *Client) EnrollReceiver(pyq bool, cb MsgCallback) (string, error) {
-	if len(c.MsgClient.callbacks) == 0 {
+	if c.MsgClient.callbacks == nil {
 		if c.CmdClient.EnableMsgReciver(true) != 0 {
 			return "", errors.New("failed to enable msg server")
 		}
@@ -73,7 +73,7 @@ func (c *Client) EnrollReceiver(pyq bool, cb MsgCallback) (string, error) {
 // return error 错误信息
 func (c *Client) DisableReceiver(ks ...string) error {
 	err := c.MsgClient.Destroy(ks...)
-	if len(c.MsgClient.callbacks) == 0 {
+	if c.MsgClient.callbacks == nil {
 		if c.CmdClient.DisableMsgReciver() != 0 {
 			return errors.New("failed to disable msg server")
 		}

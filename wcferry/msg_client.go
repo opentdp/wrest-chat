@@ -26,7 +26,7 @@ func (c *MsgClient) Destroy(ks ...string) error {
 		}
 	}
 	// 关闭消息推送
-	c.callbacks = map[string]MsgCallback{}
+	c.callbacks = nil
 	return c.close()
 }
 
@@ -34,14 +34,14 @@ func (c *MsgClient) Destroy(ks ...string) error {
 // param cb MsgCallback 消息回调函数
 // return string 接收器唯一标识
 func (c *MsgClient) Register(cb MsgCallback) (string, error) {
+	k := strutil.Rand(16)
 	if c.callbacks == nil {
-		c.callbacks = map[string]MsgCallback{}
-	}
-	// 连接消息服务
-	if len(c.callbacks) == 0 {
 		if err := c.init(0); err != nil {
 			logman.Error("msg receiver", "error", err)
 			return "", err
+		}
+		c.callbacks = map[string]MsgCallback{
+			k: cb,
 		}
 		go func() {
 			defer c.Destroy()
@@ -57,9 +57,8 @@ func (c *MsgClient) Register(cb MsgCallback) (string, error) {
 			}
 			logman.Warn("msg receiver stopped")
 		}()
+	} else {
+		c.callbacks[k] = cb
 	}
-	// 注册回调函数
-	k := strutil.Rand(16)
-	c.callbacks[k] = cb
 	return k, nil
 }
