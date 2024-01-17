@@ -3,12 +3,14 @@
 基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，主要特性如下：
 
 - 使用 Go 语言编写，无运行时依赖
-- 提供 HTTP 操作接口，无缝对接各类编程语言
-- 支持作为标准 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
-- 内置互动机器人，参见 [wclient/README.md](./wclient/README.md)
-- 内置 OpenApi 文档，参见 `http://localhost:7600`
+- 提供 HTTP 接口，便于对接各类编程语言
+- 提供 Websocket 接口，接收推送的新消息
 - 支持 HTTP 接口授权，参见 [配置说明](#配置说明)
-- 消息中的 Xml 尽可能转为 Object
+- 支持作为 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
+- 内置 AI 机器人，参见 [wclient/README.md](./wclient/README.md)
+- 内置 Web 管理界面，参见 `http://localhost:7600/`
+- 内置 Api 调试工具，参见 `http://localhost:7600/swagger/`
+- 尽可能将消息中的 Xml 转为 Object，便于前端解析
 
 ## 快速开始
 

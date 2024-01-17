@@ -925,7 +925,7 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 
 // @Summary 推送消息到Socket
 // @Produce json
-// @Tags webSocket
+// @Tags websocket
 // @Success 101 {string} string "Switching Protocols 响应"
 // @Failure 400 {string} string "非法请求"
 // @Failure 500 {string} string "内部服务器错误"

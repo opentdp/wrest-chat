@@ -1209,7 +1209,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "webSocket"
+                    "websocket"
                 ],
                 "summary": "推送消息到Socket",
                 "responses": {
