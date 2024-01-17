@@ -2,6 +2,7 @@ package robot
 
 import (
 	"encoding/xml"
+	"regexp"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -58,6 +59,12 @@ func reciver(msg *wcferry.WxMsg) {
 		// 添加好友后主动回复
 		if strings.Contains(msg.Content, "现在可以开始聊天了") {
 			wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
+			return
+		}
+		// 添加群友后主动回复
+		re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
+		if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
+			wc.CmdClient.SendTxt("欢迎 @"+matches[1]+"，"+args.Bot.Welcome, msg.Roomid, "")
 			return
 		}
 		return
