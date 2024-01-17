@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
+	"golang.org/x/net/websocket"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -852,5 +853,17 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 		Success: err == nil,
 		Error:   err,
 	})
+
+}
+
+func (wc *Controller) websocketReceiver(c *gin.Context) {
+
+	h := websocket.Handler(func(ws *websocket.Conn) {
+		wc.enableWsReceiver(ws)
+	})
+
+	h.ServeHTTP(c.Writer, c.Request)
+
+	c.Set("Payload", "连接已关闭")
 
 }
