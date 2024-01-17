@@ -45,7 +45,7 @@ func (c *Client) Connect() error {
 	// 自动注销 wcf
 	defer onquit.Register(func() {
 		c.CmdClient.Destroy()
-		c.MsgClient.Destroy("")
+		c.MsgClient.Destroy()
 		if c.SdkLibrary != "" {
 			c.wxDestroySDK()
 		}

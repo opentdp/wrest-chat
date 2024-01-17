@@ -31,8 +31,12 @@ func (c *MsgClient) Destroy(ks ...string) error {
 }
 
 // 创建消息接收器
-// param cb ...MsgCallback 消息回调函数
+// param cb MsgCallback 消息回调函数
+// return string 接收器唯一标识
 func (c *MsgClient) Register(cb MsgCallback) (string, error) {
+	if c.callbacks == nil {
+		c.callbacks = map[string]MsgCallback{}
+	}
 	// 连接消息服务
 	if len(c.callbacks) == 0 {
 		if err := c.init(0); err != nil {
@@ -40,7 +44,7 @@ func (c *MsgClient) Register(cb MsgCallback) (string, error) {
 			return "", err
 		}
 		go func() {
-			defer c.Destroy("")
+			defer c.Destroy()
 			for len(c.callbacks) > 0 {
 				if resp, err := c.recv(); err == nil {
 					msg := resp.GetWxmsg()
