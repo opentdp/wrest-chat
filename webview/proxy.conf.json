@@ -1,8 +1,13 @@
 {
     "/api": {
-        "target": "http://124.220.17.201:7600",
-        "secure": false,
+        "target": "http://127.0.0.1:7600",
         "changeOrigin": true,
-        "logLevel": "debug"
+        "secure": false
+    },
+    "/api/socket_receiver": {
+        "target": "ws://127.0.0.1:7600",
+        "changeOrigin": true,
+        "secure": false,
+        "ws": true
     }
 }
