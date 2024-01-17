@@ -1209,14 +1209,14 @@
                     "application/json"
                 ],
                 "tags": [
-                    "WebSocket"
+                    "webSocket"
                 ],
                 "summary": "推送消息到Socket",
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "101": {
+                        "description": "Switching Protocols 响应",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                            "type": "string"
                         }
                     },
                     "400": {
