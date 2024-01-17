@@ -68,6 +68,17 @@ func reciver(msg *wcferry.WxMsg) {
 			return
 		}
 		return
+	case 10002:
+		// 撤回消息
+		ret := &types.SysMsg{}
+		err := xml.Unmarshal([]byte(msg.Content), ret)
+		if err == nil && ret.RevokeMsg.MsgID != "" {
+			if msg.IsGroup {
+				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
+				wc.CmdClient.SendTxt("@"+user.Name+"\n撤回了啥？", msg.Roomid, msg.Sender)
+			}
+		}
+
 	}
 
 }
