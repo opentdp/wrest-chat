@@ -25,6 +25,8 @@ func AiChat(id, msg string) string {
 		res, err = GoogleChat(id, text)
 	case "openai":
 		res, err = OpenaiChat(id, text)
+	case "xunfei":
+		res, err = XunfeiChat(id, text)
 	default:
 		res = "暂不支持此模型"
 	}

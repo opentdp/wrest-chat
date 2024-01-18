@@ -18,26 +18,29 @@ func OpenaiChat(id, msg string) (string, error) {
 
 	client := openai.NewClientWithConfig(config)
 
-	// 初始化对话模型
+	// 初始化模型
 
 	req := openai.ChatCompletionRequest{
 		Model:    llmc.Model,
 		Messages: []openai.ChatCompletionMessage{},
 	}
 
-	// 设置对话上下文
+	// 设置上下文
 
 	if args.LLM.RoleContext != "" {
 		req.Messages = []openai.ChatCompletionMessage{
-			{Content: args.LLM.RoleContext, Role: "user"},
-			{Content: "OK", Role: "assistant"},
+			{Content: args.LLM.RoleContext, Role: openai.ChatMessageRoleUser},
+			{Content: "OK", Role: openai.ChatMessageRoleAssistant},
 		}
 	}
 
 	for _, msg := range msgHistoryMap[id] {
 		role := msg.Role
+		if role == "user" {
+			role = openai.ChatMessageRoleUser
+		}
 		if role == "model" {
-			role = "assistant"
+			role = openai.ChatMessageRoleAssistant
 		}
 		req.Messages = append(req.Messages, openai.ChatCompletionMessage{
 			Content: msg.Content, Role: role,

@@ -24,12 +24,16 @@ llm:
           provider: google # 服务商
           endpoint: https://gemini.451024.xyz # 留空使用官方接口
           model: gemini-pro # 模型
-          key: YOUR-API-KEY # 密钥
+          key: API-KEY # 密钥
         - name: gpt
           provider: openai
           endpoint: https://chat.451024.xyz
           model: gpt-3.5-turbo
-          key: YOUR-API-KEY
+          key: API-KEY
+        - name: xinghuo
+          provider: xunfei
+          model: gpt-3.5-turbo
+          key: APP-ID,API-KEY,API-SECRET
 
 # 运行日志
 log:

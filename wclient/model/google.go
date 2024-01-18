@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/google/generative-ai-go/genai"
@@ -28,37 +29,38 @@ func GoogleChat(id, msg string) (string, error) {
 
 	defer client.Close()
 
-	// 初始化对话模型
+	// 初始化模型
 
 	model := client.GenerativeModel(llmc.Model)
 
-	cs := model.StartChat()
-	cs.History = []*genai.Content{}
+	req := model.StartChat()
+	req.History = []*genai.Content{}
 
-	// 设置对话上下文
+	// 设置上下文
 
 	if args.LLM.RoleContext != "" {
-		cs.History = []*genai.Content{
+		req.History = []*genai.Content{
 			{Parts: []genai.Part{genai.Text(args.LLM.RoleContext)}, Role: "user"},
 			{Parts: []genai.Part{genai.Text("OK")}, Role: "model"},
 		}
 	}
 
 	for _, msg := range msgHistoryMap[id] {
-		cs.History = append(cs.History, &genai.Content{
-			Parts: []genai.Part{genai.Text(msg.Content)}, Role: msg.Role,
+		role := msg.Role
+		req.History = append(req.History, &genai.Content{
+			Parts: []genai.Part{genai.Text(msg.Content)}, Role: role,
 		})
 	}
 
 	// 请求模型接口
 
-	resp, err := cs.SendMessage(ctx, genai.Text(msg))
+	resp, err := req.SendMessage(ctx, genai.Text(msg))
 	if err != nil {
 		return "", err
 	}
 
 	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
-		return "", fmt.Errorf("未得到预期的结果")
+		return "", errors.New("未得到预期的结果")
 	}
 
 	// 更新历史记录
