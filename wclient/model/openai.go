@@ -21,8 +21,9 @@ func OpenaiChat(id, ask string) (string, error) {
 	// 初始化模型
 
 	req := openai.ChatCompletionRequest{
-		Model:    llmc.Model,
-		Messages: []openai.ChatCompletionMessage{},
+		Model:     llmc.Model,
+		MaxTokens: 2048,
+		Messages:  []openai.ChatCompletionMessage{},
 	}
 
 	// 设置上下文

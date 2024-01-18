@@ -8,7 +8,7 @@
 - 添加群友后主动回复
 - 支持 Google gemini 模型
 - 支持 OpenAI gpt 模型
-- 支持讯飞星火模型
+- 支持 讯飞 Spark 模型
 - 支持用户选择模型
 - 支持用户定义唤醒词
 - 支持禁止用户使用助手
@@ -30,3 +30,7 @@
 /wake      设置或禁用唤醒词
 对话模型 gemini，上下文长度 2/20
 ```
+
+## 其他
+
+- `Google AI` 免费申请入口 <https://makersuite.google.com>

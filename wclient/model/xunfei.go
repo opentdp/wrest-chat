@@ -24,7 +24,8 @@ func XunfeiChat(id, ask string) (string, error) {
 	// 初始化模型
 
 	req := xunfei.ChatCompletionRequest{
-		Messages: []xunfei.ChatCompletionMessage{},
+		MaxTokens: 2048,
+		Messages:  []xunfei.ChatCompletionMessage{},
 	}
 
 	// 设置上下文

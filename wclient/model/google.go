@@ -17,6 +17,7 @@ func GoogleChat(id, ask string) (string, error) {
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),
 	}
+
 	if llmc.Endpoint != "" {
 		opts = append(opts, option.WithEndpoint(llmc.Endpoint))
 	}
