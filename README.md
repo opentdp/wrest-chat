@@ -33,8 +33,6 @@
 
 - 如设置了 `token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
 
-- `Google AI` 免费申请入口 <https://makersuite.google.com>
-
 ## 开发说明
 
 - 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600`
