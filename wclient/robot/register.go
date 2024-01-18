@@ -75,7 +75,7 @@ func reciver(msg *wcferry.WxMsg) {
 		if err == nil && ret.RevokeMsg.MsgID != "" {
 			if msg.IsGroup {
 				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-				wc.CmdClient.SendTxt("@"+user.Name+"\n撤回了啥？", msg.Roomid, msg.Sender)
+				wc.CmdClient.SendTxt("@"+user.Name+" 撤回了寂寞？", msg.Roomid, msg.Sender)
 			}
 		}
 

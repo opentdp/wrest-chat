@@ -29,12 +29,12 @@ func Server() {
 	wcfrest.Route(api)
 
 	// Swagger 守卫
-	httpd.Use(midware.SwagGuard)
+	httpd.Use(midware.SwaggerGuard)
 
 	// 前端文件路由
 	httpd.StaticEmbed("/", "public", args.Efs)
 
 	// 启动 HTTP 服务
-	httpd.Server(args.Httpd.Address)
+	httpd.Server(args.Web.Address)
 
 }
