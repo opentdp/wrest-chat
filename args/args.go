@@ -1,17 +1,5 @@
 package args
 
-import (
-	"embed"
-)
-
-// 调试模式
-
-var Debug bool
-
-// 嵌入目录
-
-var Efs *embed.FS
-
 // 机器人参数
 
 var Bot = struct {
