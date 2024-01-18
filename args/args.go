@@ -83,4 +83,5 @@ var Wcf = struct {
 }{
 	Address:    "127.0.0.1:7601",
 	SdkLibrary: "sdk.dll",
+	WeChatAuto: true,
 }
