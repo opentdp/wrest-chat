@@ -43,7 +43,7 @@ func reciver(msg *wcferry.WxMsg) {
 		}
 		return
 	case 37:
-		// 自动接受好友请求
+		// 自动确认好友请求
 		ret := &types.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
@@ -56,12 +56,14 @@ func reciver(msg *wcferry.WxMsg) {
 			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 			return
 		}
-		// 添加好友后主动回复
+		// 添加好友后响应
 		if strings.Contains(msg.Content, "现在可以开始聊天了") {
-			wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
+			if args.Bot.Welcome != "" {
+				wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
+			}
 			return
 		}
-		// 添加群友后主动回复
+		// 有人进群时响应
 		re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 		if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
 			welcome := args.Bot.Welcome
@@ -71,18 +73,22 @@ func reciver(msg *wcferry.WxMsg) {
 					break
 				}
 			}
-			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+welcome, msg.Roomid, "")
+			if welcome != "" {
+				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+welcome, msg.Roomid, "")
+			}
 			return
 		}
 		return
 	case 10002:
-		// 撤回消息
+		// 撤回消息时响应
 		ret := &types.SysMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
-		if err == nil && ret.RevokeMsg.MsgID != "" {
+		if err == nil && ret.RevokeMsg.MsgID != "" && args.Bot.Revoke != "" {
 			if msg.IsGroup {
 				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
 				wc.CmdClient.SendTxt("@"+user.Name+" 撤回了寂寞？", msg.Roomid, msg.Sender)
+			} else {
+				wc.CmdClient.SendTxt("撤回了寂寞？", msg.Sender, "")
 			}
 		}
 

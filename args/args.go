@@ -17,6 +17,7 @@ var Efs *embed.FS
 var Bot = struct {
 	Enable      bool       `yaml:"enable"`
 	Welcome     string     `yaml:"welcome"`
+	Revoke      string     `yaml:"revoke"`
 	Managers    []string   `yaml:"managers"`
 	BlackList   []string   `yaml:"blackList"`
 	WhiteList   []string   `yaml:"whiteList"`
