@@ -32,7 +32,7 @@ llm:
           key: API-KEY
         - name: xinghuo
           provider: xunfei
-          model: gpt-3.5-turbo
+          model: v3
           key: APP-ID,API-KEY,API-SECRET
 
 # 运行日志

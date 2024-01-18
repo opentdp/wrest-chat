@@ -51,7 +51,7 @@ func XunfeiChat(id, msg string) (string, error) {
 
 	// 请求模型接口
 
-	stream, err := client.CreateChatCompletionStream(context.Background(), req, xunfei.ModelV3)
+	stream, err := client.CreateChatCompletionStream(context.Background(), req, llmc.Model)
 	if err != nil {
 		return "", err
 	}
