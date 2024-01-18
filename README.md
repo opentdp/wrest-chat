@@ -14,7 +14,7 @@
 
 ## 快速开始
 
-1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest](https://github.com/opentdp/wechat-rest/releases)
+1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
 
 2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
 
