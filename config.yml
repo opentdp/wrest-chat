@@ -1,19 +1,20 @@
 # 机器人
 bot:
     enable: true # 是否启用内置机器人
-    welcome: 回复 /help 查询指令 # 添加好友或加群后自动回复
+    welcome: 回复 /help 查询指令 # 被添加为好友或有人进入群聊时自动回复
     managers: [] # 管理员人员
     blackList: [] # 黑名单，禁止使用机器人
     whiteList: [] # 白名单，禁止其他人使用机器人
     hostedRooms: # 托管的群聊列表
-        - mask: 1 # 群标记
-          name: OpenTDP 开发群 # 群聊名称
-          roomId: 38699745819@chatroom # 群聊 Id
+        - mask: 1 # 群标记，加群指令中使用
+          name: OpenTDP 开发群 # 群名称，指令说明中使用
+          roomId: 38699745819@chatroom # 群 Id，可以从网页后台获取
+          welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词
         - mask: 2
           name: OpenTDP 闲聊群
           roomId: 17907657671@chatroom
 
-# 大语言模型
+# 大模型
 llm:
     historyNum: 20 # 历史消息数量
     roleContext: | # 定义模型扮演的身份
