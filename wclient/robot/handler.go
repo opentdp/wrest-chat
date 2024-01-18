@@ -38,13 +38,29 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		setupHandlers()
 	}
 
-	// 前置过滤
-	if len(args.Bot.WhiteList) > 0 && !sliceContains(args.Bot.WhiteList, msg.Sender) {
+	// 空指令
+	if len(msg.Content) == 0 {
 		return ""
-	} else if sliceContains(args.Bot.BlackList, msg.Sender) {
-		return ""
-	} else if len(msg.Content) == 0 {
-		return ""
+	}
+
+	// 消息源
+	fromId := msg.Sender
+	if msg.IsGroup {
+		fromId = msg.Roomid
+	}
+
+	// 黑名单
+	if len(args.Bot.BlackList) > 0 {
+		if sliceContains(args.Bot.BlackList, fromId) {
+			return ""
+		}
+	}
+
+	// 白名单
+	if len(args.Bot.WhiteList) > 0 {
+		if !sliceContains(args.Bot.WhiteList, fromId) {
+			return ""
+		}
 	}
 
 	// 定制唤醒
