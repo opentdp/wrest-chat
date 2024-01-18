@@ -10,7 +10,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func XunfeiChat(id, msg string) (string, error) {
+func XunfeiChat(id, ask string) (string, error) {
 
 	llmc := GetUserConfig(id).LLModel
 
@@ -45,9 +45,13 @@ func XunfeiChat(id, msg string) (string, error) {
 			role = xunfei.ChatMessageRoleAssistant
 		}
 		req.Messages = append(req.Messages, xunfei.ChatCompletionMessage{
-			Content: msg.Content, Role: xunfei.ChatMessageRoleAssistant,
+			Content: msg.Content, Role: role,
 		})
 	}
+
+	req.Messages = append(req.Messages, xunfei.ChatCompletionMessage{
+		Content: ask, Role: xunfei.ChatMessageRoleUser,
+	})
 
 	// 请求模型接口
 
@@ -81,7 +85,7 @@ func XunfeiChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &MsgHistory{Content: msg, Role: xunfei.ChatMessageRoleUser}
+	item1 := &MsgHistory{Content: ask, Role: xunfei.ChatMessageRoleUser}
 	item2 := &MsgHistory{Content: reply, Role: xunfei.ChatMessageRoleAssistant}
 
 	AppendHistory(id, item1, item2)

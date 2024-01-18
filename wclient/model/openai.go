@@ -7,7 +7,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func OpenaiChat(id, msg string) (string, error) {
+func OpenaiChat(id, ask string) (string, error) {
 
 	llmc := GetUserConfig(id).LLModel
 
@@ -48,7 +48,7 @@ func OpenaiChat(id, msg string) (string, error) {
 	}
 
 	req.Messages = append(req.Messages, openai.ChatCompletionMessage{
-		Content: msg, Role: "user",
+		Content: ask, Role: "user",
 	})
 
 	// 请求模型接口
@@ -60,7 +60,7 @@ func OpenaiChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &MsgHistory{Content: msg, Role: "user"}
+	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: resp.Choices[0].Message.Content, Role: "model"}
 
 	AppendHistory(id, item1, item2)

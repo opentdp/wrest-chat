@@ -30,7 +30,7 @@ llm:
           endpoint: https://chat.451024.xyz
           model: gpt-3.5-turbo
           key: API-KEY
-        - name: xinghuo
+        - name: spark
           provider: xunfei
           model: v3
           key: APP-ID,API-KEY,API-SECRET

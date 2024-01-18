@@ -10,7 +10,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func GoogleChat(id, msg string) (string, error) {
+func GoogleChat(id, ask string) (string, error) {
 
 	llmc := GetUserConfig(id).LLModel
 
@@ -54,7 +54,7 @@ func GoogleChat(id, msg string) (string, error) {
 
 	// 请求模型接口
 
-	resp, err := req.SendMessage(ctx, genai.Text(msg))
+	resp, err := req.SendMessage(ctx, genai.Text(ask))
 	if err != nil {
 		return "", err
 	}
@@ -65,7 +65,7 @@ func GoogleChat(id, msg string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &MsgHistory{Content: msg, Role: "user"}
+	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: fmt.Sprintf("%s", resp.Candidates[0].Content.Parts[0]), Role: "model"}
 
 	AppendHistory(id, item1, item2)
