@@ -71,6 +71,33 @@ func ParseDbField(field *DbField) any {
 	}
 }
 
+// 联系人类型
+// param wxid string 联系人wxid
+// return string 类型
+func ContactType(wxid string) string {
+	notFriends := map[string]string{
+		"mphelper":    "公众平台助手",
+		"fmessage":    "朋友推荐消息",
+		"medianote":   "语音记事本",
+		"floatbottle": "漂流瓶",
+		"filehelper":  "文件传输助手",
+		"newsapp":     "新闻",
+	}
+	if notFriends[wxid] != "" {
+		return notFriends[wxid]
+	}
+	if strings.HasPrefix(wxid, "gh_") {
+		return "公众号"
+	}
+	if strings.HasSuffix(wxid, "@chatroom") {
+		return "群聊"
+	}
+	if strings.HasSuffix(wxid, "@openim") {
+		return "企业微信"
+	}
+	return "好友"
+}
+
 // 获取网络文件
 // param str string 文件URL或路径
 // return string 失败则返回空字符串

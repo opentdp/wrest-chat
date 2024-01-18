@@ -27,36 +27,31 @@ func reciver(msg *wcferry.WxMsg) {
 
 	switch msg.Type {
 	case 1:
-		// 忽略公号消息
-		if strings.HasPrefix(msg.Sender, "gh_") {
-			return
-		}
 		// 处理聊天指令
-		if output := applyHandlers(msg); output != "" {
-			if msg.IsGroup {
-				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-				wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
-			} else {
-				wc.CmdClient.SendTxt(output, msg.Sender, "")
+		if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
+			if output := applyHandlers(msg); output != "" {
+				if msg.IsGroup {
+					user := wc.CmdClient.GetInfoByWxid(msg.Sender)
+					wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
+				} else {
+					wc.CmdClient.SendTxt(output, msg.Sender, "")
+				}
 			}
-			return
 		}
-		return
 	case 37:
-		// 自动确认好友请求
+		// 自动接受新朋友
 		ret := &types.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
 			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
 		}
-		return
 	case 10000:
 		// 自动回应拍一拍
 		if strings.Contains(msg.Content, "拍了拍我") {
 			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 			return
 		}
-		// 添加好友后响应
+		// 接受好友后响应
 		if strings.Contains(msg.Content, "现在可以开始聊天了") {
 			if args.Bot.Welcome != "" {
 				wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
@@ -78,7 +73,6 @@ func reciver(msg *wcferry.WxMsg) {
 			}
 			return
 		}
-		return
 	case 10002:
 		// 撤回消息时响应
 		ret := &types.SysMsg{}
@@ -91,7 +85,6 @@ func reciver(msg *wcferry.WxMsg) {
 				wc.CmdClient.SendTxt(args.Bot.Revoke, msg.Sender, "")
 			}
 		}
-
 	}
 
 }

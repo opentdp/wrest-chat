@@ -532,20 +532,11 @@ func (c *CmdClient) GetContacts() []*RpcContact {
 // 获取好友列表
 // return []*RpcContact 好友列表
 func (c *CmdClient) GetFriends() []*RpcContact {
-	notFriends := map[string]string{
-		"mphelper":    "公众平台助手",
-		"fmessage":    "朋友推荐消息",
-		"medianote":   "语音记事本",
-		"floatbottle": "漂流瓶",
-		"filehelper":  "文件传输助手",
-		"newsapp":     "新闻",
-	}
 	friends := []*RpcContact{}
 	for _, cnt := range c.GetContacts() {
-		if strings.HasSuffix(cnt.Wxid, "@chatroom") || strings.HasPrefix(cnt.Wxid, "gh_") || notFriends[cnt.Wxid] != "" {
-			continue
+		if ContactType(cnt.Wxid) == "好友" {
+			friends = append(friends, cnt)
 		}
-		friends = append(friends, cnt)
 	}
 	return friends
 }
