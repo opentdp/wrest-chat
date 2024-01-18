@@ -10,7 +10,7 @@ require (
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/liudding/go-llm-api v0.1.18
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/opentdp/go-helper v0.5.5-0.20240112084013-142cd0aa9aa2
+	github.com/opentdp/go-helper v0.5.6
 	github.com/sashabaranov/go-openai v1.18.2
 	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2

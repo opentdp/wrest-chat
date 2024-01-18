@@ -98,21 +98,6 @@ func ContactType(wxid string) string {
 	return "好友"
 }
 
-// 获取网络文件
-// param str string 文件URL或路径
-// return string 失败则返回空字符串
-func DownloadFile(str string) string {
-	if strings.HasPrefix(str, "http://") || strings.HasPrefix(str, "https://") {
-		if tmp, err := request.Download(str, "", false); err == nil {
-			time.AfterFunc(15*time.Minute, func() {
-				os.RemoveAll(tmp)
-			})
-			return tmp
-		}
-	}
-	return ""
-}
-
 // 打印接收到的消息
 // param msg *FlexWxMsg 消息
 func WxMsgPrinter(msg *WxMsg) {
@@ -139,4 +124,19 @@ func WxMsgPrinter(msg *WxMsg) {
 		rs += fmt.Sprintf("::Extra:: %s\n", msg.Extra)
 	}
 	fmt.Print(rs, "=== End Message ===\n")
+}
+
+// 获取网络文件
+// param str string 文件URL或路径
+// return string 失败则返回空字符串
+func DownloadFile(str string) string {
+	if strings.HasPrefix(str, "http://") || strings.HasPrefix(str, "https://") {
+		if tmp, err := request.Download(str, "", false); err == nil {
+			time.AfterFunc(15*time.Minute, func() {
+				os.RemoveAll(tmp)
+			})
+			return tmp
+		}
+	}
+	return ""
 }

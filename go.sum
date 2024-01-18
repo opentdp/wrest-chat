@@ -283,8 +283,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRW
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/npillmayer/nestext v0.1.3/go.mod h1:h2lrijH8jpicr25dFY+oAJLyzlya6jhnuG+zWp9L0Uk=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=
-github.com/opentdp/go-helper v0.5.5-0.20240112084013-142cd0aa9aa2 h1:37M60nrdIT8EmMktLi7ZIjpqrUjGEyctbSbvTsqndUw=
-github.com/opentdp/go-helper v0.5.5-0.20240112084013-142cd0aa9aa2/go.mod h1:9m+t/2x1CmjZ9YQP37+xECCO84eqMnsxnRE/7y37GjE=
+github.com/opentdp/go-helper v0.5.6-0.20240118144437-884be872d82e h1:xu/8aprVl7s1yJbqDSBE2LYdbBAHYNEwHWytVg8GgW8=
+github.com/opentdp/go-helper v0.5.6-0.20240118144437-884be872d82e/go.mod h1:9m+t/2x1CmjZ9YQP37+xECCO84eqMnsxnRE/7y37GjE=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.7.0/go.mod h1:vwGMzjaWMwyfHwgIBhI2YUM4fB6nL6lVAvS1LBMMhTE=

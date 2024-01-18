@@ -1,20 +1,28 @@
 package wcferry
 
 import (
+	"embed"
 	"errors"
+	"os"
 	"os/exec"
+	"path"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
 
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/onquit"
 )
 
+//go:embed libs
+var libfs embed.FS
+
 type Client struct {
+	sdkLibrary string     // sdk.dll 路径
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
-	SdkLibrary string     // sdk.dll 路径
 	WeChatAuto bool       // 微信自动启停
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
@@ -37,18 +45,14 @@ func (c *Client) Connect() error {
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
 	// 启动 wcf 服务
-	if c.SdkLibrary != "" {
-		if err := c.wxInitSDK(); err != nil {
-			return err
-		}
+	if err := c.wxInitSDK(); err != nil {
+		return err
 	}
 	// 自动注销 wcf
-	defer onquit.Register(func() {
+	onquit.Register(func() {
 		c.CmdClient.Destroy()
 		c.MsgClient.Destroy()
-		if c.SdkLibrary != "" {
-			c.wxDestroySDK()
-		}
+		c.wxDestroySDK()
 	})
 	// 返回连接结果
 	return c.CmdClient.init(25)
@@ -84,7 +88,7 @@ func (c *Client) DisableReceiver(ks ...string) error {
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll
-	sdk, err := syscall.LoadDLL(c.SdkLibrary)
+	sdk, err := syscall.LoadDLL(c.sdkLibrary)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
 		return err
@@ -105,21 +109,30 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
+	// 尝试自动启动微信
 	if c.WeChatAuto {
 		out, _ := exec.Command("tasklist").Output()
 		if strings.Contains(string(out), "WeChat.exe") {
 			return errors.New("please close wechat")
 		}
 	}
-	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
-	time.Sleep(5 * time.Second)
-	return nil
+	// 释放 libs 并注入微信
+	tf, err := filer.ReleaseEmbedFS(libfs, "libs")
+	if err == nil {
+		c.sdkLibrary = path.Join(tf, "sdk.dll")
+		c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+		time.Sleep(5 * time.Second)
+	}
+	return err
 }
 
 // 关闭 wcf 服务
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
-	c.sdkCall("WxDestroySDK", uintptr(0))
+	// 关闭 wcf 服务
+	err := c.sdkCall("WxDestroySDK", uintptr(0))
+	logman.Warn("wcf destroyed", "error", err)
+	// 尝试自动关闭微信
 	if c.WeChatAuto {
 		logman.Info("killing wechat process")
 		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
@@ -128,5 +141,7 @@ func (c *Client) wxDestroySDK() error {
 			return err
 		}
 	}
-	return nil
+	// 尝试删除 libs 临时目录
+	os.RemoveAll(filepath.Dir(c.sdkLibrary))
+	return err
 }

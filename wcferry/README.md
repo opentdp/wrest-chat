@@ -13,9 +13,7 @@ import (
 )
 
 func main() {
-    wc := &wcferry.Client{
-        SdkLibrary: "sdk.dll",
-    }
+    wc := &wcferry.Client{}
     if err := wc.Connect(); err != nil {
         panic(err)
     }

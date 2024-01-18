@@ -78,11 +78,9 @@ var Web = struct {
 
 var Wcf = struct {
 	Address    string `yaml:"address"`
-	SdkLibrary string `yaml:"sdkLibrary"`
 	WeChatAuto bool   `yaml:"wechatAuto"`
 	MsgPrinter bool   `yaml:"msgPrinter"`
 }{
 	Address:    "127.0.0.1:7601",
-	SdkLibrary: "sdk.dll",
 	WeChatAuto: true,
 }

@@ -51,6 +51,5 @@ web:
 # WeChat Ferry
 wcf:
     address: 127.0.0.1:7601 # Rpc 监听地址
-    sdkLibrary: wcferry/libs/sdk.dll # Sdk 路径
     wechatAuto: true # 是否跟随启停微信
     msgPrinter: false # 是否打印收到的消息
