@@ -35,6 +35,4 @@ protoc --proto_path=. --go_out=. proto/*.proto
 
 ## 参考信息
 
-https://github.com/lich0821/WeChatFerry/tree/master/clients/python
-
-https://github.com/lich0821/WeChatFerry/tree/master/clients/go
+<https://github.com/lich0821/WeChatFerry/tree/master/clients/python>
