@@ -14,19 +14,22 @@
 
 ## 快速开始
 
-1、下载并安装 [WeChatSetup-3.9.2.23](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
+1、下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
 
-2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录
+- 非开发者请直接下载编译好的二进制文件，不要下载源码
 
-- 初始化时出现 *Attempt to access invalid address* 错误信息可以忽略
+2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
 
-3、修改 `config.yml` 配置机器人参数，重启 **wrest** 后生效
+- 初始化时若出现 *Attempt to access invalid address* 信息可忽略
 
-- 请使用 `Ctrl + C` 终止 **wrest**，切勿直接关闭任务窗口
+3、修改 [config.yml](./config.yml) 配置机器人参数，重启 **wrest.exe** 后生效
+
+- 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
+- 重启时，提示端口被占用，请退出微信后重试
 
 ## 配置说明
 
-启动 `wrest` 时将自动创建一个默认配置文件，完整配置说明可参考开源仓库中的 [config.yml](./config.yml)
+启动时将自动创建一个默认配置文件，完整配置可参考开源仓库中的 [config.yml](./config.yml)
 
 - 如设置了 `token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
 
@@ -34,7 +37,7 @@
 
 ## 开发说明
 
-- 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600` 
+- 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600`
 
 - 由于微信和*WCF*均为32位应用，对接*bot*和*sdk*部分，必须设置环境变量 `GOARCH=386`
 
