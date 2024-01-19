@@ -19,7 +19,7 @@ func main() {
 	c.Init().Unmarshal()
 
 	if args.Bot.Enable {
-		robot.Register()
+		go robot.Register()
 	}
 
 	httpd.Server()
