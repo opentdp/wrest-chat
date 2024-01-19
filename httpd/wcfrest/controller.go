@@ -25,6 +25,29 @@ type CommonPayload struct {
 	Error error `json:"error,omitempty"`
 }
 
+// @Summary 登录二维码
+// @Produce json
+// @Success 200 {object} CommonPayload
+// @Failure 400 {string} string "非法请求"
+// @Failure 500 {string} string "内部服务器错误"
+// @Router /login_qr [post]
+func (wc *Controller) loginQr(c *gin.Context) {
+
+	if wc.CmdClient.IsLogin() {
+		c.Set("Error", "微信已登录")
+		return
+	}
+
+	resp, err := wcferry.WxLoginQrcode()
+
+	c.Set("Payload", CommonPayload{
+		Success: err == nil,
+		Result:  resp,
+		Error:   err,
+	})
+
+}
+
 // @Summary 检查登录状态
 // @Produce json
 // @Success 200 {object} bool

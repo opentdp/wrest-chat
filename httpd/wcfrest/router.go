@@ -10,6 +10,8 @@ func Route(rg *gin.RouterGroup) {
 
 	ctrl := &Controller{wclient.Register()}
 
+	rg.POST("login_qr", ctrl.loginQr)
+
 	rg.POST("is_login", ctrl.isLogin)
 	rg.POST("self_wxid", ctrl.getSelfWxid)
 	rg.POST("self_info", ctrl.getSelfInfo)

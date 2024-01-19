@@ -804,6 +804,34 @@
                 }
             }
         },
+        "/login_qr": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "登录二维码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    },
+                    "400": {
+                        "description": "非法请求",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部服务器错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/msg_types": {
             "post": {
                 "produces": [
