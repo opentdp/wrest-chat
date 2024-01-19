@@ -48,7 +48,7 @@ web:
     swagger: true # 是否启用 OpenApi 文档
     token: "" # 使用 Token 验证请求
 
-# WeChat Ferry
+# Wcf 服务
 wcf:
     address: 127.0.0.1:7601 # Rpc 监听地址
     wechatAuto: true # 是否跟随启停微信

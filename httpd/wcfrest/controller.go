@@ -5,9 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
+	"github.com/opentdp/go-helper/logman"
 	"golang.org/x/net/websocket"
 
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 

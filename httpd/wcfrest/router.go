@@ -2,6 +2,7 @@ package wcfrest
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/opentdp/wechat-rest/wclient"
 )
 

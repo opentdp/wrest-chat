@@ -5,7 +5,7 @@
 - 使用 Go 语言编写，无运行时依赖
 - 提供 HTTP 接口，便于对接各类编程语言
 - 提供 Websocket 接口，接收推送的新消息
-- 支持 HTTP 接口授权，参见 [配置说明](#配置说明)
+- 支持 HTTP/WS 接口授权，参见 [配置说明](#配置说明)
 - 支持作为 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
 - 内置 AI 机器人，参见 [wclient/README.md](./wclient/README.md)
 - 内置 Web 管理界面，参见 `http://localhost:7600/`
