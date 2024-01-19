@@ -13,7 +13,8 @@ import { AppComponents, AppRoutes } from './pages';
     imports: [
         BasicModule,
         RouterModule.forRoot(AppRoutes, {
-            scrollPositionRestoration: 'top'
+            scrollPositionRestoration: 'top',
+            useHash: true
         }),
     ],
     declarations: [

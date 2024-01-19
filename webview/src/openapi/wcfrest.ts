@@ -253,6 +253,17 @@ export const WrestApi = {
         return httpRequest('/is_login', options);
     },
     /**
+     * @summary 获取登录验证码
+     * @param {unknown} [options] body 获取登录验证码参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    loginQr(body?: unknown, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        return httpRequest('/login_qr', options);
+    },
+    /**
      * @summary 获取所有消息类型
      * @param {unknown} [options] body 获取所有消息类型参数
      * @param {*} [options] Override http request option.

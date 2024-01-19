@@ -9,14 +9,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { QrCodeModule } from 'ng-qrcode';
+
 
 @NgModule({
     imports: [
         NgbModule,
     ],
     exports: [
-        BrowserAnimationsModule,
         FormsModule,
+        BrowserAnimationsModule,
+        QrCodeModule,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'zh' },
