@@ -8,12 +8,12 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/onquit"
+	"golang.org/x/sys/windows"
 )
 
 //go:embed libs
@@ -88,7 +88,7 @@ func (c *Client) DisableReceiver(ks ...string) error {
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll
-	sdk, err := syscall.LoadDLL(c.sdkLibrary)
+	sdk, err := windows.LoadDLL(c.sdkLibrary)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
 		return err
