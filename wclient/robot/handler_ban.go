@@ -27,6 +27,12 @@ func banHandler() {
 			if err == nil && ret.AtUserList != "" {
 				users := strings.Split(ret.AtUserList, ",")
 				for _, v := range users {
+					if sliceContains(args.Bot.Managers, v) {
+						return "无法禁止管理员"
+					}
+					if sliceContains(args.Bot.Managers, selfInfo.Wxid) {
+						return "无法禁止智能助手"
+					}
 					if v != "" && !sliceContains(args.Bot.BlackList, v) {
 						args.Bot.BlackList = append(args.Bot.BlackList, v)
 					}
