@@ -17,6 +17,6 @@ go build -ldflags="-s -w" -o %target% main.go
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 COPY README.md build\
-COPY wcferry\libs\*.dll build\
+COPY config.yml build\
 
 IF "%1" == "" CMD /K

@@ -14,7 +14,6 @@ var efs embed.FS
 func main() {
 
 	args.Efs = &efs
-	args.Co.Init()
 
 	if args.Bot.Enable {
 		go robot.Register()

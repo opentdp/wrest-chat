@@ -20,12 +20,4 @@ const BuildVersion = "240106"
 // 应用描述
 
 const AppName = "TDP Wrest"
-const AppSummary = "智能聊天机器人"
-
-// 输出说明
-func init() {
-
-	println(AppName, AppSummary)
-	println("Version:", Version, "build", BuildVersion)
-
-}
+const AppSummary = "智能聊天助手"
