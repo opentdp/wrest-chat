@@ -10,34 +10,42 @@ import (
 	"github.com/opentdp/go-helper/logman"
 )
 
-// 配置操作类
-
 type Configer struct {
 	Koanf  *koanf.Koanf
 	Parser *yaml.YAML
 	File   string
 }
 
-func (c *Configer) Init() error {
+type ConfigData struct {
+	Bot *IBot
+	LLM *ILLM
+	Log *ILog
+	Web *IWeb
+	Wcf *IWcf
+}
 
-	c.File = "config.yml"
+func NewConfiger() *Configer {
+
+	c := &Configer{
+		Koanf: koanf.NewWithConf(koanf.Conf{
+			StrictMerge: true,
+			Delim:       ".",
+		}),
+		Parser: yaml.Parser(),
+		File:   "config.yml",
+	}
+
 	if len(os.Args) > 1 {
 		c.File = os.Args[1]
 	}
 
-	c.Koanf = koanf.NewWithConf(koanf.Conf{
-		StrictMerge: true,
-		Delim:       ".",
-	})
-
-	c.Parser = yaml.Parser()
-
-	// 从文件加载
-	return c.LoadYaml()
+	return c
 
 }
 
-func (c *Configer) LoadYaml() error {
+func LoadConfig() error {
+
+	c := NewConfiger()
 
 	logman.Info("load config", "file", c.File)
 
@@ -47,31 +55,33 @@ func (c *Configer) LoadYaml() error {
 		return nil // 忽略错误
 	}
 
-	// 从文件读取参数
+	// 从文件读入参数
 	err := c.Koanf.Load(file.Provider(c.File), c.Parser)
-	if err == nil {
-		c.Koanf.Unmarshal("bot", Bot)
-		c.Koanf.Unmarshal("llm", LLM)
-		c.Koanf.Unmarshal("log", Log)
-		c.Koanf.Unmarshal("Web", Web)
-		c.Koanf.Unmarshal("Wcf", Wcf)
-		return nil
+	if err != nil {
+		logman.Error("load config", "error", err)
+		return err
 	}
 
-	logman.Error("load config", "error", err)
-	return err
+	// 将参数写入内存
+	c.Koanf.Unmarshal("Bot", Bot)
+	c.Koanf.Unmarshal("LLM", LLM)
+	c.Koanf.Unmarshal("Log", Log)
+	c.Koanf.Unmarshal("Web", Web)
+	c.Koanf.Unmarshal("Wcf", Wcf)
+
+	return nil
 
 }
 
-func (c *Configer) SaveYaml() error {
+func SaveConfig() error {
+
+	c := NewConfiger()
 
 	logman.Info("save config", "file", c.File)
 
-	// 从内存读取参数
-	tmp := &Config{
-		Bot, LLM, Log, Web, Wcf,
-	}
-	err := c.Koanf.Load(structs.Provider(tmp, ""), nil)
+	// 从内存读入参数
+	obj := ConfigData{Bot, LLM, Log, Web, Wcf}
+	err := c.Koanf.Load(structs.Provider(obj, ""), nil)
 	if err != nil {
 		logman.Error("load struct", "error", err)
 		return err
@@ -85,7 +95,7 @@ func (c *Configer) SaveYaml() error {
 	}
 
 	// 将参数写入文件
-	err = os.WriteFile(c.File, buf, 0644)
+	err = os.WriteFile(c.File+"-bak", buf, 0644)
 	if err != nil {
 		logman.Error("save config", "error", err)
 		return err

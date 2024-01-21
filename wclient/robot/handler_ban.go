@@ -31,7 +31,7 @@ func banHandler() {
 						args.Bot.BlackList = append(args.Bot.BlackList, v)
 					}
 				}
-				if err := args.Co.SaveYaml(); err != nil {
+				if err := args.SaveConfig(); err != nil {
 					return fmt.Sprintf("写入配置错误：%s", err)
 				}
 				return fmt.Sprintf("已禁止用户数：%d", len(args.Bot.BlackList))
@@ -55,7 +55,7 @@ func banHandler() {
 						args.Bot.BlackList = sliceRemove(args.Bot.BlackList, v)
 					}
 				}
-				if err := args.Co.SaveYaml(); err != nil {
+				if err := args.SaveConfig(); err != nil {
 					return fmt.Sprintf("写入配置错误：%s", err)
 				}
 				return fmt.Sprintf("已禁止用户数：%d", len(args.Bot.BlackList))

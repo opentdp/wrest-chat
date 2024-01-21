@@ -6,18 +6,47 @@ import (
 	"github.com/opentdp/go-helper/logman"
 )
 
-var Co = &Configer{}
-
 // 机器人参数
 
 var Bot = &IBot{
 	Enable: true,
 }
 
+type IBot struct {
+	Enable      bool
+	Welcome     string
+	Revoke      string
+	Managers    []string
+	BlackList   []string
+	WhiteList   []string
+	HostedRooms []*BotRoom
+}
+
+type BotRoom struct {
+	Mask    string
+	Name    string
+	RoomId  string
+	Welcome string
+}
+
 // 大语言模型
 
 var LLM = &ILLM{
 	HistoryNum: 20,
+}
+
+type ILLM struct {
+	HistoryNum  int
+	RoleContext string
+	Models      []*LLModel
+}
+
+type LLModel struct {
+	Name     string
+	Provider string
+	Endpoint string
+	Model    string
+	Key      string
 }
 
 // 日志配置
@@ -28,6 +57,12 @@ var Log = &ILog{
 	Target: "stdout",
 }
 
+type ILog struct {
+	Dir    string
+	Level  string
+	Target string
+}
+
 // Web 服务
 
 var Web = &IWeb{
@@ -35,11 +70,23 @@ var Web = &IWeb{
 	Swagger: true,
 }
 
+type IWeb struct {
+	Address string
+	Swagger bool
+	Token   string
+}
+
 // Wcf 服务
 
 var Wcf = &IWcf{
 	Address:    "127.0.0.1:7601",
 	WeChatAuto: true,
+}
+
+type IWcf struct {
+	Address    string
+	WeChatAuto bool
+	MsgPrinter bool
 }
 
 // 初始化
@@ -54,7 +101,7 @@ func init() {
 	debug := os.Getenv("TDP_DEBUG")
 	Debug = debug == "1" || debug == "true"
 
-	if err := Co.Init(); err != nil {
+	if err := LoadConfig(); err != nil {
 		panic(err)
 	}
 
