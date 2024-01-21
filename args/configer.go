@@ -2,6 +2,8 @@ package args
 
 import (
 	"os"
+	"path/filepath"
+	"time"
 
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/file"
@@ -94,8 +96,15 @@ func SaveConfig() error {
 		return err
 	}
 
+	// 备份原配置文件
+	if _, err := os.Stat(c.File); err == nil {
+		filepath := filepath.Join(Log.Dir, filepath.Base(c.File))
+		filepath += "-" + time.Now().Format("20060102-150405")
+		os.Rename(c.File, filepath)
+	}
+
 	// 将参数写入文件
-	err = os.WriteFile(c.File+"-bak", buf, 0644)
+	err = os.WriteFile(c.File, buf, 0644)
 	if err != nil {
 		logman.Error("save config", "error", err)
 		return err
