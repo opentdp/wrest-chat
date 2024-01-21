@@ -10,7 +10,7 @@ func OutputHandle(c *gin.Context) {
 
 	// 输出错误信息
 
-	if err, exists := c.Get("Error"); exists {
+	if err, ok := c.Get("Error"); ok {
 		c.AbortWithStatusJSON(exitCode(c, 400), newErrorMessage(err))
 		return
 	}
@@ -19,7 +19,7 @@ func OutputHandle(c *gin.Context) {
 
 	msg := c.GetString("Message")
 
-	if res, exists := c.Get("Payload"); exists || msg != "" {
+	if res, ok := c.Get("Payload"); ok || msg != "" {
 		data := newPayload(res, msg, c.GetString("JwtToken"))
 		c.AbortWithStatusJSON(exitCode(c, 200), data)
 		return

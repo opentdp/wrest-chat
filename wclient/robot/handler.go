@@ -66,14 +66,9 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 查找指令
-	handler, exists := handlers[matches[1]]
-	if !exists {
+	handler, ok := handlers[matches[1]]
+	if !ok {
 		return "指令或参数错误, 回复 /help 获取帮助"
-	}
-
-	// 检查权限
-	if handler.Level > 0 && !sliceContains(args.Bot.Managers, msg.Sender) {
-		return "无权限使用此指令"
 	}
 
 	// 检查场景
@@ -84,6 +79,18 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	} else {
 		if !handler.ChatAble {
 			return "此指令仅在群聊中可用"
+		}
+	}
+
+	// 检查权限
+	if handler.Level > 0 {
+		user, ok := args.Usr.Member[msg.Sender]
+		if ok && user.Level >= handler.Level {
+			return "无权限使用此指令"
+		}
+		room, ok := args.Usr.Room[msg.Roomid]
+		if ok && room.Level >= handler.Level {
+			return "无权限使用此指令"
 		}
 	}
 
@@ -99,32 +106,21 @@ func ingoreMessage(msg *wcferry.WxMsg) bool {
 		return true
 	}
 
-	// 管理员
-	if len(args.Bot.Managers) > 0 {
-		if sliceContains(args.Bot.Managers, msg.Sender) {
+	// 用户权限
+	if user, ok := args.Usr.Member[msg.Sender]; ok {
+		if user.Level == 9 { // 管理员
 			return false
 		}
-	}
-
-	// 黑名单
-	if len(args.Bot.BlackList) > 0 {
-		if sliceContains(args.Bot.BlackList, msg.Sender) {
-			return true
-		}
-		if msg.IsGroup && sliceContains(args.Bot.BlackList, msg.Roomid) {
+		if user.Level == 4 { // 已禁止
 			return true
 		}
 	}
 
-	// 白名单
-	if len(args.Bot.WhiteList) > 0 {
-		if sliceContains(args.Bot.WhiteList, msg.Sender) {
-			return false
+	// 群聊权限
+	if room, ok := args.Usr.Room[msg.Roomid]; ok {
+		if room.Level == 4 { // 已禁止
+			return true
 		}
-		if msg.IsGroup && sliceContains(args.Bot.BlackList, msg.Roomid) {
-			return false
-		}
-		return true
 	}
 
 	return false

@@ -22,6 +22,7 @@ type ConfigData struct {
 	Bot *IBot
 	LLM *ILLM
 	Log *ILog
+	Usr *IUsr
 	Wcf *IWcf
 	Web *IWeb
 }
@@ -68,6 +69,7 @@ func LoadConfig() error {
 	c.Koanf.Unmarshal("Bot", Bot)
 	c.Koanf.Unmarshal("LLM", LLM)
 	c.Koanf.Unmarshal("Log", Log)
+	c.Koanf.Unmarshal("Usr", Usr)
 	c.Koanf.Unmarshal("Wcf", Wcf)
 	c.Koanf.Unmarshal("Web", Web)
 
@@ -82,7 +84,7 @@ func SaveConfig() error {
 	logman.Info("save config", "file", c.File)
 
 	// 从内存读入参数
-	obj := ConfigData{Bot, LLM, Log, Wcf, Web}
+	obj := ConfigData{Bot, LLM, Log, Usr, Wcf, Web}
 	err := c.Koanf.Load(structs.Provider(obj, ""), nil)
 	if err != nil {
 		logman.Error("load struct", "error", err)

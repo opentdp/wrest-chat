@@ -1,46 +1,62 @@
 # 机器人
 Bot:
     Enable: true # 是否启用内置机器人
-    Welcome: 回复 /help 查询指令 # 接受好友或有人进入群聊时响应的消息，留空则不响应
-    Revoke: 撤回了寂寞？ # 撤回消息时响应的消息，留空则不响应
-    Managers: [] # 管理员名单
-    BlackList: [] # 黑名单，禁止使用机器人
-    WhiteList: [] # 白名单，禁止其他人使用机器人
-    HostedRooms: # 托管群列表，允许自动拉人
-        - Mask: 1 # 群标记，用于生成加群指令
-          Name: 测试群一 # 群名称，在指令说明中使用
-          RoomId: 12345123@chatroom # 群 Id，可以从网页后台获取
-          Welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词，留空使用全局设置
-        - Mask: 2
-          Name: 测试群二
-          RoomId: 43434111@chatroom
+    Revoke: 撤回了寂寞？ # 有人撤回消息时响应的内容，留空则不响应
+    Welcome: 回复 /help 查询指令 # 接受好友申请时时响应的内容，留空则不响应
 
 # 大模型
 LLM:
+    Default: gem # 默认模型
     HistoryNum: 20 # 历史消息数量
-    Models: # 模型列表
-        - Name: gemini # 模型标记，用于生成模型切换指令
-          Provider: google # 服务商，支持 [google, openai, xunfei]
-          Endpoint: https://googai.173371.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
-          Model: gemini-pro # 模型，必须和服务商对应
-          Key: API-KEY # 密钥，必须和服务商对应
-        - Name: gpt
-          Provider: openai
-          Endpoint: https://chatai.173371.xyz
-          Model: gpt-3.5-turbo
-          Key: API-KEY
-        - Name: spark
-          Provider: xunfei
-          Model: v3
-          Key: APP-ID,API-KEY,API-SECRET
     RoleContext: | # 定义模型扮演的身份
         你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题。
+    Models: # 模型列表
+        gem: # 模型 Id，用于生成模型切换指令
+            Provider: google # 服务商，支持 [google, openai, xunfei]
+            Endpoint: https://googai.173371.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
+            Family: gemini # 模型家族，用于生成模型切换指令
+            Model: gemini-pro # 模型名，必须和服务商提供的值对应
+            Key: API-KEY # 密钥，必须和服务商对应
+        gpt:
+            Provider: openai
+            Endpoint: https://chatai.173371.xyz
+            Family: gpt
+            Model: gpt-3.5-turbo
+            Key: API-KEY
+        spa:
+            Provider: xunfei
+            Family: spark
+            Model: v3
+            Key: APP-ID,API-KEY,API-SECRET
 
 # 运行日志
 Log:
     Dir: logs # 日志目录
     Level: info # 日志级别
     Target: stdout # 日志输出方式
+
+# 用户信息
+Usr:
+    Member:
+        wxid_38699745810:
+            Level: 9 # 等级 [0:未注册, 1:已禁用, 9:管理员]
+            Remark: 备注
+        wxid_38699745819:
+            Level: 0
+            Remark: 备注
+    Room:
+        12345123@chatroom:
+            Argot: 1 # 群口令，用于生成加群指令
+            Level: 0 # 等级 [0:未注册, 1:已禁用]
+            Member: # 成员名单
+                wxid_38699745810:
+                    Level: 9 # 等级 [0:未注册, 1:已禁用, 9:管理员]
+                    Remark: 备注
+                wxid_38699745819:
+                    Level: 0
+                    Remark: 备注
+            Name: 测试群一 # 群名称
+            Welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词，留空则禁用
 
 # Wcf 服务
 Wcf:
@@ -51,5 +67,5 @@ Wcf:
 # Web 服务
 Web:
     Address: 127.0.0.1:7600 # 监听地址
-    Swagger: true # 是否启用 OpenApi 文档
+    Swagger: true # 是否启用 Api 文档
     Token: "" # 使用 Token 验证请求

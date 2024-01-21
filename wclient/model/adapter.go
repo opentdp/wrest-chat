@@ -50,12 +50,8 @@ var userConfigMap = make(map[string]*UserConfig)
 
 func GetUserConfig(id string) *UserConfig {
 
-	if _, exists := userConfigMap[id]; !exists {
-		if len(args.LLM.Models) > 0 {
-			userConfigMap[id] = &UserConfig{"/ai", args.LLM.Models[0]}
-		} else {
-			userConfigMap[id] = &UserConfig{"/ai", &args.LLModel{}}
-		}
+	if _, ok := userConfigMap[id]; !ok {
+		userConfigMap[id] = &UserConfig{"", args.LLM.Models[args.LLM.Default]}
 	}
 
 	return userConfigMap[id]
@@ -79,7 +75,7 @@ func ResetHistory(id string) {
 
 func CountHistory(id string) int {
 
-	if _, exists := msgHistoryMap[id]; !exists {
+	if _, ok := msgHistoryMap[id]; !ok {
 		ResetHistory(id)
 	}
 

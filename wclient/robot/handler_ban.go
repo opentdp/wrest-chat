@@ -12,10 +12,6 @@ import (
 
 func banHandler() {
 
-	if len(args.Bot.WhiteList) > 0 {
-		return
-	}
-
 	handlers["/ban"] = &Handler{
 		Level:    1,
 		ChatAble: true,
@@ -25,22 +21,35 @@ func banHandler() {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
-				users := strings.Split(ret.AtUserList, ",")
-				for _, v := range users {
-					if sliceContains(args.Bot.Managers, v) {
-						return "无法禁止管理员"
+				room := args.Usr.Room[msg.Roomid]
+				list := strings.Split(ret.AtUserList, ",")
+				for _, v := range list {
+					if v == "" {
+						continue
 					}
-					if sliceContains(args.Bot.Managers, selfInfo.Wxid) {
-						return "无法禁止智能助手"
+					// 群内禁止
+					if room != nil && room.Member[v] != nil {
+						if room.Member[v].Level == 9 {
+							return "无法操作管理员"
+						}
 					}
-					if v != "" && !sliceContains(args.Bot.BlackList, v) {
-						args.Bot.BlackList = append(args.Bot.BlackList, v)
+					// 全局禁止
+					user := args.Usr.Member[v]
+					if user != nil && user.Level == 9 {
+						return "无法操作管理员"
+					}
+					if user != nil {
+						user.Level = 1
+					} else {
+						args.Usr.Member[v] = &args.Member{
+							Level: 1,
+						}
 					}
 				}
 				if err := args.SaveConfig(); err != nil {
 					return fmt.Sprintf("写入配置错误：%s", err)
 				}
-				return fmt.Sprintf("已禁止用户数：%d", len(args.Bot.BlackList))
+				return "已禁止此用户"
 			}
 			return "参数错误"
 		},
@@ -55,16 +64,24 @@ func banHandler() {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
-				users := strings.Split(ret.AtUserList, ",")
-				for _, v := range users {
-					if v != "" {
-						args.Bot.BlackList = sliceRemove(args.Bot.BlackList, v)
+				list := strings.Split(ret.AtUserList, ",")
+				for _, v := range list {
+					if v == "" {
+						continue
 					}
+					user := args.Usr.Member[v]
+					if user == nil {
+						return "用户无需解禁"
+					}
+					if user.Level == 9 {
+						return "无法操作管理员"
+					}
+					user.Level = 0
 				}
 				if err := args.SaveConfig(); err != nil {
 					return fmt.Sprintf("写入配置错误：%s", err)
 				}
-				return fmt.Sprintf("已禁止用户数：%d", len(args.Bot.BlackList))
+				return "已允许此用户"
 			}
 			return "参数错误"
 		},

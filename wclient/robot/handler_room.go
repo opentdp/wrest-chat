@@ -7,13 +7,13 @@ import (
 
 func roomHandler() {
 
-	if len(args.Bot.HostedRooms) == 0 {
+	if len(args.Usr.Room) == 0 {
 		return
 	}
 
-	for _, v := range args.Bot.HostedRooms {
+	for _, v := range args.Usr.Room {
 		v := v // copy it
-		cmdkey := "/room:" + v.Mask
+		cmdkey := "/g:" + v.Argot
 		handlers[cmdkey] = &Handler{
 			Level:    0,
 			ChatAble: true,
