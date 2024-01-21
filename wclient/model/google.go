@@ -12,7 +12,7 @@ import (
 
 func GoogleChat(id, ask string) (string, error) {
 
-	llmc := GetUserConfig(id).LLModel
+	llmc := GetUserModel(id)
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),

@@ -16,7 +16,7 @@ func AiChat(id, msg string) string {
 	}
 
 	// 预设模型参数
-	llmc, _ := GetUserConfig(id).LLModel, CountHistory(id)
+	llmc, _ := GetUserModel(id), CountHistory(id)
 	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
 
 	// 调用接口生成文本
@@ -41,20 +41,31 @@ func AiChat(id, msg string) string {
 
 // User Config
 
-type UserConfig struct {
-	WakeWord string
-	LLModel  *args.LLModel
-}
+func GetUser(id string) *args.Member {
 
-var userConfigMap = make(map[string]*UserConfig)
-
-func GetUserConfig(id string) *UserConfig {
-
-	if _, ok := userConfigMap[id]; !ok {
-		userConfigMap[id] = &UserConfig{"", args.LLM.Models[args.LLM.Default]}
+	if _, ok := args.Usr.Member[id]; !ok {
+		args.Usr.Member[id] = &args.Member{
+			AiModel: args.LLM.Default,
+		}
 	}
 
-	return userConfigMap[id]
+	return args.Usr.Member[id]
+
+}
+
+func GetUserModel(id string) *args.LLModel {
+
+	user := GetUser(id)
+	llmc := args.LLM.Models[user.AiModel]
+
+	if llmc == nil {
+		for k, v := range args.LLM.Models {
+			user.AiModel = k
+			return v
+		}
+	}
+
+	return llmc
 
 }
 

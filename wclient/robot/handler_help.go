@@ -22,8 +22,10 @@ func helpHandler() {
 			// 生成指令菜单
 			helper := []string{}
 			for k, v := range handlers {
-				if user != nil && v.Level > 0 && v.Level > user.Level {
-					continue // 管理指令
+				if v.Level > 0 {
+					if user == nil || v.Level > user.Level {
+						continue // 没有权限
+					}
 				}
 				if msg.IsGroup {
 					if v.RoomAble { // 群聊指令
@@ -38,11 +40,11 @@ func helpHandler() {
 			sort.Strings(helper)
 			text := strings.Join(helper, "\n") + "\n"
 			// 模型运行时信息
-			if model.GetUserConfig(msg.Sender).WakeWord != "" {
-				text += "唤醒词 " + model.GetUserConfig(msg.Sender).WakeWord + "，"
+			if model.GetUser(msg.Sender).AiArgot != "" {
+				text += "唤醒词 " + model.GetUser(msg.Sender).AiArgot + "，"
 			}
 			if len(args.LLM.Models) > 0 {
-				text += "对话模型 " + model.GetUserConfig(msg.Sender).LLModel.Family + "，"
+				text += "对话模型 " + model.GetUserModel(msg.Sender).Family + "，"
 				text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
 			}
 			return text

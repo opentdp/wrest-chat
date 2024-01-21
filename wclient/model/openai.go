@@ -9,7 +9,7 @@ import (
 
 func OpenaiChat(id, ask string) (string, error) {
 
-	llmc := GetUserConfig(id).LLModel
+	llmc := GetUserModel(id)
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {

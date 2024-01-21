@@ -12,7 +12,7 @@ import (
 
 func XunfeiChat(id, ask string) (string, error) {
 
-	llmc := GetUserConfig(id).LLModel
+	llmc := GetUserModel(id)
 
 	keys := strings.Split(llmc.Key, ",")
 	if len(keys) != 3 {

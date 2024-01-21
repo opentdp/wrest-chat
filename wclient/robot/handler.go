@@ -47,7 +47,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		if strings.Contains(msg.Content, "@"+selfInfo.Name) {
 			msg.Content = "/ai " + msg.Content
 		} else {
-			wakeWord := model.GetUserConfig(msg.Sender).WakeWord
+			wakeWord := model.GetUser(msg.Sender).AiArgot
 			if wakeWord == "" {
 				msg.Content = "/ai " + msg.Content
 			} else if strings.HasPrefix(msg.Content, wakeWord) {

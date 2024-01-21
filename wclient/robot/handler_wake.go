@@ -13,7 +13,7 @@ func wakeHandler() {
 		RoomAble: true,
 		Describe: "设置或禁用唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			model.GetUserConfig(msg.Sender).WakeWord = msg.Content
+			model.GetUser(msg.Sender).AiArgot = msg.Content
 			if msg.Content != "" {
 				return "唤醒词设置为 " + msg.Content
 			}

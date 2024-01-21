@@ -14,18 +14,18 @@ LLM:
         gem: # 模型 Id，用于生成模型切换指令
             Provider: google # 服务商，支持 [google, openai, xunfei]
             Endpoint: https://googai.173371.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
-            Family: gemini # 模型家族，用于生成模型切换指令
+            Family: Gemini # 模型家族，用于生成模型切换指令
             Model: gemini-pro # 模型名，必须和服务商提供的值对应
             Key: API-KEY # 密钥，必须和服务商对应
         gpt:
             Provider: openai
             Endpoint: https://chatai.173371.xyz
-            Family: gpt
+            Family: GPT
             Model: gpt-3.5-turbo
             Key: API-KEY
         spa:
             Provider: xunfei
-            Family: spark
+            Family: Spark
             Model: v3
             Key: APP-ID,API-KEY,API-SECRET
 
@@ -39,8 +39,10 @@ Log:
 Usr:
     Member:
         wxid_38699745810:
+            AiArgot: gem # 会话模型
+            AiModel: /ai # 唤醒词
             Level: 9 # 等级 [0:未注册, 1:已禁用, 9:管理员]
-            Remark: 备注
+            Remark: 备注 # 备注信息
         wxid_38699745819:
             Level: 0
             Remark: 备注

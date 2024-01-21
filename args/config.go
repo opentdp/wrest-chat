@@ -67,9 +67,11 @@ type IUsr struct {
 }
 
 type Member struct {
-	Level  int    // 等级 [0:未注册, 1:已禁用 9:管理员]
-	Remark string // 备注信息
-	Wxid   string // 账号 Id
+	AiArgot string // 唤醒词
+	AiModel string // 会话模型
+	Level   int    // 等级 [0:未注册, 1:已禁用 9:管理员]
+	Remark  string // 备注信息
+	Wxid    string // 账号 Id
 }
 
 type Room struct {
