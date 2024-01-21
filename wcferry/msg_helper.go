@@ -3,7 +3,9 @@ package wcferry
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -162,8 +164,11 @@ func WxLoginQrcode() (string, error) {
 // param str string 文件URL或路径
 // return string 失败则返回空字符串
 func DownloadFile(str string) string {
-	if strings.HasPrefix(str, "http://") || strings.HasPrefix(str, "https://") {
-		if tmp, err := request.Download(str, "", false); err == nil {
+	u, err := url.Parse(str)
+	if err == nil && u.Scheme == "http" || u.Scheme == "https" {
+		target := path.Join(os.TempDir(), strings.Trim(path.Base(u.Path), "/"))
+		tmp, err := request.Download(str, target, false)
+		if err == nil {
 			time.AfterFunc(15*time.Minute, func() {
 				os.RemoveAll(tmp)
 			})
