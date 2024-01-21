@@ -63,19 +63,6 @@ type ILog struct {
 	Target string
 }
 
-// Web 服务
-
-var Web = &IWeb{
-	Address: "127.0.0.1:7600",
-	Swagger: true,
-}
-
-type IWeb struct {
-	Address string
-	Swagger bool
-	Token   string
-}
-
 // Wcf 服务
 
 var Wcf = &IWcf{
@@ -87,6 +74,19 @@ type IWcf struct {
 	Address    string
 	WeChatAuto bool
 	MsgPrinter bool
+}
+
+// Web 服务
+
+var Web = &IWeb{
+	Address: "127.0.0.1:7600",
+	Swagger: true,
+}
+
+type IWeb struct {
+	Address string
+	Swagger bool
+	Token   string
 }
 
 // 初始化

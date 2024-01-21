@@ -18,8 +18,6 @@ Bot:
 # 大模型
 LLM:
     HistoryNum: 20 # 历史消息数量
-    RoleContext: | # 定义模型扮演的身份
-        你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题。
     Models: # 模型列表
         - Name: gemini # 模型标记，用于生成模型切换指令
           Provider: google # 服务商，支持 [google, openai, xunfei]
@@ -35,6 +33,8 @@ LLM:
           Provider: xunfei
           Model: v3
           Key: APP-ID,API-KEY,API-SECRET
+    RoleContext: | # 定义模型扮演的身份
+        你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题。
 
 # 运行日志
 Log:
@@ -42,14 +42,14 @@ Log:
     Level: info # 日志级别
     Target: stdout # 日志输出方式
 
+# Wcf 服务
+Wcf:
+    Address: 127.0.0.1:7601 # Rpc 监听地址
+    MsgPrinter: false # 是否打印收到的消息
+    WechatAuto: true # 是否跟随启停微信
+
 # Web 服务
 Web:
     Address: 127.0.0.1:7600 # 监听地址
     Swagger: true # 是否启用 OpenApi 文档
     Token: "" # 使用 Token 验证请求
-
-# Wcf 服务
-Wcf:
-    Address: 127.0.0.1:7601 # Rpc 监听地址
-    WechatAuto: true # 是否跟随启停微信
-    MsgPrinter: false # 是否打印收到的消息
