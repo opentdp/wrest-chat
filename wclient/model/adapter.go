@@ -44,9 +44,7 @@ func AiChat(id, msg string) string {
 func GetUser(id string) *args.Member {
 
 	if _, ok := args.Usr.Member[id]; !ok {
-		args.Usr.Member[id] = &args.Member{
-			AiModel: args.LLM.Default,
-		}
+		args.Usr.Member[id] = &args.Member{}
 	}
 
 	return args.Usr.Member[id]
@@ -59,8 +57,11 @@ func GetUserModel(id string) *args.LLModel {
 	llmc := args.LLM.Models[user.AiModel]
 
 	if llmc == nil {
-		for k, v := range args.LLM.Models {
-			user.AiModel = k
+		llmc = args.LLM.Models[args.LLM.Default]
+	}
+
+	if llmc == nil {
+		for _, v := range args.LLM.Models {
 			return v
 		}
 	}
