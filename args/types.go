@@ -1,11 +1,11 @@
 package args
 
 type Config struct {
-	Bot *IBot
-	LLM *ILLM
-	Log *ILog
-	Web *IWeb
-	Wcf *IWcf
+	Bot *IBot `koanf:"bot"`
+	LLM *ILLM `koanf:"llm"`
+	Log *ILog `koanf:"log"`
+	Web *IWeb `koanf:"web"`
+	Wcf *IWcf `koanf:"wcf"`
 }
 
 // 机器人参数
