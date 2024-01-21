@@ -1,5 +1,7 @@
 package args
 
+var Co = Config{}
+
 // 机器人参数
 
 var Bot = struct {

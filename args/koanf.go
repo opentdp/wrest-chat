@@ -18,7 +18,7 @@ type Config struct {
 	File   string
 }
 
-func (c *Config) Init() *Config {
+func (c *Config) Init() {
 
 	debug := os.Getenv("TDP_DEBUG")
 	Debug = debug == "1" || debug == "true"
@@ -34,43 +34,50 @@ func (c *Config) Init() *Config {
 		c.File = os.Args[1]
 	}
 
-	return c
+	c.Unmarshal()
 
 }
 
-func (c *Config) ReadYaml() {
+func (c *Config) LoadYaml() error {
 
 	// 配置不存在则忽略
 	_, err := os.Stat(c.File)
 	if os.IsNotExist(err) {
-		return
+		return nil
 	}
 
-	logman.Warn("read config", "file", c.File)
+	logman.Warn("load config", "file", c.File)
 
 	// 从配置文件读取参数
 	err = c.Koanf.Load(file.Provider(c.File), c.Parser)
 	if err != nil {
-		logman.Fatal("read config", "error", err)
+		logman.Error("load config", "error", err)
+		return err
 	}
+
+	return nil
 
 }
 
-func (c *Config) WriteYaml() {
+func (c *Config) WriteYaml() error {
 
 	logman.Warn("write config", "file", c.File)
 
 	// 序列化参数信息
 	buf, err := c.Koanf.Marshal(c.Parser)
 	if err != nil {
-		logman.Fatal("write config", "error", err)
+		logman.Error("write config", "error", err)
+		return err
 	}
 
 	// 将参数写入配置文件
 	err = os.WriteFile(c.File, buf, 0644)
 	if err != nil {
-		logman.Fatal("write config", "error", err)
+		logman.Error("write config", "error", err)
+		return err
 	}
+
+	return nil
 
 }
 
@@ -89,7 +96,7 @@ func (c *Config) Unmarshal() {
 
 	// 读取配置文件
 
-	c.ReadYaml()
+	c.LoadYaml()
 	for k, v := range mp {
 		c.Koanf.Unmarshal(k, v)
 	}
@@ -106,9 +113,5 @@ func (c *Config) Unmarshal() {
 		Storage:  Log.Dir,
 		Filename: "wrest",
 	})
-
-	// 写入配置文件
-
-	c.WriteYaml()
 
 }
