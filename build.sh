@@ -46,6 +46,7 @@ go build -ldflags="-s -w" -o $target main.go
 ####################################################################
 
 cp README.md build/
+cp config.yml build/
 
 mv build wechat-rest
 zip -r wechat-rest.zip wechat-rest/

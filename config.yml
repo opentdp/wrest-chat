@@ -8,12 +8,12 @@ bot:
     whiteList: [] # 白名单，禁止其他人使用机器人
     hostedRooms: # 托管群列表，允许自动拉人
         - mask: 1 # 群标记，用于生成加群指令
-          name: OpenTDP 开发群 # 群名称，在指令说明中使用
-          roomId: 38699745819@chatroom # 群 Id，可以从网页后台获取
+          name: 测试群一 # 群名称，在指令说明中使用
+          roomId: 12345123@chatroom # 群 Id，可以从网页后台获取
           welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词，留空使用全局设置
         - mask: 2
-          name: OpenTDP 闲聊群
-          roomId: 17907657671@chatroom
+          name: 测试群二
+          roomId: 43434111@chatroom
 
 # 大模型
 llm:
@@ -23,12 +23,12 @@ llm:
     models: # 模型列表
         - name: gemini # 模型标记，用于生成模型切换指令
           provider: google # 服务商，支持 [google, openai, xunfei]
-          endpoint: https://gemini.451024.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
+          endpoint: https://googai.173371.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
           model: gemini-pro # 模型，必须和服务商对应
           key: API-KEY # 密钥，必须和服务商对应
         - name: gpt
           provider: openai
-          endpoint: https://chat.451024.xyz
+          endpoint: https://chatai.173371.xyz
           model: gpt-3.5-turbo
           key: API-KEY
         - name: spark
