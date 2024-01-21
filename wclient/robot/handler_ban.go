@@ -2,7 +2,6 @@ package robot
 
 import (
 	"encoding/xml"
-	"fmt"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -46,9 +45,6 @@ func banHandler() {
 						}
 					}
 				}
-				if err := args.SaveConfig(); err != nil {
-					return fmt.Sprintf("写入配置错误：%s", err)
-				}
 				return "已禁止此用户"
 			}
 			return "参数错误"
@@ -77,9 +73,6 @@ func banHandler() {
 						return "无法操作管理员"
 					}
 					user.Level = 0
-				}
-				if err := args.SaveConfig(); err != nil {
-					return fmt.Sprintf("写入配置错误：%s", err)
 				}
 				return "已允许此用户"
 			}

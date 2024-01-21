@@ -27,6 +27,7 @@ func setupHandlers() {
 	modelHandler()
 	roomHandler()
 	wakeHandler()
+	saveHandler()
 
 	helpHandler()
 
