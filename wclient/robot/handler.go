@@ -34,33 +34,12 @@ func setupHandlers() {
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
-
-	// 空指令
-	if len(msg.Content) == 0 {
+	if ingoreMessage(msg) {
 		return ""
 	}
 
-	// 消息源
-	fromId := msg.Sender
-	if msg.IsGroup {
-		fromId = msg.Roomid
-	}
-
-	// 黑名单
-	if len(args.Bot.BlackList) > 0 {
-		if sliceContains(args.Bot.BlackList, fromId) {
-			return ""
-		}
-	}
-
-	// 白名单
-	if len(args.Bot.WhiteList) > 0 {
-		if !sliceContains(args.Bot.WhiteList, fromId) {
-			return ""
-		}
+	if len(handlers) == 0 {
+		setupHandlers()
 	}
 
 	// 定制唤醒
@@ -110,5 +89,44 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 执行指令
 	return handler.Callback(msg)
+
+}
+
+func ingoreMessage(msg *wcferry.WxMsg) bool {
+
+	// 空指令
+	if len(msg.Content) == 0 {
+		return true
+	}
+
+	// 管理员
+	if len(args.Bot.Managers) > 0 {
+		if sliceContains(args.Bot.Managers, msg.Sender) {
+			return false
+		}
+	}
+
+	// 黑名单
+	if len(args.Bot.BlackList) > 0 {
+		if sliceContains(args.Bot.BlackList, msg.Sender) {
+			return true
+		}
+		if msg.IsGroup && sliceContains(args.Bot.BlackList, msg.Roomid) {
+			return true
+		}
+	}
+
+	// 白名单
+	if len(args.Bot.WhiteList) > 0 {
+		if sliceContains(args.Bot.WhiteList, msg.Sender) {
+			return false
+		}
+		if msg.IsGroup && sliceContains(args.Bot.BlackList, msg.Roomid) {
+			return false
+		}
+		return true
+	}
+
+	return false
 
 }
