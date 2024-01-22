@@ -50,7 +50,9 @@ func (user *Member) GetModel() *LLModel {
 func GetChatRoom(rid string) *ChatRoom {
 
 	if _, ok := Usr.ChatRoom[rid]; !ok {
-		Usr.ChatRoom[rid] = &ChatRoom{}
+		Usr.ChatRoom[rid] = &ChatRoom{
+			Member: map[string]*Member{},
+		}
 	}
 
 	return Usr.ChatRoom[rid]
