@@ -21,6 +21,7 @@ var handlers = make(map[string]*Handler)
 func setupHandlers() {
 
 	aiHandler()
+	apiHandler()
 	banHandler()
 	newHandler()
 	modelHandler()
