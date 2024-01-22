@@ -13,9 +13,10 @@ var Bot = &IBot{
 }
 
 type IBot struct {
-	Enable  bool   // 是否启用内置机器人
-	Revoke  string // 有人撤回消息时响应的内容，留空则不响应
-	Welcome string // 接受好友申请时时响应的内容，留空则不响应
+	Enable        bool     // 是否启用内置机器人
+	Revoke        string   // 有人撤回消息时响应的内容，留空则不响应
+	Welcome       string   // 接受好友申请时时响应的内容，留空则不响应
+	InvitableRoom []string // 可邀请的群聊，必须在 Usr.ChatRoom 配置中
 }
 
 // 大语言模型
@@ -57,30 +58,13 @@ type ILog struct {
 // 用户资料
 
 var Usr = &IUsr{
-	Member: map[string]*Member{},
-	Room:   map[string]*Room{},
+	ChatRoom: map[string]*ChatRoom{},
+	Member:   map[string]*Member{},
 }
 
 type IUsr struct {
-	Member map[string]*Member // 用户列表
-	Room   map[string]*Room   // 群聊列表
-}
-
-type Member struct {
-	AiArgot string // 唤醒词
-	AiModel string // 会话模型
-	Level   int    // 等级 [0:未注册, 1:已禁用 9:管理员]
-	Remark  string // 备注信息
-	Wxid    string // 账号 Id
-}
-
-type Room struct {
-	Argot   string             // 群标记，用于生成加群指令
-	Level   int                // 等级 [0:未注册, 1:已禁用]
-	Member  map[string]*Member // 群成员列表
-	Name    string             // 群名称，在指令说明中使用
-	RoomId  string             // 群 Id，可以从网页后台获取
-	Welcome string             // 欢迎词
+	ChatRoom map[string]*ChatRoom // 群聊列表
+	Member   map[string]*Member   // 用户列表
 }
 
 // Wcf 服务

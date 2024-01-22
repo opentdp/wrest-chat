@@ -16,7 +16,8 @@ func AiChat(id, msg string) string {
 	}
 
 	// 预设模型参数
-	llmc, _ := GetUserModel(id), CountHistory(id)
+	CountHistory(id) // init only
+	llmc := args.GetMember(id).GetModel()
 	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
 
 	// 调用接口生成文本
@@ -39,37 +40,6 @@ func AiChat(id, msg string) string {
 
 }
 
-// User Config
-
-func GetUser(id string) *args.Member {
-
-	if _, ok := args.Usr.Member[id]; !ok {
-		args.Usr.Member[id] = &args.Member{}
-	}
-
-	return args.Usr.Member[id]
-
-}
-
-func GetUserModel(id string) *args.LLModel {
-
-	user := GetUser(id)
-	llmc := args.LLM.Models[user.AiModel]
-
-	if llmc == nil {
-		llmc = args.LLM.Models[args.LLM.Default]
-	}
-
-	if llmc == nil {
-		for _, v := range args.LLM.Models {
-			return v
-		}
-	}
-
-	return llmc
-
-}
-
 // Message History
 
 type MsgHistory struct {
@@ -77,30 +47,30 @@ type MsgHistory struct {
 	Role    string
 }
 
-var msgHistoryMap = make(map[string][]*MsgHistory)
+var msgHistories = make(map[string][]*MsgHistory)
 
 func ResetHistory(id string) {
 
-	msgHistoryMap[id] = []*MsgHistory{}
+	msgHistories[id] = []*MsgHistory{}
 
 }
 
 func CountHistory(id string) int {
 
-	if _, ok := msgHistoryMap[id]; !ok {
+	if _, ok := msgHistories[id]; !ok {
 		ResetHistory(id)
 	}
 
-	return len(msgHistoryMap[id])
+	return len(msgHistories[id])
 
 }
 
 func AppendHistory(id string, items ...*MsgHistory) {
 
-	if len(msgHistoryMap[id]) >= args.LLM.HistoryNum {
-		msgHistoryMap[id] = msgHistoryMap[id][len(items):]
+	if len(msgHistories[id]) >= args.LLM.HistoryNum {
+		msgHistories[id] = msgHistories[id][len(items):]
 	}
 
-	msgHistoryMap[id] = append(msgHistoryMap[id], items...)
+	msgHistories[id] = append(msgHistories[id], items...)
 
 }

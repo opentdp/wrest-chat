@@ -12,7 +12,7 @@ import (
 
 func GoogleChat(id, ask string) (string, error) {
 
-	llmc := GetUserModel(id)
+	llmc := args.GetMember(id).GetModel()
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),
@@ -46,7 +46,7 @@ func GoogleChat(id, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistoryMap[id] {
+	for _, msg := range msgHistories[id] {
 		role := msg.Role
 		req.History = append(req.History, &genai.Content{
 			Parts: []genai.Part{genai.Text(msg.Content)}, Role: role,

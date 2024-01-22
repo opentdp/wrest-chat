@@ -9,7 +9,7 @@ import (
 
 func OpenaiChat(id, ask string) (string, error) {
 
-	llmc := GetUserModel(id)
+	llmc := args.GetMember(id).GetModel()
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {
@@ -35,7 +35,7 @@ func OpenaiChat(id, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistoryMap[id] {
+	for _, msg := range msgHistories[id] {
 		role := msg.Role
 		if role == "user" {
 			role = openai.ChatMessageRoleUser

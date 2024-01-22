@@ -7,20 +7,21 @@ import (
 
 func roomHandler() {
 
-	if len(args.Usr.Room) == 0 {
+	if len(args.Usr.ChatRoom) == 0 {
 		return
 	}
 
-	for _, v := range args.Usr.Room {
+	for _, v := range args.Bot.InvitableRoom {
 		v := v // copy it
-		cmdkey := "/g:" + v.Argot
+		room := args.GetChatRoom(v)
+		cmdkey := "/g:" + room.Argot
 		handlers[cmdkey] = &Handler{
 			Level:    0,
 			ChatAble: true,
 			RoomAble: false,
-			Describe: "加入群聊 " + v.Name,
+			Describe: "加入群聊 " + room.Name,
 			Callback: func(msg *wcferry.WxMsg) string {
-				resp := wc.CmdClient.InviteChatroomMembers(v.RoomId, msg.Sender)
+				resp := wc.CmdClient.InviteChatroomMembers(v, msg.Sender)
 				if resp == 1 {
 					return "已发送群邀请，稍后请点击进入"
 				} else {

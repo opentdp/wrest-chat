@@ -3,6 +3,8 @@ Bot:
     Enable: true # 是否启用内置机器人
     Revoke: 撤回了寂寞？ # 有人撤回消息时响应的内容，留空则不响应
     Welcome: 回复 /help 查询指令 # 接受好友申请时时响应的内容，留空则不响应
+    InvitableRoom: # 可邀请的群聊，必须在 Usr.ChatRoom 配置中
+        - 12345123@chatroom
 
 # 大模型
 LLM:
@@ -37,16 +39,7 @@ Log:
 
 # 用户信息
 Usr:
-    Member:
-        wxid_38699745810:
-            AiArgot: gem # 会话模型
-            AiModel: /ai # 唤醒词
-            Level: 9 # 等级 [0:未注册, 1:已禁用, 9:管理员]
-            Remark: 备注 # 备注信息
-        wxid_38699745819:
-            Level: 0
-            Remark: 备注
-    Room:
+    ChatRoom:
         12345123@chatroom:
             Argot: 1 # 群口令，用于生成加群指令
             Level: 0 # 等级 [0:未注册, 1:已禁用]
@@ -59,6 +52,15 @@ Usr:
                     Remark: 备注
             Name: 测试群一 # 群名称
             Welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词，留空则禁用
+    Member:
+        wxid_38699745810:
+            AiArgot: gem # 会话模型
+            AiModel: /ai # 唤醒词
+            Level: 9 # 等级 [0:未注册, 1:已禁用, 9:管理员]
+            Remark: 备注 # 备注信息
+        wxid_38699745819:
+            Level: 0
+            Remark: 备注
 
 # Wcf 服务
 Wcf:

@@ -61,7 +61,7 @@ func reciver(msg *wcferry.WxMsg) {
 		// 有人进群时响应
 		re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 		if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
-			if room := args.Usr.Room[msg.Roomid]; room.Welcome != "" {
+			if room := args.GetChatRoom(msg.Roomid); room.Welcome != "" {
 				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.Welcome, msg.Roomid, "")
 			}
 			return

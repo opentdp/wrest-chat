@@ -3,7 +3,6 @@ package robot
 import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/model"
 )
 
 func modelHandler() {
@@ -21,7 +20,7 @@ func modelHandler() {
 			RoomAble: true,
 			Describe: "切换为 " + v.Model + " 模型",
 			Callback: func(msg *wcferry.WxMsg) string {
-				model.GetUser(msg.Sender).AiModel = k
+				args.GetMember(msg.Sender).AiModel = k
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		}
@@ -34,7 +33,7 @@ func modelHandler() {
 		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
 			for k, v := range args.LLM.Models {
-				model.GetUser(msg.Sender).AiModel = k
+				args.GetMember(msg.Sender).AiModel = k
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			}
 			return "没有可用的模型"

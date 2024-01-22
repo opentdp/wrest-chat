@@ -6,7 +6,6 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/model"
 )
 
 type Handler struct {
@@ -48,7 +47,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		if strings.Contains(msg.Content, "@"+selfInfo.Name) {
 			msg.Content = "/ai " + msg.Content
 		} else {
-			wakeWord := model.GetUser(msg.Sender).AiArgot
+			wakeWord := args.GetMember(msg.Sender).AiArgot
 			if wakeWord == "" {
 				msg.Content = "/ai " + msg.Content
 			} else if strings.HasPrefix(msg.Content, wakeWord) {
@@ -85,12 +84,10 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 检查权限
 	if handler.Level > 0 {
-		user, ok := args.Usr.Member[msg.Sender]
-		if ok && user.Level >= handler.Level {
+		if args.GetMember(msg.Roomid).Level < handler.Level {
 			return "无权限使用此指令"
 		}
-		room, ok := args.Usr.Room[msg.Roomid]
-		if ok && room.Level >= handler.Level {
+		if args.GetMember(msg.Sender).Level < handler.Level {
 			return "无权限使用此指令"
 		}
 	}
@@ -108,7 +105,7 @@ func ingoreMessage(msg *wcferry.WxMsg) bool {
 	}
 
 	// 用户权限
-	if user, ok := args.Usr.Member[msg.Sender]; ok {
+	if user := args.GetMember(msg.Sender); user.Level > 0 {
 		if user.Level == 9 { // 管理员
 			return false
 		}
@@ -118,7 +115,7 @@ func ingoreMessage(msg *wcferry.WxMsg) bool {
 	}
 
 	// 群聊权限
-	if room, ok := args.Usr.Room[msg.Roomid]; ok {
+	if room := args.GetChatRoom(msg.Roomid); room.Level > 0 {
 		if room.Level == 4 { // 已禁止
 			return true
 		}

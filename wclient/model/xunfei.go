@@ -12,7 +12,7 @@ import (
 
 func XunfeiChat(id, ask string) (string, error) {
 
-	llmc := GetUserModel(id)
+	llmc := args.GetMember(id).GetModel()
 
 	keys := strings.Split(llmc.Key, ",")
 	if len(keys) != 3 {
@@ -37,7 +37,7 @@ func XunfeiChat(id, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistoryMap[id] {
+	for _, msg := range msgHistories[id] {
 		role := msg.Role
 		if role == "user" {
 			role = xunfei.ChatMessageRoleUser
