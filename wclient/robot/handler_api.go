@@ -14,7 +14,7 @@ func apiHandler() {
 		Level:    0,
 		ChatAble: true,
 		RoomAble: true,
-		Describe: "调用接口，查看帮助 /api help",
+		Describe: "调用远程接口，查看帮助 /api help",
 		Callback: func(msg *wcferry.WxMsg) string {
 			str := strings.TrimSpace(msg.Content)
 			res, err := request.TextGet("https://api.rehi.org/"+str, request.H{
@@ -23,7 +23,7 @@ func apiHandler() {
 			if err != nil {
 				return err.Error()
 			}
-			return res
+			return strings.TrimSpace(res)
 		},
 	}
 
