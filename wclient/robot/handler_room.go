@@ -12,7 +12,7 @@ func roomHandler() {
 	}
 
 	for _, v := range args.Bot.InvitableRoom {
-		v := v // copy it
+		v := v // copy
 		room := args.GetChatRoom(v)
 		cmdkey := "/g:" + room.Argot
 		handlers[cmdkey] = &Handler{

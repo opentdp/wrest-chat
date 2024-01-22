@@ -12,7 +12,7 @@ func modelHandler() {
 	}
 
 	for k, v := range args.LLM.Models {
-		k, v := k, v // copy it
+		k, v := k, v // copy
 		cmdkey := "/m:" + k
 		handlers[cmdkey] = &Handler{
 			Level:    0,

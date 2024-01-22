@@ -7,16 +7,12 @@ type Member struct {
 	Remark  string // 备注信息
 }
 
-type ChatMember struct {
-	Member // 继承用户基础信息
-}
-
 type ChatRoom struct {
-	Argot   string                 // 群标记，用于生成加群指令
-	Level   int                    // 等级 [0:未注册, 1:已禁用]
-	Member  map[string]*ChatMember // 群成员列表
-	Name    string                 // 群名称，在指令说明中使用
-	Welcome string                 // 欢迎词
+	Argot   string             // 群标记，用于生成加群指令
+	Level   int                // 等级 [0:未注册, 1:已禁用]
+	Member  map[string]*Member // 群成员列表
+	Name    string             // 群名称，在指令说明中使用
+	Welcome string             // 欢迎词
 }
 
 // Member Config
@@ -61,10 +57,11 @@ func GetChatRoom(rid string) *ChatRoom {
 
 }
 
-func (ChatRoom *ChatRoom) GetMember(uid string) *ChatMember {
+func (ChatRoom *ChatRoom) GetMember(uid string) *Member {
 
 	if _, ok := ChatRoom.Member[uid]; !ok {
-		ChatRoom.Member[uid] = &ChatMember{*GetMember(uid)}
+		user := *GetMember(uid) // copy
+		ChatRoom.Member[uid] = &user
 	}
 
 	return ChatRoom.Member[uid]

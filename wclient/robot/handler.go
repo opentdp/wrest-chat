@@ -34,7 +34,7 @@ func setupHandlers() {
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	if ingoreMessage(msg) {
+	if !validMessage(msg) {
 		return ""
 	}
 
@@ -71,7 +71,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		return "指令或参数错误, 回复 /help 获取帮助"
 	}
 
-	// 检查场景
+	// 验证场景
 	if msg.IsGroup {
 		if !handler.RoomAble {
 			return "此指令仅在私聊中可用"
@@ -82,13 +82,16 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	// 检查权限
+	// 指令权限
 	if handler.Level > 0 {
-		if args.GetMember(msg.Roomid).Level < handler.Level {
-			return "无权限使用此指令"
-		}
 		if args.GetMember(msg.Sender).Level < handler.Level {
 			return "无权限使用此指令"
+		}
+		if msg.IsGroup {
+			room := args.GetChatRoom(msg.Roomid)
+			if room.GetMember(msg.Sender).Level < handler.Level {
+				return "无权限使用此指令"
+			}
 		}
 	}
 
@@ -97,30 +100,30 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 }
 
-func ingoreMessage(msg *wcferry.WxMsg) bool {
+func validMessage(msg *wcferry.WxMsg) bool {
 
-	// 空指令
+	// 空白指令
 	if len(msg.Content) == 0 {
-		return true
+		return false
 	}
 
 	// 用户权限
 	if user := args.GetMember(msg.Sender); user.Level > 0 {
 		if user.Level == 9 { // 管理员
-			return false
+			return true
 		}
 		if user.Level == 4 { // 已禁止
-			return true
+			return false
 		}
 	}
 
 	// 群聊权限
 	if room := args.GetChatRoom(msg.Roomid); room.Level > 0 {
 		if room.Level == 4 { // 已禁止
-			return true
+			return false
 		}
 	}
 
-	return false
+	return true
 
 }
