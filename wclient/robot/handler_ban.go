@@ -12,7 +12,7 @@ import (
 func banHandler() {
 
 	handlers["/ban"] = &Handler{
-		Level:    1,
+		Level:    7,
 		ChatAble: false,
 		RoomAble: true,
 		Describe: "禁止用户使用助手",

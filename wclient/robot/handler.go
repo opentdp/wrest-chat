@@ -27,6 +27,7 @@ func setupHandlers() {
 	roomHandler()
 	wakeHandler()
 	saveHandler()
+	wgetHandler()
 
 	helpHandler()
 
