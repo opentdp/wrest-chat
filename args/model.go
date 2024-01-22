@@ -3,13 +3,13 @@ package args
 type Member struct {
 	AiArgot string // 唤醒词
 	AiModel string // 会话模型
-	Level   int    // 等级 [0:未注册, 1:已禁用 9:管理员]
+	Level   int    // 级别 [0:未注册, 1:已禁用 9:管理员]
 	Remark  string // 备注信息
 }
 
 type ChatRoom struct {
 	Argot   string             // 群标记，用于生成加群指令
-	Level   int                // 等级 [0:未注册, 1:已禁用]
+	Level   int                // 级别 [0:未注册, 1:已禁用]
 	Member  map[string]*Member // 群成员列表
 	Name    string             // 群名称，在指令说明中使用
 	Welcome string             // 欢迎词

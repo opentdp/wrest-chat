@@ -3,6 +3,7 @@ package robot
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -39,15 +40,27 @@ func helpHandler() {
 			}
 			sort.Strings(helper)
 			text := strings.Join(helper, "\n") + "\n"
-			// 模型运行时信息
+			if user.Level > 0 {
+				text += "级别 " + strconv.Itoa(user.Level) + "；"
+			}
 			if user.AiArgot != "" {
-				text += "唤醒词 " + user.AiArgot + "，"
+				text += "唤醒词 " + user.AiArgot + "；"
 			}
 			if len(args.LLM.Models) > 0 {
-				text += "对话模型 " + args.GetMember(msg.Sender).GetModel().Family + "，"
-				text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum)
+				text += "对话模型 " + user.GetModel().Family + "，"
+				text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum) + "；"
 			}
-			return text
+			if msg.IsGroup {
+				room := args.GetChatRoom(msg.Roomid)
+				if room.Level > 0 {
+					text += "群级别 " + strconv.Itoa(room.Level) + "；"
+					user := room.GetMember(msg.Sender)
+					if user.Level > 0 {
+						text += "群成员级别 " + strconv.Itoa(user.Level) + "；"
+					}
+				}
+			}
+			return text + "祝你好运！"
 		},
 	}
 

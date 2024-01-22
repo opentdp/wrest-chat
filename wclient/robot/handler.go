@@ -111,7 +111,7 @@ func validMessage(msg *wcferry.WxMsg) bool {
 		return false
 	}
 
-	// 用户权限
+	// 全局权限
 	user := args.GetMember(msg.Sender)
 	if args.Bot.WhiteMember {
 		if user.Level <= 1 {
@@ -124,18 +124,20 @@ func validMessage(msg *wcferry.WxMsg) bool {
 	}
 
 	// 群聊权限
-	room := args.GetChatRoom(msg.Roomid)
-	rusr := room.GetMember(msg.Sender)
-	if args.Bot.WhiteChatRoom {
-		if room.Level <= 1 {
-			return false
-		}
-	} else {
-		if room.Level == 1 {
-			return false
-		}
-		if rusr.Level == 1 {
-			return false
+	if msg.IsGroup {
+		room := args.GetChatRoom(msg.Roomid)
+		user := room.GetMember(msg.Sender)
+		if args.Bot.WhiteChatRoom {
+			if room.Level <= 1 {
+				return false
+			}
+		} else {
+			if room.Level == 1 {
+				return false
+			}
+			if user.Level == 1 {
+				return false
+			}
 		}
 	}
 
