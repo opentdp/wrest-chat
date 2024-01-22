@@ -69,3 +69,44 @@ func banHandler() {
 	}
 
 }
+
+func banMessagePrefix(msg *wcferry.WxMsg) string {
+
+	// 全局权限
+	user := args.GetMember(msg.Sender)
+	if args.Bot.WhiteMember {
+		if user.Level <= 1 {
+			msg.Content = ""
+			return ""
+		}
+	} else {
+		if user.Level == 1 {
+			msg.Content = ""
+			return ""
+		}
+	}
+
+	// 群聊权限
+	if msg.IsGroup {
+		room := args.GetChatRoom(msg.Roomid)
+		user := room.GetMember(msg.Sender)
+		if args.Bot.WhiteChatRoom {
+			if room.Level <= 1 {
+				msg.Content = ""
+				return ""
+			}
+		} else {
+			if room.Level == 1 {
+				msg.Content = ""
+				return ""
+			}
+			if user.Level == 1 {
+				msg.Content = ""
+				return ""
+			}
+		}
+	}
+
+	return ""
+
+}

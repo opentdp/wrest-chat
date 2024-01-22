@@ -1,5 +1,7 @@
 # 机器人
 Bot:
+    BadWord: # 命中该关键词时警告
+        垃圾: 1
     Enable: true # 是否启用内置机器人
     InvitableRoom: # 可邀请的群聊，必须在 Usr.ChatRoom 配置中
         - 12345123@chatroom

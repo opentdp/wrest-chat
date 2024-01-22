@@ -22,6 +22,7 @@ func setupHandlers() {
 
 	aiHandler()
 	apiHandler()
+	badHandler()
 	banHandler()
 	newHandler()
 	modelHandler()
@@ -36,28 +37,22 @@ func setupHandlers() {
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	if !validMessage(msg) {
+	if txt := banMessagePrefix(msg); txt != "" {
+		return txt
+	}
+
+	if txt := badMessagePrefix(msg); txt != "" {
+		return txt
+	}
+
+	if txt := aiMessagePrefix(msg); txt != "" {
+		return txt
+	}
+
+	// 空白消息
+	msg.Content = strings.TrimSpace(msg.Content)
+	if len(msg.Content) == 0 {
 		return ""
-	}
-
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
-
-	// 定制唤醒
-	if msg.Content[0:1] != "/" {
-		if strings.Contains(msg.Content, "@"+selfInfo.Name) {
-			msg.Content = "/ai " + msg.Content
-		} else {
-			wakeWord := args.GetMember(msg.Sender).AiArgot
-			if wakeWord == "" {
-				if !msg.IsGroup {
-					msg.Content = "/ai " + msg.Content
-				}
-			} else if strings.HasPrefix(msg.Content, wakeWord) {
-				msg.Content = strings.Replace(msg.Content, wakeWord, "/ai ", 1)
-			}
-		}
 	}
 
 	// 解析指令
@@ -101,47 +96,5 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 执行指令
 	return handler.Callback(msg)
-
-}
-
-func validMessage(msg *wcferry.WxMsg) bool {
-
-	// 空白指令
-	msg.Content = strings.TrimSpace(msg.Content)
-	if len(msg.Content) == 0 {
-		return false
-	}
-
-	// 全局权限
-	user := args.GetMember(msg.Sender)
-	if args.Bot.WhiteMember {
-		if user.Level <= 1 {
-			return false
-		}
-	} else {
-		if user.Level == 1 {
-			return false
-		}
-	}
-
-	// 群聊权限
-	if msg.IsGroup {
-		room := args.GetChatRoom(msg.Roomid)
-		user := room.GetMember(msg.Sender)
-		if args.Bot.WhiteChatRoom {
-			if room.Level <= 1 {
-				return false
-			}
-		} else {
-			if room.Level == 1 {
-				return false
-			}
-			if user.Level == 1 {
-				return false
-			}
-		}
-	}
-
-	return true
 
 }

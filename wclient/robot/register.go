@@ -20,6 +20,10 @@ func Register() {
 
 	selfInfo = wc.CmdClient.GetSelfInfo()
 
+	if len(handlers) == 0 {
+		setupHandlers()
+	}
+
 	wc.EnrollReceiver(true, reciver)
 
 }
