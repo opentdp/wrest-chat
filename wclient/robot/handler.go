@@ -111,18 +111,29 @@ func validMessage(msg *wcferry.WxMsg) bool {
 	}
 
 	// 用户权限
-	if user := args.GetMember(msg.Sender); user.Level > 0 {
-		if user.Level == 9 { // 管理员
-			return true
+	user := args.GetMember(msg.Sender)
+	if args.Bot.WhiteMember {
+		if user.Level <= 1 {
+			return false
 		}
-		if user.Level == 4 { // 已禁止
+	} else {
+		if user.Level == 1 {
 			return false
 		}
 	}
 
 	// 群聊权限
-	if room := args.GetChatRoom(msg.Roomid); room.Level > 0 {
-		if room.Level == 4 { // 已禁止
+	room := args.GetChatRoom(msg.Roomid)
+	rusr := room.GetMember(msg.Sender)
+	if args.Bot.WhiteChatRoom {
+		if room.Level <= 1 {
+			return false
+		}
+	} else {
+		if room.Level == 1 {
+			return false
+		}
+		if rusr.Level == 1 {
 			return false
 		}
 	}

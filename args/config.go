@@ -14,9 +14,11 @@ var Bot = &IBot{
 
 type IBot struct {
 	Enable        bool     // 是否启用内置机器人
+	InvitableRoom []string // 可邀请的群聊，必须在 Usr.ChatRoom 配置中
 	Revoke        string   // 有人撤回消息时响应的内容，留空则不响应
 	Welcome       string   // 接受好友申请时时响应的内容，留空则不响应
-	InvitableRoom []string // 可邀请的群聊，必须在 Usr.ChatRoom 配置中
+	WhiteChatRoom bool     // 白名单模式，仅允许 Level > 1 的群使用
+	WhiteMember   bool     // 白名单模式，仅允许 Level > 1 的好友使用
 }
 
 // 大语言模型
