@@ -20,7 +20,7 @@ type ChatRoom struct {
 func GetMember(uid string) *Member {
 
 	if _, ok := Usr.Member[uid]; !ok {
-		Usr.Member[uid] = &Member{}
+		Usr.Member[uid] = &Member{AiArgot: "/ai"}
 	}
 
 	return Usr.Member[uid]
@@ -50,9 +50,7 @@ func (user *Member) GetModel() *LLModel {
 func GetChatRoom(rid string) *ChatRoom {
 
 	if _, ok := Usr.ChatRoom[rid]; !ok {
-		Usr.ChatRoom[rid] = &ChatRoom{
-			Member: map[string]*Member{},
-		}
+		Usr.ChatRoom[rid] = &ChatRoom{Member: map[string]*Member{}}
 	}
 
 	return Usr.ChatRoom[rid]

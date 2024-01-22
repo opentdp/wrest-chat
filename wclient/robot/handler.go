@@ -49,7 +49,9 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		} else {
 			wakeWord := args.GetMember(msg.Sender).AiArgot
 			if wakeWord == "" {
-				msg.Content = "/ai " + msg.Content
+				if !msg.IsGroup {
+					msg.Content = "/ai " + msg.Content
+				}
 			} else if strings.HasPrefix(msg.Content, wakeWord) {
 				msg.Content = strings.Replace(msg.Content, wakeWord, "/ai ", 1)
 			}
