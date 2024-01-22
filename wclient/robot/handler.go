@@ -103,6 +103,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 func validMessage(msg *wcferry.WxMsg) bool {
 
 	// 空白指令
+	msg.Content = strings.TrimSpace(msg.Content)
 	if len(msg.Content) == 0 {
 		return false
 	}

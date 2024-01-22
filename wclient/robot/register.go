@@ -17,9 +17,10 @@ var selfInfo *wcferry.UserInfo
 func Register() {
 
 	wc = wclient.Register()
-	wc.EnrollReceiver(true, reciver)
 
 	selfInfo = wc.CmdClient.GetSelfInfo()
+
+	wc.EnrollReceiver(true, reciver)
 
 }
 
