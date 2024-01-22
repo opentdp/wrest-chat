@@ -18,7 +18,7 @@ func modelHandler() {
 			Level:    0,
 			ChatAble: true,
 			RoomAble: true,
-			Describe: "切换为 " + v.Model + " 模型",
+			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
 			Callback: func(msg *wcferry.WxMsg) string {
 				args.GetMember(msg.Sender).AiModel = k
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
