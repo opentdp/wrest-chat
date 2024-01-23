@@ -82,6 +82,7 @@ var Wcf = &IWcf{
 type IWcf struct {
 	Address    string // Rpc 监听地址
 	MsgPrinter bool   // 是否打印收到的消息
+	SdkLibrary string // 留空使用内置注入工具
 	WeChatAuto bool   // 微信是否跟随启停
 }
 
@@ -93,7 +94,7 @@ var Web = &IWeb{
 }
 
 type IWeb struct {
-	Address string // 监听地址
+	Address string // Web 监听地址
 	Swagger bool   // 是否启用 Api 文档
 	Token   string // 使用 Token 验证请求
 }

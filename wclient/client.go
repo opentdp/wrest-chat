@@ -28,6 +28,7 @@ func Register() *wcferry.Client {
 	wc = &wcferry.Client{
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
+		SdkLibrary: args.Wcf.SdkLibrary,
 		WeChatAuto: args.Wcf.WeChatAuto,
 	}
 

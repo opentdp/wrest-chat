@@ -20,9 +20,9 @@ import (
 var libfs embed.FS
 
 type Client struct {
-	sdkLibrary string     // sdk.dll 路径
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
+	SdkLibrary string     // sdk.dll 路径
 	WeChatAuto bool       // 微信自动启停
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
@@ -88,7 +88,7 @@ func (c *Client) DisableReceiver(ks ...string) error {
 // 调用 sdk.dll 中的函数
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
 	// 加载 sdk.dll
-	sdk, err := windows.LoadDLL(c.sdkLibrary)
+	sdk, err := windows.LoadDLL(c.SdkLibrary)
 	if err != nil {
 		logman.Info("failed to load sdk.dll", "error", err)
 		return err
@@ -109,6 +109,10 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
+	if c.SdkLibrary == "-" {
+		c.SdkLibrary = ""
+		return nil
+	}
 	// 尝试自动启动微信
 	if c.WeChatAuto {
 		out, _ := exec.Command("tasklist").Output()
@@ -116,19 +120,27 @@ func (c *Client) wxInitSDK() error {
 			return errors.New("please close wechat")
 		}
 	}
-	// 释放 libs 并注入微信
-	tf, err := filer.ReleaseEmbedFS(libfs, "libs")
-	if err == nil {
-		c.sdkLibrary = path.Join(tf, "sdk.dll")
-		c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
-		time.Sleep(5 * time.Second)
+	// 释放内置注入工具
+	if c.SdkLibrary == "" {
+		tf, err := filer.ReleaseEmbedFS(libfs, "libs")
+		if err == nil {
+			c.SdkLibrary = path.Join(tf, "sdk.dll")
+		} else {
+			return err
+		}
 	}
-	return err
+	// 注入微信
+	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+	time.Sleep(5 * time.Second)
+	return nil
 }
 
 // 关闭 wcf 服务
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
+	if c.SdkLibrary == "" {
+		return nil
+	}
 	// 关闭 wcf 服务
 	err := c.sdkCall("WxDestroySDK", uintptr(0))
 	logman.Warn("wcf destroyed", "error", err)
@@ -142,6 +154,6 @@ func (c *Client) wxDestroySDK() error {
 		}
 	}
 	// 尝试删除 libs 临时目录
-	os.RemoveAll(filepath.Dir(c.sdkLibrary))
+	os.RemoveAll(filepath.Dir(c.SdkLibrary))
 	return err
 }
