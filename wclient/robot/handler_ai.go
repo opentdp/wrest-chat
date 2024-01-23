@@ -32,7 +32,7 @@ func aiMessagePrefix(msg *wcferry.WxMsg) string {
 	}
 
 	if msg.Content[0:1] != "/" {
-		if strings.Contains(msg.Content, "@"+self().Name) {
+		if strings.Contains(msg.Xml, self().Wxid) {
 			msg.Content = "/ai " + msg.Content
 		} else {
 			wakeWord := args.GetMember(msg.Sender).AiArgot
