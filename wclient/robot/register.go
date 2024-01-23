@@ -35,12 +35,7 @@ func reciver(msg *wcferry.WxMsg) {
 		// 处理聊天指令
 		if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
 			if output := applyHandlers(msg); output != "" {
-				if msg.IsGroup {
-					user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-					wc.CmdClient.SendTxt("@"+user.Name+"\n"+output, msg.Roomid, msg.Sender)
-				} else {
-					wc.CmdClient.SendTxt(output, msg.Sender, "")
-				}
+				textReply(msg, output)
 			}
 		}
 	case 37:
@@ -76,12 +71,7 @@ func reciver(msg *wcferry.WxMsg) {
 		ret := &types.SysMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.RevokeMsg.MsgID != "" && args.Bot.Revoke != "" {
-			if msg.IsGroup {
-				user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-				wc.CmdClient.SendTxt("@"+user.Name+" "+args.Bot.Revoke, msg.Roomid, msg.Sender)
-			} else {
-				wc.CmdClient.SendTxt(args.Bot.Revoke, msg.Sender, "")
-			}
+			textReply(msg, args.Bot.Revoke)
 		}
 	}
 

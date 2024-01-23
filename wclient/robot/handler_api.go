@@ -23,7 +23,10 @@ func apiHandler() {
 			if err != nil {
 				return err.Error()
 			}
-			return strings.TrimSpace(res)
+			if isImageFile(res) && fileReply(msg, res) == 0 {
+				return ""
+			}
+			return res
 		},
 	}
 
