@@ -15,10 +15,7 @@ func main() {
 
 	args.Efs = &efs
 
-	if args.Bot.Enable {
-		go robot.Register()
-	}
-
+	robot.Register()
 	httpd.Server()
 
 }

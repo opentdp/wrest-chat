@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
@@ -16,15 +17,28 @@ var selfInfo *wcferry.UserInfo
 
 func Register() {
 
-	wc = wclient.Register()
+	if !args.Bot.Enable {
+		logman.Warn("robot disabled")
+		return
+	}
 
-	selfInfo = wc.CmdClient.GetSelfInfo()
+	wc = wclient.Register()
 
 	if len(handlers) == 0 {
 		setupHandlers()
 	}
 
 	wc.EnrollReceiver(true, reciver)
+
+}
+
+func self() *wcferry.UserInfo {
+
+	if selfInfo == nil {
+		selfInfo = wc.CmdClient.GetSelfInfo()
+	}
+
+	return selfInfo
 
 }
 
