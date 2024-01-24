@@ -50,3 +50,7 @@
 ### SDK 模块
 
 实现了 WCF 客户端，详情查看 [wcferry/README.md](./wcferry/README.md)
+
+### WEB 模块
+
+实现了 WEB 控制台，详情查看 [webview/README.md](./webview/README.md)
