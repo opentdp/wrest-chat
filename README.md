@@ -41,7 +41,7 @@
 
 ### API 模块
 
-实现了 HTTP 接口，详情查看 [httpd/README.md](./httpd/README.md)
+实现了 HTTP/WS 接口，详情查看 [httpd/README.md](./httpd/README.md)
 
 ### BOT 模块
 
