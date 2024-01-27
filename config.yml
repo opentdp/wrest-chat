@@ -58,8 +58,8 @@ Usr:
             Welcome: 欢迎加入云食堂，请先阅读群公告 # 单独指定此群的欢迎词，留空则禁用
     Member:
         wxid_38699745810:
-            AiArgot: gem # 会话模型
-            AiModel: /ai # 唤醒词
+            AiArgot: /ai # 唤醒词
+            AiModel: gem # 会话模型
             Level: 9 # 级别 [0:未注册, 1:已禁用, 2:已启用, 9:管理员]
             Remark: 备注 # 备注信息
         wxid_38699745819:
