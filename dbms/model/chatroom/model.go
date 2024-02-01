@@ -1,4 +1,4 @@
-package profile
+package chatroom
 
 import (
 	"github.com/opentdp/go-helper/dborm"
@@ -9,22 +9,24 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Rd      uint
-	Wxid    string `binding:"required"`
-	Roomid  string
-	Level   int32
-	AiArgot string
-	AiModel string
+	Rd        uint
+	Roomid    string `binding:"required"`
+	Name      string
+	Level     int32
+	Remark    string
+	JoinArgot string
+	Welcome   string
 }
 
 func Create(data *CreateParam) (uint, error) {
 
-	item := &model.Profile{
-		Wxid:    data.Wxid,
-		Roomid:  data.Roomid,
-		Level:   data.Level,
-		AiArgot: data.AiArgot,
-		AiModel: data.AiModel,
+	item := &model.Chatroom{
+		Roomid:    data.Roomid,
+		Name:      data.Name,
+		Level:     data.Level,
+		Remark:    data.Remark,
+		JoinArgot: data.JoinArgot,
+		Welcome:   data.Welcome,
 	}
 
 	result := dborm.Db.Create(item)
@@ -36,22 +38,26 @@ func Create(data *CreateParam) (uint, error) {
 // 更新配置
 
 type UpdateParam struct {
-	Rd      uint
-	Level   int32
-	AiArgot string
-	AiModel string
+	Rd        uint
+	Name      string
+	Level     int32
+	Remark    string
+	JoinArgot string
+	Welcome   string
 }
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
-		Where(&model.Profile{
+		Where(&model.Chatroom{
 			Rd: data.Rd,
 		}).
-		Updates(model.Profile{
-			Level:   data.Level,
-			AiArgot: data.AiArgot,
-			AiModel: data.AiModel,
+		Updates(model.Chatroom{
+			Name:      data.Name,
+			Level:     data.Level,
+			Remark:    data.Remark,
+			JoinArgot: data.JoinArgot,
+			Welcome:   data.Welcome,
 		})
 
 	return result.Error
@@ -66,10 +72,10 @@ type DeleteParam struct {
 
 func Delete(data *DeleteParam) error {
 
-	var item *model.Profile
+	var item *model.Chatroom
 
 	result := dborm.Db.
-		Where(&model.Profile{
+		Where(&model.Chatroom{
 			Rd: data.Rd,
 		}).
 		Delete(&item)
@@ -82,18 +88,16 @@ func Delete(data *DeleteParam) error {
 
 type FetchParam struct {
 	Rd     uint
-	Wxid   string
 	Roomid string
 }
 
-func Fetch(data *FetchParam) (*model.Profile, error) {
+func Fetch(data *FetchParam) (*model.Chatroom, error) {
 
-	var item *model.Profile
+	var item *model.Chatroom
 
 	result := dborm.Db.
-		Where(&model.Profile{
+		Where(&model.Chatroom{
 			Rd:     data.Rd,
-			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
 		First(&item)
@@ -105,18 +109,16 @@ func Fetch(data *FetchParam) (*model.Profile, error) {
 // 获取配置列表
 
 type FetchAllParam struct {
-	Wxid   string
-	Roomid string
+	Level int32
 }
 
-func FetchAll(data *FetchAllParam) ([]*model.Profile, error) {
+func FetchAll(data *FetchAllParam) ([]*model.Chatroom, error) {
 
-	var items []*model.Profile
+	var items []*model.Chatroom
 
 	result := dborm.Db.
-		Where(&model.Profile{
-			Wxid:   data.Wxid,
-			Roomid: data.Roomid,
+		Where(&model.Chatroom{
+			Level: data.Level,
 		}).
 		Find(&items)
 
@@ -131,9 +133,8 @@ func Count(data *FetchAllParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
-		Where(&model.Profile{
-			Wxid:   data.Wxid,
-			Roomid: data.Roomid,
+		Where(&model.Chatroom{
+			Level: data.Level,
 		}).
 		Count(&count)
 
