@@ -38,12 +38,11 @@ func (wc *Controller) loginQr(c *gin.Context) {
 		return
 	}
 
-	resp, err := wcferry.WxLoginQrcode()
+	url := wc.CmdClient.RefreshQrcode()
 
 	c.Set("Payload", CommonPayload{
-		Success: err == nil,
-		Result:  resp,
-		Error:   err,
+		Success: url != "",
+		Result:  url,
 	})
 
 }

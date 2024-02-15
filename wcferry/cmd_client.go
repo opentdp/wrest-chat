@@ -26,6 +26,14 @@ func (c *CmdClient) IsLogin() bool {
 	return recv.GetStatus() == 1
 }
 
+// 刷新登录二维码
+// return string 登录二维码
+func (c *CmdClient) RefreshQrcode() string {
+	req := &Request{Func: Functions_FUNC_REFRESH_QRCODE}
+	recv := c.call(req)
+	return recv.GetStr()
+}
+
 // 获取登录账号wxid
 // return string 登录账号wxid
 func (c *CmdClient) GetSelfWxid() string {

@@ -1,7 +1,6 @@
 package wcferry
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
 	"os"
@@ -11,9 +10,6 @@ import (
 	"time"
 
 	"github.com/clbanning/mxj"
-	"github.com/kbinani/screenshot"
-	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/multi/qrcode"
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
 )
@@ -130,34 +126,6 @@ func WxMsgPrinter(msg *WxMsg) {
 		rs += fmt.Sprintf("::Extra:: %s\n", msg.Extra)
 	}
 	fmt.Print(rs, "=== End Message ===\n")
-}
-
-// 获取微信登录二维码
-// return string 二维码URL
-func WxLoginQrcode() (string, error) {
-	// 获取第一个显示器的屏幕截图
-	bounds := screenshot.GetDisplayBounds(0)
-	img, err := screenshot.CaptureRect(bounds)
-	if err != nil {
-		return "", err
-	}
-	// 将图片转换为 BinaryBitmap
-	source := gozxing.NewLuminanceSourceFromImage(img)
-	bmp, _ := gozxing.NewBinaryBitmap(gozxing.NewHybridBinarizer(source))
-	// 检测图片中的多个二维码
-	qrReader := qrcode.NewQRCodeMultiReader()
-	results, err := qrReader.DecodeMultipleWithoutHint(bmp)
-	if err != nil {
-		return "", err
-	}
-	// 挑出微信登录的二维码
-	for _, result := range results {
-		url := result.String()
-		if strings.HasPrefix(url, "http://weixin.qq.com/x/") {
-			return url, nil
-		}
-	}
-	return "", errors.New("未找到二维码")
 }
 
 // 获取网络文件
