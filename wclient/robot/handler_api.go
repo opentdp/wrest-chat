@@ -16,8 +16,8 @@ func apiHandler() {
 		RoomAble: true,
 		Describe: "调用远程接口",
 		Callback: func(msg *wcferry.WxMsg) string {
-			str := strings.TrimSpace(msg.Content)
-			res, err := request.TextGet("https://api.rehi.org/"+str, request.H{
+			str := strings.Replace(strings.TrimSpace(msg.Content), " ", "/", 1)
+			res, err := request.TextGet("https://api.rehi.org/format=yaml/"+str, request.H{
 				"User-Agent": args.AppName + "/" + args.Version,
 			})
 			if err != nil {
