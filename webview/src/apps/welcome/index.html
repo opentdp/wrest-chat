@@ -4,7 +4,7 @@
 <div class="container-lg mt-3">
     @if (loginqr.result) {
     <qr-code [value]="loginqr.result" [size]="300" [margin]="0"></qr-code>
-    <div>间隔 5 秒刷新</div>
+    <div>间隔 200 秒刷新</div>
     } @else {
     <div>未读取到登录二维码 {{loginqr.error}}</div>
     }

@@ -25,7 +25,7 @@ export class WelcomeComponent {
         if (this.islogin) {
             return this.getSelfInfo();
         }
-        setTimeout(() => this.checkLogin(), 5000);
+        setTimeout(() => this.checkLogin(), 200 * 1000);
         this.loginqr = await WrestApi.loginQr();
     }
 
