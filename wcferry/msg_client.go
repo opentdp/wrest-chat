@@ -36,7 +36,7 @@ func (c *MsgClient) Destroy(ks ...string) error {
 func (c *MsgClient) Register(cb MsgCallback) (string, error) {
 	k := strutil.Rand(16)
 	if c.callbacks == nil {
-		if err := c.init(0); err != nil {
+		if err := c.init(5); err != nil {
 			logman.Error("msg receiver", "error", err)
 			return "", err
 		}

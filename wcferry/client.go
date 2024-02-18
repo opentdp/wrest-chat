@@ -55,7 +55,7 @@ func (c *Client) Connect() error {
 		c.wxDestroySDK()
 	})
 	// 返回连接结果
-	return c.CmdClient.init(25)
+	return c.CmdClient.init(5)
 }
 
 // 启动消息接收器
