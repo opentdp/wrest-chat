@@ -33,11 +33,6 @@ type CommonPayload struct {
 // @Router /login_qr [post]
 func (wc *Controller) loginQr(c *gin.Context) {
 
-	if wc.CmdClient.IsLogin() {
-		c.Set("Error", "微信已登录")
-		return
-	}
-
 	url := wc.CmdClient.RefreshQrcode()
 
 	c.Set("Payload", CommonPayload{
