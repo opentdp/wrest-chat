@@ -70,7 +70,7 @@ Usr:
 Wcf:
     Address: 127.0.0.1:7601 # 监听地址
     MsgPrinter: false # 是否打印收到的消息
-    SdkLibrary: "" # 留空使用内置注入工具
+    SdkLibrary: sdk.dll # 留空则禁止注入进程
     WechatAuto: true # 是否跟随启停微信
 
 # Web 服务

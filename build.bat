@@ -18,5 +18,7 @@ go build -ldflags="-s -w" -o %target% main.go
 
 COPY README.md build\
 COPY config.yml build\
+COPY wcferry\libs\sdk.dll build\
+COPY wcferry\libs\spy.dll build\
 
 IF "%1" == "" CMD /K

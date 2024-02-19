@@ -1,23 +1,15 @@
 package wcferry
 
 import (
-	"embed"
 	"errors"
-	"os"
 	"os/exec"
-	"path"
-	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/onquit"
 	"golang.org/x/sys/windows"
 )
-
-//go:embed libs
-var libfs embed.FS
 
 type Client struct {
 	ListenAddr string     // wcf 监听地址
@@ -109,8 +101,7 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
-	if c.SdkLibrary == "-" {
-		c.SdkLibrary = ""
+	if c.SdkLibrary == "" {
 		return nil
 	}
 	// 尝试自动启动微信
@@ -120,16 +111,7 @@ func (c *Client) wxInitSDK() error {
 			return errors.New("please close wechat")
 		}
 	}
-	// 释放内置注入工具
-	if c.SdkLibrary == "" {
-		tf, err := filer.ReleaseEmbedFS(libfs, "libs")
-		if err == nil {
-			c.SdkLibrary = path.Join(tf, "sdk.dll")
-		} else {
-			return err
-		}
-	}
-	// 注入微信
+	// 注入微信，打开 wcf 服务
 	c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
 	time.Sleep(5 * time.Second)
 	return nil
@@ -153,7 +135,5 @@ func (c *Client) wxDestroySDK() error {
 			return err
 		}
 	}
-	// 尝试删除 libs 临时目录
-	os.RemoveAll(filepath.Dir(c.SdkLibrary))
 	return err
 }

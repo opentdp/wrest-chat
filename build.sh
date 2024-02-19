@@ -47,6 +47,9 @@ go build -ldflags="-s -w" -o $target main.go
 
 cp README.md build/
 cp config.yml build/
+cp wcferry/libs/sdk.dll build/
+cp wcferry/libs/spy.dll build/
+
 sed -i 's#](./#](https://github.com/opentdp/wechat-rest/blob/master/#g' build/README.md
 
 mv build wechat-rest

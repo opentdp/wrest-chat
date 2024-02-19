@@ -27,13 +27,13 @@
 - 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
 - 重启时，提示端口被占用，请退出微信后重试
 
-## 配置说明
+## 配置文件
+  
+- 如需使用智能机器人，请配置 `LLM.Models` 参数，并设置正确的模型密钥
 
-启动时将自动创建一个默认配置文件，完整配置可参考开源仓库中的 [config.yml](./config.yml)
+- 如设置了 `Web.Token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
 
-- 如设置了 `token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
-
-## 开发说明
+## 开发指南
 
 - 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600`
 
