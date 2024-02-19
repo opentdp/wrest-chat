@@ -10,7 +10,7 @@ export CGO_ENABLED=0
 export GO111MODULE=on
 
 export GOOS=windows
-export GOARCH=386
+export GOARCH=amd64
 
 ####################################################################
 
@@ -45,10 +45,13 @@ go build -ldflags="-s -w" -o $target main.go
 
 ####################################################################
 
+mkdir build/wcferry
+
 cp README.md build/
 cp config.yml build/
-cp wcferry/libs/sdk.dll build/
-cp wcferry/libs/spy.dll build/
+cp wcferry/bin/sdk.dll build/wcferry/
+cp wcferry/bin/spy.dll build/wcferry/
+cp wcferry/bin/wcf.exe build/wcferry/
 
 sed -i 's#](./#](https://github.com/opentdp/wechat-rest/blob/master/#g' build/README.md
 

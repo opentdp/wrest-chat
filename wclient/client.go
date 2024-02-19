@@ -29,7 +29,7 @@ func Register() *wcferry.Client {
 	wc = &wcferry.Client{
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
-		SdkLibrary: args.Wcf.SdkLibrary,
+		WcfBinary:  args.Wcf.WcfBinary,
 		WeChatAuto: args.Wcf.WeChatAuto,
 	}
 
@@ -40,12 +40,12 @@ func Register() *wcferry.Client {
 	}
 
 	// 存储收到的消息
-	if args.Wcf.MsgBackup {
+	if args.Wcf.MsgStore {
 		wc.EnrollReceiver(true, msgToDatabase)
 	}
 
 	// 打印收到的消息
-	if args.Wcf.MsgPrinter {
+	if args.Wcf.MsgPrint {
 		wc.EnrollReceiver(true, wcferry.WxMsgPrinter)
 	}
 

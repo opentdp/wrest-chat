@@ -81,10 +81,10 @@ var Wcf = &IWcf{
 
 type IWcf struct {
 	Address    string // Rpc 监听地址
-	MsgBackup  bool   // 是否存储收到的消息
-	MsgPrinter bool   // 是否打印收到的消息
-	SdkLibrary string // 留空则禁止注入进程
-	WeChatAuto bool   // 微信是否跟随启停
+	MsgStore   bool   // 是否存储收到的消息
+	MsgPrint   bool   // 是否打印收到的消息
+	WcfBinary  string // 留空则不注入微信
+	WeChatAuto bool   // 是否自动启停微信
 }
 
 // Web 服务

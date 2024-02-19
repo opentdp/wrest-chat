@@ -5,7 +5,7 @@ SET CGO_ENABLED=0
 SET GO111MODULE=on
 
 SET GOOS=windows
-SET GOARCH=386
+SET GOARCH=amd64
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -16,9 +16,12 @@ go build -ldflags="-s -w" -o %target% main.go
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+MD build\wcferry
+
 COPY README.md build\
 COPY config.yml build\
-COPY wcferry\libs\sdk.dll build\
-COPY wcferry\libs\spy.dll build\
+COPY wcferry\bin\wcf.exe build\wcferry\
+COPY wcferry\bin\sdk.dll build\wcferry\
+COPY wcferry\bin\spy.dll build\wcferry\
 
 IF "%1" == "" CMD /K

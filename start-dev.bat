@@ -1,10 +1,11 @@
 @ECHO OFF
 ::
 
-SET GOARCH=386
-
 SET CGO_ENABLED=0
 SET GO111MODULE=on
+
+SET GOOS=windows
+SET GOARCH=amd64
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 

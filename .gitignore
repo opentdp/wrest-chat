@@ -1,7 +1,9 @@
 *.log
 *.lock
 .DS_Store
+
 .local.yml
+wrest.db3
 
 node_modules/
 build/
