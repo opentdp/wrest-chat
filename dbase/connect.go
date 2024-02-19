@@ -1,9 +1,9 @@
-package model
+package dbase
 
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbms/model"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
 func Connect() {
@@ -16,10 +16,10 @@ func Connect() {
 
 	// 实施自动迁移
 	dborm.Db.AutoMigrate(
-		&model.Chatroom{},
-		&model.Contact{},
-		&model.Message{},
-		&model.Profile{},
+		&tables.Chatroom{},
+		&tables.Contact{},
+		&tables.Message{},
+		&tables.Profile{},
 	)
 
 }

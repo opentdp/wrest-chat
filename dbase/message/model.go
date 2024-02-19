@@ -3,7 +3,7 @@ package message
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbms/model"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
 // 创建配置
@@ -26,7 +26,7 @@ type CreateParam struct {
 
 func Create(data *CreateParam) (uint, error) {
 
-	item := &model.Message{
+	item := &tables.Message{
 		Id:      data.Id,
 		IsSelf:  data.IsSelf,
 		IsGroup: data.IsGroup,
@@ -67,10 +67,10 @@ type UpdateParam struct {
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
-		Where(&model.Message{
+		Where(&tables.Message{
 			Rd: data.Rd,
 		}).
-		Updates(model.Message{
+		Updates(tables.Message{
 			IsSelf:  data.IsSelf,
 			IsGroup: data.IsGroup,
 			Type:    data.Type,
@@ -96,10 +96,10 @@ type DeleteParam struct {
 
 func Delete(data *DeleteParam) error {
 
-	var item *model.Message
+	var item *tables.Message
 
 	result := dborm.Db.
-		Where(&model.Message{
+		Where(&tables.Message{
 			Rd: data.Rd,
 		}).
 		Delete(&item)
@@ -115,12 +115,12 @@ type FetchParam struct {
 	Id uint64
 }
 
-func Fetch(data *FetchParam) (*model.Message, error) {
+func Fetch(data *FetchParam) (*tables.Message, error) {
 
-	var item *model.Message
+	var item *tables.Message
 
 	result := dborm.Db.
-		Where(&model.Message{
+		Where(&tables.Message{
 			Rd: data.Rd,
 			Id: data.Id,
 		}).
@@ -137,12 +137,12 @@ type FetchAllParam struct {
 	Roomid string
 }
 
-func FetchAll(data *FetchAllParam) ([]*model.Message, error) {
+func FetchAll(data *FetchAllParam) ([]*tables.Message, error) {
 
-	var items []*model.Message
+	var items []*tables.Message
 
 	result := dborm.Db.
-		Where(&model.Message{
+		Where(&tables.Message{
 			Sender: data.Sender,
 			Roomid: data.Roomid,
 		}).
@@ -159,7 +159,7 @@ func Count(data *FetchAllParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
-		Where(&model.Message{
+		Where(&tables.Message{
 			Sender: data.Sender,
 			Roomid: data.Roomid,
 		}).

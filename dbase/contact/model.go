@@ -3,7 +3,7 @@ package contact
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbms/model"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
 // 创建配置
@@ -22,7 +22,7 @@ type CreateParam struct {
 
 func Create(data *CreateParam) (uint, error) {
 
-	item := &model.Contact{
+	item := &tables.Contact{
 		Wxid:    data.Wxid,
 		Code:    data.Code,
 		Remark:  data.Remark,
@@ -54,10 +54,10 @@ type UpdateParam struct {
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
-		Where(&model.Contact{
+		Where(&tables.Contact{
 			Rd: data.Rd,
 		}).
-		Updates(model.Contact{
+		Updates(tables.Contact{
 			Code:    data.Code,
 			Remark:  data.Remark,
 			Name:    data.Name,
@@ -78,10 +78,10 @@ type DeleteParam struct {
 
 func Delete(data *DeleteParam) error {
 
-	var item *model.Contact
+	var item *tables.Contact
 
 	result := dborm.Db.
-		Where(&model.Contact{
+		Where(&tables.Contact{
 			Rd: data.Rd,
 		}).
 		Delete(&item)
@@ -97,12 +97,12 @@ type FetchParam struct {
 	Wxid string
 }
 
-func Fetch(data *FetchParam) (*model.Contact, error) {
+func Fetch(data *FetchParam) (*tables.Contact, error) {
 
-	var item *model.Contact
+	var item *tables.Contact
 
 	result := dborm.Db.
-		Where(&model.Contact{
+		Where(&tables.Contact{
 			Rd:   data.Rd,
 			Wxid: data.Wxid,
 		}).
@@ -118,12 +118,12 @@ type FetchAllParam struct {
 	Gender int32
 }
 
-func FetchAll(data *FetchAllParam) ([]*model.Contact, error) {
+func FetchAll(data *FetchAllParam) ([]*tables.Contact, error) {
 
-	var items []*model.Contact
+	var items []*tables.Contact
 
 	result := dborm.Db.
-		Where(&model.Contact{
+		Where(&tables.Contact{
 			Gender: data.Gender,
 		}).
 		Find(&items)
@@ -139,7 +139,7 @@ func Count(data *FetchAllParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
-		Where(&model.Contact{
+		Where(&tables.Contact{
 			Gender: data.Gender,
 		}).
 		Count(&count)

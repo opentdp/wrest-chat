@@ -4,6 +4,7 @@ import (
 	"embed"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase"
 	"github.com/opentdp/wechat-rest/httpd"
 	"github.com/opentdp/wechat-rest/wclient/robot"
 )
@@ -14,6 +15,8 @@ var efs embed.FS
 func main() {
 
 	args.Efs = &efs
+
+	dbase.Connect()
 
 	robot.Register()
 	httpd.Server()

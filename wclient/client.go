@@ -7,6 +7,7 @@ import (
 	"github.com/opentdp/go-helper/strutil"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -38,11 +39,38 @@ func Register() *wcferry.Client {
 		logman.Fatal("failed to start wcf", "error", err)
 	}
 
+	// 存储收到的消息
+	if args.Wcf.MsgBackup {
+		wc.EnrollReceiver(true, msgToDatabase)
+	}
+
 	// 打印收到的消息
 	if args.Wcf.MsgPrinter {
 		wc.EnrollReceiver(true, wcferry.WxMsgPrinter)
 	}
 
 	return wc
+
+}
+
+func msgToDatabase(msg *wcferry.WxMsg) {
+
+	rq := message.CreateParam{
+		Rd:      0,
+		Id:      msg.Id,
+		IsSelf:  msg.IsSelf,
+		IsGroup: msg.IsGroup,
+		Type:    msg.Type,
+		Ts:      msg.Ts,
+		Roomid:  msg.Roomid,
+		Content: msg.Content,
+		Sender:  msg.Sender,
+		Sign:    msg.Sign,
+		Thumb:   msg.Thumb,
+		Extra:   msg.Extra,
+		Xml:     msg.Xml,
+	}
+
+	message.Create(&rq)
 
 }

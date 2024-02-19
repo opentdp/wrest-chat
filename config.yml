@@ -69,6 +69,7 @@ Usr:
 # Wcf 服务
 Wcf:
     Address: 127.0.0.1:7601 # 监听地址
+    MsgBackup: true # 是否存储收到的消息
     MsgPrinter: false # 是否打印收到的消息
     SdkLibrary: sdk.dll # 留空则禁止注入进程
     WechatAuto: true # 是否跟随启停微信
