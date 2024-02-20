@@ -93,7 +93,18 @@ func reciver(msg *wcferry.WxMsg) {
 					Id: uint64(id),
 				})
 				if revokeMsg != nil {
-					rs += "\n-------\n" + revokeMsg.Content
+					str := strings.TrimSpace(revokeMsg.Content)
+					xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
+					for _, prefix := range xmlPrefixes {
+						if strings.HasPrefix(str, prefix) {
+							str = ""
+						}
+					}
+					if str != "" {
+						rs += "\n-------\n" + str
+					} else {
+						rs += "\n-------\n暂不支持回显的消息类型"
+					}
 				}
 			}
 			textReply(msg, rs)
