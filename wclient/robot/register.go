@@ -3,10 +3,12 @@ package robot
 import (
 	"encoding/xml"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
 	"github.com/opentdp/wechat-rest/wclient"
@@ -84,8 +86,17 @@ func reciver(msg *wcferry.WxMsg) {
 		// 撤回消息时响应
 		ret := &types.SysMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
-		if err == nil && ret.RevokeMsg.MsgID != "" && args.Bot.Revoke != "" {
-			textReply(msg, args.Bot.Revoke)
+		if err == nil && ret.RevokeMsg.NewMsgID != "" && args.Bot.Revoke != "" {
+			rs := args.Bot.Revoke
+			if id, _ := strconv.Atoi(ret.RevokeMsg.NewMsgID); id > 0 {
+				revokeMsg, _ := message.Fetch(&message.FetchParam{
+					Id: uint64(id),
+				})
+				if revokeMsg != nil {
+					rs += "\n-------\n" + revokeMsg.Content
+				}
+			}
+			textReply(msg, rs)
 		}
 	}
 
