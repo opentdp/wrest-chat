@@ -2,7 +2,6 @@ package wcferry
 
 import (
 	"errors"
-	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -85,14 +84,6 @@ func (c *Client) wxInitSDK() error {
 	if c.WcfBinary == "" {
 		return nil
 	}
-	// 查找 wcf.exe 路径
-	if !filer.Exists(c.WcfBinary) {
-		if filer.Exists("wcferry/wcf.exe") {
-			c.WcfBinary = "wcferry/wcf.exe"
-		} else if filer.Exists("wcferry/bin/wcf.exe") {
-			c.WcfBinary = "wcferry/bin/wcf.exe"
-		}
-	}
 	// 尝试自动启动微信
 	if c.WeChatAuto {
 		out, _ := exec.Command("tasklist").Output()
@@ -100,10 +91,19 @@ func (c *Client) wxInitSDK() error {
 			return errors.New("please close wechat")
 		}
 	}
+	// 查找 wcf.exe 路径
+	if !filer.Exists(c.WcfBinary) {
+		if filer.Exists("wcferry/wcf.exe") {
+			c.WcfBinary = "wcferry/wcf.exe"
+		} else if filer.Exists("wcferry/bin/wcf.exe") {
+			c.WcfBinary = "wcferry/bin/wcf.exe"
+		} else {
+			return errors.New("wcf.exe not found")
+		}
+	}
 	// 注入微信，打开 wcf 服务
 	logman.Info(c.WcfBinary + " start " + strconv.Itoa(c.ListenPort))
 	cmd := exec.Command(c.WcfBinary, "start", strconv.Itoa(c.ListenPort))
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	return cmd.Run()
 }
 
@@ -116,7 +116,6 @@ func (c *Client) wxDestroySDK() error {
 	// 关闭 wcf 服务
 	logman.Info(c.WcfBinary + " stop")
 	cmd := exec.Command(c.WcfBinary, "stop")
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	err := cmd.Run()
 	// 尝试自动关闭微信
 	if err == nil && c.WeChatAuto {
