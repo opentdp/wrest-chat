@@ -10,6 +10,16 @@ import (
 
 func apiHandler() {
 
+	helpFix := func(text string) string {
+		lines := strings.Split(text, "\n")
+		for k, line := range lines {
+			line = strings.TrimLeft(line, "/")
+			line = strings.Replace(line, "/", " ", 1)
+			lines[k] = "/api " + strings.TrimSpace(line)
+		}
+		return strings.Join(lines, "\n")
+	}
+
 	handlers["/api"] = &Handler{
 		Level:    0,
 		ChatAble: true,
@@ -22,6 +32,9 @@ func apiHandler() {
 			})
 			if err != nil {
 				return err.Error()
+			}
+			if str == "" || str == "help" {
+				return helpFix(res)
 			}
 			if fileReply(msg, res) == 0 {
 				return ""
