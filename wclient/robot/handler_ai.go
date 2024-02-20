@@ -5,7 +5,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/model"
+	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
 func aiHandler() {
@@ -19,7 +19,7 @@ func aiHandler() {
 			if msg.Content == "" {
 				return "请在指令后面输入问题"
 			}
-			return model.AiChat(msg.Sender, msg.Content)
+			return aichat.Text(msg.Sender, msg.Content)
 		},
 	}
 

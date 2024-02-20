@@ -1,4 +1,4 @@
-package model
+package aichat
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func AiChat(id, msg string) string {
+func Text(id, msg string) string {
 
 	var err error
 	var res string
@@ -23,11 +23,11 @@ func AiChat(id, msg string) string {
 	// 调用接口生成文本
 	switch llmc.Provider {
 	case "google":
-		res, err = GoogleChat(id, text)
+		res, err = GoogleText(id, text)
 	case "openai":
-		res, err = OpenaiChat(id, text)
+		res, err = OpenaiText(id, text)
 	case "xunfei":
-		res, err = XunfeiChat(id, text)
+		res, err = XunfeiText(id, text)
 	default:
 		res = "暂不支持此模型"
 	}

@@ -1,4 +1,4 @@
-package model
+package aichat
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func OpenaiChat(id, ask string) (string, error) {
+func OpenaiText(id, ask string) (string, error) {
 
 	llmc := args.GetMember(id).GetModel()
 

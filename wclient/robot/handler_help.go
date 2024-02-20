@@ -8,7 +8,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/model"
+	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
 func helpHandler() {
@@ -48,7 +48,7 @@ func helpHandler() {
 			}
 			if len(args.LLM.Models) > 0 {
 				text += "对话模型 " + user.GetModel().Family + "，"
-				text += fmt.Sprintf("上下文长度 %d/%d", model.CountHistory(msg.Sender), args.LLM.HistoryNum) + "；"
+				text += fmt.Sprintf("上下文长度 %d/%d", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum) + "；"
 			}
 			if msg.IsGroup {
 				room := args.GetChatRoom(msg.Roomid)

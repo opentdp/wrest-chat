@@ -1,4 +1,4 @@
-package model
+package aichat
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func GoogleChat(id, ask string) (string, error) {
+func GoogleText(id, ask string) (string, error) {
 
 	llmc := args.GetMember(id).GetModel()
 

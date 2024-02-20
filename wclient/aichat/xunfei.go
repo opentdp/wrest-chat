@@ -1,4 +1,4 @@
-package model
+package aichat
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func XunfeiChat(id, ask string) (string, error) {
+func XunfeiText(id, ask string) (string, error) {
 
 	llmc := args.GetMember(id).GetModel()
 
