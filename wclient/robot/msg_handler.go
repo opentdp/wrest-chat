@@ -104,6 +104,10 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 func textReply(msg *wcferry.WxMsg, text string) int32 {
 
+	if msg.IsSelf {
+		return -2
+	}
+
 	if text = strings.TrimSpace(text); text == "" {
 		return -1
 	}
