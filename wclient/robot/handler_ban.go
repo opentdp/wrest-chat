@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
@@ -26,16 +27,18 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					// 群内禁止
-					if profile.Get(v, msg.Roomid).Level == 9 {
-						return "无法操作管理员"
-					}
 					// 全局禁止
-					user := profile.Get(v, "")
-					if user != nil && user.Level == 9 {
+					p, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
+					if p.Level == 9 {
 						return "无法操作管理员"
 					}
-					user.Level = 1
+					// 群内禁止
+					p2, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+					if p2.Level == 9 {
+						return "无法操作管理员"
+					}
+					// 禁止使用
+					profile.Update(&profile.UpdateParam{Wxid: v, Level: 1})
 				}
 				return "操作成功"
 			}
@@ -57,9 +60,9 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					user := profile.Get(v, "")
-					if user.Level == 1 {
-						user.Level = 0
+					p, _ := profile.Fetch(&profile.FetchParam{Wxid: v})
+					if p.Level == 1 {
+						p.Level = 0
 					}
 				}
 				return "操作成功"
@@ -73,7 +76,7 @@ func banHandler() {
 func banMessagePrefix(msg *wcferry.WxMsg) string {
 
 	// 全局权限
-	user := profile.Get(msg.Sender, "")
+	user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
 	if args.Bot.WhiteMember {
 		if user.Level <= 1 {
 			msg.Content = ""
@@ -88,8 +91,8 @@ func banMessagePrefix(msg *wcferry.WxMsg) string {
 
 	// 群聊权限
 	if msg.IsGroup {
-		room := profile.Get("", msg.Roomid)
-		user := profile.Get(msg.Sender, msg.Roomid)
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
 		if args.Bot.WhiteChatRoom {
 			if room.Level <= 1 {
 				msg.Content = ""

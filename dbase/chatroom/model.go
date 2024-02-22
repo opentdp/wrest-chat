@@ -9,24 +9,23 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Rd        uint
-	Roomid    string `binding:"required"`
-	Name      string
-	Level     int32
-	Remark    string
-	JoinArgot string
-	Welcome   string
+	Roomid     string `binding:"required"`
+	Name       string
+	Level      int32
+	Remark     string
+	JoinArgot  string
+	WelcomeMsg string
 }
 
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Chatroom{
-		Roomid:    data.Roomid,
-		Name:      data.Name,
-		Level:     data.Level,
-		Remark:    data.Remark,
-		JoinArgot: data.JoinArgot,
-		Welcome:   data.Welcome,
+		Roomid:     data.Roomid,
+		Name:       data.Name,
+		Level:      data.Level,
+		Remark:     data.Remark,
+		JoinArgot:  data.JoinArgot,
+		WelcomeMsg: data.WelcomeMsg,
 	}
 
 	result := dborm.Db.Create(item)
@@ -37,27 +36,20 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新配置
 
-type UpdateParam struct {
-	Rd        uint
-	Name      string
-	Level     int32
-	Remark    string
-	JoinArgot string
-	Welcome   string
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
-			Rd: data.Rd,
+			Roomid: data.Roomid,
 		}).
 		Updates(tables.Chatroom{
-			Name:      data.Name,
-			Level:     data.Level,
-			Remark:    data.Remark,
-			JoinArgot: data.JoinArgot,
-			Welcome:   data.Welcome,
+			Name:       data.Name,
+			Level:      data.Level,
+			Remark:     data.Remark,
+			JoinArgot:  data.JoinArgot,
+			WelcomeMsg: data.WelcomeMsg,
 		})
 
 	return result.Error
@@ -67,7 +59,7 @@ func Update(data *UpdateParam) error {
 // 删除配置
 
 type DeleteParam struct {
-	Rd uint
+	Roomid string `binding:"required"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -76,7 +68,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
-			Rd: data.Rd,
+			Roomid: data.Roomid,
 		}).
 		Delete(&item)
 
@@ -87,8 +79,7 @@ func Delete(data *DeleteParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Rd     uint
-	Roomid string
+	Roomid string `binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Chatroom, error) {
@@ -97,10 +88,13 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
-			Rd:     data.Rd,
 			Roomid: data.Roomid,
 		}).
 		First(&item)
+
+	if item == nil {
+		item = &tables.Chatroom{Roomid: data.Roomid}
+	}
 
 	return item, result.Error
 

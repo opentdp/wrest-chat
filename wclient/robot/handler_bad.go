@@ -65,7 +65,8 @@ func updateBadWord() {
 
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
-	if !msg.IsGroup || profile.Get(msg.Sender, "").Level >= 7 {
+	p, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
+	if !msg.IsGroup || p.Level >= 7 {
 		return ""
 	}
 

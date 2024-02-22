@@ -56,7 +56,6 @@ func Register() *wcferry.Client {
 func msgToDatabase(msg *wcferry.WxMsg) {
 
 	rq := message.CreateParam{
-		Rd:      0,
 		Id:      msg.Id,
 		IsSelf:  msg.IsSelf,
 		IsGroup: msg.IsGroup,

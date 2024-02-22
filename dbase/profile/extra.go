@@ -2,29 +2,13 @@ package profile
 
 import (
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/tables"
 )
-
-func Get(wxid, roomid string) *tables.Profile {
-
-	p, err := Fetch(&FetchParam{
-		Wxid:   wxid,
-		Roomid: roomid,
-	})
-
-	if err != nil {
-		p = &tables.Profile{Wxid: wxid, Roomid: roomid}
-	}
-
-	return p
-
-}
 
 func GetAiModel(wxid, roomid string) *args.LLModel {
 
-	p := Get(wxid, roomid)
-
 	var llmc *args.LLModel
+
+	p, _ := Fetch(&FetchParam{Wxid: wxid, Roomid: roomid})
 
 	if p != nil {
 		llmc = args.LLM.Models[p.AiModel]
@@ -53,7 +37,8 @@ func SetAiModel(wxid, roomid, argot, model string) error {
 
 	if err == nil && p.Rd > 0 {
 		err = Update(&UpdateParam{
-			Rd:      p.Rd,
+			Wxid:    wxid,
+			Roomid:  roomid,
 			AiArgot: argot,
 			AiModel: model,
 		})
@@ -61,7 +46,6 @@ func SetAiModel(wxid, roomid, argot, model string) error {
 		_, err = Create(&CreateParam{
 			Wxid:    wxid,
 			Roomid:  roomid,
-			Level:   0,
 			AiArgot: argot,
 			AiModel: model,
 		})

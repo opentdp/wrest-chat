@@ -9,7 +9,6 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Rd       uint
 	Wxid     string `binding:"required"`
 	Code     string
 	Remark   string
@@ -40,22 +39,13 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新配置
 
-type UpdateParam struct {
-	Rd       uint
-	Code     string
-	Remark   string
-	Name     string
-	Country  string
-	Province string
-	City     string
-	Gender   int32
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Contact{
-			Rd: data.Rd,
+			Wxid: data.Wxid,
 		}).
 		Updates(tables.Contact{
 			Code:    data.Code,
@@ -73,7 +63,7 @@ func Update(data *UpdateParam) error {
 // 删除配置
 
 type DeleteParam struct {
-	Rd uint
+	Wxid string `binding:"required"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -82,7 +72,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Contact{
-			Rd: data.Rd,
+			Wxid: data.Wxid,
 		}).
 		Delete(&item)
 
@@ -93,8 +83,7 @@ func Delete(data *DeleteParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Rd   uint
-	Wxid string
+	Wxid string `binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Contact, error) {
@@ -103,10 +92,13 @@ func Fetch(data *FetchParam) (*tables.Contact, error) {
 
 	result := dborm.Db.
 		Where(&tables.Contact{
-			Rd:   data.Rd,
 			Wxid: data.Wxid,
 		}).
 		First(&item)
+
+	if item == nil {
+		item = &tables.Contact{Wxid: data.Wxid}
+	}
 
 	return item, result.Error
 

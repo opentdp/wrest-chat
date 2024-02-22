@@ -9,9 +9,8 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Rd      uint
 	Wxid    string `binding:"required"`
-	Roomid  string
+	Roomid  string `binding:"required"`
 	Level   int32
 	AiArgot string
 	AiModel string
@@ -35,18 +34,14 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新配置
 
-type UpdateParam struct {
-	Rd      uint
-	Level   int32
-	AiArgot string
-	AiModel string
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
-			Rd: data.Rd,
+			Wxid:   data.Wxid,
+			Roomid: data.Roomid,
 		}).
 		Updates(tables.Profile{
 			Level:   data.Level,
@@ -61,7 +56,8 @@ func Update(data *UpdateParam) error {
 // 删除配置
 
 type DeleteParam struct {
-	Rd uint
+	Wxid   string `binding:"required"`
+	Roomid string `binding:"required"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -70,7 +66,8 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
-			Rd: data.Rd,
+			Wxid:   data.Wxid,
+			Roomid: data.Roomid,
 		}).
 		Delete(&item)
 
@@ -81,9 +78,8 @@ func Delete(data *DeleteParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Rd     uint
-	Wxid   string
-	Roomid string
+	Wxid   string `binding:"required"`
+	Roomid string `binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Profile, error) {
@@ -92,11 +88,14 @@ func Fetch(data *FetchParam) (*tables.Profile, error) {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
-			Rd:     data.Rd,
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
 		First(&item)
+
+	if item == nil {
+		item = &tables.Profile{Wxid: data.Wxid, Roomid: data.Roomid}
+	}
 
 	return item, result.Error
 

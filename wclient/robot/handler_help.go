@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -20,7 +21,7 @@ func helpHandler() {
 		RoomAble: true,
 		Describe: "查看帮助信息",
 		Callback: func(msg *wcferry.WxMsg) string {
-			user := profile.Get(msg.Sender, "")
+			user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
 			// 生成指令菜单
 			helper := []string{}
 			for k, v := range handlers {
@@ -52,10 +53,10 @@ func helpHandler() {
 				text += fmt.Sprintf("上下文长度 %d/%d", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum) + "；"
 			}
 			if msg.IsGroup {
-				room := profile.Get("", msg.Roomid)
-				if room.Level > 0 {
+				room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+				if err == nil && room.Level > 0 {
 					text += "群级别 " + strconv.Itoa(int(room.Level)) + "；"
-					user := profile.Get(msg.Sender, "")
+					user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
 					if user.Level > 0 {
 						text += "群成员级别 " + strconv.Itoa(int(user.Level)) + "；"
 					}

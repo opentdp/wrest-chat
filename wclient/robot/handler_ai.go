@@ -36,13 +36,13 @@ func aiMessagePrefix(msg *wcferry.WxMsg) string {
 		if strings.Contains(msg.Xml, self().Wxid) {
 			msg.Content = "/ai " + msg.Content
 		} else {
-			wakeWord := profile.Get(msg.Sender, "").AiArgot
-			if wakeWord == "" {
+			p, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
+			if p.AiArgot == "" {
 				if !msg.IsGroup {
 					msg.Content = "/ai " + msg.Content
 				}
-			} else if strings.HasPrefix(msg.Content, wakeWord) {
-				msg.Content = strings.Replace(msg.Content, wakeWord, "/ai ", 1)
+			} else if strings.HasPrefix(msg.Content, p.AiArgot) {
+				msg.Content = strings.Replace(msg.Content, p.AiArgot, "/ai ", 1)
 			}
 		}
 	}

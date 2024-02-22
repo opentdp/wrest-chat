@@ -9,8 +9,7 @@ import (
 // 创建关键词
 
 type CreateParam struct {
-	Rd     uint
-	Roomid string
+	Roomid string `binding:"required"`
 	Phrase string `binding:"required"`
 	Level  int32
 }
@@ -18,7 +17,6 @@ type CreateParam struct {
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Keyword{
-		Rd:     data.Rd,
 		Roomid: data.Roomid,
 		Phrase: data.Phrase,
 		Level:  data.Level,
@@ -32,18 +30,14 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新关键词
 
-type UpdateParam struct {
-	Rd     uint
-	Roomid string
-	Phrase string
-	Level  int32
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
-			Rd: data.Rd,
+			Roomid: data.Roomid,
+			Phrase: data.Phrase,
 		}).
 		Updates(tables.Keyword{
 			Roomid: data.Roomid,
@@ -58,9 +52,8 @@ func Update(data *UpdateParam) error {
 // 删除关键词
 
 type DeleteParam struct {
-	Rd     uint
-	Roomid string
-	Phrase string
+	Roomid string `binding:"required"`
+	Phrase string `binding:"required"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -69,7 +62,6 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
-			Rd:     data.Rd,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
@@ -82,8 +74,8 @@ func Delete(data *DeleteParam) error {
 // 获取关键词
 
 type FetchParam struct {
-	Rd     uint
-	Phrase string
+	Roomid string `binding:"required"`
+	Phrase string `binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Keyword, error) {
@@ -92,10 +84,14 @@ func Fetch(data *FetchParam) (*tables.Keyword, error) {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
-			Rd:     data.Rd,
+			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
 		First(&item)
+
+	if item == nil {
+		item = &tables.Keyword{Phrase: data.Phrase}
+	}
 
 	return item, result.Error
 

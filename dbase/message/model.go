@@ -6,10 +6,9 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
-// 创建配置
+// 创建消息
 
 type CreateParam struct {
-	Rd      uint
 	Id      uint64 `binding:"required"`
 	IsSelf  bool
 	IsGroup bool
@@ -47,28 +46,15 @@ func Create(data *CreateParam) (uint, error) {
 
 }
 
-// 更新配置
+// 更新消息
 
-type UpdateParam struct {
-	Rd      uint
-	IsSelf  bool
-	IsGroup bool
-	Type    uint32
-	Ts      uint32
-	Roomid  string
-	Content string
-	Sender  string
-	Sign    string
-	Thumb   string
-	Extra   string
-	Xml     string
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Message{
-			Rd: data.Rd,
+			Id: data.Id,
 		}).
 		Updates(tables.Message{
 			IsSelf:  data.IsSelf,
@@ -88,10 +74,10 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 删除配置
+// 删除消息
 
 type DeleteParam struct {
-	Rd uint
+	Id uint64 `binding:"required"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -100,7 +86,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Message{
-			Rd: data.Rd,
+			Id: data.Id,
 		}).
 		Delete(&item)
 
@@ -108,11 +94,10 @@ func Delete(data *DeleteParam) error {
 
 }
 
-// 获取配置
+// 获取消息
 
 type FetchParam struct {
-	Rd uint
-	Id uint64
+	Id uint64 `binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Message, error) {
@@ -121,16 +106,19 @@ func Fetch(data *FetchParam) (*tables.Message, error) {
 
 	result := dborm.Db.
 		Where(&tables.Message{
-			Rd: data.Rd,
 			Id: data.Id,
 		}).
 		First(&item)
+
+	if item == nil {
+		item = &tables.Message{Id: data.Id}
+	}
 
 	return item, result.Error
 
 }
 
-// 获取配置列表
+// 获取消息列表
 
 type FetchAllParam struct {
 	Sender string
@@ -152,7 +140,7 @@ func FetchAll(data *FetchAllParam) ([]*tables.Message, error) {
 
 }
 
-// 获取配置总数
+// 获取消息总数
 
 func Count(data *FetchAllParam) (int64, error) {
 
