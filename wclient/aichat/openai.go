@@ -3,13 +3,15 @@ package aichat
 import (
 	"context"
 
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/sashabaranov/go-openai"
+
+	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func OpenaiText(id, ask string) (string, error) {
 
-	llmc := args.GetMember(id).GetModel()
+	llmc := profile.GetAiModel(id, "")
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {

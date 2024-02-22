@@ -4,11 +4,14 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/keyword"
+	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
 var badMember = map[string]int{}
+var keywordList = []*tables.Keyword{}
 
 func badHandler() {
 
@@ -19,8 +22,13 @@ func badHandler() {
 		Describe: "添加违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			v := msg.Content
-			if args.Bot.BadWord[v] == 0 {
-				args.Bot.BadWord[v] = 1
+			_, err := keyword.Create(&keyword.CreateParam{
+				Roomid: msg.Roomid,
+				Phrase: v,
+				Level:  1,
+			})
+			if err == nil {
+				updateBadWord()
 				return "添加成功"
 			}
 			return "关键词已存在"
@@ -31,11 +39,15 @@ func badHandler() {
 		Level:    7,
 		ChatAble: true,
 		RoomAble: true,
-		Describe: "添加违规关键词",
+		Describe: "删除违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			v := msg.Content
-			if args.Bot.BadWord[v] > 0 {
-				delete(args.Bot.BadWord, v)
+			err := keyword.Delete(&keyword.DeleteParam{
+				Roomid: msg.Roomid,
+				Phrase: v,
+			})
+			if err == nil {
+				updateBadWord()
 				return "删除成功"
 			}
 			return "关键词不存在"
@@ -44,19 +56,27 @@ func badHandler() {
 
 }
 
+func updateBadWord() {
+
+	list, _ := keyword.FetchAll(&keyword.FetchAllParam{})
+	keywordList = list
+
+}
+
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
-	if !msg.IsGroup || args.GetMember(msg.Sender).Level >= 7 {
+	if !msg.IsGroup || profile.Get(msg.Sender, "").Level >= 7 {
 		return ""
 	}
 
-	for k, v := range args.Bot.BadWord {
-		if v > 0 && strings.Contains(msg.Content, k) {
-			badMember[msg.Sender] += v
+	for _, v := range keywordList {
+		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
+			badMember[msg.Sender] += int(v.Level)
 			if badMember[msg.Sender] > 10 {
+				delete(badMember, msg.Sender)
 				wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
 			}
-			return "违规风险 +" + strconv.Itoa(v) + "，当前累计：" + strconv.Itoa(badMember[msg.Sender]) + "，大于 10 将赠与免费机票。"
+			return "违规风险 +" + strconv.Itoa(int(v.Level)) + "，当前累计：" + strconv.Itoa(badMember[msg.Sender]) + "，大于 10 将赠与免费机票。"
 		}
 	}
 

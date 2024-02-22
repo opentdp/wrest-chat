@@ -1,9 +1,8 @@
 package aichat
 
 import (
-	"strings"
-
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func Text(id, msg string) string {
@@ -16,18 +15,17 @@ func Text(id, msg string) string {
 	}
 
 	// 预设模型参数
-	CountHistory(id) // init only
-	llmc := args.GetMember(id).GetModel()
-	text := strings.TrimSpace(strings.TrimPrefix(msg, "/ai"))
+	CountHistory(id)
+	llmc := profile.GetAiModel(id, "")
 
 	// 调用接口生成文本
 	switch llmc.Provider {
 	case "google":
-		res, err = GoogleText(id, text)
+		res, err = GoogleText(id, msg)
 	case "openai":
-		res, err = OpenaiText(id, text)
+		res, err = OpenaiText(id, msg)
 	case "xunfei":
-		res, err = XunfeiText(id, text)
+		res, err = XunfeiText(id, msg)
 	default:
 		res = "暂不支持此模型"
 	}

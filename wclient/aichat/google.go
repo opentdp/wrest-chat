@@ -6,13 +6,15 @@ import (
 	"fmt"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/opentdp/wechat-rest/args"
 	"google.golang.org/api/option"
+
+	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func GoogleText(id, ask string) (string, error) {
 
-	llmc := args.GetMember(id).GetModel()
+	llmc := profile.GetAiModel(id, "")
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),

@@ -7,12 +7,14 @@ import (
 	"strings"
 
 	"github.com/liudding/go-llm-api/xunfei"
+
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func XunfeiText(id, ask string) (string, error) {
 
-	llmc := args.GetMember(id).GetModel()
+	llmc := profile.GetAiModel(id, "")
 
 	keys := strings.Split(llmc.Key, ",")
 	if len(keys) != 3 {

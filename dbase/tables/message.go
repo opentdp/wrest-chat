@@ -3,7 +3,7 @@ package tables
 // 消息
 
 type Message struct {
-	Rd        uint   `gorm:"primaryKey"`
+	Rd        uint   `gorm:"primaryKey"`  // 主键
 	Id        uint64 `gorm:"uniqueIndex"` // 消息 id
 	IsSelf    bool   // 是否自己发送的
 	IsGroup   bool   // 是否群消息
@@ -16,6 +16,6 @@ type Message struct {
 	Thumb     string // 缩略图
 	Extra     string // 附加内容
 	Xml       string // 消息 xml
-	CreatedAt int64
-	UpdatedAt int64
+	CreatedAt int64  // 创建时间戳
+	UpdatedAt int64  // 最后更新时间戳
 }

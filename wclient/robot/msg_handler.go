@@ -5,12 +5,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
 type Handler struct {
-	Level    int    // 0:不限制 9:管理员
+	Level    int32  // 0:不限制 9:管理员
 	ChatAble bool   // 是否允许在私聊使用
 	RoomAble bool   // 是否允许在群聊使用
 	Describe string // 指令描述
@@ -84,12 +84,11 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 指令权限
 	if handler.Level > 0 {
-		if args.GetMember(msg.Sender).Level < handler.Level {
+		if profile.Get(msg.Sender, "").Level < handler.Level {
 			return "无权限使用此指令"
 		}
 		if msg.IsGroup {
-			room := args.GetChatRoom(msg.Roomid)
-			if room.GetMember(msg.Sender).Level < handler.Level {
+			if profile.Get(msg.Sender, msg.Roomid).Level < handler.Level {
 				return "无权限使用此指令"
 			}
 		}

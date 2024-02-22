@@ -9,19 +9,15 @@ import (
 // 机器人参数
 
 var Bot = &IBot{
-	Enable:        true,
-	BadWord:       map[string]int{},
-	InvitableRoom: []string{},
+	Enable: true,
 }
 
 type IBot struct {
-	BadWord       map[string]int // 命中该关键词时警告
-	Enable        bool           // 是否启用内置机器人
-	InvitableRoom []string       // 可邀请的群聊，必须在 Usr.ChatRoom 配置中
-	Revoke        string         // 有人撤回消息时响应的内容，留空则不响应
-	Welcome       string         // 接受好友申请时时响应的内容，留空则不响应
-	WhiteChatRoom bool           // 白名单模式，仅允许 Level > 1 的群使用
-	WhiteMember   bool           // 白名单模式，仅允许 Level > 1 的好友使用
+	Enable        bool   // 是否启用内置机器人
+	Revoke        string // 有人撤回消息时响应的内容，留空则不响应
+	Welcome       string // 接受好友申请时时响应的内容，留空则不响应
+	WhiteChatRoom bool   // 白名单模式，仅允许 Level > 1 的群使用
+	WhiteMember   bool   // 白名单模式，仅允许 Level > 1 的好友使用
 }
 
 // 大语言模型
@@ -58,18 +54,6 @@ type ILog struct {
 	Dir    string // 日志目录
 	Level  string // 日志级别 DEBUG|INFO|WARN|ERROR
 	Target string // 日志输出方式 both|file|null|stdout|stderr
-}
-
-// 用户资料
-
-var Usr = &IUsr{
-	ChatRoom: map[string]*ChatRoom{},
-	Member:   map[string]*Member{},
-}
-
-type IUsr struct {
-	ChatRoom map[string]*ChatRoom // 群聊列表
-	Member   map[string]*Member   // 用户列表
 }
 
 // Wcf 服务

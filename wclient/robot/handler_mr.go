@@ -2,6 +2,7 @@ package robot
 
 import (
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -20,7 +21,7 @@ func modelHandler() {
 			RoomAble: true,
 			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
 			Callback: func(msg *wcferry.WxMsg) string {
-				args.GetMember(msg.Sender).AiModel = k
+				profile.SetAiModel(msg.Sender, "", "", k)
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		}
@@ -33,7 +34,7 @@ func modelHandler() {
 		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
 			for k, v := range args.LLM.Models {
-				args.GetMember(msg.Sender).AiModel = k
+				profile.SetAiModel(msg.Sender, "", "", k)
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			}
 			return "没有可用的模型"

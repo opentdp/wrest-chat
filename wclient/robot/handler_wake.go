@@ -3,7 +3,7 @@ package robot
 import (
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -20,7 +20,7 @@ func wakeHandler() {
 				return "唤醒词不允许包含 @ 或 /"
 			}
 			if argot != "" {
-				args.GetMember(msg.Sender).AiArgot = argot
+				profile.SetAiModel(msg.Sender, "", argot, "")
 				return "唤醒词设置为 " + argot
 			}
 			return "已禁用唤醒词"

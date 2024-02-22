@@ -8,6 +8,7 @@ import (
 
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
@@ -77,7 +78,8 @@ func reciver(msg *wcferry.WxMsg) {
 		// 有人进群时响应
 		re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 		if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
-			if room := args.GetChatRoom(msg.Roomid); room.Welcome != "" {
+			room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+			if err == nil && room.Welcome != "" {
 				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.Welcome, msg.Roomid, "")
 			}
 			return

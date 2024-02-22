@@ -3,7 +3,7 @@ package robot
 import (
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
@@ -16,10 +16,11 @@ func aiHandler() {
 		RoomAble: true,
 		Describe: "提问或交谈",
 		Callback: func(msg *wcferry.WxMsg) string {
-			if msg.Content == "" {
-				return "请在指令后面输入问题"
+			text := strings.TrimSpace(msg.Content)
+			if text != "" {
+				return aichat.Text(msg.Sender, text)
 			}
-			return aichat.Text(msg.Sender, msg.Content)
+			return "请在指令后输入问题"
 		},
 	}
 
@@ -35,7 +36,7 @@ func aiMessagePrefix(msg *wcferry.WxMsg) string {
 		if strings.Contains(msg.Xml, self().Wxid) {
 			msg.Content = "/ai " + msg.Content
 		} else {
-			wakeWord := args.GetMember(msg.Sender).AiArgot
+			wakeWord := profile.Get(msg.Sender, "").AiArgot
 			if wakeWord == "" {
 				if !msg.IsGroup {
 					msg.Content = "/ai " + msg.Content
