@@ -13,9 +13,10 @@ var Bot = &IBot{
 }
 
 type IBot struct {
-	Enable  bool   // 是否启用内置机器人
-	Revoke  string // 有人撤回消息时响应的内容，留空则不响应
-	Welcome string // 接受好友申请时时响应的内容，留空则不响应
+	Enable    bool   // 是否启用内置机器人
+	Revoke    string // 有人撤回消息时响应的内容，留空则不响应
+	Welcome   string // 接受好友申请时时响应的内容，留空则不响应
+	WhiteMode bool   // 开启后只有白名单内的群或好友可以使用机器人
 }
 
 // 大语言模型
