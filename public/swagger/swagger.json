@@ -601,6 +601,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "其他"
+                ],
                 "summary": "检查登录状态",
                 "responses": {
                     "200": {
@@ -617,6 +620,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "其他"
+                ],
                 "summary": "登录二维码",
                 "responses": {
                     "200": {
@@ -632,6 +638,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "其他"
                 ],
                 "summary": "获取所有消息类型",
                 "responses": {
@@ -681,6 +690,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "其他"
                 ],
                 "summary": "刷新朋友圈",
                 "parameters": [
@@ -739,6 +751,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "其他"
+                ],
                 "summary": "获取登录账号个人信息",
                 "responses": {
                     "200": {
@@ -754,6 +769,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "其他"
                 ],
                 "summary": "获取登录账号wxid",
                 "responses": {
@@ -1549,8 +1567,7 @@
         "keyword.UpdateParam": {
             "type": "object",
             "required": [
-                "phrase",
-                "roomid"
+                "rd"
             ],
             "properties": {
                 "level": {
@@ -1558,6 +1575,9 @@
                 },
                 "phrase": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "roomid": {
                     "type": "string"

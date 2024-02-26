@@ -27,6 +27,7 @@ type CommonPayload struct {
 
 // @Summary 登录二维码
 // @Produce json
+// @Tags 其他
 // @Success 200 {object} CommonPayload
 // @Router /api/login_qr [post]
 func (wc *Controller) loginQr(c *gin.Context) {
@@ -42,6 +43,7 @@ func (wc *Controller) loginQr(c *gin.Context) {
 
 // @Summary 检查登录状态
 // @Produce json
+// @Tags 其他
 // @Success 200 {object} bool
 // @Router /api/is_login [post]
 func (wc *Controller) isLogin(c *gin.Context) {
@@ -52,6 +54,7 @@ func (wc *Controller) isLogin(c *gin.Context) {
 
 // @Summary 获取登录账号wxid
 // @Produce json
+// @Tags 其他
 // @Success 200 {object} string
 // @Router /api/self_wxid [post]
 func (wc *Controller) getSelfWxid(c *gin.Context) {
@@ -62,6 +65,7 @@ func (wc *Controller) getSelfWxid(c *gin.Context) {
 
 // @Summary 获取登录账号个人信息
 // @Produce json
+// @Tags 其他
 // @Success 200 {object} UserInfoPayload
 // @Router /api/self_info [post]
 func (wc *Controller) getSelfInfo(c *gin.Context) {
@@ -83,6 +87,7 @@ type UserInfoPayload struct {
 
 // @Summary 获取所有消息类型
 // @Produce json
+// @Tags 其他
 // @Success 200 {object} map[int32]string
 // @Router /api/msg_types [post]
 func (wc *Controller) getMsgTypes(c *gin.Context) {
@@ -760,6 +765,7 @@ type GetInfoByWxidRequest struct {
 
 // @Summary 刷新朋友圈
 // @Produce json
+// @Tags 其他
 // @Param body body RefreshPyqRequest true "刷新朋友圈参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/refresh_pyq [post]
