@@ -3,9 +3,9 @@ package tables
 // 用户配置
 
 type Profile struct {
-	Rd        uint   `gorm:"primaryKey"`  // 主键
-	Wxid      string `gorm:"uniqueIndex"` // 微信 id
-	Roomid    string `gorm:"uniqueIndex"` // 群聊 id
+	Rd        uint   `gorm:"primaryKey"` // 主键
+	Wxid      string `gorm:"index"`      // 微信 id
+	Roomid    string `gorm:"index"`      // 群聊 id
 	Level     int32  // 等级
 	AiArgot   string // 唤醒词
 	AiModel   string // 会话模型
