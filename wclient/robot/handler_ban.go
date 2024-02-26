@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"strings"
 
+	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
@@ -66,14 +67,16 @@ func banHandler() {
 
 func banMessagePrefix(msg *wcferry.WxMsg) string {
 
-	room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-	if room.Level == 1 {
-		msg.Content = ""
-		return ""
+	if msg.IsGroup {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		if (args.Bot.WhiteMode && room.Level < 2) || room.Level == 1 {
+			msg.Content = ""
+			return ""
+		}
 	}
 
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-	if up.Level == 1 {
+	if (args.Bot.WhiteMode && up.Level < 2) || up.Level == 1 {
 		msg.Content = ""
 		return ""
 	}
