@@ -46,7 +46,7 @@ func (c *pbSocket) init(d uint) (err error) {
 	}
 	c.socket.SetOption(mangos.OptionMaxRecvSize, 16*1024*1024)
 	// 连接服务器
-	logman.Info("pbSocket dial", "server", c.server)
+	logman.Warn("pbSocket dial", "server", c.server)
 	return c.socket.Dial(c.server)
 }
 

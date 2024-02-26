@@ -18,7 +18,7 @@ var socketReceiverList = map[*websocket.Conn]bool{}
 
 func (wc *Controller) enableUrlReceiver(url string) error {
 
-	logman.Info("enable receiver", "url", url)
+	logman.Warn("enable receiver", "url", url)
 
 	if urlReceiverKey == "" {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
@@ -45,7 +45,7 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 
 func (wc *Controller) disableUrlReceiver(url string) error {
 
-	logman.Info("disable receiver", "url", url)
+	logman.Warn("disable receiver", "url", url)
 
 	if _, ok := urlReceiverList[url]; !ok {
 		return errors.New("url not exists")
@@ -63,7 +63,7 @@ func (wc *Controller) disableUrlReceiver(url string) error {
 
 func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
-	logman.Info("enable receiver", "socket", ws.RemoteAddr().String())
+	logman.Warn("enable receiver", "socket", ws.RemoteAddr().String())
 
 	if len(socketReceiverList) == 0 {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
@@ -90,7 +90,7 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
 func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
 
-	logman.Info("disable receiver", "socket", ws.RemoteAddr().String())
+	logman.Warn("disable receiver", "socket", ws.RemoteAddr().String())
 
 	if _, ok := socketReceiverList[ws]; !ok {
 		return errors.New("socket not exists")

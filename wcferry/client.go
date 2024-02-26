@@ -102,7 +102,7 @@ func (c *Client) wxInitSDK() error {
 		}
 	}
 	// 注入微信，打开 wcf 服务
-	logman.Info(c.WcfBinary + " start " + strconv.Itoa(c.ListenPort))
+	logman.Warn(c.WcfBinary + " start " + strconv.Itoa(c.ListenPort))
 	cmd := exec.Command(c.WcfBinary, "start", strconv.Itoa(c.ListenPort))
 	return cmd.Run()
 }
@@ -114,15 +114,15 @@ func (c *Client) wxDestroySDK() error {
 		return nil
 	}
 	// 关闭 wcf 服务
-	logman.Info(c.WcfBinary + " stop")
+	logman.Warn(c.WcfBinary + " stop")
 	cmd := exec.Command(c.WcfBinary, "stop")
 	err := cmd.Run()
 	// 尝试自动关闭微信
 	if err == nil && c.WeChatAuto {
-		logman.Info("killing wechat process")
+		logman.Warn("killing wechat process")
 		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
 		if err := cmd.Run(); err != nil {
-			logman.Warn("failed to kill wechat", "error", err)
+			logman.Error("failed to kill wechat", "error", err)
 			return err
 		}
 	}

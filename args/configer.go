@@ -49,7 +49,7 @@ func LoadConfig() error {
 
 	c := NewConfiger()
 
-	logman.Info("load config", "file", c.File)
+	logman.Warn("load config", "file", c.File)
 
 	// 文件不存在
 	if _, err := os.Stat(c.File); os.IsNotExist(err) {
@@ -79,7 +79,7 @@ func SaveConfig() error {
 
 	c := NewConfiger()
 
-	logman.Info("save config", "file", c.File)
+	logman.Warn("save config", "file", c.File)
 
 	// 从内存读入参数
 	obj := ConfigData{Bot, LLM, Log, Wcf, Web}
