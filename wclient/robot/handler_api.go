@@ -32,7 +32,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	if str == "" || str == "help" {
-		lines := strings.Split(str, "\n")
+		lines := strings.Split(res, "\n")
 		for k, line := range lines {
 			line = strings.TrimLeft(line, "/")
 			line = strings.Replace(line, "/", " ", 1)
