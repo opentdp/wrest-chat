@@ -12,7 +12,7 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	llmc := UserModel(id, rid)
 
-	config := openai.DefaultConfig(llmc.Key)
+	config := openai.DefaultConfig(llmc.Secret)
 	if llmc.Endpoint != "" {
 		config.BaseURL = llmc.Endpoint + "/v1"
 	}

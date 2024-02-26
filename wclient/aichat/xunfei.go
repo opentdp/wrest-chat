@@ -15,7 +15,7 @@ func XunfeiText(id, rid, ask string) (string, error) {
 
 	llmc := UserModel(id, rid)
 
-	keys := strings.Split(llmc.Key, ",")
+	keys := strings.Split(llmc.Secret, ",")
 	if len(keys) != 3 {
 		return "", errors.New("密钥格式错误")
 	}

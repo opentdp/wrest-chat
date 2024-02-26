@@ -13,24 +13,6 @@ LLM:
     HistoryNum: 20 # 历史消息数量
     RoleContext: | # 定义模型扮演的身份
         你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题。
-    Models: # 模型列表
-        gem: # 模型 Id，用于生成模型切换指令
-            Provider: google # 服务商，支持 [google, openai, xunfei]
-            Endpoint: https://googai.173371.xyz # 留空则使用官方接口，仅 google 和 openai 支持自定义
-            Family: Gemini # 模型家族，用于生成模型切换指令
-            Model: gemini-pro # 模型名，必须和服务商提供的值对应
-            Key: API-KEY # 密钥，必须和服务商对应
-        gpt:
-            Provider: openai
-            Endpoint: https://chatai.173371.xyz
-            Family: GPT
-            Model: gpt-3.5-turbo
-            Key: API-KEY
-        spa:
-            Provider: xunfei
-            Family: Spark
-            Model: v3
-            Key: APP-ID,API-KEY,API-SECRET
 
 # 运行日志
 Log:

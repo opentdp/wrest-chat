@@ -25,22 +25,12 @@ type IBot struct {
 
 var LLM = &ILLM{
 	HistoryNum: 20,
-	Models:     map[string]*LLModel{},
 }
 
 type ILLM struct {
-	Default     string              // 默认模型
-	HistoryNum  int                 // 历史消息数量
-	RoleContext string              // 定义模型扮演的身份
-	Models      map[string]*LLModel // 模型列表
-}
-
-type LLModel struct {
-	Provider string // 服务商 [google, openai, xunfei]
-	Endpoint string // 仅 google 和 openai 支持自定义，留空则使用官方接口
-	Family   string // 模型家族，用于生成模型切换指令
-	Model    string // 模型，必须和服务商提供的值对应
-	Key      string // 密钥，google 和 openai 填写 KEY，xunfei 填写 APP-ID,API-KEY,API-SECRET
+	Default     string // 默认模型
+	HistoryNum  int    // 历史消息数量
+	RoleContext string // 定义模型扮演的身份
 }
 
 // 日志配置

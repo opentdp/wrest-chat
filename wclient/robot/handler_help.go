@@ -7,6 +7,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
+	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -49,18 +50,23 @@ func helpCallback(msg *wcferry.WxMsg) string {
 		}
 	}
 
+	// 排序后转为字符串
 	sort.Strings(helper)
 	text := strings.Join(helper, "\n") + "\n"
 	if up.Level > 0 {
 		text += fmt.Sprintf("级别 %d；", up.Level)
 	}
-	if up.AiArgot != "" {
-		text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
-	}
-	if len(args.LLM.Models) > 0 {
+
+	// 对话模型相关配置
+	llmCount, _ := llmodel.Count(&llmodel.FetchAllParam{})
+	if llmCount > 0 {
+		if up.AiArgot != "" {
+			text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
+		}
 		text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
 		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum)
 	}
+
 	return text + "祝你好运！"
 
 }

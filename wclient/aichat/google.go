@@ -16,7 +16,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 	llmc := UserModel(id, rid)
 
 	opts := []option.ClientOption{
-		option.WithAPIKey(llmc.Key),
+		option.WithAPIKey(llmc.Secret),
 	}
 
 	if llmc.Endpoint != "" {

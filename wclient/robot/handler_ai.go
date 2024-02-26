@@ -3,7 +3,7 @@ package robot
 import (
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -11,7 +11,8 @@ import (
 
 func aiHandler() {
 
-	if len(args.LLM.Models) == 0 {
+	models, err := llmodel.FetchAll(&llmodel.FetchAllParam{})
+	if err != nil || len(models) == 0 {
 		return
 	}
 
@@ -42,9 +43,9 @@ func aiHandler() {
 		},
 	}
 
-	for k, v := range args.LLM.Models {
-		k, v := k, v // copy
-		cmdkey := "/m:" + k
+	for _, v := range models {
+		v := v // copy
+		cmdkey := "/m:" + v.Mid
 		handlers[cmdkey] = &Handler{
 			Level:    0,
 			Order:    12,
@@ -52,7 +53,7 @@ func aiHandler() {
 			RoomAble: true,
 			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
 			Callback: func(msg *wcferry.WxMsg) string {
-				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: k})
+				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		}
@@ -65,8 +66,8 @@ func aiHandler() {
 		RoomAble: true,
 		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
-			for k, v := range args.LLM.Models {
-				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: k})
+			for _, v := range models {
+				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			}
 			return "没有可用的模型"

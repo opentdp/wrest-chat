@@ -2,17 +2,15 @@ package aichat
 
 import (
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
 func Text(id, rid, msg string) string {
 
 	var err error
 	var res string
-
-	if len(args.LLM.Models) == 0 {
-		return "未配置大语言模型"
-	}
 
 	// 预设模型参数
 	CountHistory(id)
@@ -38,24 +36,22 @@ func Text(id, rid, msg string) string {
 
 }
 
-func UserModel(id, rid string) *args.LLModel {
+func UserModel(id, rid string) *tables.LLModel {
 
-	var llmc *args.LLModel
+	var llmc *tables.LLModel
 
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
 	if up != nil {
-		llmc = args.LLM.Models[up.AiModel]
+		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
 
 	if llmc == nil {
-		llmc = args.LLM.Models[args.LLM.Default]
+		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: args.LLM.Default})
 	}
 
 	if llmc == nil {
-		for _, v := range args.LLM.Models {
-			return v
-		}
+		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
 	return llmc
