@@ -11,9 +11,9 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func XunfeiText(id, ask string) (string, error) {
+func XunfeiText(id, rid, ask string) (string, error) {
 
-	llmc := UserModel(id)
+	llmc := UserModel(id, rid)
 
 	keys := strings.Split(llmc.Key, ",")
 	if len(keys) != 3 {

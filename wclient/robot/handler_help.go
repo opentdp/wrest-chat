@@ -48,7 +48,7 @@ func helpHandler() {
 				text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
 			}
 			if len(args.LLM.Models) > 0 {
-				text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender).Family)
+				text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
 				text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum)
 			}
 			if msg.IsGroup {

@@ -5,7 +5,7 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
-func Text(id, msg string) string {
+func Text(id, rid, msg string) string {
 
 	var err error
 	var res string
@@ -16,16 +16,16 @@ func Text(id, msg string) string {
 
 	// 预设模型参数
 	CountHistory(id)
-	llmc := UserModel(id)
+	llmc := UserModel(id, rid)
 
 	// 调用接口生成文本
 	switch llmc.Provider {
 	case "google":
-		res, err = GoogleText(id, msg)
+		res, err = GoogleText(id, rid, msg)
 	case "openai":
-		res, err = OpenaiText(id, msg)
+		res, err = OpenaiText(id, rid, msg)
 	case "xunfei":
-		res, err = XunfeiText(id, msg)
+		res, err = XunfeiText(id, rid, msg)
 	default:
 		res = "暂不支持此模型"
 	}
@@ -38,11 +38,11 @@ func Text(id, msg string) string {
 
 }
 
-func UserModel(wxid string) *args.LLModel {
+func UserModel(id, rid string) *args.LLModel {
 
 	var llmc *args.LLModel
 
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: wxid})
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
 	if up != nil {
 		llmc = args.LLM.Models[up.AiModel]

@@ -11,9 +11,9 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func GoogleText(id, ask string) (string, error) {
+func GoogleText(id, rid, ask string) (string, error) {
 
-	llmc := UserModel(id)
+	llmc := UserModel(id, rid)
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),

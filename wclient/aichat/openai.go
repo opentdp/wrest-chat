@@ -8,9 +8,9 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 )
 
-func OpenaiText(id, ask string) (string, error) {
+func OpenaiText(id, rid, ask string) (string, error) {
 
-	llmc := UserModel(id)
+	llmc := UserModel(id, rid)
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {

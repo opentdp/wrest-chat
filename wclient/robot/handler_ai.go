@@ -18,7 +18,7 @@ func aiHandler() {
 		Callback: func(msg *wcferry.WxMsg) string {
 			text := strings.TrimSpace(msg.Content)
 			if text != "" {
-				return aichat.Text(msg.Sender, text)
+				return aichat.Text(msg.Sender, msg.Roomid, text)
 			}
 			return "请在指令后输入问题"
 		},
