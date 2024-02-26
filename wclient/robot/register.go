@@ -10,7 +10,6 @@ import (
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
-	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
 	"github.com/opentdp/wechat-rest/wclient"
@@ -48,12 +47,6 @@ func self() *wcferry.UserInfo {
 
 func reciver(msg *wcferry.WxMsg) {
 
-	if args.Bot.WhiteMode {
-		if !inWhiteList(msg.Sender, msg.Roomid) {
-			return
-		}
-	}
-
 	switch msg.Type {
 	case 1: // 新消息
 		hook1(msg)
@@ -64,21 +57,6 @@ func reciver(msg *wcferry.WxMsg) {
 	case 10002: // 撤回消息
 		hook10002(msg)
 	}
-
-}
-
-// 是否在白名单
-func inWhiteList(sender, roomid string) bool {
-
-	if roomid != "" {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: roomid})
-		if room.Level > 1 {
-			return true
-		}
-	}
-
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: sender, Roomid: roomid})
-	return up.Level > 1
 
 }
 
@@ -97,12 +75,13 @@ func hook1(msg *wcferry.WxMsg) {
 // 新朋友通知
 func hook37(msg *wcferry.WxMsg) {
 
-	ret := &types.FriendRequestMsg{}
-	err := xml.Unmarshal([]byte(msg.Content), ret)
-
 	// 自动接受新朋友
-	if err == nil && ret.FromUserName != "" {
-		wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
+	if args.Bot.AutoFriend {
+		ret := &types.FriendRequestMsg{}
+		err := xml.Unmarshal([]byte(msg.Content), ret)
+		if err == nil && ret.FromUserName != "" {
+			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
+		}
 	}
 
 }
@@ -112,14 +91,16 @@ func hook10000(msg *wcferry.WxMsg) {
 
 	// 自动回应拍一拍
 	if strings.Contains(msg.Content, "拍了拍我") {
-		wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
+		if args.Bot.AutoPat {
+			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
+		}
 		return
 	}
 
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
-		if args.Bot.Welcome != "" {
-			wc.CmdClient.SendTxt(args.Bot.Welcome, msg.Sender, "")
+		if len(args.Bot.WelcomeMsg) > 1 {
+			wc.CmdClient.SendTxt(args.Bot.WelcomeMsg, msg.Sender, "")
 		}
 		return
 	}
@@ -128,7 +109,7 @@ func hook10000(msg *wcferry.WxMsg) {
 	re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 	if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		if err == nil && room.WelcomeMsg != "" {
+		if err == nil && len(room.WelcomeMsg) > 1 {
 			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
 		}
 		return
@@ -139,17 +120,27 @@ func hook10000(msg *wcferry.WxMsg) {
 // 处理撤回消息
 func hook10002(msg *wcferry.WxMsg) {
 
+	var revokeMsg string
+
+	if msg.IsGroup {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		revokeMsg = room.RevokeMsg
+	} else {
+		revokeMsg = args.Bot.RevokeMsg
+	}
+
+	if len(revokeMsg) < 2 {
+		return // 忽略
+	}
+
 	ret := &types.SysMsg{}
 	err := xml.Unmarshal([]byte(msg.Content), ret)
 
-	if err == nil && ret.RevokeMsg.NewMsgID != "" && args.Bot.Revoke != "" {
-		rs := args.Bot.Revoke
+	if err == nil && ret.RevokeMsg.NewMsgID != "" {
 		if id, _ := strconv.Atoi(ret.RevokeMsg.NewMsgID); id > 0 {
-			revokeMsg, _ := message.Fetch(&message.FetchParam{
-				Id: uint64(id),
-			})
-			if revokeMsg != nil {
-				str := strings.TrimSpace(revokeMsg.Content)
+			revoke, err := message.Fetch(&message.FetchParam{Id: uint64(id)})
+			if err == nil && revoke.Content != "" {
+				str := strings.TrimSpace(revoke.Content)
 				xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
 				for _, prefix := range xmlPrefixes {
 					if strings.HasPrefix(str, prefix) {
@@ -157,13 +148,13 @@ func hook10002(msg *wcferry.WxMsg) {
 					}
 				}
 				if str != "" {
-					rs += "\n-------\n" + str
+					revokeMsg += "\n-------\n" + str
 				} else {
-					rs += "\n-------\n暂不支持回显的消息类型"
+					revokeMsg += "\n-------\n暂不支持回显的消息类型"
 				}
+				textReply(msg, revokeMsg)
 			}
 		}
-		textReply(msg, rs)
 	}
 
 }
