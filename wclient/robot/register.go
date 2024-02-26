@@ -27,11 +27,18 @@ func Register() {
 
 	wc = wclient.Register()
 
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
-
-	wc.EnrollReceiver(true, reciver)
+	wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+		switch msg.Type {
+		case 1: // 新消息
+			hook1(msg)
+		case 37: // 好友请求
+			hook37(msg)
+		case 10000: // 系统消息
+			hook10000(msg)
+		case 10002: // 撤回消息
+			hook10002(msg)
+		}
+	})
 
 }
 
@@ -45,17 +52,22 @@ func self() *wcferry.UserInfo {
 
 }
 
-func reciver(msg *wcferry.WxMsg) {
+// 回复消息
+func reply(msg *wcferry.WxMsg, text string) int32 {
 
-	switch msg.Type {
-	case 1: // 新消息
-		hook1(msg)
-	case 37: // 好友请求
-		hook37(msg)
-	case 10000: // 系统消息
-		hook10000(msg)
-	case 10002: // 撤回消息
-		hook10002(msg)
+	if msg.IsSelf {
+		return -2
+	}
+
+	if text = strings.TrimSpace(text); text == "" {
+		return -1
+	}
+
+	if msg.IsGroup {
+		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
+		return wc.CmdClient.SendTxt("@"+user.Name+"\n"+text, msg.Roomid, msg.Sender)
+	} else {
+		return wc.CmdClient.SendTxt(text, msg.Sender, "")
 	}
 
 }
@@ -67,7 +79,7 @@ func hook1(msg *wcferry.WxMsg) {
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
 		output := applyHandlers(msg)
 		if output != "" && output != "-" {
-			textReply(msg, output)
+			reply(msg, output)
 		}
 		return
 	}
@@ -154,7 +166,7 @@ func hook10002(msg *wcferry.WxMsg) {
 				} else {
 					output += "\n-------\n暂不支持回显的消息类型"
 				}
-				textReply(msg, output)
+				reply(msg, output)
 			}
 		}
 	}

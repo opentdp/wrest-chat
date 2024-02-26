@@ -1,7 +1,6 @@
 package robot
 
 import (
-	"net/url"
 	"regexp"
 	"strings"
 
@@ -35,6 +34,10 @@ func setupHandlers() {
 }
 
 func applyHandlers(msg *wcferry.WxMsg) string {
+
+	if len(handlers) == 0 {
+		setupHandlers()
+	}
 
 	// 前置检查
 	for _, v := range handlers {
@@ -87,70 +90,5 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	// 执行指令
 	msg.Content = matches[2]
 	return handler.Callback(msg)
-
-}
-
-// helper functions
-
-func textReply(msg *wcferry.WxMsg, text string) int32 {
-
-	if msg.IsSelf {
-		return -2
-	}
-
-	if text = strings.TrimSpace(text); text == "" {
-		return -1
-	}
-
-	if msg.IsGroup {
-		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		return wc.CmdClient.SendTxt("@"+user.Name+"\n"+text, msg.Roomid, msg.Sender)
-	} else {
-		return wc.CmdClient.SendTxt(text, msg.Sender, "")
-	}
-
-}
-
-func fileReply(msg *wcferry.WxMsg, text string) int32 {
-
-	if text = strings.TrimSpace(text); text == "" {
-		return -1
-	}
-
-	if u, err := url.Parse(text); err == nil {
-		if u.Scheme == "http" || u.Scheme == "https" {
-			if isImageFile(u.Path) {
-				if msg.IsGroup {
-					return wc.CmdClient.SendImg(text, msg.Roomid)
-				} else {
-					return wc.CmdClient.SendImg(text, msg.Sender)
-				}
-			} else {
-				if msg.IsGroup {
-					return wc.CmdClient.SendFile(text, msg.Roomid)
-				} else {
-					return wc.CmdClient.SendFile(text, msg.Sender)
-				}
-			}
-		}
-		return -1
-	}
-
-	return -2
-
-}
-
-func isImageFile(text string) bool {
-
-	imageExtensions := []string{".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff", ".svg"}
-
-	ext := strings.ToLower(text)
-	for _, imageExt := range imageExtensions {
-		if ext == imageExt {
-			return true
-		}
-	}
-
-	return false
 
 }
