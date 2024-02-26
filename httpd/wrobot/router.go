@@ -1,4 +1,4 @@
-package console
+package wrobot
 
 import (
 	"github.com/opentdp/go-helper/httpd"
@@ -8,7 +8,7 @@ import (
 
 func Route() {
 
-	rg := httpd.Group("/capi")
+	rg := httpd.Group("/bot")
 	rg.Use(midware.OutputHandle, midware.ApiGuard)
 
 	chatroom := Chatroom{}

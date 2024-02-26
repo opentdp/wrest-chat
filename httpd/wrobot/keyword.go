@@ -1,4 +1,4 @@
-package console
+package wrobot
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,10 +10,10 @@ type Keyword struct{}
 
 // @Summary 关键字列表
 // @Produce json
-// @Tags 中台::关键字
+// @Tags BOT::关键字
 // @Param body body keyword.FetchAllParam true "获取关键字列表参数"
 // @Success 200 {object} []tables.Keyword
-// @Router /capi/keyword/list [post]
+// @Router /bot/keyword/list [post]
 func (*Keyword) list(c *gin.Context) {
 
 	var rq *keyword.FetchAllParam
@@ -33,10 +33,10 @@ func (*Keyword) list(c *gin.Context) {
 
 // @Summary 获取关键字
 // @Produce json
-// @Tags 中台::关键字
+// @Tags BOT::关键字
 // @Param body body keyword.FetchParam true "获取关键字参数"
 // @Success 200 {object} tables.Keyword
-// @Router /capi/keyword/detail [post]
+// @Router /bot/keyword/detail [post]
 func (*Keyword) detail(c *gin.Context) {
 
 	var rq *keyword.FetchParam
@@ -56,10 +56,10 @@ func (*Keyword) detail(c *gin.Context) {
 
 // @Summary 添加关键字
 // @Produce json
-// @Tags 中台::关键字
+// @Tags BOT::关键字
 // @Param body body keyword.CreateParam true "添加关键字参数"
 // @Success 200
-// @Router /capi/keyword/create [post]
+// @Router /bot/keyword/create [post]
 func (*Keyword) create(c *gin.Context) {
 
 	var rq *keyword.CreateParam
@@ -80,10 +80,10 @@ func (*Keyword) create(c *gin.Context) {
 
 // @Summary 修改关键字
 // @Produce json
-// @Tags 中台::关键字
+// @Tags BOT::关键字
 // @Param body body keyword.UpdateParam true "修改关键字参数"
 // @Success 200
-// @Router /capi/keyword/update [post]
+// @Router /bot/keyword/update [post]
 func (*Keyword) update(c *gin.Context) {
 
 	var rq *keyword.UpdateParam
@@ -103,10 +103,10 @@ func (*Keyword) update(c *gin.Context) {
 
 // @Summary 删除关键字
 // @Produce json
-// @Tags 中台::关键字
+// @Tags BOT::关键字
 // @Param body body keyword.DeleteParam true "删除关键字参数"
 // @Success 200
-// @Router /capi/keyword/delete [post]
+// @Router /bot/keyword/delete [post]
 func (*Keyword) delete(c *gin.Context) {
 
 	var rq *keyword.DeleteParam

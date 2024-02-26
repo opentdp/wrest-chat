@@ -4,9 +4,9 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/httpd/console"
 	"github.com/opentdp/wechat-rest/httpd/midware"
 	"github.com/opentdp/wechat-rest/httpd/wcfrest"
+	"github.com/opentdp/wechat-rest/httpd/wrobot"
 )
 
 // @title WeChat Rest Api
@@ -25,8 +25,8 @@ func Server() {
 	// Wcfrest 路由
 	wcfrest.Route()
 
-	// Console 路由
-	console.Route()
+	// Wrobot 路由
+	wrobot.Route()
 
 	// Swagger 守卫
 	httpd.Use(midware.SwaggerGuard)

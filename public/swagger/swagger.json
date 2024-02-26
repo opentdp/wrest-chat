@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "联系人管理"
+                    "WCF::联系人管理"
                 ],
                 "summary": "接受好友请求",
                 "parameters": [
@@ -51,7 +51,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "添加群成员",
                 "parameters": [
@@ -81,7 +81,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "获取群成员昵称",
                 "parameters": [
@@ -111,7 +111,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "联系人管理"
+                    "WCF::联系人管理"
                 ],
                 "summary": "获取头像列表",
                 "parameters": [
@@ -144,7 +144,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "获取群成员列表",
                 "parameters": [
@@ -177,7 +177,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "获取群列表",
                 "responses": {
@@ -199,7 +199,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "联系人管理"
+                    "WCF::联系人管理"
                 ],
                 "summary": "获取完整通讯录",
                 "responses": {
@@ -221,7 +221,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "数据库查询"
+                    "WCF::数据库查询"
                 ],
                 "summary": "获取数据库列表",
                 "responses": {
@@ -243,7 +243,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "数据库查询"
+                    "WCF::数据库查询"
                 ],
                 "summary": "执行数据库查询",
                 "parameters": [
@@ -277,7 +277,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "数据库查询"
+                    "WCF::数据库查询"
                 ],
                 "summary": "获取数据库表列表",
                 "parameters": [
@@ -310,7 +310,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "删除群成员",
                 "parameters": [
@@ -340,7 +340,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息推送"
+                    "WCF::消息推送"
                 ],
                 "summary": "关闭推送消息到URL",
                 "parameters": [
@@ -370,7 +370,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收取"
+                    "WCF::消息收取"
                 ],
                 "summary": "下载附件",
                 "parameters": [
@@ -400,7 +400,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收取"
+                    "WCF::消息收取"
                 ],
                 "summary": "下载图片",
                 "parameters": [
@@ -430,7 +430,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息推送"
+                    "WCF::消息推送"
                 ],
                 "summary": "开启推送消息到URL",
                 "parameters": [
@@ -460,7 +460,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "转发消息",
                 "parameters": [
@@ -490,7 +490,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "联系人管理"
+                    "WCF::联系人管理"
                 ],
                 "summary": "获取好友列表",
                 "responses": {
@@ -512,7 +512,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收取"
+                    "WCF::消息收取"
                 ],
                 "summary": "获取语音消息",
                 "parameters": [
@@ -542,7 +542,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收取"
+                    "WCF::消息收取"
                 ],
                 "summary": "获取OCR识别结果",
                 "parameters": [
@@ -572,7 +572,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "群聊管理"
+                    "WCF::群聊管理"
                 ],
                 "summary": "邀请群成员",
                 "parameters": [
@@ -602,7 +602,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "检查登录状态",
                 "responses": {
@@ -621,7 +621,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "登录二维码",
                 "responses": {
@@ -640,7 +640,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "获取所有消息类型",
                 "responses": {
@@ -662,7 +662,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收取"
+                    "WCF::消息收取"
                 ],
                 "summary": "接受转账",
                 "parameters": [
@@ -692,7 +692,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "刷新朋友圈",
                 "parameters": [
@@ -722,7 +722,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "撤回消息",
                 "parameters": [
@@ -752,7 +752,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "获取登录账号个人信息",
                 "responses": {
@@ -771,7 +771,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "其他"
+                    "WCF::其他"
                 ],
                 "summary": "获取登录账号wxid",
                 "responses": {
@@ -790,7 +790,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "发送文件消息",
                 "parameters": [
@@ -820,7 +820,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "发送图片消息",
                 "parameters": [
@@ -850,7 +850,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "拍一拍群友",
                 "parameters": [
@@ -880,7 +880,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "发送卡片消息",
                 "parameters": [
@@ -910,7 +910,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息发送"
+                    "WCF::消息发送"
                 ],
                 "summary": "发送文本消息",
                 "parameters": [
@@ -940,7 +940,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息推送"
+                    "WCF::消息推送"
                 ],
                 "summary": "推送消息到Socket",
                 "responses": {
@@ -959,7 +959,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "联系人管理"
+                    "WCF::联系人管理"
                 ],
                 "summary": "根据wxid获取个人信息",
                 "parameters": [
@@ -983,13 +983,13 @@
                 }
             }
         },
-        "/capi/chatroom/create": {
+        "/bot/chatroom/create": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::群聊"
+                    "BOT::群聊"
                 ],
                 "summary": "添加群聊",
                 "parameters": [
@@ -1010,13 +1010,13 @@
                 }
             }
         },
-        "/capi/chatroom/delete": {
+        "/bot/chatroom/delete": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::群聊"
+                    "BOT::群聊"
                 ],
                 "summary": "删除群聊",
                 "parameters": [
@@ -1037,13 +1037,13 @@
                 }
             }
         },
-        "/capi/chatroom/detail": {
+        "/bot/chatroom/detail": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::群聊"
+                    "BOT::群聊"
                 ],
                 "summary": "获取群聊",
                 "parameters": [
@@ -1067,13 +1067,13 @@
                 }
             }
         },
-        "/capi/chatroom/list": {
+        "/bot/chatroom/list": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::群聊"
+                    "BOT::群聊"
                 ],
                 "summary": "群聊列表",
                 "parameters": [
@@ -1100,13 +1100,13 @@
                 }
             }
         },
-        "/capi/chatroom/update": {
+        "/bot/chatroom/update": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::群聊"
+                    "BOT::群聊"
                 ],
                 "summary": "修改群聊",
                 "parameters": [
@@ -1127,13 +1127,13 @@
                 }
             }
         },
-        "/capi/keyword/create": {
+        "/bot/keyword/create": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::关键字"
+                    "BOT::关键字"
                 ],
                 "summary": "添加关键字",
                 "parameters": [
@@ -1154,13 +1154,13 @@
                 }
             }
         },
-        "/capi/keyword/delete": {
+        "/bot/keyword/delete": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::关键字"
+                    "BOT::关键字"
                 ],
                 "summary": "删除关键字",
                 "parameters": [
@@ -1181,13 +1181,13 @@
                 }
             }
         },
-        "/capi/keyword/detail": {
+        "/bot/keyword/detail": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::关键字"
+                    "BOT::关键字"
                 ],
                 "summary": "获取关键字",
                 "parameters": [
@@ -1211,13 +1211,13 @@
                 }
             }
         },
-        "/capi/keyword/list": {
+        "/bot/keyword/list": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::关键字"
+                    "BOT::关键字"
                 ],
                 "summary": "关键字列表",
                 "parameters": [
@@ -1244,13 +1244,13 @@
                 }
             }
         },
-        "/capi/keyword/update": {
+        "/bot/keyword/update": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::关键字"
+                    "BOT::关键字"
                 ],
                 "summary": "修改关键字",
                 "parameters": [
@@ -1271,13 +1271,13 @@
                 }
             }
         },
-        "/capi/llmodel./create": {
+        "/bot/llmodel/create": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::大语言模型"
+                    "BOT::大语言模型"
                 ],
                 "summary": "添加模型",
                 "parameters": [
@@ -1298,13 +1298,13 @@
                 }
             }
         },
-        "/capi/llmodel./delete": {
+        "/bot/llmodel/delete": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::大语言模型"
+                    "BOT::大语言模型"
                 ],
                 "summary": "删除模型",
                 "parameters": [
@@ -1325,13 +1325,13 @@
                 }
             }
         },
-        "/capi/llmodel./detail": {
+        "/bot/llmodel/detail": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::大语言模型"
+                    "BOT::大语言模型"
                 ],
                 "summary": "获取模型",
                 "parameters": [
@@ -1355,13 +1355,13 @@
                 }
             }
         },
-        "/capi/llmodel./list": {
+        "/bot/llmodel/list": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::大语言模型"
+                    "BOT::大语言模型"
                 ],
                 "summary": "模型列表",
                 "parameters": [
@@ -1388,13 +1388,13 @@
                 }
             }
         },
-        "/capi/llmodel./update": {
+        "/bot/llmodel/update": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::大语言模型"
+                    "BOT::大语言模型"
                 ],
                 "summary": "修改模型",
                 "parameters": [
@@ -1415,13 +1415,13 @@
                 }
             }
         },
-        "/capi/profile/create": {
+        "/bot/profile/create": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::用户配置"
+                    "BOT::用户配置"
                 ],
                 "summary": "添加配置",
                 "parameters": [
@@ -1442,13 +1442,13 @@
                 }
             }
         },
-        "/capi/profile/delete": {
+        "/bot/profile/delete": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::用户配置"
+                    "BOT::用户配置"
                 ],
                 "summary": "删除配置",
                 "parameters": [
@@ -1469,13 +1469,13 @@
                 }
             }
         },
-        "/capi/profile/detail": {
+        "/bot/profile/detail": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::用户配置"
+                    "BOT::用户配置"
                 ],
                 "summary": "获取配置",
                 "parameters": [
@@ -1499,13 +1499,13 @@
                 }
             }
         },
-        "/capi/profile/list": {
+        "/bot/profile/list": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::用户配置"
+                    "BOT::用户配置"
                 ],
                 "summary": "配置列表",
                 "parameters": [
@@ -1532,13 +1532,13 @@
                 }
             }
         },
-        "/capi/profile/update": {
+        "/bot/profile/update": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "中台::用户配置"
+                    "BOT::用户配置"
                 ],
                 "summary": "修改配置",
                 "parameters": [

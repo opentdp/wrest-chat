@@ -1,4 +1,4 @@
-package console
+package wrobot
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,10 +10,10 @@ type Profile struct{}
 
 // @Summary 配置列表
 // @Produce json
-// @Tags 中台::用户配置
+// @Tags BOT::用户配置
 // @Param body body profile.FetchAllParam true "获取配置列表参数"
 // @Success 200 {object} []tables.Profile
-// @Router /capi/profile/list [post]
+// @Router /bot/profile/list [post]
 func (*Profile) list(c *gin.Context) {
 
 	var rq *profile.FetchAllParam
@@ -33,10 +33,10 @@ func (*Profile) list(c *gin.Context) {
 
 // @Summary 获取配置
 // @Produce json
-// @Tags 中台::用户配置
+// @Tags BOT::用户配置
 // @Param body body profile.FetchParam true "获取配置参数"
 // @Success 200 {object} tables.Profile
-// @Router /capi/profile/detail [post]
+// @Router /bot/profile/detail [post]
 func (*Profile) detail(c *gin.Context) {
 
 	var rq *profile.FetchParam
@@ -56,10 +56,10 @@ func (*Profile) detail(c *gin.Context) {
 
 // @Summary 添加配置
 // @Produce json
-// @Tags 中台::用户配置
+// @Tags BOT::用户配置
 // @Param body body profile.CreateParam true "添加配置参数"
 // @Success 200
-// @Router /capi/profile/create [post]
+// @Router /bot/profile/create [post]
 func (*Profile) create(c *gin.Context) {
 
 	var rq *profile.CreateParam
@@ -80,10 +80,10 @@ func (*Profile) create(c *gin.Context) {
 
 // @Summary 修改配置
 // @Produce json
-// @Tags 中台::用户配置
+// @Tags BOT::用户配置
 // @Param body body profile.UpdateParam true "修改配置参数"
 // @Success 200
-// @Router /capi/profile/update [post]
+// @Router /bot/profile/update [post]
 func (*Profile) update(c *gin.Context) {
 
 	var rq *profile.UpdateParam
@@ -103,10 +103,10 @@ func (*Profile) update(c *gin.Context) {
 
 // @Summary 删除配置
 // @Produce json
-// @Tags 中台::用户配置
+// @Tags BOT::用户配置
 // @Param body body profile.DeleteParam true "删除配置参数"
 // @Success 200
-// @Router /capi/profile/delete [post]
+// @Router /bot/profile/delete [post]
 func (*Profile) delete(c *gin.Context) {
 
 	var rq *profile.DeleteParam

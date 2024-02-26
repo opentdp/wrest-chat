@@ -27,7 +27,7 @@ type CommonPayload struct {
 
 // @Summary 登录二维码
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Success 200 {object} CommonPayload
 // @Router /api/login_qr [post]
 func (wc *Controller) loginQr(c *gin.Context) {
@@ -43,7 +43,7 @@ func (wc *Controller) loginQr(c *gin.Context) {
 
 // @Summary 检查登录状态
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Success 200 {object} bool
 // @Router /api/is_login [post]
 func (wc *Controller) isLogin(c *gin.Context) {
@@ -54,7 +54,7 @@ func (wc *Controller) isLogin(c *gin.Context) {
 
 // @Summary 获取登录账号wxid
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Success 200 {object} string
 // @Router /api/self_wxid [post]
 func (wc *Controller) getSelfWxid(c *gin.Context) {
@@ -65,7 +65,7 @@ func (wc *Controller) getSelfWxid(c *gin.Context) {
 
 // @Summary 获取登录账号个人信息
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Success 200 {object} UserInfoPayload
 // @Router /api/self_info [post]
 func (wc *Controller) getSelfInfo(c *gin.Context) {
@@ -87,7 +87,7 @@ type UserInfoPayload struct {
 
 // @Summary 获取所有消息类型
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Success 200 {object} map[int32]string
 // @Router /api/msg_types [post]
 func (wc *Controller) getMsgTypes(c *gin.Context) {
@@ -98,7 +98,7 @@ func (wc *Controller) getMsgTypes(c *gin.Context) {
 
 // @Summary 获取数据库列表
 // @Produce json
-// @Tags 数据库查询
+// @Tags WCF::数据库查询
 // @Success 200 {object} []string
 // @Router /api/db_names [post]
 func (wc *Controller) getDbNames(c *gin.Context) {
@@ -109,7 +109,7 @@ func (wc *Controller) getDbNames(c *gin.Context) {
 
 // @Summary 获取数据库表列表
 // @Produce json
-// @Tags 数据库查询
+// @Tags WCF::数据库查询
 // @Param body body GetDbTablesRequest true "获取数据库表列表参数"
 // @Success 200 {object} []DbTablePayload
 // @Router /api/db_tables [post]
@@ -139,7 +139,7 @@ type GetDbTablesRequest struct {
 
 // @Summary 执行数据库查询
 // @Produce json
-// @Tags 数据库查询
+// @Tags WCF::数据库查询
 // @Param body body DbSqlQueryRequest true "数据库查询参数"
 // @Success 200 {object} []map[string]any
 // @Router /api/db_query_sql [post]
@@ -164,7 +164,7 @@ type DbSqlQueryRequest struct {
 
 // @Summary 获取群列表
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Success 200 {object} []ContactPayload
 // @Router /api/chatrooms [post]
 func (wc *Controller) getChatRooms(c *gin.Context) {
@@ -175,7 +175,7 @@ func (wc *Controller) getChatRooms(c *gin.Context) {
 
 // @Summary 获取群成员列表
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Param body body GetChatRoomMembersRequest true "获取群成员列表参数"
 // @Success 200 {object} []ContactPayload
 // @Router /api/chatroom_members [post]
@@ -198,7 +198,7 @@ type GetChatRoomMembersRequest struct {
 
 // @Summary 获取群成员昵称
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Param body body GetAliasInChatRoomRequest true "获取群成员昵称参数"
 // @Success 200 {object} string
 // @Router /api/alias_in_chatroom [post]
@@ -223,7 +223,7 @@ type GetAliasInChatRoomRequest struct {
 
 // @Summary 邀请群成员
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/invite_chatroom_members [post]
@@ -252,7 +252,7 @@ type ChatroomMembersRequest struct {
 
 // @Summary 添加群成员
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/add_chatroom_members [post]
@@ -274,7 +274,7 @@ func (wc *Controller) addChatRoomMembers(c *gin.Context) {
 
 // @Summary 删除群成员
 // @Produce json
-// @Tags 群聊管理
+// @Tags WCF::群聊管理
 // @Param body body ChatroomMembersRequest true "管理群成员参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/del_chatroom_members [post]
@@ -296,7 +296,7 @@ func (wc *Controller) delChatRoomMembers(c *gin.Context) {
 
 // @Summary 撤回消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body RevokeMsgRequest true "撤回消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/revoke_msg [post]
@@ -323,7 +323,7 @@ type RevokeMsgRequest struct {
 
 // @Summary 转发消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body ForwardMsgRequest true "转发消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/forward_msg [post]
@@ -352,7 +352,7 @@ type ForwardMsgRequest struct {
 
 // @Summary 发送文本消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body SendTxtRequest true "发送文本消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/send_txt [post]
@@ -383,7 +383,7 @@ type SendTxtRequest struct {
 
 // @Summary 发送图片消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body SendImgRequest true "发送图片消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/send_img [post]
@@ -412,7 +412,7 @@ type SendImgRequest struct {
 
 // @Summary 发送文件消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body SendFileRequest true "发送文件消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/send_file [post]
@@ -441,7 +441,7 @@ type SendFileRequest struct {
 
 // @Summary 发送卡片消息
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body SendRichTextRequest true "发送卡片消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/send_rich_text [post]
@@ -480,7 +480,7 @@ type SendRichTextRequest struct {
 
 // @Summary 拍一拍群友
 // @Produce json
-// @Tags 消息发送
+// @Tags WCF::消息发送
 // @Param body body SendPatMsgRequest true "拍一拍群友参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/send_pat_msg [post]
@@ -509,7 +509,7 @@ type SendPatMsgRequest struct {
 
 // @Summary 获取语音消息
 // @Produce json
-// @Tags 消息收取
+// @Tags WCF::消息收取
 // @Param body body GetAudioMsgRequest true "获取语音消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/get_audio_msg [post]
@@ -549,7 +549,7 @@ type GetAudioMsgRequest struct {
 
 // @Summary 获取OCR识别结果
 // @Produce json
-// @Tags 消息收取
+// @Tags WCF::消息收取
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/get_ocr_result [post]
@@ -587,7 +587,7 @@ type GetOcrRequest struct {
 
 // @Summary 下载图片
 // @Produce json
-// @Tags 消息收取
+// @Tags WCF::消息收取
 // @Param body body DownloadImageRequest true "下载图片参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/download_image [post]
@@ -622,7 +622,7 @@ type DownloadImageRequest struct {
 
 // @Summary 下载附件
 // @Produce json
-// @Tags 消息收取
+// @Tags WCF::消息收取
 // @Param body body DownloadAttachRequest true "下载附件参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/download_attach [post]
@@ -653,7 +653,7 @@ type DownloadAttachRequest struct {
 
 // @Summary 获取头像列表
 // @Produce json
-// @Tags 联系人管理
+// @Tags WCF::联系人管理
 // @Param body body GetAvatarsRequest true "获取头像列表参数"
 // @Success 200 {object} []AvatarPayload
 // @Router /api/avatars [post]
@@ -701,7 +701,7 @@ type AvatarPayload struct {
 
 // @Summary 获取完整通讯录
 // @Produce json
-// @Tags 联系人管理
+// @Tags WCF::联系人管理
 // @Success 200 {object} []ContactPayload
 // @Router /api/contacts [post]
 func (wc *Controller) getContacts(c *gin.Context) {
@@ -731,7 +731,7 @@ type ContactPayload struct {
 
 // @Summary 获取好友列表
 // @Produce json
-// @Tags 联系人管理
+// @Tags WCF::联系人管理
 // @Success 200 {object} []ContactPayload
 // @Router /api/friends [post]
 func (wc *Controller) getFriends(c *gin.Context) {
@@ -742,7 +742,7 @@ func (wc *Controller) getFriends(c *gin.Context) {
 
 // @Summary 根据wxid获取个人信息
 // @Produce json
-// @Tags 联系人管理
+// @Tags WCF::联系人管理
 // @Param body body GetInfoByWxidRequest true "根据wxid获取个人信息参数"
 // @Success 200 {object} ContactPayload
 // @Router /api/user_info [post]
@@ -765,7 +765,7 @@ type GetInfoByWxidRequest struct {
 
 // @Summary 刷新朋友圈
 // @Produce json
-// @Tags 其他
+// @Tags WCF::其他
 // @Param body body RefreshPyqRequest true "刷新朋友圈参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/refresh_pyq [post]
@@ -792,7 +792,7 @@ type RefreshPyqRequest struct {
 
 // @Summary 接受好友请求
 // @Produce json
-// @Tags 联系人管理
+// @Tags WCF::联系人管理
 // @Param body body AcceptNewFriendRequest true "接受好友参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/accept_new_friend [post]
@@ -823,7 +823,7 @@ type AcceptNewFriendRequest struct {
 
 // @Summary 接受转账
 // @Produce json
-// @Tags 消息收取
+// @Tags WCF::消息收取
 // @Param body body ReceiveTransferRequest true "接受转账参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/receive_transfer [post]
@@ -854,7 +854,7 @@ type ReceiveTransferRequest struct {
 
 // @Summary 开启推送消息到URL
 // @Produce json
-// @Tags 消息推送
+// @Tags WCF::消息推送
 // @Param body body ReceiverRequest true "推送消息到URL参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/enable_receiver [post]
@@ -886,7 +886,7 @@ type ReceiverRequest struct {
 
 // @Summary 关闭推送消息到URL
 // @Produce json
-// @Tags 消息推送
+// @Tags WCF::消息推送
 // @Param body body ReceiverRequest true "推送消息到URL参数"
 // @Success 200 {object} CommonPayload
 // @Router /api/disable_receiver [post]
@@ -908,7 +908,7 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 
 // @Summary 推送消息到Socket
 // @Produce json
-// @Tags 消息推送
+// @Tags WCF::消息推送
 // @Success 101 {string} string "Switching Protocols 响应"
 // @Router /api/socket_receiver [get]
 func (wc *Controller) socketReceiver(c *gin.Context) {
