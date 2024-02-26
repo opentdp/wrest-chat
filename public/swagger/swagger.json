@@ -965,10 +965,301 @@
                 }
             }
         },
-        "/cpi/create": {
+        "/capi/chatroom/create": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "中台-群聊"
+                ],
+                "summary": "添加群聊",
+                "parameters": [
+                    {
+                        "description": "添加群聊参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chatroom.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/chatroom/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-群聊"
+                ],
+                "summary": "删除群聊",
+                "parameters": [
+                    {
+                        "description": "删除群聊参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chatroom.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/chatroom/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-群聊"
+                ],
+                "summary": "获取群聊",
+                "parameters": [
+                    {
+                        "description": "获取群聊参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chatroom.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Chatroom"
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/chatroom/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-群聊"
+                ],
+                "summary": "群聊列表",
+                "parameters": [
+                    {
+                        "description": "获取群聊列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chatroom.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Chatroom"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/chatroom/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-群聊"
+                ],
+                "summary": "修改群聊",
+                "parameters": [
+                    {
+                        "description": "修改群聊参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chatroom.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/keyword/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-关键字"
+                ],
+                "summary": "添加关键字",
+                "parameters": [
+                    {
+                        "description": "添加关键字参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keyword.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/keyword/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-关键字"
+                ],
+                "summary": "删除关键字",
+                "parameters": [
+                    {
+                        "description": "删除关键字参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keyword.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/keyword/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-关键字"
+                ],
+                "summary": "获取关键字",
+                "parameters": [
+                    {
+                        "description": "获取关键字参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keyword.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Keyword"
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/keyword/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-关键字"
+                ],
+                "summary": "关键字列表",
+                "parameters": [
+                    {
+                        "description": "获取关键字列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keyword.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Keyword"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/keyword/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-关键字"
+                ],
+                "summary": "修改关键字",
+                "parameters": [
+                    {
+                        "description": "修改关键字参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keyword.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/profile/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台-用户配置"
                 ],
                 "summary": "添加配置",
                 "parameters": [
@@ -989,10 +1280,13 @@
                 }
             }
         },
-        "/cpi/delete": {
+        "/capi/profile/delete": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "中台-用户配置"
                 ],
                 "summary": "删除配置",
                 "parameters": [
@@ -1013,10 +1307,13 @@
                 }
             }
         },
-        "/cpi/detail": {
+        "/capi/profile/detail": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "中台-用户配置"
                 ],
                 "summary": "获取配置",
                 "parameters": [
@@ -1040,10 +1337,13 @@
                 }
             }
         },
-        "/cpi/list": {
+        "/capi/profile/list": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "中台-用户配置"
                 ],
                 "summary": "配置列表",
                 "parameters": [
@@ -1070,10 +1370,13 @@
                 }
             }
         },
-        "/cpi/update": {
+        "/capi/profile/update": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "中台-用户配置"
                 ],
                 "summary": "修改配置",
                 "parameters": [

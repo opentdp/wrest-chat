@@ -10,9 +10,10 @@ type Chatroom struct{}
 
 // @Summary 群聊列表
 // @Produce json
+// @Tags 中台-群聊
 // @Param body body chatroom.FetchAllParam true "获取群聊列表参数"
 // @Success 200 {object} []tables.Chatroom
-// @Router /cpi/list [post]
+// @Router /capi/chatroom/list [post]
 func (*Chatroom) list(c *gin.Context) {
 
 	var rq *chatroom.FetchAllParam
@@ -32,9 +33,10 @@ func (*Chatroom) list(c *gin.Context) {
 
 // @Summary 获取群聊
 // @Produce json
+// @Tags 中台-群聊
 // @Param body body chatroom.FetchParam true "获取群聊参数"
 // @Success 200 {object} tables.Chatroom
-// @Router /cpi/detail [post]
+// @Router /capi/chatroom/detail [post]
 func (*Chatroom) detail(c *gin.Context) {
 
 	var rq *chatroom.FetchParam
@@ -54,9 +56,10 @@ func (*Chatroom) detail(c *gin.Context) {
 
 // @Summary 添加群聊
 // @Produce json
+// @Tags 中台-群聊
 // @Param body body chatroom.CreateParam true "添加群聊参数"
 // @Success 200
-// @Router /cpi/create [post]
+// @Router /capi/chatroom/create [post]
 func (*Chatroom) create(c *gin.Context) {
 
 	var rq *chatroom.CreateParam
@@ -77,9 +80,10 @@ func (*Chatroom) create(c *gin.Context) {
 
 // @Summary 修改群聊
 // @Produce json
+// @Tags 中台-群聊
 // @Param body body chatroom.UpdateParam true "修改群聊参数"
 // @Success 200
-// @Router /cpi/update [post]
+// @Router /capi/chatroom/update [post]
 func (*Chatroom) update(c *gin.Context) {
 
 	var rq *chatroom.UpdateParam
@@ -99,9 +103,10 @@ func (*Chatroom) update(c *gin.Context) {
 
 // @Summary 删除群聊
 // @Produce json
+// @Tags 中台-群聊
 // @Param body body chatroom.DeleteParam true "删除群聊参数"
 // @Success 200
-// @Router /cpi/delete [post]
+// @Router /capi/chatroom/delete [post]
 func (*Chatroom) delete(c *gin.Context) {
 
 	var rq *chatroom.DeleteParam

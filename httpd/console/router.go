@@ -8,7 +8,7 @@ import (
 
 func Route() {
 
-	rg := httpd.Group("/cpi")
+	rg := httpd.Group("/capi")
 	rg.Use(midware.OutputHandle, midware.ApiGuard)
 
 	chatroom := Chatroom{}
