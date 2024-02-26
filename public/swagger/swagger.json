@@ -20,6 +20,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "联系人管理"
+                ],
                 "summary": "接受好友请求",
                 "parameters": [
                     {
@@ -58,6 +61,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "群聊管理"
                 ],
                 "summary": "添加群成员",
                 "parameters": [
@@ -98,6 +104,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "群聊管理"
+                ],
                 "summary": "获取群成员昵称",
                 "parameters": [
                     {
@@ -136,6 +145,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "联系人管理"
                 ],
                 "summary": "获取头像列表",
                 "parameters": [
@@ -179,6 +191,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "群聊管理"
+                ],
                 "summary": "获取群成员列表",
                 "parameters": [
                     {
@@ -221,6 +236,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "群聊管理"
+                ],
                 "summary": "获取群列表",
                 "responses": {
                     "200": {
@@ -251,6 +269,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "联系人管理"
                 ],
                 "summary": "获取完整通讯录",
                 "responses": {
@@ -283,6 +304,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "数据库查询"
+                ],
                 "summary": "获取数据库列表",
                 "responses": {
                     "200": {
@@ -313,6 +337,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "数据库查询"
                 ],
                 "summary": "执行数据库查询",
                 "parameters": [
@@ -357,6 +384,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "数据库查询"
+                ],
                 "summary": "获取数据库表列表",
                 "parameters": [
                     {
@@ -399,6 +429,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "群聊管理"
+                ],
                 "summary": "删除群成员",
                 "parameters": [
                     {
@@ -437,6 +470,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息推送"
                 ],
                 "summary": "关闭推送消息到URL",
                 "parameters": [
@@ -477,6 +513,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "下载附件",
                 "parameters": [
                     {
@@ -515,6 +554,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息收发"
                 ],
                 "summary": "下载图片",
                 "parameters": [
@@ -555,6 +597,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息推送"
+                ],
                 "summary": "开启推送消息到URL",
                 "parameters": [
                     {
@@ -593,6 +638,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息收发"
                 ],
                 "summary": "转发消息",
                 "parameters": [
@@ -633,6 +681,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "联系人管理"
+                ],
                 "summary": "获取好友列表",
                 "responses": {
                     "200": {
@@ -663,6 +714,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息收发"
                 ],
                 "summary": "获取语音消息",
                 "parameters": [
@@ -703,6 +757,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "获取OCR识别结果",
                 "parameters": [
                     {
@@ -741,6 +798,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "群聊管理"
                 ],
                 "summary": "邀请群成员",
                 "parameters": [
@@ -946,6 +1006,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "撤回消息",
                 "parameters": [
                     {
@@ -1041,6 +1104,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "发送文件消息",
                 "parameters": [
                     {
@@ -1079,6 +1145,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息收发"
                 ],
                 "summary": "发送图片消息",
                 "parameters": [
@@ -1119,6 +1188,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "拍一拍群友",
                 "parameters": [
                     {
@@ -1158,6 +1230,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收发"
+                ],
                 "summary": "发送卡片消息",
                 "parameters": [
                     {
@@ -1196,6 +1271,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "消息收发"
                 ],
                 "summary": "发送文本消息",
                 "parameters": [
@@ -1237,7 +1315,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "websocket"
+                    "消息推送"
                 ],
                 "summary": "推送消息到Socket",
                 "responses": {
@@ -1266,6 +1344,9 @@
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "联系人管理"
                 ],
                 "summary": "根据wxid获取个人信息",
                 "parameters": [
