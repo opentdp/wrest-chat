@@ -11,6 +11,7 @@ import (
 func apiHandler() {
 
 	handlers["/api"] = &Handler{
+		Level:    0,
 		Order:    20,
 		ChatAble: true,
 		RoomAble: true,

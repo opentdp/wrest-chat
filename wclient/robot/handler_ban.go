@@ -43,7 +43,8 @@ func banHandler() {
 	}
 
 	handlers["/unban"] = &Handler{
-		Level:    41,
+		Level:    7,
+		Order:    41,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "允许用户使用助手",

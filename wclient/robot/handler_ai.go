@@ -33,7 +33,8 @@ func aiHandler() {
 	}
 
 	handlers["/new"] = &Handler{
-		Level:    11,
+		Level:    0,
+		Order:    11,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "重置上下文内容",
@@ -75,6 +76,7 @@ func aiHandler() {
 	}
 
 	handlers["/wake"] = &Handler{
+		Level:    0,
 		Order:    14,
 		ChatAble: true,
 		RoomAble: true,
