@@ -139,7 +139,9 @@ func FetchAll(data *FetchAllParam) ([]*tables.Keyword, error) {
 
 // 获取关键词总数
 
-func Count(data *FetchAllParam) (int64, error) {
+type CountParam = FetchAllParam
+
+func Count(data *CountParam) (int64, error) {
 
 	var count int64
 

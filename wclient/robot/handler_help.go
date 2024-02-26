@@ -58,7 +58,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 对话模型相关配置
-	llmCount, _ := llmodel.Count(&llmodel.FetchAllParam{})
+	llmCount, _ := llmodel.Count(&llmodel.CountParam{})
 	if llmCount > 0 {
 		if up.AiArgot != "" {
 			text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)

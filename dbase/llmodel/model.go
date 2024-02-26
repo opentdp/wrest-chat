@@ -144,7 +144,9 @@ func FetchAll(data *FetchAllParam) ([]*tables.LLModel, error) {
 
 // 获取模型总数
 
-func Count(data *FetchAllParam) (int64, error) {
+type CountParam = FetchAllParam
+
+func Count(data *CountParam) (int64, error) {
 
 	var count int64
 

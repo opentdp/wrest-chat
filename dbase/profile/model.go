@@ -166,7 +166,9 @@ func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
 
 // 获取配置总数
 
-func Count(data *FetchAllParam) (int64, error) {
+type CountParam = FetchAllParam
+
+func Count(data *CountParam) (int64, error) {
 
 	var count int64
 
