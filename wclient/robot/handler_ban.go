@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
@@ -77,36 +76,22 @@ func banMessagePrefix(msg *wcferry.WxMsg) string {
 
 	// 全局权限
 	user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-	if args.Bot.WhiteMember {
-		if user.Level <= 1 {
-			msg.Content = ""
-			return ""
-		}
-	} else {
-		if user.Level == 1 {
-			msg.Content = ""
-			return ""
-		}
+	if user.Level == 1 {
+		msg.Content = ""
+		return ""
 	}
 
 	// 群聊权限
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-		if args.Bot.WhiteChatRoom {
-			if room.Level <= 1 {
-				msg.Content = ""
-				return ""
-			}
-		} else {
-			if room.Level == 1 {
-				msg.Content = ""
-				return ""
-			}
-			if user.Level == 1 {
-				msg.Content = ""
-				return ""
-			}
+		if room.Level == 1 {
+			msg.Content = ""
+			return ""
+		}
+		if user.Level == 1 {
+			msg.Content = ""
+			return ""
 		}
 	}
 
