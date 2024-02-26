@@ -30,7 +30,12 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新关键词
 
-type UpdateParam = CreateParam
+type UpdateParam struct {
+	Rd     uint `binding:"required"`
+	Roomid string
+	Phrase string
+	Level  int32
+}
 
 func Update(data *UpdateParam) error {
 
@@ -61,7 +66,12 @@ func Migrate(data *MigrateParam) error {
 	})
 
 	if err == nil && item.Rd > 0 {
-		err = Update(data)
+		err = Update(&UpdateParam{
+			Rd:     item.Rd,
+			Roomid: data.Roomid,
+			Phrase: data.Phrase,
+			Level:  data.Level,
+		})
 	} else {
 		_, err = Create(data)
 	}
