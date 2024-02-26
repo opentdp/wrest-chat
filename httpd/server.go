@@ -4,6 +4,7 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/httpd/console"
 	"github.com/opentdp/wechat-rest/httpd/midware"
 	"github.com/opentdp/wechat-rest/httpd/wcfrest"
 )
@@ -15,18 +16,17 @@ import (
 // @contact.url https://github.com/opentdp/wechat-rest
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @BasePath /api
+// @BasePath /
 
 func Server() {
 
 	httpd.Engine(args.Debug)
 
-	// Api 守卫
-	api := httpd.Group("/api")
-	api.Use(midware.OutputHandle, midware.ApiGuard)
+	// Wcfrest 路由
+	wcfrest.Route()
 
-	// Wcf 路由
-	wcfrest.Route(api)
+	// Console 路由
+	console.Route()
 
 	// Swagger 守卫
 	httpd.Use(midware.SwaggerGuard)
