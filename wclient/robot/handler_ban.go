@@ -67,18 +67,19 @@ func banHandler() {
 
 func banMessagePrefix(msg *wcferry.WxMsg) string {
 
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if (args.Bot.WhiteMode && room.Level < 2) || room.Level == 1 {
 			msg.Content = ""
-			return ""
+		} else if up.Level == 1 {
+			msg.Content = ""
 		}
-	}
-
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-	if (args.Bot.WhiteMode && up.Level < 2) || up.Level == 1 {
-		msg.Content = ""
-		return ""
+	} else {
+		if (args.Bot.WhiteMode && up.Level < 2) || up.Level == 1 {
+			msg.Content = ""
+		}
 	}
 
 	return ""
