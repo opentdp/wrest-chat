@@ -13,6 +13,9 @@ func roomHandler() {
 	}
 
 	for _, v := range rooms {
+		if len(v.JoinArgot) < 2 {
+			continue
+		}
 		room := v // copy
 		cmdkey := "/g:" + room.JoinArgot
 		handlers[cmdkey] = &Handler{
