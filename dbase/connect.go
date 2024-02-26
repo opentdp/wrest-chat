@@ -19,6 +19,7 @@ func Connect() {
 		&tables.Chatroom{},
 		&tables.Contact{},
 		&tables.Keyword{},
+		&tables.LLModel{},
 		&tables.Message{},
 		&tables.Profile{},
 	)
