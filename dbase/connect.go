@@ -18,6 +18,7 @@ func Connect() {
 	dborm.Db.AutoMigrate(
 		&tables.Chatroom{},
 		&tables.Contact{},
+		&tables.Keyword{},
 		&tables.Message{},
 		&tables.Profile{},
 	)
