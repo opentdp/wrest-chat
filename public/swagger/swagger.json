@@ -1271,6 +1271,150 @@
                 }
             }
         },
+        "/capi/llmodel./create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台::大语言模型"
+                ],
+                "summary": "添加模型",
+                "parameters": [
+                    {
+                        "description": "添加模型参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/llmodel.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/llmodel./delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台::大语言模型"
+                ],
+                "summary": "删除模型",
+                "parameters": [
+                    {
+                        "description": "删除模型参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/llmodel.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/capi/llmodel./detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台::大语言模型"
+                ],
+                "summary": "获取模型",
+                "parameters": [
+                    {
+                        "description": "获取模型参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/llmodel.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.LLModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/llmodel./list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台::大语言模型"
+                ],
+                "summary": "模型列表",
+                "parameters": [
+                    {
+                        "description": "获取模型列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/llmodel.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.LLModel"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/capi/llmodel./update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "中台::大语言模型"
+                ],
+                "summary": "修改模型",
+                "parameters": [
+                    {
+                        "description": "修改模型参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/llmodel.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/capi/profile/create": {
             "post": {
                 "produces": [
@@ -1584,6 +1728,102 @@
                 }
             }
         },
+        "llmodel.CreateParam": {
+            "type": "object",
+            "required": [
+                "family",
+                "mid",
+                "model",
+                "provider",
+                "secret"
+            ],
+            "properties": {
+                "endpoint": {
+                    "type": "string"
+                },
+                "family": {
+                    "type": "string"
+                },
+                "mid": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "secret": {
+                    "type": "string"
+                }
+            }
+        },
+        "llmodel.DeleteParam": {
+            "type": "object",
+            "required": [
+                "mid"
+            ],
+            "properties": {
+                "mid": {
+                    "type": "string"
+                }
+            }
+        },
+        "llmodel.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "family": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                }
+            }
+        },
+        "llmodel.FetchParam": {
+            "type": "object",
+            "required": [
+                "mid"
+            ],
+            "properties": {
+                "mid": {
+                    "type": "string"
+                }
+            }
+        },
+        "llmodel.UpdateParam": {
+            "type": "object",
+            "required": [
+                "family",
+                "mid",
+                "model",
+                "provider",
+                "secret"
+            ],
+            "properties": {
+                "endpoint": {
+                    "type": "string"
+                },
+                "family": {
+                    "type": "string"
+                },
+                "mid": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "secret": {
+                    "type": "string"
+                }
+            }
+        },
         "profile.CreateParam": {
             "type": "object",
             "required": [
@@ -1741,6 +1981,47 @@
                 },
                 "roomid": {
                     "description": "群聊 id",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                }
+            }
+        },
+        "tables.LLModel": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "endpoint": {
+                    "description": "仅 google 和 openai 支持自定义，留空则使用官方接口",
+                    "type": "string"
+                },
+                "family": {
+                    "description": "模型家族，用于生成模型切换指令",
+                    "type": "string"
+                },
+                "mid": {
+                    "description": "模型 Id",
+                    "type": "string"
+                },
+                "model": {
+                    "description": "模型，必须和服务商提供的值对应",
+                    "type": "string"
+                },
+                "provider": {
+                    "description": "服务商 [google, openai, xunfei]",
+                    "type": "string"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "secret": {
+                    "description": "密钥，google 和 openai 填写 KEY，xunfei 填写 APP-ID,API-KEY,API-SECRET",
                     "type": "string"
                 },
                 "updatedAt": {
