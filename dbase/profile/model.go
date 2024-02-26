@@ -173,6 +173,7 @@ func Count(data *CountParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
+		Model(&tables.Profile{}).
 		Where(&tables.Profile{
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,

@@ -151,6 +151,7 @@ func Count(data *CountParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
+		Model(&tables.LLModel{}).
 		Where(&tables.LLModel{
 			Provider: data.Provider,
 			Family:   data.Family,

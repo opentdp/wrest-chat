@@ -151,6 +151,7 @@ func Count(data *CountParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
+		Model(&tables.Contact{}).
 		Where(&tables.Contact{
 			Gender: data.Gender,
 		}).

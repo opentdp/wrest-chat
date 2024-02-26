@@ -167,6 +167,7 @@ func Count(data *CountParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
+		Model(&tables.Message{}).
 		Where(&tables.Message{
 			Sender: data.Sender,
 			Roomid: data.Roomid,

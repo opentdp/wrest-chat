@@ -152,6 +152,7 @@ func Count(data *CountParam) (int64, error) {
 	var count int64
 
 	result := dborm.Db.
+		Model(&tables.Chatroom{}).
 		Where(&tables.Chatroom{
 			Level: data.Level,
 		}).
