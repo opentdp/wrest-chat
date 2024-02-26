@@ -9,12 +9,11 @@ import (
 	"google.golang.org/api/option"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func GoogleText(id, ask string) (string, error) {
 
-	llmc := profile.GetAiModel(id, "")
+	llmc := UserModel(id)
 
 	opts := []option.ClientOption{
 		option.WithAPIKey(llmc.Key),

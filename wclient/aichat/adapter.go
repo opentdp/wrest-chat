@@ -16,7 +16,7 @@ func Text(id, msg string) string {
 
 	// 预设模型参数
 	CountHistory(id)
-	llmc := profile.GetAiModel(id, "")
+	llmc := UserModel(id)
 
 	// 调用接口生成文本
 	switch llmc.Provider {
@@ -35,6 +35,30 @@ func Text(id, msg string) string {
 		return err.Error()
 	}
 	return res
+
+}
+
+func UserModel(wxid string) *args.LLModel {
+
+	var llmc *args.LLModel
+
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: wxid})
+
+	if up != nil {
+		llmc = args.LLM.Models[up.AiModel]
+	}
+
+	if llmc == nil {
+		llmc = args.LLM.Models[args.LLM.Default]
+	}
+
+	if llmc == nil {
+		for _, v := range args.LLM.Models {
+			return v
+		}
+	}
+
+	return llmc
 
 }
 

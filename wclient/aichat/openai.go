@@ -6,12 +6,11 @@ import (
 	"github.com/sashabaranov/go-openai"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/profile"
 )
 
 func OpenaiText(id, ask string) (string, error) {
 
-	llmc := profile.GetAiModel(id, "")
+	llmc := UserModel(id)
 
 	config := openai.DefaultConfig(llmc.Key)
 	if llmc.Endpoint != "" {

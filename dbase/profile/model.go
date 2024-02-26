@@ -10,13 +10,17 @@ import (
 
 type CreateParam struct {
 	Wxid    string `binding:"required"`
-	Roomid  string `binding:"required"`
+	Roomid  string
 	Level   int32
 	AiArgot string
 	AiModel string
 }
 
 func Create(data *CreateParam) (uint, error) {
+
+	if data.Roomid == "" {
+		data.Roomid = "-"
+	}
 
 	item := &tables.Profile{
 		Wxid:    data.Wxid,
@@ -37,6 +41,10 @@ func Create(data *CreateParam) (uint, error) {
 type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
+
+	if data.Roomid == "" {
+		data.Roomid = "-"
+	}
 
 	result := dborm.Db.
 		Where(&tables.Profile{
@@ -59,6 +67,10 @@ type MigrateParam = CreateParam
 
 func Migrate(data *MigrateParam) error {
 
+	if data.Roomid == "" {
+		data.Roomid = "-"
+	}
+
 	item, err := Fetch(&FetchParam{
 		Wxid:   data.Wxid,
 		Roomid: data.Roomid,
@@ -78,12 +90,16 @@ func Migrate(data *MigrateParam) error {
 
 type FetchParam struct {
 	Wxid   string `binding:"required"`
-	Roomid string `binding:"required"`
+	Roomid string
 }
 
 func Fetch(data *FetchParam) (*tables.Profile, error) {
 
 	var item *tables.Profile
+
+	if data.Roomid == "" {
+		data.Roomid = "-"
+	}
 
 	result := dborm.Db.
 		Where(&tables.Profile{
@@ -107,6 +123,10 @@ type DeleteParam = FetchParam
 func Delete(data *DeleteParam) error {
 
 	var item *tables.Profile
+
+	if data.Roomid == "" {
+		data.Roomid = "-"
+	}
 
 	result := dborm.Db.
 		Where(&tables.Profile{
