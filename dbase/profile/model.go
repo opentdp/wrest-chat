@@ -12,6 +12,7 @@ type CreateParam struct {
 	Wxid    string `binding:"required"`
 	Roomid  string
 	Level   int32
+	Remark  string
 	AiArgot string
 	AiModel string
 }
@@ -26,6 +27,7 @@ func Create(data *CreateParam) (uint, error) {
 		Wxid:    data.Wxid,
 		Roomid:  data.Roomid,
 		Level:   data.Level,
+		Remark:  data.Remark,
 		AiArgot: data.AiArgot,
 		AiModel: data.AiModel,
 	}
@@ -53,6 +55,7 @@ func Update(data *UpdateParam) error {
 		}).
 		Updates(tables.Profile{
 			Level:   data.Level,
+			Remark:  data.Remark,
 			AiArgot: data.AiArgot,
 			AiModel: data.AiModel,
 		})

@@ -7,6 +7,7 @@ type Profile struct {
 	Wxid      string `gorm:"index"`      // 微信 id
 	Roomid    string `gorm:"index"`      // 群聊 id
 	Level     int32  // 等级
+	Remark    string // 备注
 	AiArgot   string // 唤醒词
 	AiModel   string // 会话模型
 	CreatedAt int64  // 创建时间戳
