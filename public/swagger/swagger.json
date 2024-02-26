@@ -13,9 +13,9 @@
         },
         "version": "v0.10.0"
     },
-    "basePath": "/api",
+    "basePath": "/",
     "paths": {
-        "/accept_new_friend": {
+        "/api/accept_new_friend": {
             "post": {
                 "produces": [
                     "application/json"
@@ -57,7 +57,7 @@
                 }
             }
         },
-        "/add_chatroom_members": {
+        "/api/add_chatroom_members": {
             "post": {
                 "produces": [
                     "application/json"
@@ -99,7 +99,7 @@
                 }
             }
         },
-        "/alias_in_chatroom": {
+        "/api/alias_in_chatroom": {
             "post": {
                 "produces": [
                     "application/json"
@@ -141,7 +141,7 @@
                 }
             }
         },
-        "/avatars": {
+        "/api/avatars": {
             "post": {
                 "produces": [
                     "application/json"
@@ -186,7 +186,7 @@
                 }
             }
         },
-        "/chatroom_members": {
+        "/api/chatroom_members": {
             "post": {
                 "produces": [
                     "application/json"
@@ -231,7 +231,7 @@
                 }
             }
         },
-        "/chatrooms": {
+        "/api/chatrooms": {
             "post": {
                 "produces": [
                     "application/json"
@@ -265,7 +265,7 @@
                 }
             }
         },
-        "/contacts": {
+        "/api/contacts": {
             "post": {
                 "produces": [
                     "application/json"
@@ -299,7 +299,7 @@
                 }
             }
         },
-        "/db_names": {
+        "/api/db_names": {
             "post": {
                 "produces": [
                     "application/json"
@@ -333,7 +333,7 @@
                 }
             }
         },
-        "/db_query_sql": {
+        "/api/db_query_sql": {
             "post": {
                 "produces": [
                     "application/json"
@@ -379,7 +379,7 @@
                 }
             }
         },
-        "/db_tables": {
+        "/api/db_tables": {
             "post": {
                 "produces": [
                     "application/json"
@@ -424,7 +424,7 @@
                 }
             }
         },
-        "/del_chatroom_members": {
+        "/api/del_chatroom_members": {
             "post": {
                 "produces": [
                     "application/json"
@@ -466,7 +466,7 @@
                 }
             }
         },
-        "/disable_receiver": {
+        "/api/disable_receiver": {
             "post": {
                 "produces": [
                     "application/json"
@@ -508,7 +508,7 @@
                 }
             }
         },
-        "/download_attach": {
+        "/api/download_attach": {
             "post": {
                 "produces": [
                     "application/json"
@@ -550,7 +550,7 @@
                 }
             }
         },
-        "/download_image": {
+        "/api/download_image": {
             "post": {
                 "produces": [
                     "application/json"
@@ -592,7 +592,7 @@
                 }
             }
         },
-        "/enable_receiver": {
+        "/api/enable_receiver": {
             "post": {
                 "produces": [
                     "application/json"
@@ -634,7 +634,7 @@
                 }
             }
         },
-        "/forward_msg": {
+        "/api/forward_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -676,7 +676,7 @@
                 }
             }
         },
-        "/friends": {
+        "/api/friends": {
             "post": {
                 "produces": [
                     "application/json"
@@ -710,7 +710,7 @@
                 }
             }
         },
-        "/get_audio_msg": {
+        "/api/get_audio_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -752,7 +752,7 @@
                 }
             }
         },
-        "/get_ocr_result": {
+        "/api/get_ocr_result": {
             "post": {
                 "produces": [
                     "application/json"
@@ -794,7 +794,7 @@
                 }
             }
         },
-        "/invite_chatroom_members": {
+        "/api/invite_chatroom_members": {
             "post": {
                 "produces": [
                     "application/json"
@@ -836,7 +836,7 @@
                 }
             }
         },
-        "/is_login": {
+        "/api/is_login": {
             "post": {
                 "produces": [
                     "application/json"
@@ -864,7 +864,7 @@
                 }
             }
         },
-        "/login_qr": {
+        "/api/login_qr": {
             "post": {
                 "produces": [
                     "application/json"
@@ -892,7 +892,7 @@
                 }
             }
         },
-        "/msg_types": {
+        "/api/msg_types": {
             "post": {
                 "produces": [
                     "application/json"
@@ -923,7 +923,7 @@
                 }
             }
         },
-        "/receive_transfer": {
+        "/api/receive_transfer": {
             "post": {
                 "produces": [
                     "application/json"
@@ -965,7 +965,7 @@
                 }
             }
         },
-        "/refresh_pyq": {
+        "/api/refresh_pyq": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1004,7 +1004,7 @@
                 }
             }
         },
-        "/revoke_msg": {
+        "/api/revoke_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1046,7 +1046,7 @@
                 }
             }
         },
-        "/self_info": {
+        "/api/self_info": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1074,7 +1074,7 @@
                 }
             }
         },
-        "/self_wxid": {
+        "/api/self_wxid": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1102,7 +1102,7 @@
                 }
             }
         },
-        "/send_file": {
+        "/api/send_file": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1144,7 +1144,7 @@
                 }
             }
         },
-        "/send_img": {
+        "/api/send_img": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1186,7 +1186,7 @@
                 }
             }
         },
-        "/send_pat_msg": {
+        "/api/send_pat_msg": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1228,7 +1228,7 @@
                 }
             }
         },
-        "/send_rich_text": {
+        "/api/send_rich_text": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1270,7 +1270,7 @@
                 }
             }
         },
-        "/send_txt": {
+        "/api/send_txt": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1312,7 +1312,7 @@
                 }
             }
         },
-        "/socket_receiver": {
+        "/api/socket_receiver": {
             "get": {
                 "produces": [
                     "application/json"
@@ -1343,7 +1343,7 @@
                 }
             }
         },
-        "/user_info": {
+        "/api/user_info": {
             "post": {
                 "produces": [
                     "application/json"

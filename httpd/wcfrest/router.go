@@ -1,12 +1,16 @@
 package wcfrest
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/opentdp/go-helper/httpd"
 
+	"github.com/opentdp/wechat-rest/httpd/midware"
 	"github.com/opentdp/wechat-rest/wclient"
 )
 
-func Route(rg *gin.RouterGroup) {
+func Route() {
+
+	rg := httpd.Group("/api")
+	rg.Use(midware.OutputHandle, midware.ApiGuard)
 
 	ctrl := &Controller{wclient.Register()}
 
