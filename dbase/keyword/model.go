@@ -49,25 +49,24 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 删除关键词
+// 合并关键词
 
-type DeleteParam struct {
-	Roomid string `binding:"required"`
-	Phrase string `binding:"required"`
-}
+type MigrateParam = CreateParam
 
-func Delete(data *DeleteParam) error {
+func Migrate(data *MigrateParam) error {
 
-	var item *tables.Keyword
+	item, err := Fetch(&FetchParam{
+		Roomid: data.Roomid,
+		Phrase: data.Phrase,
+	})
 
-	result := dborm.Db.
-		Where(&tables.Keyword{
-			Roomid: data.Roomid,
-			Phrase: data.Phrase,
-		}).
-		Delete(&item)
+	if err == nil && item.Rd > 0 {
+		err = Update(data)
+	} else {
+		_, err = Create(data)
+	}
 
-	return result.Error
+	return err
 
 }
 
@@ -94,6 +93,25 @@ func Fetch(data *FetchParam) (*tables.Keyword, error) {
 	}
 
 	return item, result.Error
+
+}
+
+// 删除关键词
+
+type DeleteParam = FetchParam
+
+func Delete(data *DeleteParam) error {
+
+	var item *tables.Keyword
+
+	result := dborm.Db.
+		Where(&tables.Keyword{
+			Roomid: data.Roomid,
+			Phrase: data.Phrase,
+		}).
+		Delete(&item)
+
+	return result.Error
 
 }
 

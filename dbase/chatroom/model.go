@@ -6,7 +6,7 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
-// 创建配置
+// 创建群聊
 
 type CreateParam struct {
 	Roomid     string `binding:"required"`
@@ -34,7 +34,7 @@ func Create(data *CreateParam) (uint, error) {
 
 }
 
-// 更新配置
+// 更新群聊
 
 type UpdateParam = CreateParam
 
@@ -56,7 +56,27 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 删除配置
+// 合并群聊
+
+type MigrateParam = CreateParam
+
+func Migrate(data *MigrateParam) error {
+
+	item, err := Fetch(&FetchParam{
+		Roomid: data.Roomid,
+	})
+
+	if err == nil && item.Rd > 0 {
+		err = Update(data)
+	} else {
+		_, err = Create(data)
+	}
+
+	return err
+
+}
+
+// 删除群聊
 
 type DeleteParam struct {
 	Roomid string `binding:"required"`
@@ -76,7 +96,7 @@ func Delete(data *DeleteParam) error {
 
 }
 
-// 获取配置
+// 获取群聊
 
 type FetchParam struct {
 	Roomid string `binding:"required"`
@@ -100,7 +120,7 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 
 }
 
-// 获取配置列表
+// 获取群聊列表
 
 type FetchAllParam struct {
 	Level int32
@@ -120,7 +140,7 @@ func FetchAll(data *FetchAllParam) ([]*tables.Chatroom, error) {
 
 }
 
-// 获取配置总数
+// 获取群聊总数
 
 func Count(data *FetchAllParam) (int64, error) {
 

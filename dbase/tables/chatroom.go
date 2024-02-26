@@ -1,6 +1,6 @@
 package tables
 
-// 群聊
+// 群聊配置
 
 type Chatroom struct {
 	Rd         uint   `gorm:"primaryKey"`  // 主键

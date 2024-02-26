@@ -30,26 +30,12 @@ func GetAiModel(wxid, roomid string) *args.LLModel {
 
 func SetAiModel(wxid, roomid, argot, model string) error {
 
-	p, err := Fetch(&FetchParam{
-		Wxid:   wxid,
-		Roomid: roomid,
+	err := Migrate(&MigrateParam{
+		Wxid:    wxid,
+		Roomid:  roomid,
+		AiArgot: argot,
+		AiModel: model,
 	})
-
-	if err == nil && p.Rd > 0 {
-		err = Update(&UpdateParam{
-			Wxid:    wxid,
-			Roomid:  roomid,
-			AiArgot: argot,
-			AiModel: model,
-		})
-	} else {
-		_, err = Create(&CreateParam{
-			Wxid:    wxid,
-			Roomid:  roomid,
-			AiArgot: argot,
-			AiModel: model,
-		})
-	}
 
 	return err
 

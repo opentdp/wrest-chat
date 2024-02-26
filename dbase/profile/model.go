@@ -53,25 +53,24 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 删除配置
+// 合并配置
 
-type DeleteParam struct {
-	Wxid   string `binding:"required"`
-	Roomid string `binding:"required"`
-}
+type MigrateParam = CreateParam
 
-func Delete(data *DeleteParam) error {
+func Migrate(data *MigrateParam) error {
 
-	var item *tables.Profile
+	item, err := Fetch(&FetchParam{
+		Wxid:   data.Wxid,
+		Roomid: data.Roomid,
+	})
 
-	result := dborm.Db.
-		Where(&tables.Profile{
-			Wxid:   data.Wxid,
-			Roomid: data.Roomid,
-		}).
-		Delete(&item)
+	if err == nil && item.Rd > 0 {
+		err = Update(data)
+	} else {
+		_, err = Create(data)
+	}
 
-	return result.Error
+	return err
 
 }
 
@@ -98,6 +97,25 @@ func Fetch(data *FetchParam) (*tables.Profile, error) {
 	}
 
 	return item, result.Error
+
+}
+
+// 删除配置
+
+type DeleteParam = FetchParam
+
+func Delete(data *DeleteParam) error {
+
+	var item *tables.Profile
+
+	result := dborm.Db.
+		Where(&tables.Profile{
+			Wxid:   data.Wxid,
+			Roomid: data.Roomid,
+		}).
+		Delete(&item)
+
+	return result.Error
 
 }
 

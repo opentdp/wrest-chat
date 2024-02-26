@@ -1,6 +1,6 @@
 package tables
 
-// 配置
+// 用户配置
 
 type Profile struct {
 	Rd        uint   `gorm:"primaryKey"`  // 主键

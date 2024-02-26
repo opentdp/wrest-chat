@@ -74,23 +74,23 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 删除消息
+// 合并消息
 
-type DeleteParam struct {
-	Id uint64 `binding:"required"`
-}
+type MigrateParam = CreateParam
 
-func Delete(data *DeleteParam) error {
+func Migrate(data *MigrateParam) error {
 
-	var item *tables.Message
+	item, err := Fetch(&FetchParam{
+		Id: data.Id,
+	})
 
-	result := dborm.Db.
-		Where(&tables.Message{
-			Id: data.Id,
-		}).
-		Delete(&item)
+	if err == nil && item.Rd > 0 {
+		err = Update(data)
+	} else {
+		_, err = Create(data)
+	}
 
-	return result.Error
+	return err
 
 }
 
@@ -115,6 +115,24 @@ func Fetch(data *FetchParam) (*tables.Message, error) {
 	}
 
 	return item, result.Error
+
+}
+
+// 删除消息
+
+type DeleteParam = FetchParam
+
+func Delete(data *DeleteParam) error {
+
+	var item *tables.Message
+
+	result := dborm.Db.
+		Where(&tables.Message{
+			Id: data.Id,
+		}).
+		Delete(&item)
+
+	return result.Error
 
 }
 
