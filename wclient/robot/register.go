@@ -90,7 +90,7 @@ func hook1(msg *wcferry.WxMsg) {
 func hook37(msg *wcferry.WxMsg) {
 
 	// 自动接受新朋友
-	if args.Bot.AutoFriend {
+	if args.Bot.FriendAccept {
 		ret := &types.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
@@ -105,7 +105,7 @@ func hook10000(msg *wcferry.WxMsg) {
 
 	// 自动回应拍一拍
 	if strings.Contains(msg.Content, "拍了拍我") {
-		if args.Bot.AutoPat {
+		if args.Bot.PatReturn {
 			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 		}
 		return

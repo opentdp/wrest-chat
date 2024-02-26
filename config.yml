@@ -1,11 +1,11 @@
 # 机器人
 Bot:
     Enable: true # 是否启用内置机器人
-    AutoPat: true # 是否自动回应拍一拍
-    AutoFriend: true # 是否自动同意新的好友请求
-    WelcomeMsg: 回复 /help 查询指令 # 添加好友后的响应内容，留空则忽略
+    PatReturn: true # 是否自动回应拍一拍
+    FriendAccept: true # 是否自动同意新的好友请求
     RevokeMsg: 撤回了寂寞？ # 有人撤回消息时响应的内容，留空则忽略
-    WhiteMode: false # 开启后只有白名单内的群或好友可以使用机器人
+    WelcomeMsg: 回复 /help 查询指令 # 添加好友后的响应内容，留空则忽略
+    WhiteLimit: false # 开启后只有白名单内的群或好友可以使用机器人
 
 # 大模型
 LLM:

@@ -73,7 +73,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 func helpPreCheck(msg *wcferry.WxMsg) string {
 
-	if args.Bot.WhiteMode {
+	if args.Bot.WhiteLimit {
 		if msg.IsGroup {
 			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 			if room.Level < 2 {

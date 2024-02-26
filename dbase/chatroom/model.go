@@ -14,8 +14,8 @@ type CreateParam struct {
 	Level      int32
 	Remark     string
 	JoinArgot  string
-	WelcomeMsg string
 	RevokeMsg  string
+	WelcomeMsg string
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -26,8 +26,8 @@ func Create(data *CreateParam) (uint, error) {
 		Level:      data.Level,
 		Remark:     data.Remark,
 		JoinArgot:  data.JoinArgot,
-		WelcomeMsg: data.WelcomeMsg,
 		RevokeMsg:  data.RevokeMsg,
+		WelcomeMsg: data.WelcomeMsg,
 	}
 
 	result := dborm.Db.Create(item)
@@ -51,8 +51,8 @@ func Update(data *UpdateParam) error {
 			Level:      data.Level,
 			Remark:     data.Remark,
 			JoinArgot:  data.JoinArgot,
-			WelcomeMsg: data.WelcomeMsg,
 			RevokeMsg:  data.RevokeMsg,
+			WelcomeMsg: data.WelcomeMsg,
 		})
 
 	return result.Error

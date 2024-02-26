@@ -9,8 +9,8 @@ type Chatroom struct {
 	Level      int32  // 等级
 	Remark     string // 备注
 	JoinArgot  string // 入群口令
-	WelcomeMsg string // 欢迎消息
 	RevokeMsg  string // 防撤回消息
+	WelcomeMsg string // 欢迎消息
 	CreatedAt  int64  // 创建时间戳
 	UpdatedAt  int64  // 最后更新时间戳
 }
