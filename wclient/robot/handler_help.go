@@ -3,7 +3,6 @@ package robot
 import (
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
@@ -21,12 +20,12 @@ func helpHandler() {
 		RoomAble: true,
 		Describe: "查看帮助信息",
 		Callback: func(msg *wcferry.WxMsg) string {
-			user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
+			up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
 			// 生成指令菜单
 			helper := []string{}
 			for k, v := range handlers {
 				if v.Level > 0 {
-					if user == nil || v.Level > user.Level {
+					if up == nil || v.Level > up.Level {
 						continue // 没有权限
 					}
 				}
@@ -42,23 +41,22 @@ func helpHandler() {
 			}
 			sort.Strings(helper)
 			text := strings.Join(helper, "\n") + "\n"
-			if user.Level > 0 {
-				text += "级别 " + strconv.Itoa(int(user.Level)) + "；"
+			if up.Level > 0 {
+				text += fmt.Sprintf("级别 %d；", up.Level)
 			}
-			if user.AiArgot != "" {
-				text += "唤醒词 " + user.AiArgot + "；"
+			if up.AiArgot != "" {
+				text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
 			}
 			if len(args.LLM.Models) > 0 {
-				text += "对话模型 " + profile.GetAiModel(msg.Sender, "").Family + "，"
-				text += fmt.Sprintf("上下文长度 %d/%d", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum) + "；"
+				text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender).Family)
+				text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum)
 			}
 			if msg.IsGroup {
 				room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 				if err == nil && room.Level > 0 {
-					text += "群级别 " + strconv.Itoa(int(room.Level)) + "；"
-					user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-					if user.Level > 0 {
-						text += "群成员级别 " + strconv.Itoa(int(user.Level)) + "；"
+					text += fmt.Sprintf("群级别 %d；", room.Level)
+					if up.Level > 0 {
+						text += fmt.Sprintf("群成员级别 %d；", up.Level)
 					}
 				}
 			}

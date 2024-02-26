@@ -84,15 +84,9 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 指令权限
 	if handler.Level > 0 {
-		user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-		if user.Level < handler.Level {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+		if up.Level < handler.Level {
 			return "无权限使用此指令"
-		}
-		if msg.IsGroup {
-			user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-			if user.Level < handler.Level {
-				return "无权限使用此指令"
-			}
 		}
 	}
 

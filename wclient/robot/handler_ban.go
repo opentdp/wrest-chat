@@ -26,18 +26,13 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					// 全局禁止
-					p, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-					if p.Level == 9 {
-						return "无法操作管理员"
-					}
-					// 群内禁止
-					p2, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-					if p2.Level == 9 {
-						return "无法操作管理员"
+					// 权限检查
+					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: msg.Roomid})
+					if up.Level == 9 {
+						return "禁止操作管理员"
 					}
 					// 禁止使用
-					profile.Update(&profile.UpdateParam{Wxid: v, Level: 1})
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, Level: 1})
 				}
 				return "操作成功"
 			}
@@ -59,10 +54,7 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					p, _ := profile.Fetch(&profile.FetchParam{Wxid: v})
-					if p.Level == 1 {
-						p.Level = 0
-					}
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, Level: 2})
 				}
 				return "操作成功"
 			}
@@ -74,25 +66,16 @@ func banHandler() {
 
 func banMessagePrefix(msg *wcferry.WxMsg) string {
 
-	// 全局权限
-	user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-	if user.Level == 1 {
+	room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+	if room.Level == 1 {
 		msg.Content = ""
 		return ""
 	}
 
-	// 群聊权限
-	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		user, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-		if room.Level == 1 {
-			msg.Content = ""
-			return ""
-		}
-		if user.Level == 1 {
-			msg.Content = ""
-			return ""
-		}
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	if up.Level == 1 {
+		msg.Content = ""
+		return ""
 	}
 
 	return ""

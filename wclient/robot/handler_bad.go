@@ -1,7 +1,7 @@
 package robot
 
 import (
-	"strconv"
+	"fmt"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/keyword"
@@ -65,8 +65,8 @@ func updateBadWord() {
 
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
-	p, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-	if !msg.IsGroup || p.Level >= 7 {
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	if !msg.IsGroup || up.Level >= 7 {
 		return ""
 	}
 
@@ -77,7 +77,8 @@ func badMessagePrefix(msg *wcferry.WxMsg) string {
 				delete(badMember, msg.Sender)
 				wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
 			}
-			return "违规风险 +" + strconv.Itoa(int(v.Level)) + "，当前累计：" + strconv.Itoa(badMember[msg.Sender]) + "，大于 10 将赠与免费机票。"
+			str := "违规风险 %d，当前累计：%d，大于 10 将赠与免费机票。"
+			return fmt.Sprintf(str, v.Level, badMember[msg.Sender])
 		}
 	}
 
