@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
@@ -15,6 +14,7 @@ func banHandler() {
 
 	handlers["/ban"] = &Handler{
 		Level:    7,
+		Order:    40,
 		ChatAble: false,
 		RoomAble: true,
 		Describe: "禁止用户使用助手",
@@ -39,10 +39,11 @@ func banHandler() {
 			}
 			return "参数错误"
 		},
+		PreCheck: banPreCheck,
 	}
 
 	handlers["/unban"] = &Handler{
-		Level:    1,
+		Level:    41,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "允许用户使用助手",
@@ -65,21 +66,19 @@ func banHandler() {
 
 }
 
-func banMessagePrefix(msg *wcferry.WxMsg) string {
-
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+func banPreCheck(msg *wcferry.WxMsg) string {
 
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		if (args.Bot.WhiteMode && room.Level < 2) || room.Level == 1 {
+		if room.Level == 1 {
 			msg.Content = ""
-		} else if up.Level == 1 {
-			msg.Content = ""
+			return ""
 		}
-	} else {
-		if (args.Bot.WhiteMode && up.Level < 2) || up.Level == 1 {
-			msg.Content = ""
-		}
+	}
+
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	if up.Level == 1 {
+		msg.Content = ""
 	}
 
 	return ""

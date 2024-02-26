@@ -8,6 +8,7 @@ func wgetHandler() {
 
 	handlers["/wget"] = &Handler{
 		Level:    7,
+		Order:    90,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "获取图片或文件",

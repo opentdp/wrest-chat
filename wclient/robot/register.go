@@ -65,9 +65,11 @@ func hook1(msg *wcferry.WxMsg) {
 
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
-		if output := applyHandlers(msg); output != "" {
+		output := applyHandlers(msg)
+		if output != "" && output != "-" {
 			textReply(msg, output)
 		}
+		return
 	}
 
 }
@@ -120,17 +122,17 @@ func hook10000(msg *wcferry.WxMsg) {
 // 处理撤回消息
 func hook10002(msg *wcferry.WxMsg) {
 
-	var revokeMsg string
+	var output string
 
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		revokeMsg = room.RevokeMsg
+		output = room.RevokeMsg
 	} else {
-		revokeMsg = args.Bot.RevokeMsg
+		output = args.Bot.RevokeMsg
 	}
 
-	if len(revokeMsg) < 2 {
-		return // 忽略
+	if len(output) < 2 {
+		return // 防撤回提示过短则忽略
 	}
 
 	ret := &types.SysMsg{}
@@ -148,11 +150,11 @@ func hook10002(msg *wcferry.WxMsg) {
 					}
 				}
 				if str != "" {
-					revokeMsg += "\n-------\n" + str
+					output += "\n-------\n" + str
 				} else {
-					revokeMsg += "\n-------\n暂不支持回显的消息类型"
+					output += "\n-------\n暂不支持回显的消息类型"
 				}
-				textReply(msg, revokeMsg)
+				textReply(msg, output)
 			}
 		}
 	}

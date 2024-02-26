@@ -11,10 +11,12 @@ import (
 
 type Handler struct {
 	Level    int32  // 0:不限制 9:管理员
+	Order    int32  // 排序，越小越靠前
 	ChatAble bool   // 是否允许在私聊使用
 	RoomAble bool   // 是否允许在群聊使用
 	Describe string // 指令描述
 	Callback func(msg *wcferry.WxMsg) string
+	PreCheck func(msg *wcferry.WxMsg) string
 }
 
 var handlers = make(map[string]*Handler)
@@ -25,10 +27,7 @@ func setupHandlers() {
 	apiHandler()
 	badHandler()
 	banHandler()
-	newHandler()
-	modelHandler()
 	roomHandler()
-	wakeHandler()
 	wgetHandler()
 
 	helpHandler()
@@ -37,16 +36,14 @@ func setupHandlers() {
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	if txt := banMessagePrefix(msg); txt != "" {
-		return txt
-	}
-
-	if txt := badMessagePrefix(msg); txt != "" {
-		return txt
-	}
-
-	if txt := aiMessagePrefix(msg); txt != "" {
-		return txt
+	// 前置检查
+	for _, v := range handlers {
+		if v.PreCheck == nil {
+			continue
+		}
+		if txt := v.PreCheck(msg); txt != "" {
+			return txt
+		}
 	}
 
 	// 空白消息
@@ -65,7 +62,15 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	// 查找指令
 	handler, ok := handlers[matches[1]]
 	if !ok {
-		return "指令或参数错误, 回复 /help 获取帮助"
+		return "指令未注册或参数错误"
+	}
+
+	// 验证级别
+	if handler.Level > 0 {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+		if up.Level < handler.Level {
+			return "此指令已被限制使用"
+		}
 	}
 
 	// 验证场景
@@ -76,14 +81,6 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	} else {
 		if !handler.ChatAble {
 			return "此指令仅在群聊中可用"
-		}
-	}
-
-	// 指令权限
-	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-		if up.Level < handler.Level {
-			return "无权限使用此指令"
 		}
 	}
 

@@ -20,6 +20,7 @@ func roomHandler() {
 		cmdkey := "/g:" + room.JoinArgot
 		handlers[cmdkey] = &Handler{
 			Level:    0,
+			Order:    70,
 			ChatAble: true,
 			RoomAble: false,
 			Describe: "加入群聊 " + room.Name,

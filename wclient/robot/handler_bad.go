@@ -17,6 +17,7 @@ func badHandler() {
 
 	handlers["/bad"] = &Handler{
 		Level:    7,
+		Order:    30,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "添加违规关键词",
@@ -33,10 +34,12 @@ func badHandler() {
 			}
 			return "关键词已存在"
 		},
+		PreCheck: badMessagePrefix,
 	}
 
 	handlers["/unbad"] = &Handler{
 		Level:    7,
+		Order:    31,
 		ChatAble: true,
 		RoomAble: true,
 		Describe: "删除违规关键词",
