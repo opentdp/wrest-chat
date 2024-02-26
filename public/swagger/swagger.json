@@ -514,7 +514,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息收取"
                 ],
                 "summary": "下载附件",
                 "parameters": [
@@ -556,7 +556,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息收取"
                 ],
                 "summary": "下载图片",
                 "parameters": [
@@ -640,7 +640,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "转发消息",
                 "parameters": [
@@ -716,7 +716,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息收取"
                 ],
                 "summary": "获取语音消息",
                 "parameters": [
@@ -758,7 +758,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息收取"
                 ],
                 "summary": "获取OCR识别结果",
                 "parameters": [
@@ -928,6 +928,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "消息收取"
+                ],
                 "summary": "接受转账",
                 "parameters": [
                     {
@@ -1007,7 +1010,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "撤回消息",
                 "parameters": [
@@ -1105,7 +1108,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "发送文件消息",
                 "parameters": [
@@ -1147,7 +1150,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "发送图片消息",
                 "parameters": [
@@ -1189,7 +1192,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "拍一拍群友",
                 "parameters": [
@@ -1231,7 +1234,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "发送卡片消息",
                 "parameters": [
@@ -1273,7 +1276,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "消息收发"
+                    "消息发送"
                 ],
                 "summary": "发送文本消息",
                 "parameters": [

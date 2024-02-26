@@ -319,7 +319,7 @@ func (wc *Controller) delChatRoomMembers(c *gin.Context) {
 
 // @Summary 撤回消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body RevokeMsgRequest true "撤回消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -348,7 +348,7 @@ type RevokeMsgRequest struct {
 
 // @Summary 转发消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body ForwardMsgRequest true "转发消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -379,7 +379,7 @@ type ForwardMsgRequest struct {
 
 // @Summary 发送文本消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body SendTxtRequest true "发送文本消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -412,7 +412,7 @@ type SendTxtRequest struct {
 
 // @Summary 发送图片消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body SendImgRequest true "发送图片消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -443,7 +443,7 @@ type SendImgRequest struct {
 
 // @Summary 发送文件消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body SendFileRequest true "发送文件消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -474,7 +474,7 @@ type SendFileRequest struct {
 
 // @Summary 发送卡片消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body SendRichTextRequest true "发送卡片消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -515,7 +515,7 @@ type SendRichTextRequest struct {
 
 // @Summary 拍一拍群友
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息发送
 // @Param body body SendPatMsgRequest true "拍一拍群友参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -546,7 +546,7 @@ type SendPatMsgRequest struct {
 
 // @Summary 获取语音消息
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息收取
 // @Param body body GetAudioMsgRequest true "获取语音消息参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -588,7 +588,7 @@ type GetAudioMsgRequest struct {
 
 // @Summary 获取OCR识别结果
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息收取
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -628,7 +628,7 @@ type GetOcrRequest struct {
 
 // @Summary 下载图片
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息收取
 // @Param body body DownloadImageRequest true "下载图片参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -665,7 +665,7 @@ type DownloadImageRequest struct {
 
 // @Summary 下载附件
 // @Produce json
-// @Tags 消息收发
+// @Tags 消息收取
 // @Param body body DownloadAttachRequest true "下载附件参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
@@ -879,6 +879,7 @@ type AcceptNewFriendRequest struct {
 
 // @Summary 接受转账
 // @Produce json
+// @Tags 消息收取
 // @Param body body ReceiveTransferRequest true "接受转账参数"
 // @Success 200 {object} CommonPayload
 // @Failure 400 {string} string "非法请求"
