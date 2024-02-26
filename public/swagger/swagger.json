@@ -971,7 +971,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-群聊"
+                    "中台::群聊"
                 ],
                 "summary": "添加群聊",
                 "parameters": [
@@ -998,7 +998,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-群聊"
+                    "中台::群聊"
                 ],
                 "summary": "删除群聊",
                 "parameters": [
@@ -1025,7 +1025,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-群聊"
+                    "中台::群聊"
                 ],
                 "summary": "获取群聊",
                 "parameters": [
@@ -1055,7 +1055,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-群聊"
+                    "中台::群聊"
                 ],
                 "summary": "群聊列表",
                 "parameters": [
@@ -1088,7 +1088,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-群聊"
+                    "中台::群聊"
                 ],
                 "summary": "修改群聊",
                 "parameters": [
@@ -1115,7 +1115,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-关键字"
+                    "中台::关键字"
                 ],
                 "summary": "添加关键字",
                 "parameters": [
@@ -1142,7 +1142,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-关键字"
+                    "中台::关键字"
                 ],
                 "summary": "删除关键字",
                 "parameters": [
@@ -1169,7 +1169,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-关键字"
+                    "中台::关键字"
                 ],
                 "summary": "获取关键字",
                 "parameters": [
@@ -1199,7 +1199,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-关键字"
+                    "中台::关键字"
                 ],
                 "summary": "关键字列表",
                 "parameters": [
@@ -1232,7 +1232,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-关键字"
+                    "中台::关键字"
                 ],
                 "summary": "修改关键字",
                 "parameters": [
@@ -1259,7 +1259,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-用户配置"
+                    "中台::用户配置"
                 ],
                 "summary": "添加配置",
                 "parameters": [
@@ -1286,7 +1286,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-用户配置"
+                    "中台::用户配置"
                 ],
                 "summary": "删除配置",
                 "parameters": [
@@ -1313,7 +1313,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-用户配置"
+                    "中台::用户配置"
                 ],
                 "summary": "获取配置",
                 "parameters": [
@@ -1343,7 +1343,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-用户配置"
+                    "中台::用户配置"
                 ],
                 "summary": "配置列表",
                 "parameters": [
@@ -1376,7 +1376,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "中台-用户配置"
+                    "中台::用户配置"
                 ],
                 "summary": "修改配置",
                 "parameters": [
