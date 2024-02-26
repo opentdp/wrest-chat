@@ -964,9 +964,509 @@
                     }
                 }
             }
+        },
+        "/cpi/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "添加配置",
+                "parameters": [
+                    {
+                        "description": "添加配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/cpi/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除配置",
+                "parameters": [
+                    {
+                        "description": "删除配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/cpi/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取配置",
+                "parameters": [
+                    {
+                        "description": "获取配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/cpi/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "配置列表",
+                "parameters": [
+                    {
+                        "description": "获取配置列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Profile"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cpi/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "修改配置",
+                "parameters": [
+                    {
+                        "description": "修改配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "chatroom.CreateParam": {
+            "type": "object",
+            "required": [
+                "roomid"
+            ],
+            "properties": {
+                "joinArgot": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "revokeMsg": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "welcomeMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "chatroom.DeleteParam": {
+            "type": "object",
+            "required": [
+                "roomid"
+            ],
+            "properties": {
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "chatroom.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "level": {
+                    "type": "integer"
+                }
+            }
+        },
+        "chatroom.FetchParam": {
+            "type": "object",
+            "required": [
+                "roomid"
+            ],
+            "properties": {
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "chatroom.UpdateParam": {
+            "type": "object",
+            "required": [
+                "roomid"
+            ],
+            "properties": {
+                "joinArgot": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "revokeMsg": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "welcomeMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "keyword.CreateParam": {
+            "type": "object",
+            "required": [
+                "phrase",
+                "roomid"
+            ],
+            "properties": {
+                "level": {
+                    "type": "integer"
+                },
+                "phrase": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "keyword.DeleteParam": {
+            "type": "object",
+            "required": [
+                "phrase",
+                "roomid"
+            ],
+            "properties": {
+                "phrase": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "keyword.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "level": {
+                    "type": "integer"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "keyword.FetchParam": {
+            "type": "object",
+            "required": [
+                "phrase",
+                "roomid"
+            ],
+            "properties": {
+                "phrase": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "keyword.UpdateParam": {
+            "type": "object",
+            "required": [
+                "phrase",
+                "roomid"
+            ],
+            "properties": {
+                "level": {
+                    "type": "integer"
+                },
+                "phrase": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile.CreateParam": {
+            "type": "object",
+            "required": [
+                "wxid"
+            ],
+            "properties": {
+                "aiArgot": {
+                    "type": "string"
+                },
+                "aiModel": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile.DeleteParam": {
+            "type": "object",
+            "required": [
+                "wxid"
+            ],
+            "properties": {
+                "roomid": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "roomid": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile.FetchParam": {
+            "type": "object",
+            "required": [
+                "wxid"
+            ],
+            "properties": {
+                "roomid": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile.UpdateParam": {
+            "type": "object",
+            "required": [
+                "wxid"
+            ],
+            "properties": {
+                "aiArgot": {
+                    "type": "string"
+                },
+                "aiModel": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
+        "tables.Chatroom": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "joinArgot": {
+                    "description": "入群口令",
+                    "type": "string"
+                },
+                "level": {
+                    "description": "等级",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "群聊名称",
+                    "type": "string"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "revokeMsg": {
+                    "description": "防撤回消息",
+                    "type": "string"
+                },
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                },
+                "welcomeMsg": {
+                    "description": "欢迎消息",
+                    "type": "string"
+                }
+            }
+        },
+        "tables.Keyword": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "level": {
+                    "description": "优先级等级",
+                    "type": "integer"
+                },
+                "phrase": {
+                    "description": "词语或短语",
+                    "type": "string"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                }
+            }
+        },
+        "tables.Profile": {
+            "type": "object",
+            "properties": {
+                "aiArgot": {
+                    "description": "唤醒词",
+                    "type": "string"
+                },
+                "aiModel": {
+                    "description": "会话模型",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "level": {
+                    "description": "等级",
+                    "type": "integer"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "roomid": {
+                    "description": "群聊 id",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                },
+                "wxid": {
+                    "description": "微信 id",
+                    "type": "string"
+                }
+            }
+        },
         "wcfrest.AcceptNewFriendRequest": {
             "type": "object",
             "properties": {
