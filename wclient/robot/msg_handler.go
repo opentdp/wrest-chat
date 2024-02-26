@@ -58,9 +58,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	// 解析指令
 	re := regexp.MustCompile(`^(/[\w:-]{2,20})\s*(.*)$`)
 	matches := re.FindStringSubmatch(msg.Content)
-	if len(matches) == 3 {
-		msg.Content = matches[2]
-	} else {
+	if len(matches) != 3 {
 		return ""
 	}
 
@@ -90,6 +88,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 执行指令
+	msg.Content = matches[2]
 	return handler.Callback(msg)
 
 }
