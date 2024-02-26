@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -50,15 +49,6 @@ func helpHandler() {
 			if len(args.LLM.Models) > 0 {
 				text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
 				text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum)
-			}
-			if msg.IsGroup {
-				room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-				if err == nil && room.Level > 0 {
-					text += fmt.Sprintf("群级别 %d；", room.Level)
-					if up.Level > 0 {
-						text += fmt.Sprintf("群成员级别 %d；", up.Level)
-					}
-				}
 			}
 			return text + "祝你好运！"
 		},
