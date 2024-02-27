@@ -9,9 +9,9 @@ import (
 // 创建关键词
 
 type CreateParam struct {
-	Roomid string `binding:"required"`
-	Phrase string `binding:"required"`
-	Level  int32
+	Roomid string `binding:"required" json:"roomid"`
+	Phrase string `binding:"required" json:"phrase"`
+	Level  int32  `json:"level"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -31,10 +31,10 @@ func Create(data *CreateParam) (uint, error) {
 // 更新关键词
 
 type UpdateParam struct {
-	Rd     uint `binding:"required"`
-	Roomid string
-	Phrase string
-	Level  int32
+	Rd     uint   `binding:"required" json:"rd"`
+	Roomid string `json:"roomid"`
+	Phrase string `json:"phrase"`
+	Level  int32  `json:"level"`
 }
 
 func Update(data *UpdateParam) error {
@@ -83,8 +83,8 @@ func Migrate(data *MigrateParam) error {
 // 获取关键词
 
 type FetchParam struct {
-	Roomid string `binding:"required"`
-	Phrase string `binding:"required"`
+	Roomid string `binding:"required" json:"roomid"`
+	Phrase string `binding:"required" json:"phrase"`
 }
 
 func Fetch(data *FetchParam) (*tables.Keyword, error) {
@@ -128,8 +128,8 @@ func Delete(data *DeleteParam) error {
 // 获取关键词列表
 
 type FetchAllParam struct {
-	Roomid string
-	Level  int32
+	Roomid string `json:"roomid"`
+	Level  int32  `json:"level"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Keyword, error) {

@@ -9,18 +9,18 @@ import (
 // 创建消息
 
 type CreateParam struct {
-	Id      uint64 `binding:"required"`
-	IsSelf  bool
-	IsGroup bool
-	Type    uint32
-	Ts      uint32
-	Roomid  string
-	Content string
-	Sender  string
-	Sign    string
-	Thumb   string
-	Extra   string
-	Xml     string
+	Id      uint64 `binding:"required" json:"id"`
+	IsSelf  bool   `json:"is_self"`
+	IsGroup bool   `json:"is_group"`
+	Type    uint32 `json:"type"`
+	Ts      uint32 `json:"ts"`
+	Roomid  string `json:"roomid"`
+	Content string `json:"content"`
+	Sender  string `json:"sender"`
+	Sign    string `json:"sign"`
+	Thumb   string `json:"thumb"`
+	Extra   string `json:"extra"`
+	Xml     string `json:"xml"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -97,7 +97,7 @@ func Migrate(data *MigrateParam) error {
 // 获取消息
 
 type FetchParam struct {
-	Id uint64 `binding:"required"`
+	Id uint64 `binding:"required" json:"id"`
 }
 
 func Fetch(data *FetchParam) (*tables.Message, error) {
@@ -139,8 +139,8 @@ func Delete(data *DeleteParam) error {
 // 获取消息列表
 
 type FetchAllParam struct {
-	Sender string
-	Roomid string
+	Sender string `json:"sender"`
+	Roomid string `json:"roomid"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Message, error) {

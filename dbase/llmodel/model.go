@@ -9,12 +9,12 @@ import (
 // 创建模型
 
 type CreateParam struct {
-	Mid      string `binding:"required"`
-	Provider string `binding:"required"`
-	Endpoint string
-	Family   string `binding:"required"`
-	Model    string `binding:"required"`
-	Secret   string `binding:"required"`
+	Mid      string `binding:"required" json:"mid"`
+	Provider string `binding:"required" json:"provider"`
+	Endpoint string `json:"endpoint"`
+	Family   string `binding:"required" json:"family"`
+	Model    string `binding:"required" json:"model"`
+	Secret   string `binding:"required" json:"secret"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -79,7 +79,7 @@ func Migrate(data *MigrateParam) error {
 // 获取模型
 
 type FetchParam struct {
-	Mid string `binding:"required"`
+	Mid string `binding:"required" json:"mid"`
 }
 
 func Fetch(data *FetchParam) (*tables.LLModel, error) {
@@ -121,9 +121,9 @@ func Delete(data *DeleteParam) error {
 // 获取模型列表
 
 type FetchAllParam struct {
-	Provider string
-	Family   string
-	Model    string
+	Provider string `json:"provider"`
+	Family   string `json:"family"`
+	Model    string `json:"model"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.LLModel, error) {

@@ -9,13 +9,13 @@ import (
 // 创建群聊
 
 type CreateParam struct {
-	Roomid     string `binding:"required"`
-	Name       string
-	Level      int32
-	Remark     string
-	JoinArgot  string
-	RevokeMsg  string
-	WelcomeMsg string
+	Roomid     string `binding:"required" json:"roomid"`
+	Name       string `json:"name"`
+	Level      int32  `json:"level"`
+	Remark     string `json:"remark"`
+	JoinArgot  string `json:"join_argot"`
+	RevokeMsg  string `json:"revoke_msg"`
+	WelcomeMsg string `json:"welcome_msg"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -82,7 +82,7 @@ func Migrate(data *MigrateParam) error {
 // 删除群聊
 
 type DeleteParam struct {
-	Roomid string `binding:"required"`
+	Roomid string `binding:"required" json:"roomid"`
 }
 
 func Delete(data *DeleteParam) error {
@@ -102,7 +102,7 @@ func Delete(data *DeleteParam) error {
 // 获取群聊
 
 type FetchParam struct {
-	Roomid string `binding:"required"`
+	Roomid string `binding:"required" json:"roomid"`
 }
 
 func Fetch(data *FetchParam) (*tables.Chatroom, error) {
@@ -126,7 +126,7 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 // 获取群聊列表
 
 type FetchAllParam struct {
-	Level int32
+	Level int32 `json:"level"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Chatroom, error) {

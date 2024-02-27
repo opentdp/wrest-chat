@@ -9,14 +9,14 @@ import (
 // 创建联系人
 
 type CreateParam struct {
-	Wxid     string `binding:"required"`
-	Code     string
-	Remark   string
-	Name     string
-	Country  string
-	Province string
-	City     string
-	Gender   int32
+	Wxid     string `binding:"required" json:"wxid"`
+	Code     string `json:"code"`
+	Remark   string `json:"remark"`
+	Name     string `json:"name"`
+	Country  string `json:"country"`
+	Province string `json:"province"`
+	City     string `json:"city"`
+	Gender   int32  `json:"gender"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -83,7 +83,7 @@ func Migrate(data *MigrateParam) error {
 // 获取联系人
 
 type FetchParam struct {
-	Wxid string `binding:"required"`
+	Wxid string `binding:"required" json:"wxid"`
 }
 
 func Fetch(data *FetchParam) (*tables.Contact, error) {
@@ -125,7 +125,7 @@ func Delete(data *DeleteParam) error {
 // 获取联系人列表
 
 type FetchAllParam struct {
-	Gender int32
+	Gender int32 `json:"gender"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Contact, error) {

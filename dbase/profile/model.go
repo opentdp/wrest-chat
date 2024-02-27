@@ -9,13 +9,13 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Wxid      string `binding:"required"`
-	Roomid    string
-	Level     int32
-	Remark    string
-	AiArgot   string
-	AiModel   string
-	BanExpire int64
+	Wxid      string `binding:"required" json:"wxid"`
+	Roomid    string `json:"roomid"`
+	Level     int32  `json:"level"`
+	Remark    string `json:"remark"`
+	AiArgot   string `json:"ai_argot"`
+	AiModel   string `json:"ai_model"`
+	BanExpire int64  `json:"ban_expire"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -95,8 +95,8 @@ func Migrate(data *MigrateParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Wxid   string `binding:"required"`
-	Roomid string
+	Wxid   string `binding:"required" json:"wxid"`
+	Roomid string `json:"roomid"`
 }
 
 func Fetch(data *FetchParam) (*tables.Profile, error) {
@@ -148,8 +148,8 @@ func Delete(data *DeleteParam) error {
 // 获取配置列表
 
 type FetchAllParam struct {
-	Wxid   string
-	Roomid string
+	Wxid   string `json:"wxid"`
+	Roomid string `json:"roomid"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
