@@ -4,11 +4,11 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-contacts',
+    selector: 'page-wcf-contacts',
     templateUrl: 'index.html',
     styleUrls: ['index.scss']
 })
-export class ContactsComponent {
+export class WcfContactsComponent {
 
     public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 

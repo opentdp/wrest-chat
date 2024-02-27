@@ -4,11 +4,11 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-chats',
+    selector: 'page-wcf-chatrooms',
     templateUrl: 'index.html',
     styleUrls: ['index.scss']
 })
-export class ChatroomsComponent {
+export class WcfChatroomsComponent {
 
     public chatrooms: Array<WcfrestContactPayload> = [];
 
