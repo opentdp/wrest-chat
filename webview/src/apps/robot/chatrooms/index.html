@@ -1,0 +1,32 @@
+<layout-header></layout-header>
+
+<div class="container-lg mt-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">name</th>
+                <th scope="col">roomid</th>
+                <th scope="col">level</th>
+                <th scope="col">joinArgot</th>
+                <th scope="col">revokeMsg</th>
+                <th scope="col">welcomeMsg</th>
+                <th scope="col">remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of chatrooms; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>{{item.name}}</td>
+                <td>{{item.roomid}}</td>
+                <td>{{item.level}}</td>
+                <td>{{item.join_argot}}</td>
+                <td>{{item.revoke_msg}}</td>
+                <td>{{item.welcome_msg}}</td>
+                <td>{{item.remark}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
