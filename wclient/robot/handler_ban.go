@@ -45,7 +45,7 @@ func banHandler() {
 	handlers["/unban"] = &Handler{
 		Level:    7,
 		Order:    41,
-		ChatAble: true,
+		ChatAble: false,
 		RoomAble: true,
 		Describe: "允许用户使用助手",
 		Callback: func(msg *wcferry.WxMsg) string {
