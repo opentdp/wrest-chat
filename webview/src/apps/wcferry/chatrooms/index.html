@@ -2,13 +2,13 @@
 
 <div class="container-lg mt-3">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <div class="list-group">
                 @for (item of chatrooms; track item.wxid) {
                 <a [class.active]="selected && selected.wxid == item.wxid" (click)="getChatroom(item)" class="list-group-item list-group-item-action cursor-pointer d-flex align-items-center">
-                    <!--div class="avatar me-3">
-                            <img class="rounded" src="assets/icon192.png" />
-                    </div-->
+                    <div class="avatar me-3">
+                        <img class="rounded" [src]="avatars[item.wxid]" />
+                    </div>
                     <div class="text-truncate">
                         <div class="fw-bold text-truncate">{{item.name || '无名称'}}</div>
                         {{item.remark}}
@@ -17,7 +17,7 @@
                 }
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             @if (selected) {
             <div>roomid: {{selected.wxid}}</div>
             <div>members: {{members.length}}</div>

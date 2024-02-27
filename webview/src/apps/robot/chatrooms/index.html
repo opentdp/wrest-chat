@@ -5,22 +5,22 @@
         <thead class="table-light">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">name</th>
-                <th scope="col">roomid</th>
-                <th scope="col">level</th>
-                <th scope="col">joinArgot</th>
-                <th scope="col">revokeMsg</th>
-                <th scope="col">welcomeMsg</th>
-                <th scope="col">remark</th>
+                <th scope="col">群名</th>
+                <th scope="col">等级</th>
+                <th scope="col">菜单名</th>
+                <th scope="col">加群口令</th>
+                <th scope="col">撤回提示</th>
+                <th scope="col">入群欢迎</th>
+                <th scope="col">备注</th>
             </tr>
         </thead>
         <tbody>
             @for (item of chatrooms; track item.rd) {
             <tr>
                 <th scope="row">{{item.rd}}</th>
-                <td>{{item.name}}</td>
-                <td>{{item.roomid}}</td>
+                <td>{{contacts[item.roomid] ? contacts[item.roomid].name : item.roomid}}</td>
                 <td>{{item.level}}</td>
+                <td>{{item.name}}</td>
                 <td>{{item.join_argot}}</td>
                 <td>{{item.revoke_msg}}</td>
                 <td>{{item.welcome_msg}}</td>

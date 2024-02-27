@@ -11,6 +11,7 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 export class WcfChatroomsComponent {
 
     public chatrooms: Array<WcfrestContactPayload> = [];
+    public avatars: Record<string, string> = {};
 
     public selected!: WcfrestContactPayload;
     public members: Array<WcfrestContactPayload> = [];
@@ -22,6 +23,16 @@ export class WcfChatroomsComponent {
     public getChatrooms() {
         WrestApi.chatrooms().then((chatrooms) => {
             this.chatrooms = chatrooms;
+            this.getAvatars();
+        });
+    }
+
+    public getAvatars() {
+        const ids = this.chatrooms.map((item) => item.wxid);
+        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
+            data && data.forEach((item) => {
+                this.avatars[item.usr_name] = item.small_head_img_url;
+            });
         });
     }
 

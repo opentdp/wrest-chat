@@ -11,7 +11,7 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 })
 export class BotChatroomsComponent {
 
-    public contacts: Array<WcfrestContactPayload> = [];
+    public contacts: Record<string, WcfrestContactPayload> = {};
 
     public chatrooms: Array<TablesChatroom> = [];
 
@@ -22,7 +22,7 @@ export class BotChatroomsComponent {
 
     public getContacts() {
         WrestApi.contacts().then((data) => {
-            this.contacts = data;
+            data.forEach((item) => this.contacts[item.wxid] = item);
         });
     }
 
