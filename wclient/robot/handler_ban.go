@@ -29,7 +29,7 @@ func banHandler() {
 					}
 					// 权限检查
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: msg.Roomid})
-					if up.Level == 9 {
+					if up.Level >= 7 {
 						return "禁止操作管理员"
 					}
 					// 禁止使用
@@ -47,7 +47,7 @@ func banHandler() {
 		Order:    41,
 		ChatAble: false,
 		RoomAble: true,
-		Describe: "允许用户使用助手",
+		Describe: "取消使用助手限制",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
@@ -57,6 +57,12 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
+					// 权限检查
+					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: msg.Roomid})
+					if up.Level >= 7 {
+						return "禁止操作管理员"
+					}
+					// 取消禁止
 					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, Level: 2})
 				}
 				return "操作成功"
