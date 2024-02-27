@@ -27,7 +27,7 @@ func banHandler() {
 			if err == nil && ret.AtUserList != "" {
 				// 获取禁言时限
 				parts := strings.Split(msg.Content, " ")
-				second, err := strconv.Atoi(parts[1])
+				second, err := strconv.Atoi(parts[0])
 				if err != nil {
 					second = 86400
 				}
