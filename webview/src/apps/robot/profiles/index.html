@@ -1,0 +1,30 @@
+<layout-header></layout-header>
+
+<div class="container-lg mt-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">wxid</th>
+                <th scope="col">roomid</th>
+                <th scope="col">level</th>
+                <th scope="col">ai_argot</th>
+                <th scope="col">ai_model</th>
+                <th scope="col">remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of profiles; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>{{item.wxid}}</td>
+                <td>{{item.roomid}}</td>
+                <td>{{item.level}}</td>
+                <td>{{item.ai_argot}}</td>
+                <td>{{item.ai_model}}</td>
+                <td>{{item.remark}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
