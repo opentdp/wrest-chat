@@ -10,6 +10,7 @@ type Profile struct {
 	Remark    string // 备注
 	AiArgot   string // 唤醒词
 	AiModel   string // 会话模型
+	BanExpire int64  // 禁言截止时间
 	CreatedAt int64  // 创建时间戳
 	UpdatedAt int64  // 最后更新时间戳
 }

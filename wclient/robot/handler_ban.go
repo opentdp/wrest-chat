@@ -2,7 +2,10 @@ package robot
 
 import (
 	"encoding/xml"
+	"fmt"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
@@ -22,6 +25,13 @@ func banHandler() {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
+				// 获取禁言时限
+				parts := strings.Split(msg.Content, " ")
+				second, err := strconv.Atoi(parts[1])
+				if err != nil {
+					second = 86400
+				}
+				// 批量操作禁言
 				list := strings.Split(ret.AtUserList, ",")
 				for _, v := range list {
 					if v == "" {
@@ -33,9 +43,10 @@ func banHandler() {
 						return "禁止操作管理员"
 					}
 					// 禁止使用
-					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, Level: 1})
+					expire := time.Now().Unix() + int64(second)
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: expire})
 				}
-				return "操作成功"
+				return fmt.Sprintf("操作成功，有效期 %d 秒", second)
 			}
 			return "参数错误"
 		},
@@ -63,9 +74,9 @@ func banHandler() {
 						return "禁止操作管理员"
 					}
 					// 取消禁止
-					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, Level: 2})
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: -1})
 				}
-				return "操作成功"
+				return "已取消限制"
 			}
 			return "参数错误"
 		},
@@ -84,7 +95,7 @@ func banPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-	if up.Level == 1 {
+	if up.Level == 1 || up.BanExpire > time.Now().Unix() {
 		msg.Content = ""
 	}
 

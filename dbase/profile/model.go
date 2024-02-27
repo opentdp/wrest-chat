@@ -9,12 +9,13 @@ import (
 // 创建配置
 
 type CreateParam struct {
-	Wxid    string `binding:"required"`
-	Roomid  string
-	Level   int32
-	Remark  string
-	AiArgot string
-	AiModel string
+	Wxid      string `binding:"required"`
+	Roomid    string
+	Level     int32
+	Remark    string
+	AiArgot   string
+	AiModel   string
+	BanExpire int64
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -24,12 +25,13 @@ func Create(data *CreateParam) (uint, error) {
 	}
 
 	item := &tables.Profile{
-		Wxid:    data.Wxid,
-		Roomid:  data.Roomid,
-		Level:   data.Level,
-		Remark:  data.Remark,
-		AiArgot: data.AiArgot,
-		AiModel: data.AiModel,
+		Wxid:      data.Wxid,
+		Roomid:    data.Roomid,
+		Level:     data.Level,
+		Remark:    data.Remark,
+		AiArgot:   data.AiArgot,
+		AiModel:   data.AiModel,
+		BanExpire: data.BanExpire,
 	}
 
 	result := dborm.Db.Create(item)
@@ -54,10 +56,11 @@ func Update(data *UpdateParam) error {
 			Roomid: data.Roomid,
 		}).
 		Updates(tables.Profile{
-			Level:   data.Level,
-			Remark:  data.Remark,
-			AiArgot: data.AiArgot,
-			AiModel: data.AiModel,
+			Level:     data.Level,
+			Remark:    data.Remark,
+			AiArgot:   data.AiArgot,
+			AiModel:   data.AiModel,
+			BanExpire: data.BanExpire,
 		})
 
 	return result.Error
