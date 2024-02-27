@@ -23,9 +23,8 @@ func aiHandler() {
 		RoomAble: true,
 		Describe: "提问或交谈",
 		Callback: func(msg *wcferry.WxMsg) string {
-			text := strings.TrimSpace(msg.Content)
-			if text != "" {
-				return aichat.Text(msg.Sender, msg.Roomid, text)
+			if msg.Content != "" {
+				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 			}
 			return "请在指令后输入问题"
 		},
@@ -82,7 +81,7 @@ func aiHandler() {
 		RoomAble: true,
 		Describe: "自定义唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			argot := strings.TrimSpace(msg.Content)
+			argot := msg.Content
 			// 校验唤醒词
 			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
 				return "唤醒词不允许包含 @ 或 /"

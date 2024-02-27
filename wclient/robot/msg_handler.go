@@ -50,14 +50,14 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 空白消息
-	msg.Content = strings.TrimSpace(msg.Content)
-	if len(msg.Content) == 0 {
+	content := strings.TrimSpace(msg.Content)
+	if len(content) == 0 {
 		return ""
 	}
 
 	// 解析指令
 	re := regexp.MustCompile(`^(/[\w:-]{2,20})\s*(.*)$`)
-	matches := re.FindStringSubmatch(msg.Content)
+	matches := re.FindStringSubmatch(content)
 	if len(matches) != 3 {
 		return ""
 	}
@@ -88,7 +88,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 执行指令
-	msg.Content = matches[2]
+	msg.Content = strings.TrimSpace(matches[2])
 	return handler.Callback(msg)
 
 }

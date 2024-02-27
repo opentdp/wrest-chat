@@ -23,17 +23,16 @@ func apiHandler() {
 
 func apiCallback(msg *wcferry.WxMsg) string {
 
-	str := strings.Replace(strings.TrimSpace(msg.Content), " ", "/", 1)
-	url := "https://api.rehi.org/format=yaml/" + str
+	cmd := []string{"help"}
+	if msg.Content != "" {
+		cmd = strings.SplitN(msg.Content, " ", 2)
+	}
 
-	// 获取指令名称
-
-	parts := strings.SplitN(str, "/", 2)
-	cmd := parts[0]
+	url := "https://api.rehi.org/format=yaml/" + strings.Join(cmd, "/")
 
 	// 返回卡片消息
-
-	if strings.Contains("news,port,iptv,weather", cmd) {
+	cards := "news,port,iptv,weather"
+	if strings.Contains(cards, cmd[0]) {
 		digest := "请点击卡片查看结果"
 		icon := "https://api.rehi.org/assets/icon.png"
 		if msg.IsGroup {
@@ -45,25 +44,25 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 获取结果后返回
-
 	res, err := request.TextGet(url, request.H{
 		"User-Agent": args.AppName + "/" + args.Version,
 	})
-
 	if err != nil {
 		return err.Error()
 	}
 
-	if cmd == "" || cmd == "help" {
+	// 处理帮助信息
+	if cmd[0] == "help" {
 		lines := strings.Split(res, "\n")
 		for k, line := range lines {
 			line = strings.TrimLeft(line, "/")
 			line = strings.Replace(line, "/", " ", 1)
-			lines[k] = "/api " + strings.TrimSpace(line)
+			lines[k] = strings.TrimSpace(line)
 		}
-		return strings.Join(lines, "\n")
+		return "/api " + strings.Join(cmd, " ") + "\n" + strings.Join(lines, "\n")
 	}
 
+	// 尝试发送文件
 	if fileReply(msg, res) == 0 {
 		return ""
 	}
