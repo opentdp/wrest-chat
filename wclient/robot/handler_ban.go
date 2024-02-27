@@ -46,7 +46,7 @@ func banHandler() {
 					expire := time.Now().Unix() + int64(second)
 					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: expire})
 				}
-				return fmt.Sprintf("操作成功，有效期 %d 秒", second)
+				return fmt.Sprintf("已禁止，有效期 %d 秒", second)
 			}
 			return "参数错误"
 		},
