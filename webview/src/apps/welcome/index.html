@@ -11,7 +11,7 @@
 </div>
 }
 
-@if (islogin && user) {
+@if (islogin && user && avatar) {
 <div class="container-lg mt-3">
     <div class="card w-50">
         <img [src]="avatar.big_head_img_url" class="card-img-top" />

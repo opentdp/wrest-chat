@@ -13,12 +13,10 @@ import { QrCodeModule } from 'ng-qrcode';
 
 
 @NgModule({
-    imports: [
-        NgbModule,
-    ],
     exports: [
         FormsModule,
         BrowserAnimationsModule,
+        NgbModule,
         QrCodeModule,
     ],
     providers: [

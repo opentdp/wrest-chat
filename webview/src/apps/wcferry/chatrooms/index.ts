@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
+import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 
 
 @Component({
