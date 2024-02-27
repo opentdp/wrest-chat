@@ -3,33 +3,33 @@ Bot:
     Enable: true # 是否启用内置机器人
     PatReturn: true # 是否自动回应拍一拍
     FriendAccept: true # 是否自动同意新的好友请求
-    RevokeMsg: 撤回了寂寞？ # 私聊撤回消息时响应的内容，留空则忽略
-    WelcomeMsg: 回复 /help 查询指令 # 添加好友后的响应内容，留空则忽略
+    RevokeMsg: 撤回了寂寞？ # 私聊撤回消息的响应内容，留空则忽略
+    WelcomeMsg: 回复 /help 查询指令 # 确认好友后的响应内容，留空则忽略
     WhiteLimit: false # 开启后只有白名单内的群或好友可以使用机器人
 
 # 大模型
 LLM:
-    Default: gem # 默认模型
-    HistoryNum: 20 # 历史消息数量
-    RoleContext: | # 定义模型扮演的身份
+    Default: gem # 默认模型 Mid，必须在 llmodel 表中
+    HistoryNum: 20 # 历史消息数量，数量越多消耗的 Token 越多
+    RoleContext: | # 自定义智能模型扮演的身份，适用于所有模型
         你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题。
 
 # 运行日志
 Log:
-    Dir: logs # 日志目录
-    Level: info # 日志级别
-    Target: stdout # 日志输出方式
+    Dir: logs # 日志存储目录
+    Level: info # 日志级别，DEBUG|INFO|WARN|ERROR
+    Target: stdout # 日志输出方式，both|file|null|stdout|stderr
 
 # Wcf 服务
 Wcf:
     Address: 127.0.0.1:7601 # 监听地址
     MsgStore: true # 是否存储收到的消息
     MsgPrint: false # 是否打印收到的消息
-    WcfBinary: wcf.exe # 留空则不注入微信
-    WechatAuto: true # 是否自动启停微信
+    WcfBinary: wcf.exe # 注入工具路径，留空则不注入
+    WechatAuto: true # 是否自动启停微信，关闭微信后才能注入
 
 # Web 服务
 Web:
     Address: 127.0.0.1:7600 # 监听地址
-    Swagger: true # 是否启用 Api 文档
-    Token: "" # 使用 Token 验证请求
+    Swagger: true # 是否启用 Api 在线文档
+    Token: "" # 使用 Token 验证请求，留空则不验证
