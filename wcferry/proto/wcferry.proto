@@ -53,7 +53,7 @@ message Request
         XmlMsg xml     = 9;                         // XML参数结构
         DecPath dec    = 10;                        // 解密图片参数结构
         Transfer tf    = 11;                        // 接收转账参数结构
-        uint64 ui64    = 12 [ jstype = JS_STRING ]; // 64 位整数，通用
+        uint64 ui64    = 12 [ gotype = GO_STRING ]; // 64 位整数，通用
         bool flag      = 13;                        // 布尔值
         AttachMsg att  = 14;                        // 下载图片、视频、文件参数结构
         AudioMsg am    = 15;                        // 保存语音参数结构

@@ -37,8 +37,6 @@
 
 - 查看和调试*HTTP*接口文档，请使用浏览器打开 `http://localhost:7600`
 
-- 由于微信和*WCF*均为32位应用，对接*bot*和*sdk*部分，必须设置环境变量 `GOARCH=386`
-
 ### API 模块
 
 实现了 HTTP/WS 接口，详情查看 [httpd/README.md](./httpd/README.md)
