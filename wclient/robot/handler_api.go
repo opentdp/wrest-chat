@@ -24,7 +24,29 @@ func apiHandler() {
 func apiCallback(msg *wcferry.WxMsg) string {
 
 	str := strings.Replace(strings.TrimSpace(msg.Content), " ", "/", 1)
-	res, err := request.TextGet("https://api.rehi.org/format=yaml/"+str, request.H{
+	url := "https://api.rehi.org/format=yaml/" + str
+
+	// 获取指令名称
+
+	parts := strings.SplitN(str, "/", 2)
+	cmd := parts[0]
+
+	// 返回卡片消息
+
+	if strings.Contains("news,port,iptv,weather", cmd) {
+		digest := "请点击卡片查看结果"
+		icon := "https://api.rehi.org/assets/icon.png"
+		if msg.IsGroup {
+			wc.CmdClient.SendRichText("小秘书", "mphelper", msg.Content, digest, url, icon, msg.Roomid)
+		} else {
+			wc.CmdClient.SendRichText("小秘书", "mphelper", msg.Content, digest, url, icon, msg.Sender)
+		}
+		return ""
+	}
+
+	// 获取结果后返回
+
+	res, err := request.TextGet(url, request.H{
 		"User-Agent": args.AppName + "/" + args.Version,
 	})
 
@@ -32,7 +54,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 		return err.Error()
 	}
 
-	if str == "" || str == "help" {
+	if cmd == "" || cmd == "help" {
 		lines := strings.Split(res, "\n")
 		for k, line := range lines {
 			line = strings.TrimLeft(line, "/")
