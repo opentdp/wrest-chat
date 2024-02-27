@@ -18,15 +18,24 @@ export class WelcomeComponent {
 
     constructor() {
         this.checkLogin();
+        this.refreshQrcode();
     }
 
     public async checkLogin() {
         this.islogin = await WrestApi.isLogin();
-        if (this.islogin) {
-            return this.getSelfInfo();
+        if (!this.islogin) {
+            setTimeout(() => this.checkLogin(), 5 * 1000);
+            return;
         }
+        return this.getSelfInfo();
+    }
+
+    public async refreshQrcode() {
         this.loginqr = await WrestApi.loginQr();
-        setTimeout(() => this.checkLogin(), 200 * 1000);
+        if (!this.islogin) {
+            const t = this.loginqr.result ? 200 : 5;
+            setTimeout(() => this.refreshQrcode(), t * 1000);
+        }
     }
 
     public async getSelfInfo() {
