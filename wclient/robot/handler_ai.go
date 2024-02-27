@@ -80,16 +80,23 @@ func aiHandler() {
 		Order:    14,
 		ChatAble: true,
 		RoomAble: true,
-		Describe: "设置唤醒词",
+		Describe: "自定义唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			argot := strings.TrimSpace(msg.Content)
-			if argot == "" {
-				return "唤醒词不允许为空"
-			}
+			// 校验唤醒词
 			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
 				return "唤醒词不允许包含 @ 或 /"
+			} else if argot == "" {
+				argot = "-"
 			}
+			// 更新唤醒词
 			profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiArgot: argot})
+			if argot == "-" {
+				if msg.IsGroup {
+					return "已禁用自定义唤醒词"
+				}
+				return "已启用无唤醒词对话模式"
+			}
 			return "唤醒词设置为 " + argot
 		},
 	}
@@ -103,15 +110,19 @@ func aiPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	if msg.Content[0:1] != "/" {
+		// 处理 @机器人 的消息
 		if strings.Contains(msg.Xml, self().Wxid) {
 			msg.Content = "/ai " + msg.Content
-		} else {
-			up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
-			if up.AiArgot == "" {
-				if !msg.IsGroup {
-					msg.Content = "/ai " + msg.Content
-				}
-			} else if strings.HasPrefix(msg.Content, up.AiArgot) {
+			return ""
+		}
+		// 处理用户自定义的唤醒词
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+		if up.AiArgot == "-" {
+			if !msg.IsGroup {
+				msg.Content = "/ai " + msg.Content
+			}
+		} else if up.AiArgot != "" {
+			if strings.HasPrefix(msg.Content, up.AiArgot) {
 				msg.Content = strings.Replace(msg.Content, up.AiArgot, "/ai ", 1)
 			}
 		}
