@@ -29,9 +29,9 @@ export class WcfContactsComponent {
     }
 
     public getContacts() {
-        WrestApi.contacts().then((contacts) => {
-            this.contacts = contacts.map(contact => ({
-                ...contact, type: this.getContactType(contact)
+        WrestApi.contacts().then((data) => {
+            this.contacts = data.map(item => ({
+                ...item, type: this.getContactType(item)
             }));
         });
     }

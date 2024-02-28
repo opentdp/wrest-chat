@@ -14,6 +14,7 @@ export class BotChatroomsComponent {
 
     public levels = LevelData;
 
+    public avatars: Record<string, string> = {};
     public contacts: Record<string, WcfrestContactPayload> = {};
 
     public chatrooms: Array<TablesChatroom> = [];
@@ -33,6 +34,14 @@ export class BotChatroomsComponent {
         const rq = {} as ChatroomFetchAllParam;
         RobotApi.chatroomList(rq).then((data) => {
             this.chatrooms = data || [];
+        });
+    }
+
+    public getAvatars(ids: string[]) {
+        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
+            data && data.forEach((item) => {
+                this.avatars[item.usr_name] = item.small_head_img_url;
+            });
         });
     }
 
