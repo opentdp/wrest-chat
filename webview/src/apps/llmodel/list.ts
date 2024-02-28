@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { RobotApi, LlmodelFetchAllParam, TablesLLModel } from '../../openapi/wrobot';
+import { RobotApi, TablesLLModel, LlmodelFetchAllParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
