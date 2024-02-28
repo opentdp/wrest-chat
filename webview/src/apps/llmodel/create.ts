@@ -15,9 +15,15 @@ export class LLModelCreateComponent {
 
     public llmodels: Array<TablesLLModel> = [];
 
+    public formdata = {} as TablesLLModel;
+
     constructor() {
         this.getContacts();
         this.getLLModels();
+    }
+
+    public onSubmit() {
+        RobotApi.llmodelCreate(this.formdata);
     }
 
     public getContacts() {

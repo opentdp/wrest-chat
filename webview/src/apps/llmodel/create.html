@@ -9,29 +9,45 @@
 </nav>
 
 <div class="container-lg mb-3">
-    <form class="row gy-3 ">
+    <form class="row gy-3" (ngSubmit)="onSubmit()" #myform="ngForm">
         <div class="col-12">
-            <label class="form-label">指令</label>
-            <input class="form-control" type="text" />
+            <label class="form-label">指令 *</label>
+            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
         </div>
         <div class="col-12">
-            <label class="form-label">供应商</label>
-            <input class="form-control" type="text" />
+            <label class="form-label">供应商 *</label>
+            <select class="form-select" [(ngModel)]="formdata.provider" required>
+                <option value="opeanai">OpenAI</option>
+                <option value="google">Google</option>
+                <option value="xunfei">科大讯飞</option>
+            </select>
         </div>
         <div class="col-12">
-            <label class="form-label">族类</label>
-            <input class="form-control" type="text" />
+            <label class="form-label">族类 *</label>
+            <select class="form-select" [(ngModel)]="formdata.family" required>
+                <option value="Gemini">Gemini</option>
+                <option value="GPT">GPT</option>
+                <option value="Spark">Spark</option>
+            </select>
         </div>
         <div class="col-12">
-            <label class="form-label">模型</label>
-            <input class="form-control" type="text" />
+            <label class="form-label">模型 *</label>
+            <select class="form-select" [(ngModel)]="formdata.model" required>
+                <option value="gemini-pro">gemini-pro</option>
+                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                <option value="v3">spark v3</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label">密钥 *</label>
+            <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
         </div>
         <div class="col-12">
             <label class="form-label">接入点</label>
-            <input class="form-control" type="text" />
+            <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">确认</button>
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
         </div>
     </form>
 </div>
