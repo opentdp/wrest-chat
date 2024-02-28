@@ -10,22 +10,22 @@ import (
 
 type CreateParam struct {
 	Mid      string `binding:"required" json:"mid"`
-	Provider string `binding:"required" json:"provider"`
-	Endpoint string `json:"endpoint"`
 	Family   string `binding:"required" json:"family"`
+	Provider string `binding:"required" json:"provider"`
 	Model    string `binding:"required" json:"model"`
 	Secret   string `binding:"required" json:"secret"`
+	Endpoint string `json:"endpoint"`
 }
 
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.LLModel{
 		Mid:      data.Mid,
-		Provider: data.Provider,
-		Endpoint: data.Endpoint,
 		Family:   data.Family,
+		Provider: data.Provider,
 		Model:    data.Model,
 		Secret:   data.Secret,
+		Endpoint: data.Endpoint,
 	}
 
 	result := dborm.Db.Create(item)
@@ -45,11 +45,11 @@ func Update(data *UpdateParam) error {
 			Mid: data.Mid,
 		}).
 		Updates(tables.LLModel{
-			Provider: data.Provider,
-			Endpoint: data.Endpoint,
 			Family:   data.Family,
+			Provider: data.Provider,
 			Model:    data.Model,
 			Secret:   data.Secret,
+			Endpoint: data.Endpoint,
 		})
 
 	return result.Error
@@ -121,8 +121,8 @@ func Delete(data *DeleteParam) error {
 // 获取模型列表
 
 type FetchAllParam struct {
-	Provider string `json:"provider"`
 	Family   string `json:"family"`
+	Provider string `json:"provider"`
 	Model    string `json:"model"`
 }
 

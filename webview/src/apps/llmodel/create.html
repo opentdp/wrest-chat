@@ -13,14 +13,9 @@
         <div class="col-12">
             <label class="form-label">指令 *</label>
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
-        </div>
-        <div class="col-12">
-            <label class="form-label">供应商 *</label>
-            <select class="form-select" [(ngModel)]="formdata.provider" required>
-                <option value="opeanai">OpenAI</option>
-                <option value="google">Google</option>
-                <option value="xunfei">科大讯飞</option>
-            </select>
+            <div class="form-text">
+                用于生成模型切换指令，不影响接口请求
+            </div>
         </div>
         <div class="col-12">
             <label class="form-label">族类 *</label>
@@ -29,6 +24,20 @@
                 <option value="GPT">GPT</option>
                 <option value="Spark">Spark</option>
             </select>
+            <div class="form-text">
+                用于在指令中描述模型类型，不影响接口请求
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">服务商 *</label>
+            <select class="form-select" [(ngModel)]="formdata.provider" required>
+                <option value="google">Google</option>
+                <option value="opeanai">OpenAI</option>
+                <option value="xunfei">科大讯飞</option>
+            </select>
+            <div class="form-text">
+                未支持的服务商，可暂时使用协议兼容代理
+            </div>
         </div>
         <div class="col-12">
             <label class="form-label">模型 *</label>
@@ -37,14 +46,23 @@
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                 <option value="v3">spark v3</option>
             </select>
+            <div class="form-text">
+                必须和服务商对应，缺失模型请提 Issue 或 PR 补全
+            </div>
         </div>
         <div class="col-12">
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
+            <div class="form-text">
+                Google 和 OpenAI 填写 KEY，科大讯飞填写 APP-ID,API-KEY,API-SECRET
+            </div>
         </div>
         <div class="col-12">
             <label class="form-label">接入点</label>
             <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
+            <div class="form-text">
+                仅 Google 和 OpenAI 支持自定义，留空则使用官方接口
+            </div>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
