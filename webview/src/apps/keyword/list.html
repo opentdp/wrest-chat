@@ -28,16 +28,15 @@
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.phrase}}</td>
                 <td>
-                    @if (item.roomid == '-') {
-                    全局
-                    }
-                    @if (item.roomid != '-' && contacts[item.roomid]) {
-                    {{contacts[item.roomid].name}}
+                    @if (chatrooms[item.roomid]) {
+                    {{chatrooms[item.roomid].name}}
+                    } @else {
+                    {{item.roomid != '-' ? item.roomid : '全局'}}
                     }
                 </td>
                 <td>{{item.level}}</td>
                 <td>
-                    <button class="btn btn-sm btn-danger" (click)="deleteLLModel(item)">删除</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteKeyword(item)">删除</button>
                 </td>
             </tr>
             }

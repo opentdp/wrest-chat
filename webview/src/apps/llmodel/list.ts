@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { RobotApi, TablesLLModel, LlmodelFetchAllParam } from '../../openapi/wrobot';
-import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
@@ -11,19 +10,10 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class LLModelListComponent {
 
-    public contacts: Record<string, WcfrestContactPayload> = {};
-
     public llmodels: Array<TablesLLModel> = [];
 
     constructor() {
-        this.getContacts();
         this.getLLModels();
-    }
-
-    public getContacts() {
-        WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
-        });
     }
 
     public getLLModels() {

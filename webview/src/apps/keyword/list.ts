@@ -11,19 +11,13 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordListComponent {
 
-    public contacts: Record<string, WcfrestContactPayload> = {};
+    public chatrooms: Record<string, WcfrestContactPayload> = {};
 
     public keywords: Array<TablesKeyword> = [];
 
     constructor() {
-        this.getContacts();
         this.getKeywords();
-    }
-
-    public getContacts() {
-        WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
-        });
+        this.getChatrooms();
     }
 
     public getKeywords() {
@@ -33,10 +27,16 @@ export class KeywordListComponent {
         });
     }
 
-    public deleteLLModel(item: TablesKeyword) {
+    public deleteKeyword(item: TablesKeyword) {
         const rq = { phrase: item.phrase, roomid: item.roomid };
         RobotApi.keywordDelete(rq).then(() => {
             this.getKeywords();
+        });
+    }
+
+    public getChatrooms() {
+        WrestApi.chatrooms().then((data) => {
+            data.forEach((item) => this.chatrooms[item.wxid] = item);
         });
     }
 

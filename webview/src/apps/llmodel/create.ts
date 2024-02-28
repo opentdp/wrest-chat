@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
+import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 
 
 @Component({
@@ -11,9 +11,7 @@ import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
 })
 export class LLModelCreateComponent {
 
-    public llmodels: Array<TablesLLModel> = [];
-
-    public formdata = {} as TablesLLModel;
+    public formdata = {} as LlmodelCreateParam;
 
     constructor(private router: Router) { }
 
