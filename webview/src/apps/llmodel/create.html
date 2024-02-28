@@ -19,7 +19,7 @@
         </div>
         <div class="col-12">
             <label class="form-label">族类 *</label>
-            <select class="form-select" [(ngModel)]="formdata.family" required>
+            <select name="family" class="form-select" [(ngModel)]="formdata.family" required>
                 <option value="Gemini">Gemini</option>
                 <option value="GPT">GPT</option>
                 <option value="Spark">Spark</option>
@@ -30,18 +30,18 @@
         </div>
         <div class="col-12">
             <label class="form-label">服务商 *</label>
-            <select class="form-select" [(ngModel)]="formdata.provider" required>
+            <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
                 <option value="google">Google</option>
                 <option value="opeanai">OpenAI</option>
                 <option value="xunfei">科大讯飞</option>
             </select>
             <div class="form-text">
-                未支持的服务商，可暂时使用协议兼容代理
+                未支持的服务商，可尝试使用协议兼容代理
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">模型 *</label>
-            <select class="form-select" [(ngModel)]="formdata.model" required>
+            <select name="model" class="form-select" [(ngModel)]="formdata.model" required>
                 <option value="gemini-pro">gemini-pro</option>
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                 <option value="v3">spark v3</option>
