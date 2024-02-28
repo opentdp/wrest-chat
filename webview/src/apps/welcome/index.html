@@ -1,7 +1,7 @@
 <layout-header></layout-header>
 
 @if (!islogin && loginqr) {
-<div class="container-lg mt-3">
+<div class="container-lg mb-3">
     @if (loginqr.result) {
     <qr-code [value]="loginqr.result" [size]="300" [margin]="0"></qr-code>
     <div>间隔 200 秒自动刷新</div>
@@ -12,7 +12,7 @@
 }
 
 @if (islogin && user && avatar) {
-<div class="container-lg mt-3">
+<div class="container-lg mb-3">
     <div class="card w-50">
         <img [src]="avatar.big_head_img_url" class="card-img-top" />
         <ul class="list-group list-group-flush">

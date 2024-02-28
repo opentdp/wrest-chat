@@ -1,6 +1,6 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mt-3">
+<nav class="container-lg mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item"><a routerLink="/llmodel/list">模型管理</a></li>
@@ -8,22 +8,30 @@
     </ol>
 </nav>
 
-<div class="container-lg mt-3">
-    <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Example label</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
-    </div>
-    <div class="mb-3">
-        <label for="formGroupExampleInput2" class="form-label">Another label</label>
-        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder">
-    </div>
-</div>
-
-<div class="container-lg mt-3">
-    <th scope="col">#</th>
-    <th scope="col">指令</th>
-    <th scope="col">模型</th>
-    <th scope="col">族类</th>
-    <th scope="col">供应商</th>
-    <th scope="col">接入点</th>
+<div class="container-lg mb-3">
+    <form class="row gy-3 ">
+        <div class="col-12">
+            <label class="form-label">指令</label>
+            <input class="form-control" type="text" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">供应商</label>
+            <input class="form-control" type="text" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">族类</label>
+            <input class="form-control" type="text" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">模型</label>
+            <input class="form-control" type="text" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">接入点</label>
+            <input class="form-control" type="text" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">确认</button>
+        </div>
+    </form>
 </div>
