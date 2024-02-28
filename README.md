@@ -14,24 +14,24 @@
 
 ## 快速开始
 
-1、下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
+- 下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
 
-- 非开发者请直接下载编译好的二进制文件，不要下载源码
+  - 非开发者请直接下载编译好的二进制文件，不要下载源码
 
-2、双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
+- 双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
 
-- 初始化时若出现 *Attempt to access invalid address* 信息可忽略
+  - 初始化时若出现 *Attempt to access invalid address* 信息可忽略
 
-3、修改 [config.yml](./config.yml) 配置机器人参数，重启 **wrest.exe** 后生效
+## 配置说明
 
-- 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
-- 重启时，提示端口被占用，请退出微信后重试
+- 修改 [config.yml](./config.yml) 中的参数，需重启 **wrest.exe** 才能生效
 
-## 配置文件
+  - 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
+  - 重启时，提示端口被占用，请退出微信后重试
+
+- 如设置了 `Web.Token`，请求接口时必须携带 **header** 信息: `Authorization: Bearer $token`
   
-- 如需使用智能机器人，请配置大语言模型参数，并设置正确的模型密钥
-
-- 如设置了 `Web.Token`，请求接口时需携带 **header** 信息: `Authorization: Bearer $token`
+- 如需使用智能机器人，请配置大语言模型参数，并设置正确的接入点及请求密钥
 
 ## 开发指南
 
