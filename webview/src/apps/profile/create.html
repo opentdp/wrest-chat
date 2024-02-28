@@ -1,0 +1,59 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">用户配置</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="createProfile()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">类别 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" (change)="changeRoomid()" required>
+                <option value="-">私聊</option>
+                @for (item of chatrooms; track item.wxid) {
+                <option value="{{item.wxid}}">{{item.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用户所属类别，暂用作生效范围
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">用户 *</label>
+            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required>
+                @for (item of conacts; track item.wxid) {
+                <option value="{{item.wxid}}">{{item.wxid}} - {{item.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于违规检测，暂不支持统配符
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
+                <option value="1">拉黑</option>
+                <option value="2">加白</option>
+                <option value="7">群管理</option>
+                <option value="9">创始人</option>
+            </select>
+            <div class="form-text">
+                机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.remark" required />
+            <div class="form-text">
+                备注信息
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

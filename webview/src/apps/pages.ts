@@ -4,6 +4,7 @@ import { WelcomeComponent } from './welcome';
 import { Alert404Component } from './alert/404';
 
 import { ChatroomListComponent } from './chatroom/list';
+import { ChatroomCreateComponent } from './chatroom/create';
 
 import { LLModelCreateComponent } from './llmodel/create';
 import { LLModelListComponent } from './llmodel/list';
@@ -12,6 +13,7 @@ import { KeywordListComponent } from './keyword/list';
 import { KeywordCreateComponent } from './keyword/create';
 
 import { ProfileListComponent } from './profile/list';
+import { ProfileCreateComponent } from './profile/create';
 
 import { WcferryChatroomComponent } from './wcferry/chatroom';
 import { WcferryContactComponent } from './wcferry/contact';
@@ -23,6 +25,7 @@ export const AppComponents = [
     Alert404Component,
 
     ChatroomListComponent,
+    ChatroomCreateComponent,
 
     LLModelCreateComponent,
     LLModelListComponent,
@@ -31,6 +34,7 @@ export const AppComponents = [
     KeywordCreateComponent,
 
     ProfileListComponent,
+    ProfileCreateComponent,
 
     WcferryChatroomComponent,
     WcferryContactComponent,
@@ -45,6 +49,7 @@ export const AppRoutes: Routes = [
     { path: 'welcome', component: WelcomeComponent },
 
     { path: 'chatroom/list', component: ChatroomListComponent, canActivate: [LoginGuard] },
+    { path: 'chatroom/create', component: ChatroomCreateComponent, canActivate: [LoginGuard] },
 
     { path: 'llmodel/create', component: LLModelCreateComponent, canActivate: [LoginGuard] },
     { path: 'llmodel/list', component: LLModelListComponent, canActivate: [LoginGuard] },
@@ -53,6 +58,7 @@ export const AppRoutes: Routes = [
     { path: 'keyword/create', component: KeywordCreateComponent, canActivate: [LoginGuard] },
 
     { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
+    { path: 'profile/create', component: ProfileCreateComponent, canActivate: [LoginGuard] },
 
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },

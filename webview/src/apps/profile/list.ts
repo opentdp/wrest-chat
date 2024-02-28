@@ -27,12 +27,6 @@ export class ProfileListComponent {
         this.timestamp = new Date().getTime();
     }
 
-    public getContacts() {
-        WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
-        });
-    }
-
     public getProfiles() {
         const rq = {} as ProfileFetchAllParam;
         RobotApi.profileList(rq).then((data) => {
@@ -46,6 +40,12 @@ export class ProfileListComponent {
     public deleteProfile(item: TablesProfile) {
         RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
             this.getProfiles();
+        });
+    }
+
+    public getContacts() {
+        WrestApi.contacts().then((data) => {
+            data.forEach((item) => this.contacts[item.wxid] = item);
         });
     }
 
