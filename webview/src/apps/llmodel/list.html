@@ -9,7 +9,7 @@
 
 <div class="container-lg mb-3">
     <div class="text-end mb-3">
-        <button type="submit" class="btn btn-primary" [routerLink]="['/llmodel/create']">添加模型</button>
+        <button class="btn btn-sm btn-primary" [routerLink]="['/llmodel/create']">添加模型</button>
     </div>
 
     <table class="table table-hover align-middle">
@@ -21,6 +21,7 @@
                 <th scope="col">族类</th>
                 <th scope="col">供应商</th>
                 <th scope="col">接入点</th>
+                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,9 @@
                 <td>{{item.family}}</td>
                 <td>{{item.provider}}</td>
                 <td>{{item.endpoint}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" (click)="deleteLLModel(item)">删除</button>
+                </td>
             </tr>
             }
         </tbody>

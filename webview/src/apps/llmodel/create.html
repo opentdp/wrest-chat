@@ -9,7 +9,7 @@
 </nav>
 
 <div class="container-lg mb-3">
-    <form class="row gy-3" (ngSubmit)="onSubmit()" #myform="ngForm">
+    <form class="row gy-3" (ngSubmit)="createLLModel()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">指令 *</label>
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />

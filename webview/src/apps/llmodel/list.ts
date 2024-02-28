@@ -33,4 +33,10 @@ export class LLModelListComponent {
         });
     }
 
+    public deleteLLModel(item: TablesLLModel) {
+        RobotApi.llmodelDelete({ mid: item.mid }).then(() => {
+            this.getLLModels();
+        });
+    }
+
 }

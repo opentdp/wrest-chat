@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { RobotApi, LlmodelFetchAllParam, TablesLLModel } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
@@ -17,13 +18,9 @@ export class LLModelCreateComponent {
 
     public formdata = {} as TablesLLModel;
 
-    constructor() {
+    constructor(private router: Router) {
         this.getContacts();
         this.getLLModels();
-    }
-
-    public onSubmit() {
-        RobotApi.llmodelCreate(this.formdata);
     }
 
     public getContacts() {
@@ -36,6 +33,12 @@ export class LLModelCreateComponent {
         const rq = {} as LlmodelFetchAllParam;
         RobotApi.llmodelList(rq).then((data) => {
             this.llmodels = data || [];
+        });
+    }
+
+    public createLLModel() {
+        RobotApi.llmodelCreate(this.formdata).then(() => {
+            this.router.navigate(['llmodel/list']);
         });
     }
 
