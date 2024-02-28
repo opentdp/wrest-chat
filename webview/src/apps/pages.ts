@@ -4,6 +4,7 @@ import { WelcomeComponent } from './welcome';
 import { ErrorComponent } from './error';
 
 import { BotChatroomsComponent } from './robot/chatrooms';
+import { BotKeywordsComponent } from './robot/keywords';
 import { BotProfilesComponent } from './robot/profiles';
 
 import { WcfChatroomsComponent } from './wcferry/chatrooms';
@@ -16,6 +17,7 @@ export const AppComponents = [
     ErrorComponent,
 
     BotChatroomsComponent,
+    BotKeywordsComponent,
     BotProfilesComponent,
 
     WcfChatroomsComponent,
@@ -31,6 +33,7 @@ export const AppRoutes: Routes = [
     { path: 'welcome', component: WelcomeComponent },
 
     { path: 'bot/chatrooms', component: BotChatroomsComponent, canActivate: [LoginGuard] },
+    { path: 'bot/keywords', component: BotKeywordsComponent, canActivate: [LoginGuard] },
     { path: 'bot/profiles', component: BotProfilesComponent, canActivate: [LoginGuard] },
 
     { path: 'wcf/chatrooms', component: WcfChatroomsComponent, canActivate: [LoginGuard] },
