@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
-import { RobotApi, LlmodelFetchAllParam, TablesLLModel } from '../../../openapi/wrobot';
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { RobotApi, LlmodelFetchAllParam, TablesLLModel } from '../../openapi/wrobot';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-bot-llmodel',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-llmodel-list',
+    templateUrl: 'list.html',
+    styleUrls: ['list.scss']
 })
-export class BotLLModelsComponent {
+export class LLModelListComponent {
 
     public contacts: Record<string, WcfrestContactPayload> = {};
 

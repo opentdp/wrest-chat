@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
 import { LevelData } from 'src/openapi/const';
-import { RobotApi, ChatroomFetchAllParam, TablesChatroom } from '../../../openapi/wrobot';
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { RobotApi, ChatroomFetchAllParam, TablesChatroom } from '../../openapi/wrobot';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-bot-chatrooms',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-chatroom-list',
+    templateUrl: 'list.html',
+    styleUrls: ['list.scss']
 })
-export class BotChatroomsComponent {
+export class ChatroomListComponent {
 
     public levels = LevelData;
 

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
-import { RobotApi, KeywordFetchAllParam, TablesKeyword } from '../../../openapi/wrobot';
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { RobotApi, KeywordFetchAllParam, TablesKeyword } from '../../openapi/wrobot';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-bot-keyword',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-keyword-list',
+    templateUrl: 'list.html',
+    styleUrls: ['list.scss']
 })
-export class BotKeywordsComponent {
+export class KeywordListComponent {
 
     public contacts: Record<string, WcfrestContactPayload> = {};
 

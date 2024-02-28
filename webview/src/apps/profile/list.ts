@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
 import { LevelData } from 'src/openapi/const';
-import { RobotApi, ProfileFetchAllParam, TablesProfile } from '../../../openapi/wrobot';
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { RobotApi, ProfileFetchAllParam, TablesProfile } from '../../openapi/wrobot';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-bot-profiles',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-profile-list',
+    templateUrl: 'list.html',
+    styleUrls: ['list.scss']
 })
-export class BotProfilesComponent {
+export class ProfileListComponent {
 
     public levels = LevelData;
     public timestamp = 0;
@@ -63,6 +63,10 @@ export class BotProfilesComponent {
                 this.avatars[item.usr_name] = item.small_head_img_url;
             });
         });
+    }
+
+    public getLocalTime(ts: number) {
+        return new Date(ts * 1000).toLocaleString();
     }
 
 }

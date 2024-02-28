@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-wcf-contacts',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-wcferry-contact',
+    templateUrl: 'contact.html',
+    styleUrls: ['contact.scss']
 })
-export class WcfContactsComponent {
+export class WcferryContactComponent {
 
     public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 

@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: 'index.html',
     styleUrls: ['index.scss']
 })
-export class HeaderComponent {
+export class LayoutHeaderComponent {
 
     public collapse = false;
 

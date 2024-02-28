@@ -2,11 +2,11 @@ import { Component, OnDestroy } from '@angular/core';
 
 
 @Component({
-    selector: 'page-wcf-receiver',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-wcferry-receiver',
+    templateUrl: 'receiver.html',
+    styleUrls: ['receiver.scss']
 })
-export class WcfReceiverComponent implements OnDestroy {
+export class WcferryReceiverComponent implements OnDestroy {
 
     public ws!: WebSocket;
     public messages: Array<string> = [];

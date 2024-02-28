@@ -1,30 +1,38 @@
 import { LoginGuard } from '../helpers/login-guard';
 
 import { WelcomeComponent } from './welcome';
-import { ErrorComponent } from './error';
+import { Alert404Component } from './alert/404';
 
-import { BotChatroomsComponent } from './robot/chatrooms';
-import { BotLLModelsComponent } from './robot/llmodels';
-import { BotKeywordsComponent } from './robot/keywords';
-import { BotProfilesComponent } from './robot/profiles';
+import { ChatroomListComponent } from './chatroom/list';
 
-import { WcfChatroomsComponent } from './wcferry/chatrooms';
-import { WcfContactsComponent } from './wcferry/contacts';
-import { WcfReceiverComponent } from './wcferry/receiver';
+import { LLModelCreateComponent } from './llmodel/create';
+import { LLModelListComponent } from './llmodel/list';
+
+import { KeywordListComponent } from './keyword/list';
+
+import { ProfileListComponent } from './profile/list';
+
+import { WcferryChatroomComponent } from './wcferry/chatroom';
+import { WcferryContactComponent } from './wcferry/contact';
+import { WcferryReceiverComponent } from './wcferry/receiver';
 
 
 export const AppComponents = [
     WelcomeComponent,
-    ErrorComponent,
+    Alert404Component,
 
-    BotChatroomsComponent,
-    BotLLModelsComponent,
-    BotKeywordsComponent,
-    BotProfilesComponent,
+    ChatroomListComponent,
 
-    WcfChatroomsComponent,
-    WcfContactsComponent,
-    WcfReceiverComponent,
+    LLModelCreateComponent,
+    LLModelListComponent,
+
+    KeywordListComponent,
+
+    ProfileListComponent,
+
+    WcferryChatroomComponent,
+    WcferryContactComponent,
+    WcferryReceiverComponent,
 ];
 
 //////////////////////////////////////////////////////////////////
@@ -34,15 +42,19 @@ import { Routes } from '@angular/router';
 export const AppRoutes: Routes = [
     { path: 'welcome', component: WelcomeComponent },
 
-    { path: 'bot/chatrooms', component: BotChatroomsComponent, canActivate: [LoginGuard] },
-    { path: 'bot/llmodels', component: BotLLModelsComponent, canActivate: [LoginGuard] },
-    { path: 'bot/keywords', component: BotKeywordsComponent, canActivate: [LoginGuard] },
-    { path: 'bot/profiles', component: BotProfilesComponent, canActivate: [LoginGuard] },
+    { path: 'chatroom/list', component: ChatroomListComponent, canActivate: [LoginGuard] },
 
-    { path: 'wcf/chatrooms', component: WcfChatroomsComponent, canActivate: [LoginGuard] },
-    { path: 'wcf/contacts', component: WcfContactsComponent, canActivate: [LoginGuard] },
-    { path: 'wcf/receiver', component: WcfReceiverComponent, canActivate: [LoginGuard] },
+    { path: 'llmodel/create', component: LLModelCreateComponent, canActivate: [LoginGuard] },
+    { path: 'llmodel/list', component: LLModelListComponent, canActivate: [LoginGuard] },
+
+    { path: 'keyword/list', component: KeywordListComponent, canActivate: [LoginGuard] },
+
+    { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
+
+    { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
+    { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },
+    { path: 'wcferry/receiver', component: WcferryReceiverComponent, canActivate: [LoginGuard] },
 
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-    { path: '**', component: ErrorComponent, data: { error: 404 } },
+    { path: '**', component: Alert404Component },
 ];

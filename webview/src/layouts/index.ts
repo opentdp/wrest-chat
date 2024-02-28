@@ -1,6 +1,6 @@
-import { HeaderComponent } from './header';
+import { LayoutHeaderComponent } from './header';
 
 
 export const AppLayouts = [
-    HeaderComponent,
+    LayoutHeaderComponent,
 ];

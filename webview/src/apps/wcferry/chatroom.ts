@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 
-import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
+import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-wcf-chatrooms',
-    templateUrl: 'index.html',
-    styleUrls: ['index.scss']
+    selector: 'page-wcferry-chatroom',
+    templateUrl: 'chatroom.html',
+    styleUrls: ['chatroom.scss']
 })
-export class WcfChatroomsComponent {
+export class WcferryChatroomComponent {
 
     public avatars: Record<string, string> = {};
     public chatrooms: Array<WcfrestContactPayload> = [];
