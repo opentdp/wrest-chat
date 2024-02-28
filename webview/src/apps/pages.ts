@@ -4,6 +4,7 @@ import { WelcomeComponent } from './welcome';
 import { ErrorComponent } from './error';
 
 import { BotChatroomsComponent } from './robot/chatrooms';
+import { BotLLModelsComponent } from './robot/llmodels';
 import { BotKeywordsComponent } from './robot/keywords';
 import { BotProfilesComponent } from './robot/profiles';
 
@@ -17,6 +18,7 @@ export const AppComponents = [
     ErrorComponent,
 
     BotChatroomsComponent,
+    BotLLModelsComponent,
     BotKeywordsComponent,
     BotProfilesComponent,
 
@@ -33,6 +35,7 @@ export const AppRoutes: Routes = [
     { path: 'welcome', component: WelcomeComponent },
 
     { path: 'bot/chatrooms', component: BotChatroomsComponent, canActivate: [LoginGuard] },
+    { path: 'bot/llmodels', component: BotLLModelsComponent, canActivate: [LoginGuard] },
     { path: 'bot/keywords', component: BotKeywordsComponent, canActivate: [LoginGuard] },
     { path: 'bot/profiles', component: BotProfilesComponent, canActivate: [LoginGuard] },
 

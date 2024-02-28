@@ -1,0 +1,28 @@
+<layout-header></layout-header>
+
+<div class="container-lg mt-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">指令</th>
+                <th scope="col">模型</th>
+                <th scope="col">族类</th>
+                <th scope="col">供应商</th>
+                <th scope="col">接入点</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of llmodels; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>{{item.mid}}</td>
+                <td>{{item.model}}</td>
+                <td>{{item.family}}</td>
+                <td>{{item.provider}}</td>
+                <td>{{item.endpoint}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
