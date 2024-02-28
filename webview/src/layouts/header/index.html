@@ -12,16 +12,6 @@
                 <li class="nav-item">
                     <a routerLink="/welcome" routerLinkActive="active" class="nav-link">首页</a>
                 </li>
-                <li ngbDropdown class="nav-item">
-                    <a ngbDropdownToggle class="nav-link">
-                        Wcferry
-                    </a>
-                    <div ngbDropdownMenu>
-                        <a ngbDropdownItem routerLink="/wcf/chatrooms" routerLinkActive="active">群聊</a>
-                        <a ngbDropdownItem routerLink="/wcf/contacts" routerLinkActive="active">通讯录</a>
-                        <a ngbDropdownItem routerLink="/wcf/receiver" routerLinkActive="active">消息监听</a>
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a routerLink="/bot/chatrooms" routerLinkActive="active" class="nav-link">群聊配置</a>
                 </li>
@@ -34,13 +24,31 @@
                 <li class="nav-item">
                     <a routerLink="/bot/keywords" routerLinkActive="active" class="nav-link">关键词</a>
                 </li>
+                <li ngbDropdown class="nav-item">
+                    <a ngbDropdownToggle class="nav-link">
+                        Wcferry
+                    </a>
+                    <div ngbDropdownMenu>
+                        <a ngbDropdownItem routerLink="/wcf/chatrooms" routerLinkActive="active">群聊</a>
+                        <a ngbDropdownItem routerLink="/wcf/contacts" routerLinkActive="active">通讯录</a>
+                        <a ngbDropdownItem routerLink="/wcf/receiver" routerLinkActive="active">消息监听</a>
+                    </div>
+                </li>
             </ul>
-            <a class="nav-link ms-3" href="/swagger/" target="_blank" title="Api 文档">
-                <i class="bi bi-filetype-doc"></i>
-            </a>
-            <a class="nav-link ms-3" href="https://github.com/opentdp/wechat-rest" target="_blank" title="Github 仓库">
-                <i class="bi bi-github"></i>
-            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/swagger/" target="_blank" title="接口文档">
+                        <i class="bi bi-filetype-doc d-none d-lg-inline"></i>
+                        <span class="d-lg-none">接口文档</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/opentdp/wechat-rest" target="_blank" title="源代码">
+                        <i class="bi bi-github d-none d-lg-inline"></i>
+                        <span class="d-lg-none">源代码</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
