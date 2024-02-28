@@ -185,19 +185,19 @@ export const RobotApi = {
 
 export interface ChatroomCreateParam {
     // 入群口令
-    join_argot: string;
+    join_argot?: string;
     // 等级
-    level: number;
+    level?: number;
     // 群聊名称
-    name: string;
+    name?: string;
     // 备注
-    remark: string;
+    remark?: string;
     // 防撤回消息
-    revoke_msg: string;
+    revoke_msg?: string;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 欢迎消息
-    welcome_msg: string;
+    welcome_msg?: string;
 }
 
 export interface ChatroomDeleteParam {
@@ -234,11 +234,11 @@ export interface ChatroomUpdateParam {
 
 export interface KeywordCreateParam {
     // 等级
-    level: number;
+    level?: number;
     // 词语或短语
-    phrase: string;
+    phrase?: string;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordDeleteParam {
@@ -275,17 +275,17 @@ export interface KeywordUpdateParam {
 
 export interface LlmodelCreateParam {
     // 接口地址
-    endpoint: string;
+    endpoint?: string;
     // 模型家族
-    family: string;
+    family?: string;
     // 模型 Id
-    mid: string;
+    mid?: string;
     // 模型名称
-    model: string;
+    model?: string;
     // 服务商名称
-    provider: string;
+    provider?: string;
     // 密钥
-    secret: string;
+    secret?: string;
 }
 
 export interface LlmodelDeleteParam {
@@ -324,17 +324,17 @@ export interface LlmodelUpdateParam {
 
 export interface ProfileCreateParam {
     // 唤醒词
-    ai_argot: string;
+    ai_argot?: string;
     // 会话模型
-    ai_model: string;
+    ai_model?: string;
     // 等级
-    level: number;
+    level?: number;
     // 备注
-    remark: string;
+    remark?: string;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileDeleteParam {
@@ -375,13 +375,13 @@ export interface ProfileUpdateParam {
 
 export interface SettingCreateParam {
     // 键
-    name: string;
+    name?: string;
     // 备注
-    remark: string;
+    remark?: string;
     // 标题
-    title: string;
+    title?: string;
     // 值
-    value: string;
+    value?: string;
 }
 
 export interface SettingDeleteParam {

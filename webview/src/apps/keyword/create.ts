@@ -14,7 +14,7 @@ export class KeywordCreateComponent {
 
     public chatrooms: Array<WcfrestContactPayload> = [];
 
-    public formdata = { level: 1, roomid: '-' } as KeywordCreateParam;
+    public formdata: KeywordCreateParam = { roomid: '-', level: 1 };
 
     constructor(private router: Router) {
         this.getChatrooms();

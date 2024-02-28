@@ -11,7 +11,7 @@ import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 })
 export class LLModelCreateComponent {
 
-    public formdata = {} as LlmodelCreateParam;
+    public formdata: LlmodelCreateParam = {};
 
     constructor(private router: Router) { }
 

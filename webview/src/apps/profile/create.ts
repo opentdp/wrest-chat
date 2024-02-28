@@ -17,7 +17,7 @@ export class ProfileCreateComponent {
     public chatrooms: Array<WcfrestContactPayload> = [];
     public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
-    public formdata = {} as ProfileCreateParam;
+    public formdata: ProfileCreateParam = {};
 
     constructor(private router: Router) {
         this.getChatrooms();
@@ -32,11 +32,8 @@ export class ProfileCreateComponent {
 
     public changeRoomid() {
         this.formdata.wxid = '';
-        if (this.formdata.roomid == '-') {
-            this.conacts = this.friends;
-        } else {
-            this.conacts = this.roomMembers[this.formdata.roomid] || [];
-        }
+        const id = this.formdata.roomid || '-';
+        this.conacts = id == '-' ? this.friends : this.roomMembers[id] || [];
     }
 
     public getFriends() {
