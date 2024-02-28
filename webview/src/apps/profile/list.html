@@ -19,6 +19,7 @@
                 <th scope="col">AI 模型</th>
                 <th scope="col">拉黑期限</th>
                 <th scope="col">备注</th>
+                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,9 @@
                 <td>{{item.ai_model}}</td>
                 <td>{{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}</td>
                 <td>{{item.remark}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" (click)="deleteProfile(item)">删除</button>
+                </td>
             </tr>
             }
         </tbody>

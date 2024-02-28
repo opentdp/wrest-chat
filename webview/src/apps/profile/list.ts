@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { LevelData } from 'src/openapi/const';
-import { RobotApi, ProfileFetchAllParam, TablesProfile } from '../../openapi/wrobot';
+import { RobotApi, TablesProfile, ProfileFetchAllParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -40,6 +40,12 @@ export class ProfileListComponent {
             // 获取群成员列表
             const ids = this.profiles.map((item) => item.roomid);
             this.getRoomMembers(ids);
+        });
+    }
+
+    public deleteProfile(item: TablesProfile) {
+        RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
+            this.getProfiles();
         });
     }
 
