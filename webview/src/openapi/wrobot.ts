@@ -437,6 +437,8 @@ export interface TablesProfile {
     ai_argot: string;
     // 会话模型
     ai_model: string;
+    // 拉黑截止时间
+    ban_expire: number;
     // 创建时间戳
     created_at: number;
     // 等级

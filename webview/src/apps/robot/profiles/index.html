@@ -10,6 +10,7 @@
                 <th scope="col">级别</th>
                 <th scope="col">AI 唤醒词</th>
                 <th scope="col">AI 模型</th>
+                <th scope="col">拉黑期限</th>
                 <th scope="col">备注</th>
             </tr>
         </thead>
@@ -35,6 +36,7 @@
                 <td>{{levels[item.level].name || '-'}}</td>
                 <td>{{item.ai_argot}}</td>
                 <td>{{item.ai_model}}</td>
+                <td>{{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}</td>
                 <td>{{item.remark}}</td>
             </tr>
             }

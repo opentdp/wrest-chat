@@ -13,6 +13,7 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 export class BotProfilesComponent {
 
     public levels = LevelData;
+    public timestamp = 0;
 
     public contacts: Record<string, WcfrestContactPayload> = {};
     public roomMembers: Record<string, Record<string, WcfrestContactPayload>> = {};
@@ -22,6 +23,7 @@ export class BotProfilesComponent {
     constructor() {
         this.getContacts();
         this.getProfiles();
+        this.timestamp = new Date().getTime();
     }
 
     public getContacts() {
@@ -52,6 +54,10 @@ export class BotProfilesComponent {
                 });
             });
         });
+    }
+
+    public getLocalTime(ts: number) {
+        return new Date(ts * 1000).toLocaleString();
     }
 
 }
