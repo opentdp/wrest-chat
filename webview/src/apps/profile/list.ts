@@ -28,8 +28,7 @@ export class ProfileListComponent {
     }
 
     public getProfiles() {
-        const rq = {} as ProfileFetchAllParam;
-        RobotApi.profileList(rq).then((data) => {
+        RobotApi.profileList({}).then((data) => {
             this.profiles = data || [];
             // 获取群成员列表
             const ids = this.profiles.map((item) => item.roomid);

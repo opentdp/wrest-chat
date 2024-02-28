@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { LevelData } from 'src/openapi/const';
-import { RobotApi, TablesChatroom, ChatroomFetchAllParam } from '../../openapi/wrobot';
+import { RobotApi, TablesChatroom } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -25,8 +25,7 @@ export class ChatroomListComponent {
     }
 
     public getChatrooms() {
-        const rq = {} as ChatroomFetchAllParam;
-        RobotApi.chatroomList(rq).then((data) => {
+        RobotApi.chatroomList({}).then((data) => {
             this.chatrooms = data || [];
         });
     }

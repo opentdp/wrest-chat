@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { RobotApi, TablesLLModel, LlmodelFetchAllParam } from '../../openapi/wrobot';
+import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
 
 
 @Component({
@@ -17,8 +17,7 @@ export class LLModelListComponent {
     }
 
     public getLLModels() {
-        const rq = {} as LlmodelFetchAllParam;
-        RobotApi.llmodelList(rq).then((data) => {
+        RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }

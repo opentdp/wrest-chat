@@ -207,7 +207,7 @@ export interface ChatroomDeleteParam {
 
 export interface ChatroomFetchAllParam {
     // 等级
-    level: number;
+    level?: number;
 }
 
 export interface ChatroomFetchParam {
@@ -250,9 +250,9 @@ export interface KeywordDeleteParam {
 
 export interface KeywordFetchAllParam {
     // 等级
-    level: number;
+    level?: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordFetchParam {
@@ -295,11 +295,11 @@ export interface LlmodelDeleteParam {
 
 export interface LlmodelFetchAllParam {
     // 模型家族
-    family: string;
+    family?: string;
     // 模型名称
-    model: string;
+    model?: string;
     // 服务商名称
-    provider: string;
+    provider?: string;
 }
 
 export interface LlmodelFetchParam {
@@ -346,9 +346,9 @@ export interface ProfileDeleteParam {
 
 export interface ProfileFetchAllParam {
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileFetchParam {
@@ -371,6 +371,42 @@ export interface ProfileUpdateParam {
     roomid: string;
     // 微信 id
     wxid: string;
+}
+
+export interface SettingCreateParam {
+    // 键
+    name: string;
+    // 备注
+    remark: string;
+    // 标题
+    title: string;
+    // 值
+    value: string;
+}
+
+export interface SettingDeleteParam {
+    // 键
+    name: string;
+}
+
+export interface SettingFetchAllParam {
+    // 暂无参数
+}
+
+export interface SettingFetchParam {
+    // 键
+    name: string;
+}
+
+export interface SettingUpdateParam {
+    // 键
+    name: string;
+    // 备注
+    remark: string;
+    // 标题
+    title: string;
+    // 值
+    value: string;
 }
 
 export interface TablesChatroom {
@@ -453,4 +489,21 @@ export interface TablesProfile {
     updated_at: number;
     // 微信 id
     wxid: string;
+}
+
+export interface TablesSetting {
+    // 创建时间戳
+    createdAt: number;
+    // 键
+    name: string;
+    // 主键
+    rd: number;
+    // 备注
+    remark: string;
+    // 标题
+    title: string;
+    // 最后更新时间戳
+    updatedAt: number;
+    // 值
+    value: string;
 }

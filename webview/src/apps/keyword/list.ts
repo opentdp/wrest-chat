@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { RobotApi, TablesKeyword, KeywordFetchAllParam } from '../../openapi/wrobot';
+import { RobotApi, TablesKeyword } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -21,8 +21,7 @@ export class KeywordListComponent {
     }
 
     public getKeywords() {
-        const rq = {} as KeywordFetchAllParam;
-        RobotApi.keywordList(rq).then((data) => {
+        RobotApi.keywordList({}).then((data) => {
             this.keywords = data || [];
         });
     }
