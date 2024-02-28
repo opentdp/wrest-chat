@@ -20,14 +20,8 @@ export class ChatroomListComponent {
     public chatrooms: Array<TablesChatroom> = [];
 
     constructor() {
-        this.getContacts();
         this.getChatrooms();
-    }
-
-    public getContacts() {
-        WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
-        });
+        this.getContacts();
     }
 
     public getChatrooms() {
@@ -40,6 +34,12 @@ export class ChatroomListComponent {
     public deleteChatroom(item: TablesChatroom) {
         RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
             this.getChatrooms();
+        });
+    }
+
+    public getContacts() {
+        WrestApi.contacts().then((data) => {
+            data.forEach((item) => this.contacts[item.wxid] = item);
         });
     }
 

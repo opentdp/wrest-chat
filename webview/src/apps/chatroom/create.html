@@ -1,0 +1,73 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">群聊配置</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="createChatroom()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">群聊 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
+                @for (item of chatrooms; track item.wxid) {
+                <option value="{{item.wxid}}">{{item.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                选择一个需要关联的群聊
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">名称 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.name" required />
+            <div class="form-text">
+                用于生成加群指令中的描述
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">加群指令 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.join_argot" required />
+            <div class="form-text">
+                用于生成加群指令
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">欢迎信息 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.welcome_msg" required />
+            <div class="form-text">
+                用户入群时的欢迎信息，-” 表示不欢迎
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">撤回提醒 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.revoke_msg" required />
+            <div class="form-text">
+                检测到撤回消息时的提醒，“-” 表示不提醒
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
+                <option value="1">拉黑</option>
+                <option value="2">加白</option>
+            </select>
+            <div class="form-text">
+                机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.remark" required />
+            <div class="form-text">
+                备注信息
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>
