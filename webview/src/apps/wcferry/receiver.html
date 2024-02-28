@@ -1,14 +1,12 @@
 <layout-header></layout-header>
 
-<div class="container-lg mt-3">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a routerLink="/welcome" class="nav-link">首页</a></li>
-            <li class="breadcrumb-item active">Wcferry</li>
-            <li class="breadcrumb-item active">消息监听</li>
-        </ol>
-    </nav>
-</div>
+<nav class="container-lg mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">Wcferry</li>
+        <li class="breadcrumb-item active">消息监听</li>
+    </ol>
+</nav>
 
 <div class="container-lg mt-3">
     <textarea class="form-control" rows="20">{{messages.join('\n\n')}}</textarea>

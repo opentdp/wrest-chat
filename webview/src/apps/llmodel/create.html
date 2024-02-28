@@ -1,28 +1,29 @@
 <layout-header></layout-header>
 
+<nav class="container-lg mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/llmodel/list">模型管理</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
 <div class="container-lg mt-3">
-    <table class="table table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">指令</th>
-                <th scope="col">模型</th>
-                <th scope="col">族类</th>
-                <th scope="col">供应商</th>
-                <th scope="col">接入点</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (item of llmodels; track item.rd) {
-            <tr>
-                <th scope="row">{{item.rd}}</th>
-                <td>{{item.mid}}</td>
-                <td>{{item.model}}</td>
-                <td>{{item.family}}</td>
-                <td>{{item.provider}}</td>
-                <td>{{item.endpoint}}</td>
-            </tr>
-            }
-        </tbody>
-    </table>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Example label</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Another label</label>
+        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder">
+    </div>
+</div>
+
+<div class="container-lg mt-3">
+    <th scope="col">#</th>
+    <th scope="col">指令</th>
+    <th scope="col">模型</th>
+    <th scope="col">族类</th>
+    <th scope="col">供应商</th>
+    <th scope="col">接入点</th>
 </div>
