@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { LevelData } from 'src/openapi/const';
 import { RobotApi, ChatroomFetchAllParam, TablesChatroom } from '../../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 
@@ -10,6 +11,8 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
     styleUrls: ['index.scss']
 })
 export class BotChatroomsComponent {
+
+    public levels = LevelData;
 
     public contacts: Record<string, WcfrestContactPayload> = {};
 
@@ -27,8 +30,9 @@ export class BotChatroomsComponent {
     }
 
     public getChatrooms() {
-        RobotApi.chatroomList({} as ChatroomFetchAllParam).then((data) => {
-            this.chatrooms = data;
+        const rq = {} as ChatroomFetchAllParam;
+        RobotApi.chatroomList(rq).then((data) => {
+            this.chatrooms = data || [];
         });
     }
 

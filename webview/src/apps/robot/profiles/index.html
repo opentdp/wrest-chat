@@ -6,8 +6,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">用户</th>
+                <th scope="col">场景</th>
                 <th scope="col">等级</th>
-                <th scope="col">群/私聊</th>
                 <th scope="col">AI 唤醒词</th>
                 <th scope="col">AI 模型</th>
                 <th scope="col">备注</th>
@@ -17,9 +17,22 @@
             @for (item of profiles; track item.rd) {
             <tr>
                 <th scope="row">{{item.rd}}</th>
-                <td>{{item.wxid}}</td>
-                <td>{{item.level}}</td>
-                <td>{{contacts[item.roomid] ? contacts[item.roomid].name : item.roomid}}</td>
+                <td>
+                    @if (item.roomid == '-' && contacts[item.wxid]) {
+                    {{contacts[item.wxid].name}}
+                    }
+                    @if (item.roomid != '-' && roomMembers[item.roomid] && roomMembers[item.roomid][item.wxid]) {
+                    {{roomMembers[item.roomid][item.wxid].name}}
+                    }
+                </td>
+                <td>
+                    @if (item.roomid == '-') {
+                    私聊
+                    } @else {
+                    {{contacts[item.roomid] ? contacts[item.roomid].name : item.roomid}}
+                    }
+                </td>
+                <td>{{levels[item.level].name || '-'}}</td>
                 <td>{{item.ai_argot}}</td>
                 <td>{{item.ai_model}}</td>
                 <td>{{item.remark}}</td>

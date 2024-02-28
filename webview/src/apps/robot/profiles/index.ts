@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { LevelData } from 'src/openapi/const';
 import { RobotApi, ProfileFetchAllParam, TablesProfile } from '../../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 
@@ -11,7 +12,10 @@ import { WrestApi, WcfrestContactPayload } from '../../../openapi/wcfrest';
 })
 export class BotProfilesComponent {
 
+    public levels = LevelData;
+
     public contacts: Record<string, WcfrestContactPayload> = {};
+    public roomMembers: Record<string, Record<string, WcfrestContactPayload>> = {};
 
     public profiles: Array<TablesProfile> = [];
 
@@ -27,8 +31,26 @@ export class BotProfilesComponent {
     }
 
     public getProfiles() {
-        RobotApi.profileList({} as ProfileFetchAllParam).then((data) => {
-            this.profiles = data;
+        const rq = {} as ProfileFetchAllParam;
+        RobotApi.profileList(rq).then((data) => {
+            this.profiles = data || [];
+            // 获取群成员列表
+            const roomids = this.profiles.map((item) => item.roomid);
+            this.getRoomMembers(roomids);
+        });
+    }
+
+    public getRoomMembers(ids: string[]) {
+        ids.forEach((id) => {
+            if (this.roomMembers[id]) {
+                return;
+            }
+            this.roomMembers[id] = {};
+            WrestApi.chatroomMembers({ roomid: id }).then((items) => {
+                items.forEach((item) => {
+                    this.roomMembers[id][item.wxid] = item;
+                });
+            });
         });
     }
 

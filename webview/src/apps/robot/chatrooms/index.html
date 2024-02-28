@@ -19,7 +19,7 @@
             <tr>
                 <th scope="row">{{item.rd}}</th>
                 <td>{{contacts[item.roomid] ? contacts[item.roomid].name : item.roomid}}</td>
-                <td>{{item.level}}</td>
+                <td>{{levels[item.level].name || '-'}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.join_argot}}</td>
                 <td>{{item.revoke_msg}}</td>
