@@ -24,6 +24,7 @@
 /ai 提问或交谈
 /api 调用远程接口
 /bad 添加违规关键词
+/ban 拉黑指定的用户
 /g:chat 加入群聊 OpenTDP 闲聊群
 /g:dev 加入群聊 OpenTDP 开发群
 /help 查看帮助信息
@@ -33,7 +34,7 @@
 /new 重置上下文内容
 /save 保存配置信息
 /unbad 添加违规关键词
-/unban 允许用户使用助手
+/unban 解封拉黑的用户
 /wake 设置或禁用唤醒词
 /wget 获取图片或文件
 级别 9；对话模型 Gemini，上下文长度 0/20；祝你好运！

@@ -20,18 +20,18 @@ func banHandler() {
 		Order:    40,
 		ChatAble: false,
 		RoomAble: true,
-		Describe: "禁止用户使用助手",
+		Describe: "拉黑指定的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
-				// 获取禁言时限
+				// 获取拉黑时限
 				parts := strings.Split(msg.Content, " ")
 				second, err := strconv.Atoi(parts[0])
 				if err != nil {
 					second = 86400
 				}
-				// 批量操作禁言
+				// 批量操作拉黑
 				list := strings.Split(ret.AtUserList, ",")
 				for _, v := range list {
 					if v == "" {
@@ -42,11 +42,11 @@ func banHandler() {
 					if up.Level >= 7 {
 						return "禁止操作管理员"
 					}
-					// 禁止使用
+					// 拉黑用户
 					expire := time.Now().Unix() + int64(second)
 					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: expire})
 				}
-				return fmt.Sprintf("已禁止，有效期 %d 秒", second)
+				return fmt.Sprintf("已拉黑，有效期 %d 秒", second)
 			}
 			return "参数错误"
 		},
@@ -58,7 +58,7 @@ func banHandler() {
 		Order:    41,
 		ChatAble: false,
 		RoomAble: true,
-		Describe: "取消使用助手限制",
+		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
@@ -73,10 +73,10 @@ func banHandler() {
 					if up.Level >= 7 {
 						return "禁止操作管理员"
 					}
-					// 取消禁止
+					// 解封用户
 					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: -1})
 				}
-				return "已取消限制"
+				return "已解封用户"
 			}
 			return "参数错误"
 		},
