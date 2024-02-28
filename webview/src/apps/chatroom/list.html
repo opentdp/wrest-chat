@@ -19,6 +19,7 @@
                 <th scope="col">撤回提示</th>
                 <th scope="col">入群欢迎</th>
                 <th scope="col">备注</th>
+                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,9 @@
                 <td>{{item.revoke_msg}}</td>
                 <td>{{item.welcome_msg}}</td>
                 <td>{{item.remark}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" (click)="deleteChatroom(item)">删除</button>
+                </td>
             </tr>
             }
         </tbody>
