@@ -1558,6 +1558,150 @@
                     }
                 }
             }
+        },
+        "/bot/setting/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::配置"
+                ],
+                "summary": "添加配置",
+                "parameters": [
+                    {
+                        "description": "添加配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/setting.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/setting/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::配置"
+                ],
+                "summary": "删除配置",
+                "parameters": [
+                    {
+                        "description": "删除配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/setting.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/setting/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::配置"
+                ],
+                "summary": "获取配置",
+                "parameters": [
+                    {
+                        "description": "获取配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/setting.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Setting"
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/setting/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::配置"
+                ],
+                "summary": "配置列表",
+                "parameters": [
+                    {
+                        "description": "获取配置列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/setting.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Setting"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/setting/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::配置"
+                ],
+                "summary": "修改配置",
+                "parameters": [
+                    {
+                        "description": "修改配置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/setting.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1567,7 +1711,7 @@
                 "roomid"
             ],
             "properties": {
-                "joinArgot": {
+                "join_argot": {
                     "type": "string"
                 },
                 "level": {
@@ -1579,13 +1723,13 @@
                 "remark": {
                     "type": "string"
                 },
-                "revokeMsg": {
+                "revoke_msg": {
                     "type": "string"
                 },
                 "roomid": {
                     "type": "string"
                 },
-                "welcomeMsg": {
+                "welcome_msg": {
                     "type": "string"
                 }
             }
@@ -1626,7 +1770,7 @@
                 "roomid"
             ],
             "properties": {
-                "joinArgot": {
+                "join_argot": {
                     "type": "string"
                 },
                 "level": {
@@ -1638,13 +1782,13 @@
                 "remark": {
                     "type": "string"
                 },
-                "revokeMsg": {
+                "revoke_msg": {
                     "type": "string"
                 },
                 "roomid": {
                     "type": "string"
                 },
-                "welcomeMsg": {
+                "welcome_msg": {
                     "type": "string"
                 }
             }
@@ -1830,11 +1974,14 @@
                 "wxid"
             ],
             "properties": {
-                "aiArgot": {
+                "ai_argot": {
                     "type": "string"
                 },
-                "aiModel": {
+                "ai_model": {
                     "type": "string"
+                },
+                "ban_expire": {
+                    "type": "integer"
                 },
                 "level": {
                     "type": "integer"
@@ -1895,11 +2042,14 @@
                 "wxid"
             ],
             "properties": {
-                "aiArgot": {
+                "ai_argot": {
                     "type": "string"
                 },
-                "aiModel": {
+                "ai_model": {
                     "type": "string"
+                },
+                "ban_expire": {
+                    "type": "integer"
                 },
                 "level": {
                     "type": "integer"
@@ -1915,14 +2065,80 @@
                 }
             }
         },
+        "setting.CreateParam": {
+            "type": "object",
+            "required": [
+                "name",
+                "title"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "setting.DeleteParam": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "setting.FetchAllParam": {
+            "type": "object"
+        },
+        "setting.FetchParam": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "setting.UpdateParam": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
         "tables.Chatroom": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "description": "创建时间戳",
                     "type": "integer"
                 },
-                "joinArgot": {
+                "join_argot": {
                     "description": "入群口令",
                     "type": "string"
                 },
@@ -1942,7 +2158,7 @@
                     "description": "备注",
                     "type": "string"
                 },
-                "revokeMsg": {
+                "revoke_msg": {
                     "description": "防撤回消息",
                     "type": "string"
                 },
@@ -1950,11 +2166,11 @@
                     "description": "群聊 id",
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "description": "最后更新时间戳",
                     "type": "integer"
                 },
-                "welcomeMsg": {
+                "welcome_msg": {
                     "description": "欢迎消息",
                     "type": "string"
                 }
@@ -1963,7 +2179,7 @@
         "tables.Keyword": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "description": "创建时间戳",
                     "type": "integer"
                 },
@@ -1983,7 +2199,7 @@
                     "description": "群聊 id",
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "description": "最后更新时间戳",
                     "type": "integer"
                 }
@@ -1992,7 +2208,7 @@
         "tables.LLModel": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "description": "创建时间戳",
                     "type": "integer"
                 },
@@ -2001,15 +2217,15 @@
                     "type": "string"
                 },
                 "family": {
-                    "description": "模型家族，用于生成模型切换指令",
+                    "description": "模型家族，用于在指令中描述模型类型",
                     "type": "string"
                 },
                 "mid": {
-                    "description": "模型 Id",
+                    "description": "模型 Id，用于生成模型切换指令",
                     "type": "string"
                 },
                 "model": {
-                    "description": "模型，必须和服务商提供的值对应",
+                    "description": "模型，必须和服务商对应",
                     "type": "string"
                 },
                 "provider": {
@@ -2024,7 +2240,7 @@
                     "description": "密钥，google 和 openai 填写 KEY，xunfei 填写 APP-ID,API-KEY,API-SECRET",
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "description": "最后更新时间戳",
                     "type": "integer"
                 }
@@ -2033,15 +2249,19 @@
         "tables.Profile": {
             "type": "object",
             "properties": {
-                "aiArgot": {
+                "ai_argot": {
                     "description": "唤醒词",
                     "type": "string"
                 },
-                "aiModel": {
+                "ai_model": {
                     "description": "会话模型",
                     "type": "string"
                 },
-                "createdAt": {
+                "ban_expire": {
+                    "description": "拉黑截止时间",
+                    "type": "integer"
+                },
+                "created_at": {
                     "description": "创建时间戳",
                     "type": "integer"
                 },
@@ -2061,12 +2281,45 @@
                     "description": "群聊 id",
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "description": "最后更新时间戳",
                     "type": "integer"
                 },
                 "wxid": {
                     "description": "微信 id",
+                    "type": "string"
+                }
+            }
+        },
+        "tables.Setting": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "键",
+                    "type": "string"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                },
+                "value": {
+                    "description": "值",
                     "type": "string"
                 }
             }

@@ -1,4 +1,4 @@
-package keyword
+package setting
 
 import (
 	"github.com/opentdp/go-helper/dborm"

@@ -39,4 +39,11 @@ func Route() {
 	rg.POST("profile/update", profile.update)
 	rg.POST("profile/delete", profile.delete)
 
+	setting := Setting{}
+	rg.POST("setting/list", setting.list)
+	rg.POST("setting/detail", setting.detail)
+	rg.POST("setting/create", setting.create)
+	rg.POST("setting/update", setting.update)
+	rg.POST("setting/delete", setting.delete)
+
 }
