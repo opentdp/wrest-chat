@@ -33,4 +33,11 @@ export class KeywordListComponent {
         });
     }
 
+    public deleteLLModel(item: TablesKeyword) {
+        const rq = { phrase: item.phrase, roomid: item.roomid };
+        RobotApi.keywordDelete(rq).then(() => {
+            this.getKeywords();
+        });
+    }
+
 }

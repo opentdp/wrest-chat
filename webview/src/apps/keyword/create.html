@@ -1,0 +1,43 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">关键字</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="createKeyword()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">关键词 *</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.phrase" required />
+            <div class="form-text">
+                用于违规检测，暂不支持统配符
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">类别 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
+                <option value="-">全局</option>
+                @for (item of chatrooms; track item.wxid) {
+                <option value="{{item.wxid}}">{{item.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                关键字所属类别，暂用作生效范围
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <input type="range" name="level" class="form-range" [(ngModel)]="formdata.level" min="0" max="6" required />
+            <div class="form-text">
+                用于违规积分计算，0 为不生效，当前值：{{formdata.level}}
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

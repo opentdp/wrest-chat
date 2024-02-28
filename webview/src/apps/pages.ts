@@ -9,6 +9,7 @@ import { LLModelCreateComponent } from './llmodel/create';
 import { LLModelListComponent } from './llmodel/list';
 
 import { KeywordListComponent } from './keyword/list';
+import { KeywordCreateComponent } from './keyword/create';
 
 import { ProfileListComponent } from './profile/list';
 
@@ -27,6 +28,7 @@ export const AppComponents = [
     LLModelListComponent,
 
     KeywordListComponent,
+    KeywordCreateComponent,
 
     ProfileListComponent,
 
@@ -48,6 +50,7 @@ export const AppRoutes: Routes = [
     { path: 'llmodel/list', component: LLModelListComponent, canActivate: [LoginGuard] },
 
     { path: 'keyword/list', component: KeywordListComponent, canActivate: [LoginGuard] },
+    { path: 'keyword/create', component: KeywordCreateComponent, canActivate: [LoginGuard] },
 
     { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
 
