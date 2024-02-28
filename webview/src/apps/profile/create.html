@@ -24,13 +24,13 @@
         </div>
         <div class="col-12">
             <label class="form-label">用户 *</label>
-            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required>
+            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required [disabled]="!formdata.roomid">
                 @for (item of conacts; track item.wxid) {
-                <option value="{{item.wxid}}">{{item.wxid}} - {{item.name}}</option>
+                <option value="{{item.wxid}}">{{item.wxid}}（{{item.name}}）</option>
                 }
             </select>
             <div class="form-text">
-                用于违规检测，暂不支持统配符
+                关联的用户，非好友无法添加私聊配置
             </div>
         </div>
         <div class="col-12">
@@ -46,8 +46,8 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">备注 *</label>
-            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.remark" required />
+            <label class="form-label">备注</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.remark" />
             <div class="form-text">
                 备注信息
             </div>

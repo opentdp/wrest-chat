@@ -15,6 +15,7 @@ export class ProfileCreateComponent {
     public conacts: Array<WcfrestContactPayload> = [];
     public friends: Array<WcfrestContactPayload> = [];
     public chatrooms: Array<WcfrestContactPayload> = [];
+    public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public formdata = {} as ProfileCreateParam;
 
@@ -30,10 +31,11 @@ export class ProfileCreateComponent {
     }
 
     public changeRoomid() {
+        this.formdata.wxid = '';
         if (this.formdata.roomid == '-') {
             this.conacts = this.friends;
         } else {
-            this.getRoomMembers(this.formdata.roomid);
+            this.conacts = this.roomMembers[this.formdata.roomid] || [];
         }
     }
 
@@ -46,12 +48,15 @@ export class ProfileCreateComponent {
     public getChatrooms() {
         WrestApi.chatrooms().then((data) => {
             this.chatrooms = data || [];
+            this.getRoomMembers(this.chatrooms.map((item) => item.wxid));
         });
     }
 
-    public getRoomMembers(id: string) {
-        WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-            this.conacts = data || [];
+    public getRoomMembers(ids: string[]) {
+        [...new Set(ids)].forEach((id) => {
+            WrestApi.chatroomMembers({ roomid: id }).then((data) => {
+                this.roomMembers[id] = data;
+            });
         });
     }
 
