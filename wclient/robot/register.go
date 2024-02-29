@@ -52,6 +52,16 @@ func self() *wcferry.UserInfo {
 
 }
 
+// 场景 Id
+func prid(msg *wcferry.WxMsg) string {
+
+	if msg.IsGroup {
+		return msg.Roomid
+	}
+	return "-"
+
+}
+
 // 回复消息
 func reply(msg *wcferry.WxMsg, text string) int32 {
 
@@ -122,7 +132,7 @@ func hook10000(msg *wcferry.WxMsg) {
 	// 有人进群时响应
 	re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 	if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
-		room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
 		if err == nil && len(room.WelcomeMsg) > 1 {
 			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
 		}
@@ -137,7 +147,7 @@ func hook10002(msg *wcferry.WxMsg) {
 	var output string
 
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
 		output = room.RevokeMsg
 	} else {
 		output = args.Bot.RevokeMsg

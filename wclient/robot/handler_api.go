@@ -55,8 +55,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	if cmd[0] == "help" {
 		lines := strings.Split(res, "\n")
 		for k, line := range lines {
-			line = strings.TrimLeft(line, "/")
-			line = strings.Replace(line, "/", " ", 1)
+			line = strings.Replace(strings.TrimLeft(line, "/"), "/", " ", 1)
 			lines[k] = strings.TrimSpace(line)
 		}
 		return "/api " + strings.Join(cmd, " ") + "\n" + strings.Join(lines, "\n")

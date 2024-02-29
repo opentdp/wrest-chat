@@ -32,19 +32,19 @@ func banHandler() {
 					second = 86400
 				}
 				// 批量操作拉黑
-				list := strings.Split(ret.AtUserList, ",")
-				for _, v := range list {
+				users := strings.Split(ret.AtUserList, ",")
+				for _, v := range users {
 					if v == "" {
 						continue
 					}
 					// 权限检查
-					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: msg.Roomid})
+					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
 					if up.Level >= 7 {
 						return "禁止操作管理员"
 					}
 					// 拉黑用户
 					expire := time.Now().Unix() + int64(second)
-					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: expire})
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: prid(msg), BanExpire: expire})
 				}
 				return fmt.Sprintf("已拉黑，有效期 %d 秒", second)
 			}
@@ -63,18 +63,18 @@ func banHandler() {
 			ret := &types.AtMsgSource{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
-				list := strings.Split(ret.AtUserList, ",")
-				for _, v := range list {
+				users := strings.Split(ret.AtUserList, ",")
+				for _, v := range users {
 					if v == "" {
 						continue
 					}
 					// 权限检查
-					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: msg.Roomid})
+					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
 					if up.Level >= 7 {
 						return "禁止操作管理员"
 					}
 					// 解封用户
-					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: msg.Roomid, BanExpire: -1})
+					profile.Migrate(&profile.UpdateParam{Wxid: v, Roomid: prid(msg), BanExpire: -1})
 				}
 				return "已解封用户"
 			}
@@ -87,14 +87,14 @@ func banHandler() {
 func banPreCheck(msg *wcferry.WxMsg) string {
 
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
 		if room.Level == 1 {
 			msg.Content = ""
 			return ""
 		}
 	}
 
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 	if up.Level == 1 || up.BanExpire > time.Now().Unix() {
 		msg.Content = ""
 	}

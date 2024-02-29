@@ -22,12 +22,7 @@ func badHandler() {
 		RoomAble: true,
 		Describe: "添加违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			v := msg.Content
-			_, err := keyword.Create(&keyword.CreateParam{
-				Roomid: msg.Roomid,
-				Phrase: v,
-				Level:  1,
-			})
+			_, err := keyword.Create(&keyword.CreateParam{Roomid: prid(msg), Phrase: msg.Content, Level: 1})
 			if err == nil {
 				updateBadWord()
 				return "添加成功"
@@ -44,11 +39,7 @@ func badHandler() {
 		RoomAble: true,
 		Describe: "删除违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			v := msg.Content
-			err := keyword.Delete(&keyword.DeleteParam{
-				Roomid: msg.Roomid,
-				Phrase: v,
-			})
+			err := keyword.Delete(&keyword.DeleteParam{Roomid: prid(msg), Phrase: msg.Content})
 			if err == nil {
 				updateBadWord()
 				return "删除成功"
@@ -68,7 +59,7 @@ func updateBadWord() {
 
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 	if !msg.IsGroup || up.Level >= 7 {
 		return ""
 	}

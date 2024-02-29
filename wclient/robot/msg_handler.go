@@ -41,11 +41,10 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 前置检查
 	for _, v := range handlers {
-		if v.PreCheck == nil {
-			continue
-		}
-		if txt := v.PreCheck(msg); txt != "" {
-			return txt
+		if v.PreCheck != nil {
+			if txt := v.PreCheck(msg); txt != "" {
+				return txt
+			}
 		}
 	}
 
@@ -70,7 +69,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 验证级别
 	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 		if up.Level < handler.Level {
 			return "此指令已被限制使用"
 		}

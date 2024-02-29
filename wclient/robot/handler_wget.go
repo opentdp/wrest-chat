@@ -56,15 +56,17 @@ func fileReply(msg *wcferry.WxMsg, text string) int32 {
 
 func isImageFile(text string) bool {
 
-	imageExtensions := []string{".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff", ".svg"}
-
-	ext := strings.ToLower(text)
-	for _, imageExt := range imageExtensions {
-		if ext == imageExt {
-			return true
-		}
+	imageExtensions := map[string]bool{
+		".jpg":  true,
+		".jpeg": true,
+		".png":  true,
+		".gif":  true,
+		".bmp":  true,
+		".webp": true,
+		".tiff": true,
+		".svg":  true,
 	}
 
-	return false
+	return imageExtensions[strings.ToLower(text)]
 
 }

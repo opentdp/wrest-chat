@@ -53,7 +53,7 @@ func aiHandler() {
 			RoomAble: true,
 			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
 			Callback: func(msg *wcferry.WxMsg) string {
-				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: v.Mid})
+				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		}
@@ -67,7 +67,7 @@ func aiHandler() {
 		Describe: "随机选择模型",
 		Callback: func(msg *wcferry.WxMsg) string {
 			for _, v := range models {
-				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiModel: v.Mid})
+				profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			}
 			return "没有可用的模型"
@@ -89,7 +89,7 @@ func aiHandler() {
 				argot = "-"
 			}
 			// 更新唤醒词
-			profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: msg.Roomid, AiArgot: argot})
+			profile.Migrate(&profile.MigrateParam{Wxid: msg.Sender, Roomid: prid(msg), AiArgot: argot})
 			if argot == "-" {
 				if msg.IsGroup {
 					return "已禁用自定义唤醒词"
@@ -115,7 +115,7 @@ func aiPreCheck(msg *wcferry.WxMsg) string {
 			return ""
 		}
 		// 处理用户自定义的唤醒词
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 		if up.AiArgot == "-" {
 			if !msg.IsGroup {
 				msg.Content = "/ai " + msg.Content

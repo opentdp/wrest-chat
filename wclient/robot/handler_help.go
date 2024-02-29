@@ -29,7 +29,7 @@ func helpHandler() {
 
 func helpCallback(msg *wcferry.WxMsg) string {
 
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: msg.Roomid})
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 
 	// 生成指令菜单
 	helper := []string{}
@@ -75,7 +75,7 @@ func helpPreCheck(msg *wcferry.WxMsg) string {
 
 	if args.Bot.WhiteLimit {
 		if msg.IsGroup {
-			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
 			if room.Level < 2 {
 				return "-"
 			}
