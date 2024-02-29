@@ -15,3 +15,9 @@ export const UserLevels: Record<number, LevelData> = {
     7: { name: '管理员' },
     9: { name: '创始人' }
 };
+
+export const KeywordLevels: Record<number, LevelData> = {
+    1: { name: '一般违规' },
+    2: { name: '较为严重' },
+    3: { name: '非常严重' },
+};

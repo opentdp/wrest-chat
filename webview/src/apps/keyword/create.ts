@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { KeywordLevels } from 'src/openapi/const';
 import { RobotApi, KeywordCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -12,23 +13,28 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordCreateComponent {
 
-    public chatrooms: Array<WcfrestContactPayload> = [];
+    public keywordLevels = KeywordLevels;
+
+    public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
     public formdata: KeywordCreateParam = { roomid: '-', level: 1 };
 
     constructor(private router: Router) {
-        this.getChatrooms();
+        this.getWcfChatrooms();
     }
 
     public createKeyword() {
+        if (this.formdata.level) {
+            this.formdata.level = +this.formdata.level;
+        }
         RobotApi.keywordCreate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
         });
     }
 
-    public getChatrooms() {
+    public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
-            this.chatrooms = data || [];
+            this.wcfChatrooms = data || [];
         });
     }
 

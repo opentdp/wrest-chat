@@ -28,13 +28,13 @@
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.phrase}}</td>
                 <td>
-                    @if (chatrooms[item.roomid]) {
-                    {{chatrooms[item.roomid].name}}
+                    @if (wcfChatrooms[item.roomid]) {
+                    {{wcfChatrooms[item.roomid].name}}
                     } @else {
                     {{item.roomid != '-' ? item.roomid : '全局'}}
                     }
                 </td>
-                <td>{{item.level}}</td>
+                <td>{{ keywordLevels[item.level] && keywordLevels[item.level].name || item.level}}</td>
                 <td>
                     <button class="btn btn-sm btn-danger" (click)="deleteKeyword(item)">删除</button>
                 </td>

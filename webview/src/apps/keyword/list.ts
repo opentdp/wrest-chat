@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { KeywordLevels } from 'src/openapi/const';
 import { RobotApi, TablesKeyword } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -11,13 +12,15 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordListComponent {
 
-    public chatrooms: Record<string, WcfrestContactPayload> = {};
+    public keywordLevels = KeywordLevels;
+
+    public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
     public keywords: Array<TablesKeyword> = [];
 
     constructor() {
         this.getKeywords();
-        this.getChatrooms();
+        this.getWcfChatrooms();
     }
 
     public getKeywords() {
@@ -33,9 +36,9 @@ export class KeywordListComponent {
         });
     }
 
-    public getChatrooms() {
+    public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
-            data.forEach((item) => this.chatrooms[item.wxid] = item);
+            data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }
 

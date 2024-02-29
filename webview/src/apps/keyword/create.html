@@ -21,8 +21,8 @@
             <label class="form-label">类别 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
                 <option value="-">全局</option>
-                @for (item of chatrooms; track item.wxid) {
-                <option value="{{item.wxid}}">{{item.name}}</option>
+                @for (item of wcfChatrooms; track item.wxid) {
+                <option [value]="item.wxid">{{item.name}}</option>
                 }
             </select>
             <div class="form-text">
@@ -31,9 +31,13 @@
         </div>
         <div class="col-12">
             <label class="form-label">级别 *</label>
-            <input type="range" name="level" class="form-range" [(ngModel)]="formdata.level" min="0" max="6" required />
+            <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
+                @for (item of keywordLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
             <div class="form-text">
-                用于违规积分计算，0 为不生效，当前值：{{formdata.level}}
+                用于违规积分累计，当前选项计 {{formdata.level}} 分
             </div>
         </div>
         <div class="col-12">

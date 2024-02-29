@@ -14,7 +14,7 @@
             <label class="form-label">群聊 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
                 @for (item of wcfChatrooms; track item.wxid) {
-                <option value="{{item.wxid}}">{{item.name}}</option>
+                <option [value]="item.wxid">{{item.name}}</option>
                 }
             </select>
             <div class="form-text">
