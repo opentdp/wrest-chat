@@ -47,8 +47,8 @@ export const RobotApi = {
         return httpRequest('/bot/chatroom/update', options);
     },
     /**
-     * @summary 添加关键字
-     * @param {KeywordCreateParam} body 添加关键字参数
+     * @summary 添加关键词
+     * @param {KeywordCreateParam} body 添加关键词参数
      * @param {*} [options] Override http request option.
      */
     keywordCreate(body: KeywordCreateParam, options: RequestInit = {}): Promise<number> {
@@ -56,8 +56,8 @@ export const RobotApi = {
         return httpRequest('/bot/keyword/create', options);
     },
     /**
-     * @summary 删除关键字
-     * @param {KeywordDeleteParam} body 删除关键字参数
+     * @summary 删除关键词
+     * @param {KeywordDeleteParam} body 删除关键词参数
      * @param {*} [options] Override http request option.
      */
     keywordDelete(body: KeywordDeleteParam, options: RequestInit = {}): Promise<unknown> {
@@ -65,8 +65,8 @@ export const RobotApi = {
         return httpRequest('/bot/keyword/delete', options);
     },
     /**
-     * @summary 获取关键字
-     * @param {KeywordFetchParam} body 获取关键字参数
+     * @summary 获取关键词
+     * @param {KeywordFetchParam} body 获取关键词参数
      * @param {*} [options] Override http request option.
      */
     keywordDetail(body: KeywordFetchParam, options: RequestInit = {}): Promise<TablesKeyword> {
@@ -74,8 +74,8 @@ export const RobotApi = {
         return httpRequest('/bot/keyword/detail', options);
     },
     /**
-     * @summary 关键字列表
-     * @param {KeywordFetchAllParam} body 获取关键字列表参数
+     * @summary 关键词列表
+     * @param {KeywordFetchAllParam} body 获取关键词列表参数
      * @param {*} [options] Override http request option.
      */
     keywordList(body: KeywordFetchAllParam, options: RequestInit = {}): Promise<TablesKeyword[]> {
@@ -83,8 +83,8 @@ export const RobotApi = {
         return httpRequest('/bot/keyword/list', options);
     },
     /**
-     * @summary 修改关键字
-     * @param {KeywordUpdateParam} body 修改关键字参数
+     * @summary 修改关键词
+     * @param {KeywordUpdateParam} body 修改关键词参数
      * @param {*} [options] Override http request option.
      */
     keywordUpdate(body: KeywordUpdateParam, options: RequestInit = {}): Promise<unknown> {
@@ -236,9 +236,9 @@ export interface KeywordCreateParam {
     // 等级
     level?: number;
     // 词语或短语
-    phrase?: string;
+    phrase: string;
     // 群聊 id
-    roomid?: string;
+    roomid: string;
 }
 
 export interface KeywordDeleteParam {
@@ -277,15 +277,15 @@ export interface LlmodelCreateParam {
     // 接口地址
     endpoint?: string;
     // 模型家族
-    family?: string;
+    family: string;
     // 模型 Id
-    mid?: string;
+    mid: string;
     // 模型名称
-    model?: string;
+    model: string;
     // 服务商名称
-    provider?: string;
+    provider: string;
     // 密钥
-    secret?: string;
+    secret: string;
 }
 
 export interface LlmodelDeleteParam {
@@ -332,9 +332,9 @@ export interface ProfileCreateParam {
     // 备注
     remark?: string;
     // 群聊 id
-    roomid?: string;
+    roomid: string;
     // 微信 id
-    wxid?: string;
+    wxid: string;
 }
 
 export interface ProfileDeleteParam {

@@ -17,7 +17,9 @@ export class ChatroomCreateComponent {
 
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
-    public formdata: ChatroomCreateParam = { roomid: '' };
+    public formdata: ChatroomCreateParam = {
+        roomid: '',
+    };
 
     constructor(private router: Router) {
         this.getWcfChatrooms();

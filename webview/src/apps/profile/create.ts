@@ -22,7 +22,11 @@ export class ProfileCreateComponent {
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
-    public formdata: ProfileCreateParam = {};
+    public formdata: ProfileCreateParam = {
+        wxid: '',
+        roomid: '',
+        level: 2,
+    };
 
     constructor(private router: Router) {
         this.getWcfFriends();

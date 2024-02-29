@@ -11,7 +11,13 @@ import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 })
 export class LLModelCreateComponent {
 
-    public formdata: LlmodelCreateParam = {};
+    public formdata: LlmodelCreateParam = {
+        mid: '',
+        family: 'Gemini',
+        provider: 'google',
+        model: 'gemini-pro',
+        secret: '',
+    };
 
     constructor(private router: Router) { }
 

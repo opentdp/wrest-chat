@@ -11,7 +11,7 @@
 <div class="container-lg mb-3">
     <form class="row gy-3" (ngSubmit)="createProfile()" #myform="ngForm">
         <div class="col-12">
-            <label class="form-label">类别 *</label>
+            <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" (change)="changeRoomid()" required>
                 <option value="-">私聊</option>
                 @for (item of wcfChatrooms; track item.wxid) {
@@ -19,12 +19,12 @@
                 }
             </select>
             <div class="form-text">
-                用户所属类别，暂用作生效范围
+                用户配置所属场景，暂用作生效范围
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">用户 *</label>
-            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required [disabled]="!formdata.roomid">
+            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required [disabled]="conacts.length == 0" required>
                 @for (item of conacts; track item.wxid) {
                 <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
                 }
@@ -34,8 +34,8 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">级别 *</label>
-            <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
+            <label class="form-label">级别</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.level">
                 @for (item of userLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }

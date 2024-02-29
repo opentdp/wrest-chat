@@ -3,7 +3,7 @@
 <nav class="container-lg mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
-        <li class="breadcrumb-item"><a routerLink="/keyword/list">关键字</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">关键词</a></li>
         <li class="breadcrumb-item active">添加</li>
     </ol>
 </nav>
@@ -11,14 +11,14 @@
 <div class="container-lg mb-3">
     <form class="row gy-3" (ngSubmit)="createKeyword()" #myform="ngForm">
         <div class="col-12">
-            <label class="form-label">关键词 *</label>
+            <label class="form-label">词语 *</label>
             <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.phrase" required />
             <div class="form-text">
                 用于违规检测，暂不支持统配符
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">类别 *</label>
+            <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
                 <option value="-">全局</option>
                 @for (item of wcfChatrooms; track item.wxid) {
@@ -26,12 +26,12 @@
                 }
             </select>
             <div class="form-text">
-                关键字所属类别，暂用作生效范围
+                关键词应用场景，暂用作生效范围
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">级别 *</label>
-            <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
                 @for (item of keywordLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
