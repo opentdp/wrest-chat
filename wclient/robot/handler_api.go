@@ -33,13 +33,13 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	// 返回卡片消息
 	cards := "news,port,iptv,weather"
 	if strings.Contains(cards, cmd[0]) {
+		receiver := msg.Sender
+		if msg.IsGroup {
+			receiver = msg.Roomid
+		}
 		digest := "请点击卡片查看结果"
 		icon := "https://api.rehi.org/assets/icon.png"
-		if msg.IsGroup {
-			wc.CmdClient.SendRichText("小秘书", "mphelper", msg.Content, digest, url, icon, msg.Roomid)
-		} else {
-			wc.CmdClient.SendRichText("小秘书", "mphelper", msg.Content, digest, url, icon, msg.Sender)
-		}
+		wc.CmdClient.SendRichText(self().Name, self().Wxid, msg.Content, digest, url, icon, receiver)
 		return ""
 	}
 
