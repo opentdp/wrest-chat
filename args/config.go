@@ -17,7 +17,7 @@ type IBot struct {
 	PatReturn    bool   // 是否自动回应拍一拍
 	FriendAccept bool   // 是否自动同意新的好友请求
 	RevokeMsg    string // 私聊撤回消息时响应的内容，留空则忽略
-	WelcomeMsg   string // 添加好友后的响应内容，留空则忽略
+	FriendHello  string // 添加好友后的响应内容，留空则忽略
 	WhiteLimit   bool   // 开启后只有白名单内的群或好友可以使用机器人
 }
 

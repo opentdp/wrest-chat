@@ -1,10 +1,10 @@
 # 机器人
 Bot:
     Enable: true # 是否启用内置机器人
-    PatReturn: true # 是否自动回应拍一拍
     FriendAccept: true # 是否自动同意新的好友请求
+    FriendHello: 回复 /help 查询指令 # 确认好友后的响应内容，留空则忽略
+    PatReturn: true # 是否自动回应拍一拍
     RevokeMsg: 撤回了寂寞？ # 私聊撤回消息的响应内容，留空则忽略
-    WelcomeMsg: 回复 /help 查询指令 # 确认好友后的响应内容，留空则忽略
     WhiteLimit: false # 开启后只有白名单内的群或好友可以使用机器人
 
 # 大模型

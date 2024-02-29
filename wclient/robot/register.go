@@ -123,8 +123,8 @@ func hook10000(msg *wcferry.WxMsg) {
 
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
-		if len(args.Bot.WelcomeMsg) > 1 {
-			wc.CmdClient.SendTxt(args.Bot.WelcomeMsg, msg.Sender, "")
+		if len(args.Bot.FriendHello) > 1 {
+			wc.CmdClient.SendTxt(args.Bot.FriendHello, msg.Sender, "")
 		}
 		return
 	}
