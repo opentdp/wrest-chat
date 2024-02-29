@@ -87,7 +87,7 @@ func banHandler() {
 func banPreCheck(msg *wcferry.WxMsg) string {
 
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if room.Level == 1 {
 			msg.Content = ""
 			return ""

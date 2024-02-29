@@ -60,7 +60,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	// 对话模型相关配置
 	llmCount, _ := llmodel.Count(&llmodel.CountParam{})
 	if llmCount > 0 {
-		if up.AiArgot != "" && up.AiArgot != "-" {
+		if strings.Trim(up.AiArgot, "-") != "" {
 			text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
 		}
 		text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
@@ -75,7 +75,7 @@ func helpPreCheck(msg *wcferry.WxMsg) string {
 
 	if args.Bot.WhiteLimit {
 		if msg.IsGroup {
-			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
+			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 			if room.Level < 2 {
 				return "-"
 			}

@@ -14,6 +14,7 @@ type CreateParam struct {
 	Level      int32  `json:"level"`
 	Remark     string `json:"remark"`
 	JoinArgot  string `json:"join_argot"`
+	PatReturn  string `json:"pat_return"`
 	RevokeMsg  string `json:"revoke_msg"`
 	WelcomeMsg string `json:"welcome_msg"`
 }
@@ -26,6 +27,7 @@ func Create(data *CreateParam) (uint, error) {
 		Level:      data.Level,
 		Remark:     data.Remark,
 		JoinArgot:  data.JoinArgot,
+		PatReturn:  data.PatReturn,
 		RevokeMsg:  data.RevokeMsg,
 		WelcomeMsg: data.WelcomeMsg,
 	}
@@ -51,6 +53,7 @@ func Update(data *UpdateParam) error {
 			Level:      data.Level,
 			Remark:     data.Remark,
 			JoinArgot:  data.JoinArgot,
+			PatReturn:  data.PatReturn,
 			RevokeMsg:  data.RevokeMsg,
 			WelcomeMsg: data.WelcomeMsg,
 		})

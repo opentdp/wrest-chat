@@ -88,7 +88,7 @@ func hook1(msg *wcferry.WxMsg) {
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
 		output := applyHandlers(msg)
-		if output != "" && output != "-" {
+		if strings.Trim(output, "-") != "" {
 			reply(msg, output)
 		}
 		return
@@ -113,14 +113,6 @@ func hook37(msg *wcferry.WxMsg) {
 // 处理系统消息
 func hook10000(msg *wcferry.WxMsg) {
 
-	// 自动回应拍一拍
-	if strings.Contains(msg.Content, "拍了拍我") {
-		if args.Bot.PatReturn {
-			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
-		}
-		return
-	}
-
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
 		if len(args.Bot.FriendHello) > 1 {
@@ -132,9 +124,22 @@ func hook10000(msg *wcferry.WxMsg) {
 	// 有人进群时响应
 	re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
 	if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
-		room, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
-		if err == nil && len(room.WelcomeMsg) > 1 {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		if strings.Trim(room.WelcomeMsg, "-") != "" {
 			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+		}
+		return
+	}
+
+	// 自动回应拍一拍
+	if strings.Contains(msg.Content, "拍了拍我") {
+		if msg.IsGroup {
+			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+			if strings.Trim(room.PatReturn, "-") != "" {
+				wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
+			}
+		} else if args.Bot.PatReturn {
+			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 		}
 		return
 	}
@@ -147,7 +152,7 @@ func hook10002(msg *wcferry.WxMsg) {
 	var output string
 
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: prid(msg)})
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		output = room.RevokeMsg
 	} else {
 		output = args.Bot.RevokeMsg
