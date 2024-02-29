@@ -2139,7 +2139,7 @@
                     "type": "integer"
                 },
                 "join_argot": {
-                    "description": "入群口令",
+                    "description": "加群指令",
                     "type": "string"
                 },
                 "level": {

@@ -184,12 +184,14 @@ export const RobotApi = {
 };
 
 export interface ChatroomCreateParam {
-    // 入群口令
+    // 加群指令
     join_argot?: string;
     // 等级
     level?: number;
     // 群聊名称
     name?: string;
+    // 回应拍拍我
+    pat_return?: string;
     // 备注
     remark?: string;
     // 防撤回消息
@@ -216,12 +218,14 @@ export interface ChatroomFetchParam {
 }
 
 export interface ChatroomUpdateParam {
-    // 入群口令
+    // 加群指令
     join_argot: string;
     // 等级
     level: number;
     // 群聊名称
     name: string;
+    // 回应拍拍我
+    pat_return: string;
     // 备注
     remark: string;
     // 防撤回消息
@@ -412,12 +416,14 @@ export interface SettingUpdateParam {
 export interface TablesChatroom {
     // 创建时间戳
     created_at: number;
-    // 入群口令
+    // 加群指令
     join_argot: string;
     // 等级
     level: number;
     // 群聊名称
     name: string;
+    // 回应拍拍我
+    pat_return: string;
     // 主键
     rd: number;
     // 备注

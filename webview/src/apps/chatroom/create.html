@@ -22,6 +22,17 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
+                @for (item of roomLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">加群指令</label>
             <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.join_argot" />
             <div class="form-text">
@@ -36,6 +47,16 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">回应拍拍</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.pat_return" >
+                <option value="-">否</option>
+                <option value="Y">是</option>
+            </select>
+            <div class="form-text">
+                是否自动回应”拍了拍我“
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">欢迎信息</label>
             <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.welcome_msg" />
             <div class="form-text">
@@ -47,17 +68,6 @@
             <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.revoke_msg" />
             <div class="form-text">
                 检测到撤回消息时的提醒，“-” 表示不提醒
-            </div>
-        </div>
-        <div class="col-12">
-            <label class="form-label">级别 *</label>
-            <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
-                @for (item of roomLevels | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
-                }
-            </select>
-            <div class="form-text">
-                机器人使用权限
             </div>
         </div>
         <div class="col-12">

@@ -8,7 +8,7 @@ type Chatroom struct {
 	Name       string `json:"name"`                      // 群聊名称
 	Level      int32  `json:"level"`                     // 等级
 	Remark     string `json:"remark"`                    // 备注
-	JoinArgot  string `json:"join_argot"`                // 入群口令
+	JoinArgot  string `json:"join_argot"`                // 加群指令
 	PatReturn  string `json:"pat_return"`                // 响应拍拍我，"-"或空表示忽略
 	RevokeMsg  string `json:"revoke_msg"`                // 防撤回消息
 	WelcomeMsg string `json:"welcome_msg"`               // 欢迎消息

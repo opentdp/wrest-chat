@@ -18,8 +18,9 @@
                 <th scope="col">#</th>
                 <th scope="col">群名</th>
                 <th scope="col">级别</th>
-                <th scope="col">菜单名</th>
-                <th scope="col">加群口令</th>
+                <th scope="col">加群指令</th>
+                <th scope="col">指令描述</th>
+                <th scope="col">回应拍拍</th>
                 <th scope="col">撤回提示</th>
                 <th scope="col">入群欢迎</th>
                 <th scope="col">备注</th>
@@ -32,8 +33,9 @@
                 <th scope="row">{{item.rd}}</th>
                 <td>{{wcfChatrooms[item.roomid] ? wcfChatrooms[item.roomid].name : item.roomid}}</td>
                 <td>{{roomLevels[item.level] && roomLevels[item.level].name || '-'}}</td>
-                <td>{{item.name}}</td>
                 <td>{{item.join_argot}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.pat_return && item.pat_return != '-' ? '是' : '否'}}</td>
                 <td>{{item.revoke_msg}}</td>
                 <td>{{item.welcome_msg}}</td>
                 <td>{{item.remark}}</td>
