@@ -195,7 +195,7 @@ export interface ChatroomCreateParam {
     // 防撤回消息
     revoke_msg?: string;
     // 群聊 id
-    roomid?: string;
+    roomid: string;
     // 欢迎消息
     welcome_msg?: string;
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { LevelData } from 'src/openapi/const';
+import { RoomLevels } from 'src/openapi/const';
 import { RobotApi, TablesChatroom } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -12,16 +12,16 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class ChatroomListComponent {
 
-    public levels = LevelData;
+    public roomLevels = RoomLevels;
 
-    public avatars: Record<string, string> = {};
-    public contacts: Record<string, WcfrestContactPayload> = {};
+    public wcfAvatars: Record<string, string> = {};
+    public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
     public chatrooms: Array<TablesChatroom> = [];
 
     constructor() {
         this.getChatrooms();
-        this.getContacts();
+        this.getWcfChatrooms();
     }
 
     public getChatrooms() {
@@ -36,17 +36,17 @@ export class ChatroomListComponent {
         });
     }
 
-    public getContacts() {
-        WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
+    public getWcfAvatars(ids: string[]) {
+        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
+            data && data.forEach((item) => {
+                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
+            });
         });
     }
 
-    public getAvatars(ids: string[]) {
-        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
-            data && data.forEach((item) => {
-                this.avatars[item.usr_name] = item.small_head_img_url;
-            });
+    public getWcfChatrooms() {
+        WrestApi.chatrooms().then((data) => {
+            data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }
 

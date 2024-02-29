@@ -14,8 +14,8 @@
             <label class="form-label">类别 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" (change)="changeRoomid()" required>
                 <option value="-">私聊</option>
-                @for (item of chatrooms; track item.wxid) {
-                <option value="{{item.wxid}}">{{item.name}}</option>
+                @for (item of wcfChatrooms; track item.wxid) {
+                <option [value]="item.wxid">{{item.name}}</option>
                 }
             </select>
             <div class="form-text">
@@ -26,7 +26,7 @@
             <label class="form-label">用户 *</label>
             <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" required [disabled]="!formdata.roomid">
                 @for (item of conacts; track item.wxid) {
-                <option value="{{item.wxid}}">{{item.wxid}}（{{item.name}}）</option>
+                <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
                 }
             </select>
             <div class="form-text">
@@ -36,10 +36,9 @@
         <div class="col-12">
             <label class="form-label">级别 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
-                <option value="1">拉黑</option>
-                <option value="2">加白</option>
-                <option value="7">群管理</option>
-                <option value="9">创始人</option>
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
             </select>
             <div class="form-text">
                 机器人使用权限

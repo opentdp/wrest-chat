@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { LevelData } from 'src/openapi/const';
-import { RobotApi, TablesProfile, ProfileFetchAllParam } from '../../openapi/wrobot';
+import { UserLevels } from 'src/openapi/const';
+import { RobotApi, TablesProfile } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -12,18 +12,19 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class ProfileListComponent {
 
-    public levels = LevelData;
-    public timestamp = 0;
+    public userLevels = UserLevels;
 
-    public avatars: Record<string, string> = {};
-    public contacts: Record<string, WcfrestContactPayload> = {};
-    public roomMembers: Record<string, Record<string, WcfrestContactPayload>> = {};
+    public wcfAvatars: Record<string, string> = {};
+    public wcfContacts: Record<string, WcfrestContactPayload> = {};
+    public wcfRoomMembers: Record<string, Record<string, WcfrestContactPayload>> = {};
 
     public profiles: Array<TablesProfile> = [];
 
+    public timestamp = 0;
+
     constructor() {
-        this.getContacts();
         this.getProfiles();
+        this.getWcfContacts();
         this.timestamp = new Date().getTime();
     }
 
@@ -32,40 +33,41 @@ export class ProfileListComponent {
             this.profiles = data || [];
             // 获取群成员列表
             const ids = this.profiles.map((item) => item.roomid);
-            this.getRoomMembers(ids);
+            this.getWcfRoomMembers(ids);
         });
     }
 
     public deleteProfile(item: TablesProfile) {
-        RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
+        const rq = { wxid: item.wxid, roomid: item.roomid };
+        RobotApi.profileDelete(rq).then(() => {
             this.getProfiles();
         });
     }
 
-    public getContacts() {
+    public getWcfContacts() {
         WrestApi.contacts().then((data) => {
-            data.forEach((item) => this.contacts[item.wxid] = item);
+            data.forEach((item) => this.wcfContacts[item.wxid] = item);
         });
     }
 
-    public getRoomMembers(ids: string[]) {
+    public getWcfRoomMembers(ids: string[]) {
         [...new Set(ids)].forEach((id) => {
-            if (id === '-' || this.roomMembers[id]) {
+            if (id === '-' || this.wcfRoomMembers[id]) {
                 return;
             }
-            this.roomMembers[id] = {};
+            this.wcfRoomMembers[id] = {};
             WrestApi.chatroomMembers({ roomid: id }).then((data) => {
                 data && data.forEach((item) => {
-                    this.roomMembers[id][item.wxid] = item;
+                    this.wcfRoomMembers[id][item.wxid] = item;
                 });
             });
         });
     }
 
-    public getAvatars(ids: string[]) {
+    public getWcfAvatars(ids: string[]) {
         WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
             data && data.forEach((item) => {
-                this.avatars[item.usr_name] = item.small_head_img_url;
+                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
             });
         });
     }

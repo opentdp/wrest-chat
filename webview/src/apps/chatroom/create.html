@@ -13,7 +13,7 @@
         <div class="col-12">
             <label class="form-label">群聊 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
-                @for (item of chatrooms; track item.wxid) {
+                @for (item of wcfChatrooms; track item.wxid) {
                 <option value="{{item.wxid}}">{{item.name}}</option>
                 }
             </select>
@@ -22,29 +22,29 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">名称 *</label>
-            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.name" required />
+            <label class="form-label">加群指令</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.join_argot" />
+            <div class="form-text">
+                用于生成加群指令，“-” 表示不邀请
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">指令名称</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.name" />
             <div class="form-text">
                 用于生成加群指令中的描述
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">加群指令 *</label>
-            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.join_argot" required />
+            <label class="form-label">欢迎信息</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.welcome_msg" />
             <div class="form-text">
-                用于生成加群指令
+                用户入群时的欢迎信息，“-” 表示不欢迎
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">欢迎信息 *</label>
-            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.welcome_msg" required />
-            <div class="form-text">
-                用户入群时的欢迎信息，-” 表示不欢迎
-            </div>
-        </div>
-        <div class="col-12">
-            <label class="form-label">撤回提醒 *</label>
-            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.revoke_msg" required />
+            <label class="form-label">撤回提醒</label>
+            <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.revoke_msg" />
             <div class="form-text">
                 检测到撤回消息时的提醒，“-” 表示不提醒
             </div>
@@ -52,8 +52,9 @@
         <div class="col-12">
             <label class="form-label">级别 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.level" required>
-                <option value="1">拉黑</option>
-                <option value="2">加白</option>
+                @for (item of roomLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
             </select>
             <div class="form-text">
                 机器人使用权限

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { UserLevels } from 'src/openapi/const';
 import { RobotApi, ProfileCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -12,19 +13,26 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class ProfileCreateComponent {
 
-    public conacts: Array<WcfrestContactPayload> = [];
-    public friends: Array<WcfrestContactPayload> = [];
-    public chatrooms: Array<WcfrestContactPayload> = [];
-    public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
+    public userLevels = UserLevels;
 
+    public wcfAvatars: Record<string, string> = {};
+    public wcfFriends: Array<WcfrestContactPayload> = [];
+    public wcfContacts: Record<string, WcfrestContactPayload> = {};
+    public wcfChatrooms: Array<WcfrestContactPayload> = [];
+    public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
+
+    public conacts: Array<WcfrestContactPayload> = [];
     public formdata: ProfileCreateParam = {};
 
     constructor(private router: Router) {
-        this.getChatrooms();
-        this.getFriends();
+        this.getWcfFriends();
+        this.getWcfChatrooms();
     }
 
     public createProfile() {
+        if (this.formdata.level) {
+            this.formdata.level = +this.formdata.level;
+        }
         RobotApi.profileCreate(this.formdata).then(() => {
             this.router.navigate(['profile/list']);
         });
@@ -33,26 +41,26 @@ export class ProfileCreateComponent {
     public changeRoomid() {
         this.formdata.wxid = '';
         const id = this.formdata.roomid || '-';
-        this.conacts = id == '-' ? this.friends : this.roomMembers[id] || [];
+        this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
     }
 
-    public getFriends() {
+    public getWcfFriends() {
         WrestApi.friends().then((data) => {
-            this.friends = data || [];
+            this.wcfFriends = data || [];
         });
     }
 
-    public getChatrooms() {
+    public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
-            this.chatrooms = data || [];
-            this.getRoomMembers(this.chatrooms.map((item) => item.wxid));
+            this.wcfChatrooms = data || [];
+            this.getWcfRoomMembers(this.wcfChatrooms.map((item) => item.wxid));
         });
     }
 
-    public getRoomMembers(ids: string[]) {
+    public getWcfRoomMembers(ids: string[]) {
         [...new Set(ids)].forEach((id) => {
             WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-                this.roomMembers[id] = data;
+                this.wcfRoomMembers[id] = data || [];
             });
         });
     }

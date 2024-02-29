@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { RoomLevels } from 'src/openapi/const';
 import { RobotApi, ChatroomCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -12,23 +13,28 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class ChatroomCreateComponent {
 
-    public chatrooms: Array<WcfrestContactPayload> = [];
+    public roomLevels = RoomLevels;
 
-    public formdata = { level: 1 } as ChatroomCreateParam;
+    public wcfChatrooms: Array<WcfrestContactPayload> = [];
+
+    public formdata: ChatroomCreateParam = { roomid: '' };
 
     constructor(private router: Router) {
-        this.getChatrooms();
+        this.getWcfChatrooms();
     }
 
     public createChatroom() {
+        if (this.formdata.level) {
+            this.formdata.level = +this.formdata.level;
+        }
         RobotApi.chatroomCreate(this.formdata).then(() => {
             this.router.navigate(['chatroom/list']);
         });
     }
 
-    public getChatrooms() {
+    public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
-            this.chatrooms = data || [];
+            this.wcfChatrooms = data || [];
         });
     }
 

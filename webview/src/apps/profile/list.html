@@ -31,21 +31,21 @@
             <tr>
                 <th scope="row">{{item.rd}}</th>
                 <td>
-                    @if (item.roomid == '-' && contacts[item.wxid]) {
-                    {{contacts[item.wxid].name}}
+                    @if (item.roomid == '-' && wcfContacts[item.wxid]) {
+                    {{wcfContacts[item.wxid].name}}
                     }
-                    @if (item.roomid != '-' && roomMembers[item.roomid] && roomMembers[item.roomid][item.wxid]) {
-                    {{roomMembers[item.roomid][item.wxid].name}}
+                    @if (item.roomid != '-' && wcfRoomMembers[item.roomid] && wcfRoomMembers[item.roomid][item.wxid]) {
+                    {{wcfRoomMembers[item.roomid][item.wxid].name}}
                     }
                 </td>
                 <td>
                     @if (item.roomid == '-') {
                     私聊
                     } @else {
-                    {{contacts[item.roomid] ? contacts[item.roomid].name : item.roomid}}
+                    {{wcfContacts[item.roomid] ? wcfContacts[item.roomid].name : item.roomid}}
                     }
                 </td>
-                <td>{{levels[item.level].name || '-'}}</td>
+                <td>{{userLevels[item.level] && userLevels[item.level].name || '-'}}</td>
                 <td>{{item.ai_argot}}</td>
                 <td>{{item.ai_model}}</td>
                 <td>{{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}</td>
