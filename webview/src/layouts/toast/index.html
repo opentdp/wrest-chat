@@ -1,0 +1,5 @@
+@for (toast of items; track toast) {
+<ngb-toast [class]="toast.classname" [autohide]="true" [delay]="toast.delay || 15000" (hidden)="remove(toast)">
+    {{toast.message}}
+</ngb-toast>
+}

@@ -7,6 +7,9 @@ export function httpRequest(input: string, options: RequestInit = {}) {
                 if (data.Error) {
                     throw data.Error;
                 }
+                if (data.Message) {
+                    window.postMessage(data.Message);
+                }
                 return data.Payload;
             });
         } else {
