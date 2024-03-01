@@ -316,8 +316,6 @@ export interface KeywordUpdateParam {
     level: number;
     // 词语或短语
     phrase: string;
-    // 主键
-    rd: number;
     // 群聊 id
     roomid: string;
 }

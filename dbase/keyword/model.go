@@ -30,12 +30,7 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新关键词
 
-type UpdateParam struct {
-	Rd     uint   `binding:"required" json:"rd"`
-	Roomid string `json:"roomid"`
-	Phrase string `json:"phrase"`
-	Level  int32  `json:"level"`
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
@@ -66,12 +61,7 @@ func Replace(data *ReplaceParam) error {
 	})
 
 	if err == nil && item.Rd > 0 {
-		err = Update(&UpdateParam{
-			Rd:     item.Rd,
-			Roomid: data.Roomid,
-			Phrase: data.Phrase,
-			Level:  data.Level,
-		})
+		err = Update(data)
 	} else {
 		_, err = Create(data)
 	}
