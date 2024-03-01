@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
+	"github.com/opentdp/wechat-rest/wclient/robot"
 )
 
 type Chatroom struct{}
@@ -70,6 +71,8 @@ func (*Chatroom) create(c *gin.Context) {
 	}
 
 	if id, err := chatroom.Create(rq); err == nil {
+		// 刷新机器人配置
+		robot.ReshroomHandler()
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
 	} else {
@@ -94,6 +97,7 @@ func (*Chatroom) update(c *gin.Context) {
 	}
 
 	if err := chatroom.Update(rq); err == nil {
+
 		c.Set("Message", "更新成功")
 	} else {
 		c.Set("Error", err)
@@ -115,9 +119,15 @@ func (*Chatroom) delete(c *gin.Context) {
 		c.Set("Error", err)
 		return
 	}
-
+	data, err := chatroom.Fetch(&chatroom.FetchParam{Roomid: rq.Roomid})
+	if err != nil {
+		c.Set("Error", err)
+		return
+	}
 	if err := chatroom.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
+		// 删除入群匹配规则通知
+		robot.DeleroomHandler(data.JoinArgot)
 	} else {
 		c.Set("Error", err)
 	}
