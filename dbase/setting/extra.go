@@ -79,7 +79,7 @@ func Save() {
 
 func DataMigrate() {
 
-	if c, _ := Count(&CountParam{}); c == 0 {
+	if c, _ := Count(&CountParam{}); c != 0 {
 		return
 	}
 
