@@ -36,7 +36,14 @@ func Text(id, rid, msg string) string {
 
 }
 
-func UserModel(id, rid string) *tables.LLModel {
+// User LLModel
+
+type UserLLModel struct {
+	RoleContext string
+	*tables.LLModel
+}
+
+func UserModel(id, rid string) *UserLLModel {
 
 	var llmc *tables.LLModel
 
@@ -54,7 +61,7 @@ func UserModel(id, rid string) *tables.LLModel {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return llmc
+	return &UserLLModel{LLModel: llmc, RoleContext: setting.ModelContext}
 
 }
 

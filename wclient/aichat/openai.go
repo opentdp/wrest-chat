@@ -3,7 +3,6 @@ package aichat
 import (
 	"context"
 
-	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/sashabaranov/go-openai"
 )
 
@@ -28,9 +27,9 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	// 设置上下文
 
-	if setting.ModelContext != "" {
+	if llmc.RoleContext != "" {
 		req.Messages = []openai.ChatCompletionMessage{
-			{Content: setting.ModelContext, Role: openai.ChatMessageRoleUser},
+			{Content: llmc.RoleContext, Role: openai.ChatMessageRoleUser},
 			{Content: "OK", Role: openai.ChatMessageRoleAssistant},
 		}
 	}
