@@ -10,8 +10,10 @@ import (
 
 type CreateParam struct {
 	Name   string `binding:"required" json:"name"`
+	Type   string `json:"type"`
+	Group  string `json:"group"`
 	Value  string `json:"value"`
-	Title  string `binding:"required" json:"title"`
+	Title  string `json:"title"`
 	Remark string `json:"remark"`
 }
 
@@ -19,6 +21,8 @@ func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Setting{
 		Name:   data.Name,
+		Type:   data.Type,
+		Group:  data.Group,
 		Value:  data.Value,
 		Title:  data.Title,
 		Remark: data.Remark,
@@ -32,12 +36,7 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新配置
 
-type UpdateParam struct {
-	Name   string `binding:"required" json:"name"`
-	Value  string `json:"value"`
-	Title  string `json:"title"`
-	Remark string `json:"remark"`
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
@@ -46,6 +45,8 @@ func Update(data *UpdateParam) error {
 			Name: data.Name,
 		}).
 		Updates(tables.Setting{
+			Type:   data.Type,
+			Group:  data.Group,
 			Value:  data.Value,
 			Title:  data.Title,
 			Remark: data.Remark,
@@ -57,21 +58,16 @@ func Update(data *UpdateParam) error {
 
 // 合并配置
 
-type MigrateParam = CreateParam
+type ReplaceParam = CreateParam
 
-func Migrate(data *MigrateParam) error {
+func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
 		Name: data.Name,
 	})
 
 	if err == nil && item.Rd > 0 {
-		err = Update(&UpdateParam{
-			Name:   data.Name,
-			Value:  data.Value,
-			Title:  data.Title,
-			Remark: data.Remark,
-		})
+		err = Update(data)
 	} else {
 		_, err = Create(data)
 	}
@@ -124,13 +120,18 @@ func Delete(data *DeleteParam) error {
 
 // 获取配置列表
 
-type FetchAllParam struct{}
+type FetchAllParam struct {
+	Group string `json:"group"`
+}
 
 func FetchAll(data *FetchAllParam) ([]*tables.Setting, error) {
 
 	var items []*tables.Setting
 
 	result := dborm.Db.
+		Where(&tables.Setting{
+			Group: data.Group,
+		}).
 		Find(&items)
 
 	return items, result.Error
@@ -147,6 +148,9 @@ func Count(data *CountParam) (int64, error) {
 
 	result := dborm.Db.
 		Model(&tables.Setting{}).
+		Where(&tables.Setting{
+			Group: data.Group,
+		}).
 		Count(&count)
 
 	return count, result.Error

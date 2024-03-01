@@ -56,9 +56,9 @@ func Update(data *UpdateParam) error {
 
 // 合并关键词
 
-type MigrateParam = CreateParam
+type ReplaceParam = CreateParam
 
-func Migrate(data *MigrateParam) error {
+func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
 		Roomid: data.Roomid,
