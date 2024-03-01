@@ -15,6 +15,8 @@ var keywordList = []*tables.Keyword{}
 
 func badHandler() {
 
+	updateBadWord()
+
 	handlers["/bad"] = &Handler{
 		Level:    7,
 		Order:    30,

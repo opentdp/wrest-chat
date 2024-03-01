@@ -72,7 +72,7 @@ type MsgHistory struct {
 	Role    string
 }
 
-var msgHistories = make(map[string][]*MsgHistory)
+var msgHistories = map[string][]*MsgHistory{}
 
 func ResetHistory(id string) {
 

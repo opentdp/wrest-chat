@@ -6,86 +6,34 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
-	"github.com/opentdp/wechat-rest/wclient"
 )
 
-var wc *wcferry.Client
-var selfInfo *wcferry.UserInfo
+func receiver(msg *wcferry.WxMsg) {
 
-func Register() {
-
-	setting.Laod()
-
-	if !setting.BotEnable {
-		logman.Warn("robot disabled")
-		return
-	}
-
-	wc = wclient.Register()
-
-	wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
-		switch msg.Type {
-		case 1: // 新消息
-			hook1(msg)
-		case 37: // 好友请求
-			hook37(msg)
-		case 10000: // 系统消息
-			hook10000(msg)
-		case 10002: // 撤回消息
-			hook10002(msg)
-		}
-	})
-
-}
-
-func self() *wcferry.UserInfo {
-
-	if selfInfo == nil {
-		selfInfo = wc.CmdClient.GetSelfInfo()
-	}
-
-	return selfInfo
-
-}
-
-// 场景 Id
-func prid(msg *wcferry.WxMsg) string {
-
-	if msg.IsGroup {
-		return msg.Roomid
-	}
-	return "-"
-
-}
-
-// 回复消息
-func reply(msg *wcferry.WxMsg, text string) int32 {
-
-	if msg.IsSelf {
-		return -2
-	}
-
-	if text = strings.TrimSpace(text); text == "" {
-		return -1
-	}
-
-	if msg.IsGroup {
-		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		return wc.CmdClient.SendTxt("@"+user.Name+"\n"+text, msg.Roomid, msg.Sender)
-	} else {
-		return wc.CmdClient.SendTxt(text, msg.Sender, "")
+	switch msg.Type {
+	case 1: // 新消息
+		hook1(msg)
+	case 37: // 好友请求
+		hook37(msg)
+	case 10000: // 系统消息
+		hook10000(msg)
+	case 10002: // 撤回消息
+		hook10002(msg)
 	}
 
 }
 
 // 处理新消息
 func hook1(msg *wcferry.WxMsg) {
+
+	if len(handlers) == 0 {
+		setupHandlers()
+	}
 
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
