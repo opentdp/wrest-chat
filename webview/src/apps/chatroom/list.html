@@ -35,7 +35,7 @@
                 <td>{{roomLevels[item.level] && roomLevels[item.level].name || '-'}}</td>
                 <td>{{item.join_argot}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.pat_return && item.pat_return != '-' ? '是' : '否'}}</td>
+                <td>{{item.pat_return && item.pat_return == 'true' ? '是' : '否'}}</td>
                 <td>{{item.revoke_msg}}</td>
                 <td>{{item.welcome_msg}}</td>
                 <td>{{item.remark}}</td>
