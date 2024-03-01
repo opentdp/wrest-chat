@@ -59,19 +59,21 @@ func aiHandler() {
 		}
 	}
 
-	handlers["/mr"] = &Handler{
-		Level:    0,
-		Order:    13,
-		ChatAble: true,
-		RoomAble: true,
-		Describe: "随机选择模型",
-		Callback: func(msg *wcferry.WxMsg) string {
-			for _, v := range models {
-				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
-				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
-			}
-			return "没有可用的模型"
-		},
+	if len(models) > 3 {
+		handlers["/mr"] = &Handler{
+			Level:    0,
+			Order:    13,
+			ChatAble: true,
+			RoomAble: true,
+			Describe: "随机选择模型",
+			Callback: func(msg *wcferry.WxMsg) string {
+				for _, v := range models {
+					profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
+					return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
+				}
+				return "没有可用的模型"
+			},
+		}
 	}
 
 	handlers["/wake"] = &Handler{
