@@ -1,0 +1,35 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">全局配置</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">名称</th>
+                <th scope="col">键</th>
+                <th scope="col">值</th>
+                <th scope="col">备注</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of settings; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>{{item.title}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.value}}</td>
+                <td>{{item.remark}}</td>
+                <td></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
