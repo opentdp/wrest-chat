@@ -1,0 +1,31 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/setting/list">全局配置</a></li>
+        <li class="breadcrumb-item active">更新</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="updateSetting()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">键 *</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" required />
+            <div class="form-text">
+                用于违规检测，暂不支持统配符
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">值 *</label>
+            <input type="text" name="value" class="form-control" [(ngModel)]="formdata.value" required />
+            <div class="form-text">
+                用于违规检测，暂不支持统配符
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

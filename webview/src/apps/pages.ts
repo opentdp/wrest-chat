@@ -15,6 +15,9 @@ import { KeywordCreateComponent } from './keyword/create';
 import { ProfileListComponent } from './profile/list';
 import { ProfileCreateComponent } from './profile/create';
 
+import { SettingListComponent } from './setting/list';
+import { SettingUpdateComponent } from './setting/update';
+
 import { WcferryChatroomComponent } from './wcferry/chatroom';
 import { WcferryContactComponent } from './wcferry/contact';
 import { WcferryReceiverComponent } from './wcferry/receiver';
@@ -35,6 +38,9 @@ export const AppComponents = [
 
     ProfileListComponent,
     ProfileCreateComponent,
+
+    SettingListComponent,
+    SettingUpdateComponent,
 
     WcferryChatroomComponent,
     WcferryContactComponent,
@@ -59,6 +65,9 @@ export const AppRoutes: Routes = [
 
     { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
     { path: 'profile/create', component: ProfileCreateComponent, canActivate: [LoginGuard] },
+
+    { path: 'setting/list', component: SettingListComponent, canActivate: [LoginGuard] },
+    { path: 'setting/update/:name', component: SettingUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },

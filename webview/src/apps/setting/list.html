@@ -14,8 +14,8 @@
                 <th scope="col">#</th>
                 <th scope="col">名称</th>
                 <th scope="col">键</th>
-                <th scope="col">值</th>
-                <th scope="col">备注</th>
+                <th scope="col" class="d-none d-xl-table-cell">值</th>
+                <th scope="col" class="d-none d-xxl-table-cell">备注</th>
                 <th scope="col">操作</th>
             </tr>
         </thead>
@@ -25,9 +25,11 @@
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.title}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.value}}</td>
-                <td>{{item.remark}}</td>
-                <td></td>
+                <td class="d-none d-xl-table-cell">{{item.value}}</td>
+                <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" routerLink="/setting/update/{{item.name}}">编辑</button>
+                </td>
             </tr>
             }
         </tbody>
