@@ -8,10 +8,10 @@ import (
 
 type Setting struct{}
 
-// @Summary 配置列表
+// @Summary 全局配置列表
 // @Produce json
-// @Tags BOT::配置
-// @Param body body setting.FetchAllParam true "获取配置列表参数"
+// @Tags BOT::全局配置
+// @Param body body setting.FetchAllParam true "获取全局配置列表参数"
 // @Success 200 {object} []tables.Setting
 // @Router /bot/setting/list [post]
 func (*Setting) list(c *gin.Context) {
@@ -31,10 +31,10 @@ func (*Setting) list(c *gin.Context) {
 
 }
 
-// @Summary 获取配置
+// @Summary 获取全局配置
 // @Produce json
-// @Tags BOT::配置
-// @Param body body setting.FetchParam true "获取配置参数"
+// @Tags BOT::全局配置
+// @Param body body setting.FetchParam true "获取全局配置参数"
 // @Success 200 {object} tables.Setting
 // @Router /bot/setting/detail [post]
 func (*Setting) detail(c *gin.Context) {
@@ -54,10 +54,10 @@ func (*Setting) detail(c *gin.Context) {
 
 }
 
-// @Summary 添加配置
+// @Summary 添加全局配置
 // @Produce json
-// @Tags BOT::配置
-// @Param body body setting.CreateParam true "添加配置参数"
+// @Tags BOT::全局配置
+// @Param body body setting.CreateParam true "添加全局配置参数"
 // @Success 200
 // @Router /bot/setting/create [post]
 func (*Setting) create(c *gin.Context) {
@@ -78,10 +78,10 @@ func (*Setting) create(c *gin.Context) {
 
 }
 
-// @Summary 修改配置
+// @Summary 修改全局配置
 // @Produce json
-// @Tags BOT::配置
-// @Param body body setting.UpdateParam true "修改配置参数"
+// @Tags BOT::全局配置
+// @Param body body setting.UpdateParam true "修改全局配置参数"
 // @Success 200
 // @Router /bot/setting/update [post]
 func (*Setting) update(c *gin.Context) {
@@ -101,10 +101,10 @@ func (*Setting) update(c *gin.Context) {
 
 }
 
-// @Summary 删除配置
+// @Summary 删除全局配置
 // @Produce json
-// @Tags BOT::配置
-// @Param body body setting.DeleteParam true "删除配置参数"
+// @Tags BOT::全局配置
+// @Param body body setting.DeleteParam true "删除全局配置参数"
 // @Success 200
 // @Router /bot/setting/delete [post]
 func (*Setting) delete(c *gin.Context) {

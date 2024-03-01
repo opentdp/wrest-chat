@@ -8,10 +8,10 @@ import (
 
 type Chatroom struct{}
 
-// @Summary 群聊列表
+// @Summary 群聊配置列表
 // @Produce json
-// @Tags BOT::群聊
-// @Param body body chatroom.FetchAllParam true "获取群聊列表参数"
+// @Tags BOT::群聊配置
+// @Param body body chatroom.FetchAllParam true "获取群聊配置列表参数"
 // @Success 200 {object} []tables.Chatroom
 // @Router /bot/chatroom/list [post]
 func (*Chatroom) list(c *gin.Context) {
@@ -31,10 +31,10 @@ func (*Chatroom) list(c *gin.Context) {
 
 }
 
-// @Summary 获取群聊
+// @Summary 获取群聊配置
 // @Produce json
-// @Tags BOT::群聊
-// @Param body body chatroom.FetchParam true "获取群聊参数"
+// @Tags BOT::群聊配置
+// @Param body body chatroom.FetchParam true "获取群聊配置参数"
 // @Success 200 {object} tables.Chatroom
 // @Router /bot/chatroom/detail [post]
 func (*Chatroom) detail(c *gin.Context) {
@@ -54,10 +54,10 @@ func (*Chatroom) detail(c *gin.Context) {
 
 }
 
-// @Summary 添加群聊
+// @Summary 添加群聊配置
 // @Produce json
-// @Tags BOT::群聊
-// @Param body body chatroom.CreateParam true "添加群聊参数"
+// @Tags BOT::群聊配置
+// @Param body body chatroom.CreateParam true "添加群聊配置参数"
 // @Success 200
 // @Router /bot/chatroom/create [post]
 func (*Chatroom) create(c *gin.Context) {
@@ -78,10 +78,10 @@ func (*Chatroom) create(c *gin.Context) {
 
 }
 
-// @Summary 修改群聊
+// @Summary 修改群聊配置
 // @Produce json
-// @Tags BOT::群聊
-// @Param body body chatroom.UpdateParam true "修改群聊参数"
+// @Tags BOT::群聊配置
+// @Param body body chatroom.UpdateParam true "修改群聊配置参数"
 // @Success 200
 // @Router /bot/chatroom/update [post]
 func (*Chatroom) update(c *gin.Context) {
@@ -101,10 +101,10 @@ func (*Chatroom) update(c *gin.Context) {
 
 }
 
-// @Summary 删除群聊
+// @Summary 删除群聊配置
 // @Produce json
-// @Tags BOT::群聊
-// @Param body body chatroom.DeleteParam true "删除群聊参数"
+// @Tags BOT::群聊配置
+// @Param body body chatroom.DeleteParam true "删除群聊配置参数"
 // @Success 200
 // @Router /bot/chatroom/delete [post]
 func (*Chatroom) delete(c *gin.Context) {

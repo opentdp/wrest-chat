@@ -989,12 +989,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::群聊"
+                    "BOT::群聊配置"
                 ],
-                "summary": "添加群聊",
+                "summary": "添加群聊配置",
                 "parameters": [
                     {
-                        "description": "添加群聊参数",
+                        "description": "添加群聊配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1016,12 +1016,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::群聊"
+                    "BOT::群聊配置"
                 ],
-                "summary": "删除群聊",
+                "summary": "删除群聊配置",
                 "parameters": [
                     {
-                        "description": "删除群聊参数",
+                        "description": "删除群聊配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1043,12 +1043,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::群聊"
+                    "BOT::群聊配置"
                 ],
-                "summary": "获取群聊",
+                "summary": "获取群聊配置",
                 "parameters": [
                     {
-                        "description": "获取群聊参数",
+                        "description": "获取群聊配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1073,12 +1073,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::群聊"
+                    "BOT::群聊配置"
                 ],
-                "summary": "群聊列表",
+                "summary": "群聊配置列表",
                 "parameters": [
                     {
-                        "description": "获取群聊列表参数",
+                        "description": "获取群聊配置列表参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1106,12 +1106,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::群聊"
+                    "BOT::群聊配置"
                 ],
-                "summary": "修改群聊",
+                "summary": "修改群聊配置",
                 "parameters": [
                     {
-                        "description": "修改群聊参数",
+                        "description": "修改群聊配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1423,10 +1423,10 @@
                 "tags": [
                     "BOT::用户配置"
                 ],
-                "summary": "添加配置",
+                "summary": "添加用户配置",
                 "parameters": [
                     {
-                        "description": "添加配置参数",
+                        "description": "添加用户配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1450,10 +1450,10 @@
                 "tags": [
                     "BOT::用户配置"
                 ],
-                "summary": "删除配置",
+                "summary": "删除用户配置",
                 "parameters": [
                     {
-                        "description": "删除配置参数",
+                        "description": "删除用户配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1477,10 +1477,10 @@
                 "tags": [
                     "BOT::用户配置"
                 ],
-                "summary": "获取配置",
+                "summary": "获取用户配置",
                 "parameters": [
                     {
-                        "description": "获取配置参数",
+                        "description": "获取用户配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1507,10 +1507,10 @@
                 "tags": [
                     "BOT::用户配置"
                 ],
-                "summary": "配置列表",
+                "summary": "用户配置列表",
                 "parameters": [
                     {
-                        "description": "获取配置列表参数",
+                        "description": "获取用户配置列表参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1540,10 +1540,10 @@
                 "tags": [
                     "BOT::用户配置"
                 ],
-                "summary": "修改配置",
+                "summary": "修改用户配置",
                 "parameters": [
                     {
-                        "description": "修改配置参数",
+                        "description": "修改用户配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1565,12 +1565,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::配置"
+                    "BOT::全局配置"
                 ],
-                "summary": "添加配置",
+                "summary": "添加全局配置",
                 "parameters": [
                     {
-                        "description": "添加配置参数",
+                        "description": "添加全局配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1592,12 +1592,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::配置"
+                    "BOT::全局配置"
                 ],
-                "summary": "删除配置",
+                "summary": "删除全局配置",
                 "parameters": [
                     {
-                        "description": "删除配置参数",
+                        "description": "删除全局配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1619,12 +1619,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::配置"
+                    "BOT::全局配置"
                 ],
-                "summary": "获取配置",
+                "summary": "获取全局配置",
                 "parameters": [
                     {
-                        "description": "获取配置参数",
+                        "description": "获取全局配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1649,12 +1649,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::配置"
+                    "BOT::全局配置"
                 ],
-                "summary": "配置列表",
+                "summary": "全局配置列表",
                 "parameters": [
                     {
-                        "description": "获取配置列表参数",
+                        "description": "获取全局配置列表参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1682,12 +1682,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "BOT::配置"
+                    "BOT::全局配置"
                 ],
-                "summary": "修改配置",
+                "summary": "修改全局配置",
                 "parameters": [
                     {
-                        "description": "修改配置参数",
+                        "description": "修改全局配置参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -1718,6 +1718,9 @@
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "pat_return": {
                     "type": "string"
                 },
                 "remark": {
@@ -1777,6 +1780,9 @@
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "pat_return": {
                     "type": "string"
                 },
                 "remark": {
@@ -2068,10 +2074,12 @@
         "setting.CreateParam": {
             "type": "object",
             "required": [
-                "name",
-                "title"
+                "name"
             ],
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -2079,6 +2087,9 @@
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 },
                 "value": {
@@ -2098,7 +2109,12 @@
             }
         },
         "setting.FetchAllParam": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                }
+            }
         },
         "setting.FetchParam": {
             "type": "object",
@@ -2117,6 +2133,9 @@
                 "name"
             ],
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -2124,6 +2143,9 @@
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 },
                 "value": {
@@ -2148,6 +2170,10 @@
                 },
                 "name": {
                     "description": "群聊名称",
+                    "type": "string"
+                },
+                "pat_return": {
+                    "description": "响应拍拍我",
                     "type": "string"
                 },
                 "rd": {
@@ -2298,6 +2324,10 @@
                     "description": "创建时间戳",
                     "type": "integer"
                 },
+                "group": {
+                    "description": "分组",
+                    "type": "string"
+                },
                 "name": {
                     "description": "键",
                     "type": "string"
@@ -2312,6 +2342,10 @@
                 },
                 "title": {
                     "description": "标题",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型",
                     "type": "string"
                 },
                 "updated_at": {

@@ -8,10 +8,10 @@ import (
 
 type Profile struct{}
 
-// @Summary 配置列表
+// @Summary 用户配置列表
 // @Produce json
 // @Tags BOT::用户配置
-// @Param body body profile.FetchAllParam true "获取配置列表参数"
+// @Param body body profile.FetchAllParam true "获取用户配置列表参数"
 // @Success 200 {object} []tables.Profile
 // @Router /bot/profile/list [post]
 func (*Profile) list(c *gin.Context) {
@@ -31,10 +31,10 @@ func (*Profile) list(c *gin.Context) {
 
 }
 
-// @Summary 获取配置
+// @Summary 获取用户配置
 // @Produce json
 // @Tags BOT::用户配置
-// @Param body body profile.FetchParam true "获取配置参数"
+// @Param body body profile.FetchParam true "获取用户配置参数"
 // @Success 200 {object} tables.Profile
 // @Router /bot/profile/detail [post]
 func (*Profile) detail(c *gin.Context) {
@@ -54,10 +54,10 @@ func (*Profile) detail(c *gin.Context) {
 
 }
 
-// @Summary 添加配置
+// @Summary 添加用户配置
 // @Produce json
 // @Tags BOT::用户配置
-// @Param body body profile.CreateParam true "添加配置参数"
+// @Param body body profile.CreateParam true "添加用户配置参数"
 // @Success 200
 // @Router /bot/profile/create [post]
 func (*Profile) create(c *gin.Context) {
@@ -78,10 +78,10 @@ func (*Profile) create(c *gin.Context) {
 
 }
 
-// @Summary 修改配置
+// @Summary 修改用户配置
 // @Produce json
 // @Tags BOT::用户配置
-// @Param body body profile.UpdateParam true "修改配置参数"
+// @Param body body profile.UpdateParam true "修改用户配置参数"
 // @Success 200
 // @Router /bot/profile/update [post]
 func (*Profile) update(c *gin.Context) {
@@ -101,10 +101,10 @@ func (*Profile) update(c *gin.Context) {
 
 }
 
-// @Summary 删除配置
+// @Summary 删除用户配置
 // @Produce json
 // @Tags BOT::用户配置
-// @Param body body profile.DeleteParam true "删除配置参数"
+// @Param body body profile.DeleteParam true "删除用户配置参数"
 // @Success 200
 // @Router /bot/profile/delete [post]
 func (*Profile) delete(c *gin.Context) {
