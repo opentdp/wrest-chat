@@ -18,11 +18,11 @@
                 <th scope="col">#</th>
                 <th scope="col">用户</th>
                 <th scope="col">场景</th>
-                <th scope="col">级别</th>
-                <th scope="col">AI 唤醒词</th>
-                <th scope="col">AI 模型</th>
-                <th scope="col">拉黑期限</th>
-                <th scope="col">备注</th>
+                <th scope="col" class="d-none d-md-table-cell">级别</th>
+                <th scope="col" class="d-none d-lg-table-cell">AI 唤醒词</th>
+                <th scope="col" class="d-none d-lg-table-cell">AI 模型</th>
+                <th scope="col" class="d-none d-xl-table-cell">拉黑期限</th>
+                <th scope="col" class="d-none d-xxl-table-cell">备注</th>
                 <th scope="col">操作</th>
             </tr>
         </thead>
@@ -45,11 +45,15 @@
                     {{wcfContacts[item.roomid] ? wcfContacts[item.roomid].name : item.roomid}}
                     }
                 </td>
-                <td>{{userLevels[item.level] && userLevels[item.level].name || '-'}}</td>
-                <td>{{item.ai_argot}}</td>
-                <td>{{item.ai_model}}</td>
-                <td>{{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}</td>
-                <td>{{item.remark}}</td>
+                <td class="d-none d-md-table-cell">
+                    {{userLevels[item.level] && userLevels[item.level].name || '-'}}
+                </td>
+                <td class="d-none d-lg-table-cell">{{item.ai_argot}}</td>
+                <td class="d-none d-lg-table-cell">{{item.ai_model}}</td>
+                <td class="d-none d-xl-table-cell">
+                    {{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}
+                </td>
+                <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
                 <td>
                     <button class="btn btn-sm btn-danger" (click)="deleteProfile(item)">删除</button>
                 </td>
