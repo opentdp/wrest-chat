@@ -11,18 +11,24 @@
 <div class="container-lg mb-3">
     <form class="row gy-3" (ngSubmit)="updateSetting()" #myform="ngForm">
         <div class="col-12">
-            <label class="form-label">键 *</label>
-            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" required />
-            <div class="form-text">
-                用于违规检测，暂不支持统配符
-            </div>
+            <label class="form-label">名称 *</label>
+            <input type="text" name="title" class="form-control" [(ngModel)]="formdata.title" required />
         </div>
         <div class="col-12">
-            <label class="form-label">值 *</label>
+            <label class="form-label">类型 *</label>
+            <input type="text" name="type" class="form-control" [(ngModel)]="formdata.type" required />
+        </div>
+        <div class="col-12">
+            <label class="form-label">键名 *</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" required readonly />
+        </div>
+        <div class="col-12">
+            <label class="form-label">键值 *</label>
             <input type="text" name="value" class="form-control" [(ngModel)]="formdata.value" required />
-            <div class="form-text">
-                用于违规检测，暂不支持统配符
-            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注</label>
+            <input type="text" name="remark" class="form-control" [(ngModel)]="formdata.remark" required />
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>

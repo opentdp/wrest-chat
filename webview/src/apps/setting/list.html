@@ -13,8 +13,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">名称</th>
-                <th scope="col">键</th>
-                <th scope="col" class="d-none d-xl-table-cell">值</th>
+                <th scope="col" class="d-none d-lg-table-cell">类型</th>
+                <th scope="col">键名</th>
+                <th scope="col" class="d-none d-xl-table-cell">键值</th>
                 <th scope="col" class="d-none d-xxl-table-cell">备注</th>
                 <th scope="col">操作</th>
             </tr>
@@ -24,6 +25,7 @@
             <tr>
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.title}}</td>
+                <td class="d-none d-lg-table-cell">{{item.type}}</td>
                 <td>{{item.name}}</td>
                 <td class="d-none d-xl-table-cell">{{item.value}}</td>
                 <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
