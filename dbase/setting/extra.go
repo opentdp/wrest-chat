@@ -20,7 +20,7 @@ var (
 	// 默认模型
 	ModelDefault = ""
 	// 定义模型扮演的身份
-	ModelContext = "用最少的字数回复"
+	ModelContext = "你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题"
 	// 历史消息数量
 	ModelHistory = 20
 )
@@ -79,20 +79,20 @@ func Save() {
 
 func DataMigrate() {
 
-	if c, _ := Count(&CountParam{}); c != 0 {
+	if c, _ := Count(&CountParam{}); c == 0 {
 		return
 	}
 
-	Create(&CreateParam{"BotEnable", "bool", "bot", "", "机器人", "是否启用机器人"})
+	Create(&CreateParam{"BotEnable", "bool", "bot", "", "机器人", "是否启用机器人，重启后生效"})
 	Create(&CreateParam{"FriendAccept", "bool", "bot", "", "确认好友", "是否自动同意新的好友请求"})
 	Create(&CreateParam{"FriendHello", "string", "bot", "", "好友打招呼", "添加好友后的响应内容，留空则忽略"})
-	Create(&CreateParam{"PatReturn", "bool", "bot", "", "回应拍拍", "是否自动回应拍一拍"})
+	Create(&CreateParam{"PatReturn", "bool", "bot", "", "回应拍拍", "私聊是否自动回应拍一拍"})
 	Create(&CreateParam{"RevokeMsg", "string", "bot", "", "撤回提醒", "私聊撤回消息时响应的内容，留空则忽略"})
 	Create(&CreateParam{"WhiteLimit", "bool", "bot", "", "白名单", "开启后只有白名单内的群或好友可以使用机器人"})
-	Create(&CreateParam{"ModelDefault", "string", "bot", "", "默认模型", "默认模型"})
+	Create(&CreateParam{"ModelDefault", "string", "bot", "", "默认模型", "用户的默认大模型代码"})
 	Create(&CreateParam{"ModelContext", "string", "bot", "", "模型预定义", "定义模型扮演的身份"})
 	Create(&CreateParam{"ModelHistory", "number", "bot", "", "上下文总量", "历史消息最大数量"})
 
-	Save()
+	Save() // 将默认配置存入数据库
 
 }

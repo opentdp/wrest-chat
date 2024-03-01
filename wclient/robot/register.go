@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
 	"github.com/opentdp/wechat-rest/wclient"
@@ -20,7 +20,9 @@ var selfInfo *wcferry.UserInfo
 
 func Register() {
 
-	if !args.Bot.Enable {
+	setting.Laod()
+
+	if !setting.BotEnable {
 		logman.Warn("robot disabled")
 		return
 	}
@@ -100,7 +102,7 @@ func hook1(msg *wcferry.WxMsg) {
 func hook37(msg *wcferry.WxMsg) {
 
 	// 自动接受新朋友
-	if args.Bot.FriendAccept {
+	if setting.FriendAccept {
 		ret := &types.FriendRequestMsg{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
@@ -115,8 +117,8 @@ func hook10000(msg *wcferry.WxMsg) {
 
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
-		if len(args.Bot.FriendHello) > 1 {
-			wc.CmdClient.SendTxt(args.Bot.FriendHello, msg.Sender, "")
+		if len(setting.FriendHello) > 1 {
+			wc.CmdClient.SendTxt(setting.FriendHello, msg.Sender, "")
 		}
 		return
 	}
@@ -138,7 +140,7 @@ func hook10000(msg *wcferry.WxMsg) {
 			if strings.Trim(room.PatReturn, "-") != "" {
 				wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 			}
-		} else if args.Bot.PatReturn {
+		} else if setting.PatReturn {
 			wc.CmdClient.SendPatMsg(msg.Roomid, msg.Sender)
 		}
 		return
@@ -155,7 +157,7 @@ func hook10002(msg *wcferry.WxMsg) {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		output = room.RevokeMsg
 	} else {
-		output = args.Bot.RevokeMsg
+		output = setting.RevokeMsg
 	}
 
 	if len(output) < 2 {

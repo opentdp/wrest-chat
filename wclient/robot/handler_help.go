@@ -5,10 +5,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
@@ -64,7 +64,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 			text += fmt.Sprintf("唤醒词 %s；", up.AiArgot)
 		}
 		text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
-		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), args.LLM.HistoryNum)
+		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), setting.ModelHistory)
 	}
 
 	return text + "祝你好运！"
@@ -73,7 +73,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 func helpPreCheck(msg *wcferry.WxMsg) string {
 
-	if args.Bot.WhiteLimit {
+	if setting.WhiteLimit {
 		if msg.IsGroup {
 			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 			if room.Level < 2 {

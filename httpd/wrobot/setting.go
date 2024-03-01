@@ -95,6 +95,7 @@ func (*Setting) update(c *gin.Context) {
 
 	if err := setting.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
+		setting.Laod()
 	} else {
 		c.Set("Error", err)
 	}
