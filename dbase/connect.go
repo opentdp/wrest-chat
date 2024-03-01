@@ -23,6 +23,7 @@ func Connect() {
 		&tables.LLModel{},
 		&tables.Message{},
 		&tables.Profile{},
+		&tables.Setting{},
 	)
 
 	// 全局配置迁移
