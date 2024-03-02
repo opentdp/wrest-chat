@@ -37,7 +37,7 @@
                 <td class="d-none d-lg-table-cell">
                     {{ keywordLevels[item.level] && keywordLevels[item.level].name || item.level}}
                 </td>
-                <td>
+                <td class="text-nowrap">
                     <button class="btn btn-sm btn-danger" (click)="deleteKeyword(item)">删除</button>
                 </td>
             </tr>
