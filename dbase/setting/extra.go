@@ -85,11 +85,11 @@ func DataMigrate() {
 
 	Create(&CreateParam{"BotEnable", "bool", "bot", "", "机器人", "是否启用机器人，重启后生效"})
 	Create(&CreateParam{"FriendAccept", "bool", "bot", "", "确认好友", "是否自动同意新的好友请求"})
-	Create(&CreateParam{"FriendHello", "string", "bot", "", "好友打招呼", "添加好友后的响应内容，留空则忽略"})
+	Create(&CreateParam{"FriendHello", "string", "bot", "", "好友打招呼", "添加好友后的响应内容，“-”表示关闭"})
 	Create(&CreateParam{"PatReturn", "bool", "bot", "", "回应拍拍", "私聊是否自动回应拍一拍"})
-	Create(&CreateParam{"RevokeMsg", "string", "bot", "", "撤回提醒", "私聊撤回消息时响应的内容，留空则忽略"})
-	Create(&CreateParam{"WhiteLimit", "bool", "bot", "", "白名单", "开启后只有白名单内的群或好友可以使用机器人"})
-	Create(&CreateParam{"ModelDefault", "string", "bot", "", "默认模型", "用户的默认大模型代码"})
+	Create(&CreateParam{"RevokeMsg", "string", "bot", "", "撤回提醒", "私聊撤回消息时响应的内容，“-”表示关闭"})
+	Create(&CreateParam{"WhiteLimit", "bool", "bot", "", "白名单模式", "开启后仅白名单内的群或好友可以使用机器人"})
+	Create(&CreateParam{"ModelDefault", "string", "bot", "", "默认模型", "用户的默认模型代码"})
 	Create(&CreateParam{"ModelContext", "string", "bot", "", "模型预定义", "定义模型扮演的身份"})
 	Create(&CreateParam{"ModelHistory", "number", "bot", "", "上下文总量", "历史消息最大数量"})
 
