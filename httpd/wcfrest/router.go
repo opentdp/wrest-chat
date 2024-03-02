@@ -1,8 +1,11 @@
 package wcfrest
 
 import (
+	"strings"
+
 	"github.com/opentdp/go-helper/httpd"
 
+	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/httpd/midware"
 	"github.com/opentdp/wechat-rest/wclient"
 )
@@ -56,5 +59,13 @@ func Route() {
 	rg.POST("disable_receiver", ctrl.disableReceiver)
 
 	rg.GET("socket_receiver", ctrl.socketReceiver)
+
+	// 启用 HTTP 消息推送
+
+	if args.Web.Webhook != "" {
+		for _, url := range strings.Split(args.Web.Webhook, ",") {
+			ctrl.enableUrlReceiver(url)
+		}
+	}
 
 }

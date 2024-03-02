@@ -1,8 +1,8 @@
 # 运行日志
 Log:
-    Dir: logs # 日志存储目录
-    Level: info # 日志级别，debug|info|warn|error
-    Target: stdout # 日志输出方式，both|file|null|stdout|stderr
+    Dir: logs # 存储目录
+    Level: info # 记录级别，debug|info|warn|error
+    Target: stdout # 输出方式，both|file|null|stdout|stderr
 
 # Wcf 服务
 Wcf:
@@ -17,3 +17,4 @@ Web:
     Address: 127.0.0.1:7600 # 监听地址
     Swagger: true # 是否启用 Api 在线文档
     Token: "" # 使用 Token 验证请求，留空则不验证
+    Webhook: "" # 消息推送地址，留空则不启用

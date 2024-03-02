@@ -3,9 +3,9 @@ package args
 // 日志配置
 
 type ILog struct {
-	Dir    string `yaml:"Dir"`    // 日志目录
-	Level  string `yaml:"Level"`  // 日志级别 debug|info|warn|error
-	Target string `yaml:"Target"` // 日志输出方式 both|file|null|stdout|stderr
+	Dir    string `yaml:"Dir"`    // 存储目录
+	Level  string `yaml:"Level"`  // 记录级别 debug|info|warn|error
+	Target string `yaml:"Target"` // 输出方式 both|file|null|stdout|stderr
 }
 
 var Log = &ILog{
@@ -35,6 +35,7 @@ type IWeb struct {
 	Address string `yaml:"Address"` // Web 监听地址
 	Swagger bool   `yaml:"Swagger"` // 是否启用 Api 文档
 	Token   string `yaml:"Token"`   // 使用 Token 验证请求
+	Webhook string `yaml:"Webhook"` // 消息推送地址
 }
 
 var Web = &IWeb{
