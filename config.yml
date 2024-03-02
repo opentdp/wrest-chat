@@ -1,7 +1,7 @@
 # 运行日志
 Log:
     Dir: logs # 日志存储目录
-    Level: info # 日志级别，DEBUG|INFO|WARN|ERROR
+    Level: info # 日志级别，debug|info|warn|error
     Target: stdout # 日志输出方式，both|file|null|stdout|stderr
 
 # Wcf 服务
