@@ -68,9 +68,9 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 	if len(socketReceiverList) == 0 {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
-			for w := range socketReceiverList {
-				logman.Info("call receiver", "socket", ws.RemoteAddr().String(), "Id", ret.Id)
-				go websocket.JSON.Send(w, ret)
+			for s := range socketReceiverList {
+				logman.Info("call receiver", "socket", s.RemoteAddr().String(), "Id", ret.Id)
+				go websocket.JSON.Send(s, ret)
 			}
 		})
 		if err != nil {

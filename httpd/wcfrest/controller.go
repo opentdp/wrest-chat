@@ -913,7 +913,7 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 // @Router /api/socket_receiver [get]
 func (wc *Controller) socketReceiver(c *gin.Context) {
 
-	h := websocket.Handler(func(ws *websocket.Conn) {
+	cb := func(ws *websocket.Conn) {
 		wc.enableSocketReceiver(ws)
 		for {
 			var rq string
@@ -923,9 +923,9 @@ func (wc *Controller) socketReceiver(c *gin.Context) {
 			}
 		}
 		wc.disableSocketReceiver(ws)
-	})
+	}
 
-	h.ServeHTTP(c.Writer, c.Request)
+	websocket.Handler(cb).ServeHTTP(c.Writer, c.Request)
 
 	c.Set("Payload", "连接已关闭")
 
