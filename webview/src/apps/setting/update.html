@@ -31,6 +31,13 @@
                 <option value="false">否 / 禁用</option>
             </select>
             }
+            @case ("lmodel") {
+            <select name="value" class="form-select" [(ngModel)]="formdata.value">
+                @for (item of llmodels; track item.rd) {
+                <option [value]="item.mid">{{item.mid}}（{{item.model}}）</option>
+                }
+            </select>
+            }
             @case ("number") {
             <input type="number" name="value" class="form-control" [(ngModel)]="formdata.value" required />
             <div class="form-text">

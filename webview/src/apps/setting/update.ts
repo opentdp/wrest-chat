@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { RobotApi, SettingUpdateParam } from '../../openapi/wrobot';
+import { RobotApi, TablesLLModel, SettingUpdateParam } from '../../openapi/wrobot';
 
 
 @Component({
@@ -12,8 +12,13 @@ import { RobotApi, SettingUpdateParam } from '../../openapi/wrobot';
 export class SettingUpdateComponent implements OnInit {
 
     public formdata = {} as SettingUpdateParam;
+    public llmodels: Array<TablesLLModel> = [];
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
+        this.getLLModels();
     }
 
     public ngOnInit() {
@@ -34,4 +39,9 @@ export class SettingUpdateComponent implements OnInit {
         });
     }
 
+    public getLLModels() {
+        RobotApi.llmodelList({}).then((data) => {
+            this.llmodels = data || [];
+        });
+    }
 }
