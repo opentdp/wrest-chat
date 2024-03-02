@@ -24,7 +24,32 @@
         </div>
         <div class="col-12">
             <label class="form-label">键值 *</label>
+            @switch (formdata.type) {
+            @case ("bool") {
+            <select name="value" class="form-select" [(ngModel)]="formdata.value">
+                <option value="true">是 / 启用</option>
+                <option value="false">否 / 禁用</option>
+            </select>
+            }
+            @case ("number") {
+            <input type="number" name="value" class="form-control" [(ngModel)]="formdata.value" required />
+            <div class="form-text">
+                若无特殊说明取，消或者禁用该功能，可修改为 “-1”
+            </div>
+            }
+            @case ("text") {
+            <textarea name="value" class="form-control" [(ngModel)]="formdata.value" required></textarea>
+            <div class="form-text">
+                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+            </div>
+            }
+            @default {
             <input type="text" name="value" class="form-control" [(ngModel)]="formdata.value" required />
+            <div class="form-text">
+                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+            </div>
+            }
+            }
         </div>
         <div class="col-12">
             <label class="form-label">备注</label>

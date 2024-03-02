@@ -28,6 +28,7 @@ export class SettingUpdateComponent implements OnInit {
     }
 
     public updateSetting() {
+        this.formdata.value = String(this.formdata.value);
         RobotApi.settingUpdate(this.formdata).then(() => {
             this.router.navigate(['setting/list']);
         });
