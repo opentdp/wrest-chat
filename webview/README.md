@@ -1,6 +1,6 @@
 # WeChat Rest Web
 
-已经支持的功能：
+## 功能列表
 
 - 机器人
   - 扫码登录
@@ -14,3 +14,9 @@
   - 群聊
   - 通讯录
   - 消息监听
+
+## 常用命令
+
+- 开发模式 `npm run start`
+- 编译前端项目 `npm run build`
+- 生成 jssdk 文件 `npm run build:jssdk`

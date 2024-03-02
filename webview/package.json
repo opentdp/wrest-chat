@@ -6,7 +6,8 @@
     "scripts": {
         "lint": "ng lint app",
         "start": "ng serve app",
-        "build": "ng build app"
+        "build": "ng build app",
+        "build:jssdk": "tsc -t esnext --outDir public/jssdk --outFile wcsdk.js src/openapi/wcfrest.ts"
     },
     "dependencies": {
         "@angular/animations": "^17.0.0",
