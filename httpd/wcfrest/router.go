@@ -63,7 +63,7 @@ func Route() {
 	// 启用 HTTP 消息推送
 
 	if args.Web.Webhook != "" {
-		for _, url := range strings.Split(args.Web.Webhook, ",") {
+		for _, url := range strings.Split(args.Web.Webhook, "\n") {
 			ctrl.enableUrlReceiver(url)
 		}
 	}
