@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/wclient/robot"
 )
 
 type Profile struct{}
@@ -72,6 +73,7 @@ func (*Profile) create(c *gin.Context) {
 	if id, err := profile.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -95,6 +97,7 @@ func (*Profile) update(c *gin.Context) {
 
 	if err := profile.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -118,6 +121,7 @@ func (*Profile) delete(c *gin.Context) {
 
 	if err := profile.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
+	"github.com/opentdp/wechat-rest/wclient/robot"
 )
 
 type Chatroom struct{}
@@ -72,6 +73,7 @@ func (*Chatroom) create(c *gin.Context) {
 	if id, err := chatroom.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -95,6 +97,7 @@ func (*Chatroom) update(c *gin.Context) {
 
 	if err := chatroom.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -118,6 +121,7 @@ func (*Chatroom) delete(c *gin.Context) {
 
 	if err := chatroom.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}

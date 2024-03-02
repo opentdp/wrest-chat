@@ -72,6 +72,7 @@ func (*Setting) create(c *gin.Context) {
 	if id, err := setting.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
+		setting.Laod()
 	} else {
 		c.Set("Error", err)
 	}
@@ -119,6 +120,7 @@ func (*Setting) delete(c *gin.Context) {
 
 	if err := setting.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
+		setting.Laod()
 	} else {
 		c.Set("Error", err)
 	}

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
+	"github.com/opentdp/wechat-rest/wclient/robot"
 )
 
 type LLModel struct{}
@@ -72,6 +73,7 @@ func (*LLModel) create(c *gin.Context) {
 	if id, err := llmodel.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -95,6 +97,7 @@ func (*LLModel) update(c *gin.Context) {
 
 	if err := llmodel.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
@@ -118,6 +121,7 @@ func (*LLModel) delete(c *gin.Context) {
 
 	if err := llmodel.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
+		robot.Redo()
 	} else {
 		c.Set("Error", err)
 	}
