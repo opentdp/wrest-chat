@@ -118,9 +118,10 @@ func (*Cronjob) delete(c *gin.Context) {
 		return
 	}
 
+	UndoById(rq.Rd) // 先从计划列表中删除
+
 	if err := cronjob.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		UndoById(rq.Rd)
 	} else {
 		c.Set("Error", err)
 	}

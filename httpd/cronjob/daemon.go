@@ -17,8 +17,10 @@ var logger *logman.Logger
 
 func Daemon() {
 
-	crontab = cron.New(cron.WithSeconds())
 	logger = logman.Named("cronjob")
+	logger.Info("cron:daemon start")
+
+	crontab = cron.New(cron.WithSeconds())
 
 	jobs, err := cronjob.FetchAll(&cronjob.FetchAllParam{})
 	if err != nil || len(jobs) == 0 {
@@ -38,26 +40,26 @@ func AttachJob(job *tables.Cronjob) error {
 	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayOfMonth + " " + job.Month + " " + job.DayOfWeek
 
 	task := func() {
-		logger.Info("Cron:run " + job.Name)
+		logger.Info("cron:run "+job.Name, "entryId", job.EntryId)
 		output, err := command.Exec(&command.ExecPayload{
-			Name:          "Cron: " + job.Name,
+			Name:          "cron: " + job.Name,
 			CommandType:   job.Type,
 			WorkDirectory: job.Directory,
 			Content:       job.Content,
 			Timeout:       job.Timeout,
 		})
-		logger.Error("Cron:run "+job.Name, "output", output, "error", err)
+		logger.Warn("cron:run "+job.Name, "output", output, "error", err)
 		if err == nil && output != "" {
 			WcfSendMessage(output)
 		}
 	}
 
-	logger.Info("Cron:add " + job.Name)
 	entryId, err := crontab.AddFunc(sepc, task)
 	if err != nil {
 		return err
 	}
 
+	logger.Info("cron:attach "+job.Name, "entryId", entryId)
 	err = cronjob.Update(&cronjob.UpdateParam{
 		Rd:      job.Rd,
 		EntryId: int64(entryId),
@@ -82,6 +84,7 @@ func UndoById(rd uint) {
 	job, err := cronjob.Fetch(&cronjob.FetchParam{Rd: rd})
 
 	if err == nil && job.Rd > 0 {
+		logger.Info("cron:remove "+job.Name, "entryId", job.EntryId)
 		crontab.Remove(cron.EntryID(job.EntryId))
 	}
 
@@ -92,6 +95,7 @@ func RedoById(rd uint) {
 	job, err := cronjob.Fetch(&cronjob.FetchParam{Rd: rd})
 
 	if err == nil && job.Rd > 0 {
+		logger.Info("cron:update "+job.Name, "entryId", job.EntryId)
 		crontab.Remove(cron.EntryID(job.EntryId))
 		AttachJob(job)
 	}
