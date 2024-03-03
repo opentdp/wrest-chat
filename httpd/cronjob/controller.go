@@ -126,3 +126,14 @@ func (*Cronjob) delete(c *gin.Context) {
 	}
 
 }
+
+// @Summary 计划任务状态
+// @Produce json
+// @Tags JOB::计划任务
+// @Success 200
+// @Router /api/cronjob/status [post]
+func (*Cronjob) status(c *gin.Context) {
+
+	c.Set("Payload", GetEntries())
+
+}

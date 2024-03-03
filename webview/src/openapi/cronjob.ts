@@ -53,6 +53,16 @@ export const CronjobApi = {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/cronjob/update', options);
     },
+    /**
+     * @summary 获取计划任务状态
+     * @param {CronjobStatusParam} body 获取计划任务状态参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    cronjobStatus(body: CronjobStatusParam, options: RequestInit = {}): Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/cronjob/status', options);
+    },
 };
 
 export interface CronjobCreateParam {
@@ -130,6 +140,15 @@ export interface CronjobUpdateParam {
     timeout: number;
     // 命令类型 (CMD, POWERSHELL, SHELL)
     type: string;
+}
+
+export interface CronjobStatusParam {
+    // 当前任务 ID
+    entry_id: number;
+    // 下次执行时间
+    next_time: number;
+    // 上次执行时间
+    prev_time: number;
 }
 
 export interface TablesCronjob {

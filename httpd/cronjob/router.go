@@ -17,6 +17,7 @@ func Route() {
 	rg.POST("create", cronjob.create)
 	rg.POST("update", cronjob.update)
 	rg.POST("delete", cronjob.delete)
+	rg.POST("status", cronjob.status)
 
 	Daemon() // 启动定时任务
 
