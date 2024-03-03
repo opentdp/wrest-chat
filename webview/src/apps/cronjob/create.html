@@ -70,6 +70,9 @@
         <div class="col-12">
             <label class="form-label">命令内容 *</label>
             <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
+            <div class="form-text">
+                返回值可用于发送消息，格式："wxid<b>\n</b>message" 或 "wxid<b>\n</b>roomid<b>\n</b>message"，支持网络文件或图片
+            </div>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>

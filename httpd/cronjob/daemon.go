@@ -1,12 +1,15 @@
 package cronjob
 
 import (
+	"strings"
+
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
 
 	"github.com/opentdp/wechat-rest/dbase/cronjob"
 	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wechat-rest/wclient"
 )
 
 var crontab *cron.Cron
@@ -47,6 +50,7 @@ func AttachJob(job *tables.Cronjob) error {
 			logger.Error("Cron:run "+job.Name, "error", err)
 		} else {
 			logger.Info("Cron:run "+job.Name, "result", result)
+			WcfSendMessage(result)
 		}
 	}
 
@@ -123,5 +127,32 @@ func GetEntries() map[uint]JobStatus {
 	}
 
 	return list
+
+}
+
+// 尝试发送信息
+
+func WcfSendMessage(text string) int32 {
+
+	wxid := ""
+	roomid := ""
+	message := ""
+
+	text = strings.TrimSpace(text)
+	parts := strings.Split(text, "\n")
+	if len(parts) < 2 {
+		return -1
+	}
+
+	if len(parts) == 2 {
+		wxid = parts[0]
+		message = strings.Join(parts[1:], "\n")
+	} else {
+		wxid = parts[0]
+		roomid = parts[1]
+		message = strings.Join(parts[2:], "\n")
+	}
+
+	return wclient.Register().SendMessage(wxid, roomid, message)
 
 }

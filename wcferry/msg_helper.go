@@ -145,3 +145,23 @@ func DownloadFile(str string) string {
 	}
 	return ""
 }
+
+// 检测文件是否图片
+// param text string 文件URL或路径
+// return bool 是否为图片
+func IsImageFile(str string) bool {
+
+	imageExtensions := map[string]bool{
+		".jpg":  true,
+		".jpeg": true,
+		".png":  true,
+		".gif":  true,
+		".bmp":  true,
+		".webp": true,
+		".tiff": true,
+		".svg":  true,
+	}
+
+	return imageExtensions[strings.ToLower(str)]
+
+}
