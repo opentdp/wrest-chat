@@ -1947,8 +1947,8 @@
             "type": "object",
             "required": [
                 "content",
-                "dayof_month",
-                "dayof_week",
+                "day_of_month",
+                "day_of_week",
                 "directory",
                 "hour",
                 "minute",
@@ -1962,10 +1962,10 @@
                 "content": {
                     "type": "string"
                 },
-                "dayof_month": {
+                "day_of_month": {
                     "type": "string"
                 },
-                "dayof_week": {
+                "day_of_week": {
                     "type": "string"
                 },
                 "directory": {
@@ -2034,8 +2034,8 @@
             "type": "object",
             "required": [
                 "content",
-                "dayof_month",
-                "dayof_week",
+                "day_of_month",
+                "day_of_week",
                 "directory",
                 "hour",
                 "minute",
@@ -2049,10 +2049,10 @@
                 "content": {
                     "type": "string"
                 },
-                "dayof_month": {
+                "day_of_month": {
                     "type": "string"
                 },
-                "dayof_week": {
+                "day_of_week": {
                     "type": "string"
                 },
                 "directory": {
@@ -2499,11 +2499,11 @@
                     "description": "创建时间戳",
                     "type": "integer"
                 },
-                "dayof_month": {
+                "day_of_month": {
                     "description": "日",
                     "type": "string"
                 },
-                "dayof_week": {
+                "day_of_week": {
                     "description": "周",
                     "type": "string"
                 },

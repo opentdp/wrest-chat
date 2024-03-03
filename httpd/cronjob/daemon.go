@@ -32,7 +32,7 @@ func Daemon() {
 
 func AttachJob(job *tables.Cronjob) error {
 
-	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayofMonth + " " + job.Month + " " + job.DayofWeek
+	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayOfMonth + " " + job.Month + " " + job.DayOfWeek
 
 	task := func() {
 		logger.Info("Cron:run " + job.Name)
@@ -50,6 +50,7 @@ func AttachJob(job *tables.Cronjob) error {
 		}
 	}
 
+	logger.Info("Cron:add " + job.Name)
 	entryId, err := crontab.AddFunc(sepc, task)
 	if err != nil {
 		return err
@@ -103,9 +104,9 @@ type JobStatus struct {
 	PrevTime int64 `json:"prev_time"`
 }
 
-func GetEntries() map[uint]any {
+func GetEntries() map[uint]JobStatus {
 
-	list := map[uint]any{}
+	list := map[uint]JobStatus{}
 
 	jobs, err := cronjob.FetchAll(&cronjob.FetchAllParam{})
 	if err != nil || len(jobs) == 0 {
@@ -114,10 +115,10 @@ func GetEntries() map[uint]any {
 
 	for _, job := range jobs {
 		entry := crontab.Entry(cron.EntryID(job.EntryId))
-		list[job.Rd] = map[string]any{
-			"EntryId":  entry.ID,
-			"NextTime": entry.Next.Unix(),
-			"PrevTime": entry.Prev.Unix(),
+		list[job.Rd] = JobStatus{
+			EntryId:  int64(entry.ID),
+			NextTime: entry.Next.Unix(),
+			PrevTime: entry.Prev.Unix(),
 		}
 	}
 

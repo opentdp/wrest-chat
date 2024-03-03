@@ -8,9 +8,9 @@ type Cronjob struct {
 	Second     string `json:"second"`               // 秒
 	Minute     string `json:"minute"`               // 分
 	Hour       string `json:"hour"`                 // 时
-	DayofMonth string `json:"dayof_month"`          // 日
+	DayOfMonth string `json:"day_of_month"`         // 日
 	Month      string `json:"month"`                // 月
-	DayofWeek  string `json:"dayof_week"`           // 周
+	DayOfWeek  string `json:"day_of_week"`          // 周
 	Type       string `json:"type"`                 // 命令类型，[CMD, POWERSHELL, SHELL]
 	Directory  string `json:"directory"`            // 工作目录
 	Timeout    uint   `json:"timeout"`              // 超时时间（秒）
