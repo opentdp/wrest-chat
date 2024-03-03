@@ -1,7 +1,7 @@
 
 import { httpRequest } from "./request";
 
-export const CronjobApi = {
+export const CronApi = {
     /**
      * 
      * @summary 添加计划任务
@@ -59,7 +59,7 @@ export const CronjobApi = {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    cronjobStatus(body: CronjobStatusParam, options: RequestInit = {}): Promise<unknown> {
+    cronjobStatus(body: CronjobStatusParam, options: RequestInit = {}): Promise<Record<number, CronjobStatusPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/cronjob/status', options);
     },
@@ -69,13 +69,11 @@ export interface CronjobCreateParam {
     // 要执行的命令内容
     content: string;
     // 每月执行计划的日期
-    dayOfMonth: string;
+    day_of_month: string;
     // 每周执行计划的星期
-    dayOfWeek: string;
+    day_of_week: string;
     // 命令执行的工作目录
     directory: string;
-    // 当前计划的 ID
-    entryId?: number;
     // 执行计划的小时
     hour: string;
     // 执行计划的分钟
@@ -84,8 +82,6 @@ export interface CronjobCreateParam {
     month: string;
     // 计划的名称
     name: string;
-    // 计划的 ID (如果已存在)
-    rd?: number;
     // 执行计划的秒数
     second: string;
     // 命令执行的超时时间 (秒)
@@ -117,9 +113,9 @@ export interface CronjobUpdateParam {
     // 要执行的命令内容
     content: string;
     // 每月执行计划的日期
-    dayOfMonth: string;
+    day_of_month: string;
     // 每周执行计划的星期
-    dayOfWeek: string;
+    day_of_week: string;
     // 命令执行的工作目录
     directory: string;
     // 当前计划的 ID
@@ -132,8 +128,8 @@ export interface CronjobUpdateParam {
     month: string;
     // 计划的名称
     name: string;
-    // 计划的 ID (如果已存在)
-    rd?: number;
+    // 计划的 ID
+    rd: number;
     // 执行计划的秒数
     second: string;
     // 命令执行的超时时间 (秒)
@@ -143,6 +139,10 @@ export interface CronjobUpdateParam {
 }
 
 export interface CronjobStatusParam {
+
+}
+
+export interface CronjobStatusPayload {
     // 当前任务 ID
     entry_id: number;
     // 下次执行时间
@@ -157,9 +157,9 @@ export interface TablesCronjob {
     // 创建时间戳
     created_at: number;
     // 每月执行计划的日期
-    dayOfMonth: string;
+    day_of_month: string;
     // 每周执行计划的星期
-    dayOfWeek: string;
+    day_of_week: string;
     // 命令执行的工作目录
     directory: string;
     // 计划的 ID
@@ -171,9 +171,9 @@ export interface TablesCronjob {
     // 执行计划的月份
     month: string;
     // 计划的名称
-    name: string;
+    name: string; //
     // 计划的 ID
-    rd?: number;
+    rd: number; //
     // 执行计划的秒数
     second: string;
     // 命令执行的超时时间 (秒)
