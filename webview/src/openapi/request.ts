@@ -1,5 +1,6 @@
 export async function httpRequest(input: string, options: RequestInit = {}) {
-    options.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+    const headers = { 'Content-Type': 'application/json' };
+    options.headers = Object.assign(headers, options.headers);
 
     try {
         const response = await fetch(input, options);
@@ -15,9 +16,10 @@ export async function httpRequest(input: string, options: RequestInit = {}) {
         }
         return data.Payload;
     } catch (error) {
-        const message = String(error);
-        window.postMessage({ message, classname: 'bg-danger text-light' });
+        window.postMessage({
+            message: String(error),
+            classname: 'bg-danger text-light',
+        });
         throw error;
     }
-
 }

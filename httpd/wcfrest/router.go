@@ -12,7 +12,7 @@ import (
 
 func Route() {
 
-	rg := httpd.Group("/api")
+	rg := httpd.Group("/wcf")
 	rg.Use(midware.OutputHandle, midware.ApiGuard)
 
 	ctrl := &Controller{wclient.Register()}

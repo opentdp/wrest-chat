@@ -15,23 +15,77 @@
     },
     "basePath": "/",
     "paths": {
-        "/api/accept_new_friend": {
+        "/api/cronjob/create": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "WCF::联系人管理"
+                    "JOB::计划任务"
                 ],
-                "summary": "接受好友请求",
+                "summary": "添加计划任务",
                 "parameters": [
                     {
-                        "description": "接受好友参数",
+                        "description": "添加计划任务参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.AcceptNewFriendRequest"
+                            "$ref": "#/definitions/cronjob.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/cronjob/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JOB::计划任务"
+                ],
+                "summary": "删除计划任务",
+                "parameters": [
+                    {
+                        "description": "删除计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/cronjob/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JOB::计划任务"
+                ],
+                "summary": "获取计划任务",
+                "parameters": [
+                    {
+                        "description": "获取计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.FetchParam"
                         }
                     }
                 ],
@@ -39,89 +93,29 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                            "$ref": "#/definitions/tables.Cronjob"
                         }
                     }
                 }
             }
         },
-        "/api/add_chatroom_members": {
+        "/api/cronjob/list": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "WCF::群聊管理"
+                    "JOB::计划任务"
                 ],
-                "summary": "添加群成员",
+                "summary": "计划任务列表",
                 "parameters": [
                     {
-                        "description": "管理群成员参数",
+                        "description": "获取计划任务列表参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/alias_in_chatroom": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::群聊管理"
-                ],
-                "summary": "获取群成员昵称",
-                "parameters": [
-                    {
-                        "description": "获取群成员昵称参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetAliasInChatRoomRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/avatars": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::联系人管理"
-                ],
-                "summary": "获取头像列表",
-                "parameters": [
-                    {
-                        "description": "获取头像列表参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetAvatarsRequest"
+                            "$ref": "#/definitions/cronjob.FetchAllParam"
                         }
                     }
                 ],
@@ -131,854 +125,36 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wcfrest.AvatarPayload"
+                                "$ref": "#/definitions/tables.Cronjob"
                             }
                         }
                     }
                 }
             }
         },
-        "/api/chatroom_members": {
+        "/api/cronjob/update": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "WCF::群聊管理"
+                    "JOB::计划任务"
                 ],
-                "summary": "获取群成员列表",
+                "summary": "修改计划任务",
                 "parameters": [
                     {
-                        "description": "获取群成员列表参数",
+                        "description": "修改计划任务参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.GetChatRoomMembersRequest"
+                            "$ref": "#/definitions/cronjob.UpdateParam"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcfrest.ContactPayload"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/chatrooms": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::群聊管理"
-                ],
-                "summary": "获取群列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcfrest.ContactPayload"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/contacts": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::联系人管理"
-                ],
-                "summary": "获取完整通讯录",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcfrest.ContactPayload"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/db_names": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::数据库查询"
-                ],
-                "summary": "获取数据库列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/db_query_sql": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::数据库查询"
-                ],
-                "summary": "执行数据库查询",
-                "parameters": [
-                    {
-                        "description": "数据库查询参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.DbSqlQueryRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": true
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/db_tables": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::数据库查询"
-                ],
-                "summary": "获取数据库表列表",
-                "parameters": [
-                    {
-                        "description": "获取数据库表列表参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetDbTablesRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcfrest.DbTablePayload"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/del_chatroom_members": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::群聊管理"
-                ],
-                "summary": "删除群成员",
-                "parameters": [
-                    {
-                        "description": "管理群成员参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/disable_receiver": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息推送"
-                ],
-                "summary": "关闭推送消息到URL",
-                "parameters": [
-                    {
-                        "description": "推送消息到URL参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/download_attach": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "下载附件",
-                "parameters": [
-                    {
-                        "description": "下载附件参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.DownloadAttachRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/download_image": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "下载图片",
-                "parameters": [
-                    {
-                        "description": "下载图片参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.DownloadImageRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/enable_receiver": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息推送"
-                ],
-                "summary": "开启推送消息到URL",
-                "parameters": [
-                    {
-                        "description": "推送消息到URL参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/forward_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "转发消息",
-                "parameters": [
-                    {
-                        "description": "转发消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/friends": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::联系人管理"
-                ],
-                "summary": "获取好友列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wcfrest.ContactPayload"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/get_audio_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "获取语音消息",
-                "parameters": [
-                    {
-                        "description": "获取语音消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/get_ocr_result": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "获取OCR识别结果",
-                "parameters": [
-                    {
-                        "description": "获取OCR识别结果参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/invite_chatroom_members": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::群聊管理"
-                ],
-                "summary": "邀请群成员",
-                "parameters": [
-                    {
-                        "description": "管理群成员参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/is_login": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "检查登录状态",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/login_qr": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "登录二维码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/msg_types": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "获取所有消息类型",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/receive_transfer": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "接受转账",
-                "parameters": [
-                    {
-                        "description": "接受转账参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ReceiveTransferRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/refresh_pyq": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "刷新朋友圈",
-                "parameters": [
-                    {
-                        "description": "刷新朋友圈参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RefreshPyqRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/revoke_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "撤回消息",
-                "parameters": [
-                    {
-                        "description": "撤回消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.RevokeMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/self_info": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "获取登录账号个人信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.UserInfoPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/self_wxid": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::其他"
-                ],
-                "summary": "获取登录账号wxid",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/send_file": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "发送文件消息",
-                "parameters": [
-                    {
-                        "description": "发送文件消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.SendFileRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/send_img": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "发送图片消息",
-                "parameters": [
-                    {
-                        "description": "发送图片消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.SendImgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/send_pat_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "拍一拍群友",
-                "parameters": [
-                    {
-                        "description": "拍一拍群友参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.SendPatMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/send_rich_text": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "发送卡片消息",
-                "parameters": [
-                    {
-                        "description": "发送卡片消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.SendRichTextRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/send_txt": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息发送"
-                ],
-                "summary": "发送文本消息",
-                "parameters": [
-                    {
-                        "description": "发送文本消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.SendTxtRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/socket_receiver": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息推送"
-                ],
-                "summary": "推送消息到Socket",
-                "responses": {
-                    "101": {
-                        "description": "Switching Protocols 响应",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/user_info": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::联系人管理"
-                ],
-                "summary": "根据wxid获取个人信息",
-                "parameters": [
-                    {
-                        "description": "根据wxid获取个人信息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetInfoByWxidRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.ContactPayload"
-                        }
+                        "description": "OK"
                     }
                 }
             }
@@ -1702,6 +878,974 @@
                     }
                 }
             }
+        },
+        "/wcf/accept_new_friend": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::联系人管理"
+                ],
+                "summary": "接受好友请求",
+                "parameters": [
+                    {
+                        "description": "接受好友参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.AcceptNewFriendRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/add_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "添加群成员",
+                "parameters": [
+                    {
+                        "description": "管理群成员参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/alias_in_chatroom": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "获取群成员昵称",
+                "parameters": [
+                    {
+                        "description": "获取群成员昵称参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAliasInChatRoomRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/avatars": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::联系人管理"
+                ],
+                "summary": "获取头像列表",
+                "parameters": [
+                    {
+                        "description": "获取头像列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAvatarsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.AvatarPayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "获取群成员列表",
+                "parameters": [
+                    {
+                        "description": "获取群成员列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetChatRoomMembersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/chatrooms": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "获取群列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/contacts": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::联系人管理"
+                ],
+                "summary": "获取完整通讯录",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/db_names": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::数据库查询"
+                ],
+                "summary": "获取数据库列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/db_query_sql": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::数据库查询"
+                ],
+                "summary": "执行数据库查询",
+                "parameters": [
+                    {
+                        "description": "数据库查询参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.DbSqlQueryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/db_tables": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::数据库查询"
+                ],
+                "summary": "获取数据库表列表",
+                "parameters": [
+                    {
+                        "description": "获取数据库表列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetDbTablesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.DbTablePayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/del_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "删除群成员",
+                "parameters": [
+                    {
+                        "description": "管理群成员参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/disable_receiver": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息推送"
+                ],
+                "summary": "关闭推送消息到URL",
+                "parameters": [
+                    {
+                        "description": "推送消息到URL参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/download_attach": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "下载附件",
+                "parameters": [
+                    {
+                        "description": "下载附件参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.DownloadAttachRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/download_image": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "下载图片",
+                "parameters": [
+                    {
+                        "description": "下载图片参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.DownloadImageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/enable_receiver": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息推送"
+                ],
+                "summary": "开启推送消息到URL",
+                "parameters": [
+                    {
+                        "description": "推送消息到URL参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ReceiverRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/forward_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "转发消息",
+                "parameters": [
+                    {
+                        "description": "转发消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ForwardMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/friends": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::联系人管理"
+                ],
+                "summary": "获取好友列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/wcfrest.ContactPayload"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/get_audio_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "获取语音消息",
+                "parameters": [
+                    {
+                        "description": "获取语音消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/get_ocr_result": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "获取OCR识别结果",
+                "parameters": [
+                    {
+                        "description": "获取OCR识别结果参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/invite_chatroom_members": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::群聊管理"
+                ],
+                "summary": "邀请群成员",
+                "parameters": [
+                    {
+                        "description": "管理群成员参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ChatroomMembersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/is_login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "检查登录状态",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/login_qr": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "登录二维码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/msg_types": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "获取所有消息类型",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/receive_transfer": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "接受转账",
+                "parameters": [
+                    {
+                        "description": "接受转账参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ReceiveTransferRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/refresh_pyq": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "刷新朋友圈",
+                "parameters": [
+                    {
+                        "description": "刷新朋友圈参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.RefreshPyqRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/revoke_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "撤回消息",
+                "parameters": [
+                    {
+                        "description": "撤回消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.RevokeMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/self_info": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "获取登录账号个人信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.UserInfoPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/self_wxid": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::其他"
+                ],
+                "summary": "获取登录账号wxid",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/send_file": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "发送文件消息",
+                "parameters": [
+                    {
+                        "description": "发送文件消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.SendFileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/send_img": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "发送图片消息",
+                "parameters": [
+                    {
+                        "description": "发送图片消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.SendImgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/send_pat_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "拍一拍群友",
+                "parameters": [
+                    {
+                        "description": "拍一拍群友参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.SendPatMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/send_rich_text": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "发送卡片消息",
+                "parameters": [
+                    {
+                        "description": "发送卡片消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.SendRichTextRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/send_txt": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息发送"
+                ],
+                "summary": "发送文本消息",
+                "parameters": [
+                    {
+                        "description": "发送文本消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.SendTxtRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/socket_receiver": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息推送"
+                ],
+                "summary": "推送消息到Socket",
+                "responses": {
+                    "101": {
+                        "description": "Switching Protocols 响应",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/user_info": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::联系人管理"
+                ],
+                "summary": "根据wxid获取个人信息",
+                "parameters": [
+                    {
+                        "description": "根据wxid获取个人信息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetInfoByWxidRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.ContactPayload"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1799,6 +1943,150 @@
                 }
             }
         },
+        "cronjob.CreateParam": {
+            "type": "object",
+            "required": [
+                "content",
+                "dayof_month",
+                "dayof_week",
+                "directory",
+                "hour",
+                "minute",
+                "month",
+                "name",
+                "second",
+                "timeout",
+                "type"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "dayof_month": {
+                    "type": "string"
+                },
+                "dayof_week": {
+                    "type": "string"
+                },
+                "directory": {
+                    "type": "string"
+                },
+                "entry_id": {
+                    "type": "integer"
+                },
+                "hour": {
+                    "type": "string"
+                },
+                "minute": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
+                },
+                "second": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "cronjob.DeleteParam": {
+            "type": "object",
+            "properties": {
+                "entry_id": {
+                    "type": "integer"
+                },
+                "rd": {
+                    "type": "integer"
+                }
+            }
+        },
+        "cronjob.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "cronjob.FetchParam": {
+            "type": "object",
+            "properties": {
+                "entry_id": {
+                    "type": "integer"
+                },
+                "rd": {
+                    "type": "integer"
+                }
+            }
+        },
+        "cronjob.UpdateParam": {
+            "type": "object",
+            "required": [
+                "content",
+                "dayof_month",
+                "dayof_week",
+                "directory",
+                "hour",
+                "minute",
+                "month",
+                "name",
+                "second",
+                "timeout",
+                "type"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "dayof_month": {
+                    "type": "string"
+                },
+                "dayof_week": {
+                    "type": "string"
+                },
+                "directory": {
+                    "type": "string"
+                },
+                "entry_id": {
+                    "type": "integer"
+                },
+                "hour": {
+                    "type": "string"
+                },
+                "minute": {
+                    "type": "string"
+                },
+                "month": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
+                },
+                "second": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "keyword.CreateParam": {
             "type": "object",
             "required": [
@@ -1861,7 +2149,8 @@
         "keyword.UpdateParam": {
             "type": "object",
             "required": [
-                "rd"
+                "phrase",
+                "roomid"
             ],
             "properties": {
                 "level": {
@@ -1869,9 +2158,6 @@
                 },
                 "phrase": {
                     "type": "string"
-                },
-                "rd": {
-                    "type": "integer"
                 },
                 "roomid": {
                     "type": "string"
@@ -2199,6 +2485,71 @@
                 "welcome_msg": {
                     "description": "欢迎消息",
                     "type": "string"
+                }
+            }
+        },
+        "tables.Cronjob": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "命令内容",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "dayof_month": {
+                    "description": "日",
+                    "type": "string"
+                },
+                "dayof_week": {
+                    "description": "周",
+                    "type": "string"
+                },
+                "directory": {
+                    "description": "工作目录",
+                    "type": "string"
+                },
+                "entry_id": {
+                    "description": "当前计划 Id",
+                    "type": "integer"
+                },
+                "hour": {
+                    "description": "时",
+                    "type": "string"
+                },
+                "minute": {
+                    "description": "分",
+                    "type": "string"
+                },
+                "month": {
+                    "description": "月",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "second": {
+                    "description": "秒",
+                    "type": "string"
+                },
+                "timeout": {
+                    "description": "超时时间（秒）",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "命令类型，[CMD, POWERSHELL, SHELL]",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
                 }
             }
         },

@@ -22,7 +22,7 @@ export class WcferryReceiverComponent implements OnDestroy {
 
     public async startSocket() {
         const url = location.origin.replace(/^http/, 'ws');
-        const wst = new WebSocket(url + '/api/socket_receiver');
+        const wst = new WebSocket(url + '/wcf/socket_receiver');
         wst.onopen = () => {
             this.messages.push('WebSocket is connected.');
             this.wst = wst;

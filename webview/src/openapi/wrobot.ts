@@ -374,6 +374,8 @@ export interface ProfileCreateParam {
     ai_argot?: string;
     // 会话模型
     ai_model?: string;
+    // 封禁期限
+    ban_expire?: number;
     // 等级
     level?: number;
     // 备注
@@ -410,6 +412,8 @@ export interface ProfileUpdateParam {
     ai_argot: string;
     // 会话模型
     ai_model: string;
+    // 封禁期限
+    ban_expire: number;
     // 等级
     level: number;
     // 备注
@@ -421,10 +425,10 @@ export interface ProfileUpdateParam {
 }
 
 export interface SettingCreateParam {
-    // 键
-    name: string;
     // 分组
     group?: string;
+    // 键
+    name: string;
     // 备注
     remark?: string;
     // 标题
@@ -451,10 +455,10 @@ export interface SettingFetchParam {
 }
 
 export interface SettingUpdateParam {
-    // 键
-    name: string;
     // 分组
     group: string;
+    // 键
+    name: string;
     // 备注
     remark: string;
     // 标题
@@ -552,6 +556,8 @@ export interface TablesProfile {
 export interface TablesSetting {
     // 创建时间戳
     createdAt: number;
+    // 分组
+    group: string;
     // 键
     name: string;
     // 主键
