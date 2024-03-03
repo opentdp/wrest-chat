@@ -9,17 +9,14 @@ export async function httpRequest(input: string, options: RequestInit = {}) {
         }
         const data = await response.json();
         if (data.Message) {
-            window.postMessage(data.Message);
+            window.postMessage({ message: data.Message, type: 'success' });
         }
         if (data.Error) {
             throw data.Error;
         }
         return data.Payload;
     } catch (error) {
-        window.postMessage({
-            message: String(error),
-            classname: 'bg-danger text-light',
-        });
+        window.postMessage({ message: String(error), type: 'danger' });
         throw error;
     }
 }
