@@ -18,6 +18,7 @@ import { KeywordCreateComponent } from './keyword/create';
 
 import { ProfileListComponent } from './profile/list';
 import { ProfileCreateComponent } from './profile/create';
+import { ProfileUpdateComponent } from './profile/update';
 
 import { SettingListComponent } from './setting/list';
 import { SettingUpdateComponent } from './setting/update';
@@ -46,6 +47,7 @@ export const AppComponents = [
 
     ProfileListComponent,
     ProfileCreateComponent,
+    ProfileUpdateComponent,
 
     SettingListComponent,
     SettingUpdateComponent,
@@ -77,6 +79,7 @@ export const AppRoutes: Routes = [
 
     { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
     { path: 'profile/create', component: ProfileCreateComponent, canActivate: [LoginGuard] },
+    { path: 'profile/update/:rd', component: ProfileUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'setting/list', component: SettingListComponent, canActivate: [LoginGuard] },
     { path: 'setting/update/:name', component: SettingUpdateComponent, canActivate: [LoginGuard] },

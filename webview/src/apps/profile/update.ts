@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserLevels } from 'src/openapi/const';
-import { RobotApi, ProfileCreateParam } from '../../openapi/wrobot';
+import { RobotApi, ProfileUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-profile-create',
-    templateUrl: 'create.html'
+    selector: 'page-profile-update',
+    templateUrl: 'update.html'
 })
-export class ProfileCreateComponent {
+export class ProfileUpdateComponent implements OnInit {
 
     public userLevels = UserLevels;
 
@@ -21,22 +21,32 @@ export class ProfileCreateComponent {
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
-    public formdata: ProfileCreateParam = {
-        wxid: '',
-        roomid: '',
-        level: 2,
-    };
+    public formdata = {} as ProfileUpdateParam;
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
         this.getWcfFriends();
         this.getWcfChatrooms();
     }
 
-    public createProfile() {
+    public ngOnInit() {
+        const rd = this.route.snapshot.paramMap.get('rd');
+        rd && this.getProfile(+rd);
+    }
+
+    public getProfile(rd: number) {
+        RobotApi.profileDetail({ rd }).then((data) => {
+            data && Object.assign(this.formdata, data);
+        });
+    }
+
+    public updateProfile() {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.profileCreate(this.formdata).then(() => {
+        RobotApi.profileUpdate(this.formdata).then(() => {
             this.router.navigate(['profile/list']);
         });
     }
@@ -63,6 +73,8 @@ export class ProfileCreateComponent {
         [...new Set(ids)].forEach((id) => {
             WrestApi.chatroomMembers({ roomid: id }).then((data) => {
                 this.wcfRoomMembers[id] = data || [];
+                // 尝试更新当前人员列表
+                this.changeConacts();
             });
         });
     }

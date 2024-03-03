@@ -3,13 +3,13 @@
 <nav class="container-lg mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
-        <li class="breadcrumb-item"><a routerLink="/keyword/list">用户配置</a></li>
-        <li class="breadcrumb-item active">添加</li>
+        <li class="breadcrumb-item"><a routerLink="/profile/list">用户配置</a></li>
+        <li class="breadcrumb-item active">更新</li>
     </ol>
 </nav>
 
 <div class="container-lg mb-3">
-    <form class="row gy-3" (ngSubmit)="createProfile()" #myform="ngForm">
+    <form class="row gy-3" (ngSubmit)="updateProfile()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" (change)="changeConacts()" required>
@@ -42,6 +42,20 @@
             </select>
             <div class="form-text">
                 机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">AI 唤醒词</label>
+            <input type="text" name="ai_argot" class="form-control" [(ngModel)]="formdata.ai_argot" />
+            <div class="form-text">
+                自定义唤醒词
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">AI 模型</label>
+            <input type="text" name="ai_model" class="form-control" [(ngModel)]="formdata.ai_model" />
+            <div class="form-text">
+                当前使用的模型
             </div>
         </div>
         <div class="col-12">
