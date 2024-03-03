@@ -13,7 +13,7 @@ export class CronjobCreateComponent {
 
     public formdata: CronjobCreateParam = {
         name: '',
-        second: '*',
+        second: '0',
         minute: '*',
         hour: '*',
         day_of_month: '*',
@@ -22,13 +22,19 @@ export class CronjobCreateComponent {
         type: 'BAT',
         timeout: 30,
         directory: 'C:\\',
-        content: '',
+        content: '@echo off\n',
     };
 
     constructor(private router: Router) {
     }
 
     public createCronjob() {
+        const data = this.formdata;
+        const time = data.second + data.minute + data.hour + data.day_of_month + data.month + data.day_of_week;
+        if (time === '******') {
+            window.postMessage({ message: '排期不可全为 *', type: 'danger' });
+            return;
+        }
         CronApi.cronjobCreate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
