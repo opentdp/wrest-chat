@@ -18,6 +18,7 @@ func Connect() {
 	// 实施自动迁移
 	dborm.Db.AutoMigrate(
 		&tables.Chatroom{},
+		&tables.Cronjob{},
 		&tables.Contact{},
 		&tables.Keyword{},
 		&tables.LLModel{},
