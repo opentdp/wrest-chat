@@ -5,8 +5,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-wcferry-contact',
-    templateUrl: 'contact.html',
-    styleUrls: ['contact.scss']
+    templateUrl: 'contact.html'
 })
 export class WcferryContactComponent {
 

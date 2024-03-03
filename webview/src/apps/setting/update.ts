@@ -6,8 +6,7 @@ import { RobotApi, TablesLLModel, SettingUpdateParam } from '../../openapi/wrobo
 
 @Component({
     selector: 'page-setting-update',
-    templateUrl: 'update.html',
-    styleUrls: ['update.scss']
+    templateUrl: 'update.html'
 })
 export class SettingUpdateComponent implements OnInit {
 

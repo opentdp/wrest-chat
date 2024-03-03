@@ -5,8 +5,7 @@ import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
 
 @Component({
     selector: 'page-llmodel-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class LLModelListComponent {
 

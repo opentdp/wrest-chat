@@ -5,8 +5,7 @@ import { RobotApi, TablesSetting } from '../../openapi/wrobot';
 
 @Component({
     selector: 'page-setting-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class SettingListComponent {
 

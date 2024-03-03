@@ -3,8 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'page-wcferry-receiver',
-    templateUrl: 'receiver.html',
-    styleUrls: ['receiver.scss']
+    templateUrl: 'receiver.html'
 })
 export class WcferryReceiverComponent implements OnDestroy {
 

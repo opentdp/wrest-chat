@@ -6,8 +6,7 @@ import { CronApi, CronjobCreateParam } from '../../openapi/cronjob';
 
 @Component({
     selector: 'page-cronjob-create',
-    templateUrl: 'create.html',
-    styleUrls: ['create.scss']
+    templateUrl: 'create.html'
 })
 export class CronjobCreateComponent {
 
@@ -21,7 +20,7 @@ export class CronjobCreateComponent {
         day_of_week: '*',
         type: 'BAT',
         timeout: 30,
-        directory: 'C:\\',
+        directory: '',
         content: '@echo off\n',
     };
 
@@ -32,7 +31,7 @@ export class CronjobCreateComponent {
         const data = this.formdata;
         const time = data.second + data.minute + data.hour + data.day_of_month + data.month + data.day_of_week;
         if (time === '******') {
-            window.postMessage({ message: '排期不可全为 *', type: 'danger' });
+            window.postMessage({ message: '排程不可全为 *', type: 'danger' });
             return;
         }
         CronApi.cronjobCreate(this.formdata).then(() => {

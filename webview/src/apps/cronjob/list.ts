@@ -5,8 +5,7 @@ import { CronApi, CronjobStatusPayload, TablesCronjob } from '../../openapi/cron
 
 @Component({
     selector: 'page-cronjob-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class CronjobListComponent {
 
