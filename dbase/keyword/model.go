@@ -73,8 +73,9 @@ func Replace(data *ReplaceParam) error {
 // 获取关键词
 
 type FetchParam struct {
-	Roomid string `binding:"required" json:"roomid"`
-	Phrase string `binding:"required" json:"phrase"`
+	Rd     uint   `json:"rd"`
+	Roomid string `json:"roomid"`
+	Phrase string `json:"phrase"`
 }
 
 func Fetch(data *FetchParam) (*tables.Keyword, error) {

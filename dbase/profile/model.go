@@ -83,7 +83,8 @@ func Replace(data *ReplaceParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Wxid   string `binding:"required" json:"wxid"`
+	Rd     uint   `json:"rd"`
+	Wxid   string `json:"wxid"`
 	Roomid string `json:"roomid"`
 }
 

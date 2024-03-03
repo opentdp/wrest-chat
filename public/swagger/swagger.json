@@ -132,6 +132,22 @@
                 }
             }
         },
+        "/api/cronjob/status": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JOB::计划任务"
+                ],
+                "summary": "计划任务状态",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/cronjob/update": {
             "post": {
                 "produces": [
@@ -2107,13 +2123,12 @@
         },
         "keyword.DeleteParam": {
             "type": "object",
-            "required": [
-                "phrase",
-                "roomid"
-            ],
             "properties": {
                 "phrase": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "roomid": {
                     "type": "string"
@@ -2133,13 +2148,12 @@
         },
         "keyword.FetchParam": {
             "type": "object",
-            "required": [
-                "phrase",
-                "roomid"
-            ],
             "properties": {
                 "phrase": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "roomid": {
                     "type": "string"
@@ -2291,10 +2305,10 @@
         },
         "profile.DeleteParam": {
             "type": "object",
-            "required": [
-                "wxid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 },
@@ -2316,10 +2330,10 @@
         },
         "profile.FetchParam": {
             "type": "object",
-            "required": [
-                "wxid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 },
