@@ -94,6 +94,7 @@ func Fetch(data *FetchParam) (*tables.Profile, error) {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
+			Rd:     data.Rd,
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
@@ -117,6 +118,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
+			Rd:     data.Rd,
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).

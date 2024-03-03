@@ -84,6 +84,7 @@ func Fetch(data *FetchParam) (*tables.Keyword, error) {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
@@ -107,6 +108,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
