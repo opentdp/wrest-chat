@@ -59,18 +59,19 @@ func (c *Client) Connect() error {
 // return int32 0 为成功，其他失败
 func (c *Client) SendMessage(wxid, roomid, message string) int32 {
 	// 发送网络文件
-	u, err := url.Parse(message)
-	if err == nil && u.Scheme == "http" || u.Scheme == "https" {
-		if IsImageFile(u.Path) {
-			if roomid == "" {
-				return c.CmdClient.SendImg(message, wxid)
+	if u, err := url.Parse(message); err == nil {
+		if u.Scheme == "http" || u.Scheme == "https" {
+			if IsImageFile(u.Path) {
+				if roomid == "" {
+					return c.CmdClient.SendImg(message, wxid)
+				}
+				return c.CmdClient.SendImg(message, roomid)
 			}
-			return c.CmdClient.SendImg(message, roomid)
+			if roomid == "" {
+				return c.CmdClient.SendFile(message, wxid)
+			}
+			return c.CmdClient.SendFile(message, roomid)
 		}
-		if roomid == "" {
-			return c.CmdClient.SendFile(message, wxid)
-		}
-		return c.CmdClient.SendFile(message, roomid)
 	}
 	// 发送文本信息
 	if roomid == "" {

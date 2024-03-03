@@ -9,8 +9,9 @@ import (
 func MsgDeliver(deliver, message string) {
 
 	deliver = strings.TrimSpace(deliver)
-	args := strings.Split(deliver, ",")
+	message = strings.TrimSpace(message)
 
+	args := strings.Split(deliver, ",")
 	if len(args) < 2 {
 		return
 	}
@@ -26,14 +27,19 @@ func MsgDeliver(deliver, message string) {
 
 func wechatMessage(args []string, message string) int32 {
 
-	if len(args) == 0 {
+	wxid := args[0]
+
+	roomid := ""
+	if len(args) > 1 {
+		roomid = args[1]
+	}
+
+	wc := wclient.Register()
+	if wc == nil {
+		logger.Error("cron:deliver", "error", "wclient is nil")
 		return -1
 	}
 
-	if len(args) == 1 {
-		args = append(args, "")
-	}
-
-	return wclient.Register().SendMessage(args[0], args[1], message)
+	return wc.SendMessage(wxid, roomid, message)
 
 }
