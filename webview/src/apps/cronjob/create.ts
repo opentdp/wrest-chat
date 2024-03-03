@@ -22,6 +22,7 @@ export class CronjobCreateComponent {
         timeout: 30,
         directory: '.',
         content: '@echo off\n',
+        deliver: '-',
     };
 
     constructor(private router: Router) {

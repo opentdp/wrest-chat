@@ -1984,6 +1984,9 @@
                 "day_of_week": {
                     "type": "string"
                 },
+                "deliver": {
+                    "type": "string"
+                },
                 "directory": {
                     "type": "string"
                 },
@@ -2069,6 +2072,9 @@
                     "type": "string"
                 },
                 "day_of_week": {
+                    "type": "string"
+                },
+                "deliver": {
                     "type": "string"
                 },
                 "directory": {
@@ -2521,12 +2527,16 @@
                     "description": "周",
                     "type": "string"
                 },
+                "deliver": {
+                    "description": "执行结果交付方式",
+                    "type": "string"
+                },
                 "directory": {
                     "description": "工作目录",
                     "type": "string"
                 },
                 "entry_id": {
-                    "description": "当前计划 Id",
+                    "description": "任务运行时 Id",
                     "type": "integer"
                 },
                 "hour": {

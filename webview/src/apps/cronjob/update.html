@@ -44,7 +44,14 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">类型 *</label>
+            <label class="form-label">投递渠道 *</label>
+            <input name="deliver" class="form-control" rows="5" [(ngModel)]="formdata.deliver" required />
+            <div class="form-text">
+                格式："wechat,wxid,message" 或 "wechat,roomid,message" 或 "wechat,wxid,roomid,message"
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">命令类型 *</label>
             <select name="type" class="form-select" [(ngModel)]="formdata.type">
                 <option value="BAT">BAT</option>
                 <option value="POWERSHELL">POWERSHELL</option>
@@ -54,24 +61,24 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">超时 *</label>
+            <label class="form-label">执行超时 *</label>
             <input type="text" name="timeout" class="form-control" [(ngModel)]="formdata.timeout" required />
             <div class="form-text">
-                脚本执行超时时间，单位：秒
+                命令执行超时时间，单位：秒
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">执行路径 *</label>
             <input type="text" name="directory" class="form-control" [(ngModel)]="formdata.directory" required />
             <div class="form-text">
-                脚本执行路径
+                命令执行路径
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">命令内容 *</label>
             <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
             <div class="form-text">
-                返回值可用于发送消息，格式："wxid<b>\n</b>message" 或 "wxid<b>\n</b>roomid<b>\n</b>message"，支持网络文件或图片
+                输出内容可投递到指定渠道，发送文件或图片请以<b>http://</b>开头
             </div>
         </div>
         <div class="col-12">

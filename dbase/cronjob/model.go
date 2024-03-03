@@ -18,9 +18,10 @@ type CreateParam struct {
 	Month      string `binding:"required" json:"month"`
 	DayOfWeek  string `binding:"required" json:"day_of_week"`
 	Type       string `binding:"required" json:"type"`
-	Directory  string `binding:"required" json:"directory"`
 	Timeout    uint   `binding:"required" json:"timeout"`
+	Directory  string `binding:"required" json:"directory"`
 	Content    string `binding:"required" json:"content"`
+	Deliver    string `json:"deliver"`
 	EntryId    int64  `json:"entry_id"`
 }
 
@@ -35,9 +36,10 @@ func Create(data *CreateParam) (uint, error) {
 		Month:      data.Month,
 		DayOfWeek:  data.DayOfWeek,
 		Type:       data.Type,
-		Directory:  data.Directory,
 		Timeout:    data.Timeout,
+		Directory:  data.Directory,
 		Content:    data.Content,
+		Deliver:    data.Deliver,
 		EntryId:    data.EntryId,
 	}
 
@@ -66,9 +68,10 @@ func Update(data *UpdateParam) error {
 			Month:      data.Month,
 			DayOfWeek:  data.DayOfWeek,
 			Type:       data.Type,
-			Directory:  data.Directory,
 			Timeout:    data.Timeout,
+			Directory:  data.Directory,
 			Content:    data.Content,
+			Deliver:    data.Deliver,
 			EntryId:    data.EntryId,
 		})
 

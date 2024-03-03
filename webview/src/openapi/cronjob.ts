@@ -72,6 +72,8 @@ export interface CronjobCreateParam {
     day_of_month: string;
     // 每周执行计划的星期
     day_of_week: string;
+    // 执行结果交付方式
+    deliver: string;
     // 命令执行的工作目录
     directory: string;
     // 执行计划的小时
@@ -116,6 +118,8 @@ export interface CronjobUpdateParam {
     day_of_month: string;
     // 每周执行计划的星期
     day_of_week: string;
+    // 执行结果交付方式
+    deliver: string;
     // 命令执行的工作目录
     directory: string;
     // 当前计划的 ID
@@ -160,6 +164,8 @@ export interface TablesCronjob {
     day_of_month: string;
     // 每周执行计划的星期
     day_of_week: string;
+    // 执行结果交付方式
+    deliver: string;
     // 命令执行的工作目录
     directory: string;
     // 计划的 ID
