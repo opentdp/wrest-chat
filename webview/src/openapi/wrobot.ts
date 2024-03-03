@@ -292,9 +292,11 @@ export interface KeywordCreateParam {
 
 export interface KeywordDeleteParam {
     // 词语或短语
-    phrase: string;
+    phrase?: string;
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordFetchAllParam {
@@ -306,9 +308,11 @@ export interface KeywordFetchAllParam {
 
 export interface KeywordFetchParam {
     // 词语或短语
-    phrase: string;
+    phrase?: string;
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordUpdateParam {
@@ -387,10 +391,12 @@ export interface ProfileCreateParam {
 }
 
 export interface ProfileDeleteParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileFetchAllParam {
@@ -401,10 +407,12 @@ export interface ProfileFetchAllParam {
 }
 
 export interface ProfileFetchParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileUpdateParam {

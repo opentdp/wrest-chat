@@ -10,8 +10,9 @@ import { RobotApi, TablesLLModel, SettingUpdateParam } from '../../openapi/wrobo
 })
 export class SettingUpdateComponent implements OnInit {
 
-    public formdata = {} as SettingUpdateParam;
     public llmodels: Array<TablesLLModel> = [];
+
+    public formdata = {} as SettingUpdateParam;
 
     constructor(
         private router: Router,

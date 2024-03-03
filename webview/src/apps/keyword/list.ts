@@ -29,8 +29,7 @@ export class KeywordListComponent {
     }
 
     public deleteKeyword(item: TablesKeyword) {
-        const rq = { phrase: item.phrase, roomid: item.roomid };
-        RobotApi.keywordDelete(rq).then(() => {
+        RobotApi.keywordDelete({ rd: item.rd }).then(() => {
             this.getKeywords();
         });
     }
