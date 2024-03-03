@@ -39,18 +39,16 @@ func AttachJob(job *tables.Cronjob) error {
 
 	task := func() {
 		logger.Info("Cron:run " + job.Name)
-		result, err := command.Exec(&command.ExecPayload{
+		output, err := command.Exec(&command.ExecPayload{
 			Name:          "Cron: " + job.Name,
 			CommandType:   job.Type,
 			WorkDirectory: job.Directory,
 			Content:       job.Content,
 			Timeout:       job.Timeout,
 		})
-		if err != nil {
-			logger.Error("Cron:run "+job.Name, "error", err)
-		} else {
-			logger.Info("Cron:run "+job.Name, "result", result)
-			WcfSendMessage(result)
+		logger.Error("Cron:run "+job.Name, "output", output, "error", err)
+		if err == nil && output != "" {
+			WcfSendMessage(output)
 		}
 	}
 
@@ -134,12 +132,14 @@ func GetEntries() map[uint]JobStatus {
 
 func WcfSendMessage(text string) int32 {
 
-	wxid := ""
-	roomid := ""
-	message := ""
+	var (
+		wxid    string
+		roomid  string
+		message string
+	)
 
-	text = strings.TrimSpace(text)
-	parts := strings.Split(text, "\n")
+	text = strings.ReplaceAll(text, "\r\n", "\n")
+	parts := strings.Split(strings.TrimSpace(text), "\n")
 	if len(parts) < 2 {
 		return -1
 	}

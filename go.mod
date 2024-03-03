@@ -8,7 +8,7 @@ require (
 	github.com/google/generative-ai-go v0.8.0
 	github.com/liudding/go-llm-api v0.1.18
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/opentdp/go-helper v0.5.10-0.20240301020125-59b012eda296
+	github.com/opentdp/go-helper v0.6.0
 	github.com/sashabaranov/go-openai v1.19.4
 	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2
