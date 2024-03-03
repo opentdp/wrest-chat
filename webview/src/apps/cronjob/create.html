@@ -44,13 +44,6 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">投递渠道 *</label>
-            <input name="deliver" class="form-control" rows="5" [(ngModel)]="formdata.deliver" required />
-            <div class="form-text">
-                格式："wechat,wxid,message" 或 "wechat,roomid,message" 或 "wechat,wxid,roomid,message"
-            </div>
-        </div>
-        <div class="col-12">
             <label class="form-label">命令类型 *</label>
             <select name="type" class="form-select" [(ngModel)]="formdata.type">
                 <option value="BAT">BAT</option>
@@ -78,7 +71,14 @@
             <label class="form-label">命令内容 *</label>
             <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
             <div class="form-text">
-                输出内容可投递到指定渠道，发送文件或图片请以<b>http://</b>开头
+                输出内容可投递到指定渠道，发送文件或图片请输出 <b>http://</b> 开头的链接
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">投递渠道 *</label>
+            <input name="deliver" class="form-control" rows="5" [(ngModel)]="formdata.deliver" required />
+            <div class="form-text">
+                格式："wechat,wxid" 或 "wechat,roomid" 或 "wechat,wxid,roomid"
             </div>
         </div>
         <div class="col-12">
