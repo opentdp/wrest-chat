@@ -20,7 +20,7 @@ export class CronjobCreateComponent {
         day_of_week: '*',
         type: 'BAT',
         timeout: 30,
-        directory: '',
+        directory: '.',
         content: '@echo off\n',
     };
 

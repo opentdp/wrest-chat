@@ -32,7 +32,7 @@
                 <td class="d-none d-sm-table-cell">
                     {{ item.second }} {{ item.minute }} {{ item.hour }} {{ item.day_of_month }} {{ item.month }} {{ item.day_of_week }}
                 </td>
-                <td class="d-none d-lg-table-cell">{{item.timeout}}</td>
+                <td class="d-none d-lg-table-cell">{{item.timeout}}s</td>
                 <td class="d-none d-md-table-cell">
                     @if (status[item.rd] && status[item.rd].prev_time > 0) {
                     {{status[item.rd].prev_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
@@ -48,6 +48,7 @@
                     }
                 </td>
                 <td class="text-nowrap">
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/cronjob/update/{{item.rd}}">编辑</button>
                     <button class="btn btn-sm btn-danger" (click)="deleteCronjob(item)">删除</button>
                 </td>
             </tr>
