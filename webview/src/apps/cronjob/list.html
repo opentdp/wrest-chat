@@ -34,15 +34,15 @@
                 </td>
                 <td class="d-none d-lg-table-cell">{{item.timeout}}</td>
                 <td class="d-none d-md-table-cell">
-                    @if (status[item.entry_id] && status[item.entry_id].prev_time > 0) {
-                    {{status[item.entry_id].prev_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                    @if (status[item.rd] && status[item.rd].prev_time > 0) {
+                    {{status[item.rd].prev_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
                     } @else {
                     -
                     }
                 </td>
                 <td class="d-none d-xl-table-cell">
-                    @if (status[item.entry_id] && status[item.entry_id].next_time > 0) {
-                    {{status[item.entry_id].next_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                    @if (status[item.rd] && status[item.rd].next_time > 0) {
+                    {{status[item.rd].next_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
                     } @else {
                     -
                     }
