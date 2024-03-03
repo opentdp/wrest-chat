@@ -31,7 +31,7 @@ func wechatMessage(args []string, message string) int32 {
 	}
 
 	if len(args) == 1 {
-		args[1] = ""
+		args = append(args, "")
 	}
 
 	return wclient.Register().SendMessage(args[0], args[1], message)
