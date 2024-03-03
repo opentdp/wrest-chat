@@ -37,8 +37,7 @@ export class ProfileListComponent {
     }
 
     public deleteProfile(item: TablesProfile) {
-        const rq = { wxid: item.wxid, roomid: item.roomid };
-        RobotApi.profileDelete(rq).then(() => {
+        RobotApi.profileDelete({ rd: item.rd }).then(() => {
             this.getProfiles();
         });
     }
