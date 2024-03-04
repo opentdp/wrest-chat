@@ -21,6 +21,7 @@ import { ProfileCreateComponent } from './profile/create';
 import { ProfileUpdateComponent } from './profile/update';
 
 import { SettingListComponent } from './setting/list';
+import { SettingCreateComponent } from './setting/create';
 import { SettingUpdateComponent } from './setting/update';
 
 import { WcferryChatroomComponent } from './wcferry/chatroom';
@@ -50,6 +51,7 @@ export const AppComponents = [
     ProfileUpdateComponent,
 
     SettingListComponent,
+    SettingCreateComponent,
     SettingUpdateComponent,
 
     WcferryChatroomComponent,
@@ -82,6 +84,7 @@ export const AppRoutes: Routes = [
     { path: 'profile/update/:rd', component: ProfileUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'setting/list', component: SettingListComponent, canActivate: [LoginGuard] },
+    { path: 'setting/create', component: SettingCreateComponent, canActivate: [LoginGuard] },
     { path: 'setting/update/:name', component: SettingUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },

@@ -4,12 +4,12 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item"><a routerLink="/setting/list">全局配置</a></li>
-        <li class="breadcrumb-item active">更新</li>
+        <li class="breadcrumb-item active">添加</li>
     </ol>
 </nav>
 
 <div class="container-lg mb-3">
-    <form class="row gy-3" (ngSubmit)="updateSetting()" #myform="ngForm">
+    <form class="row gy-3" (ngSubmit)="createSetting()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">名称 *</label>
             <input type="text" name="title" class="form-control" [(ngModel)]="formdata.title" required />

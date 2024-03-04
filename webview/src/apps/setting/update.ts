@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { FieldTypes } from '../../openapi/const';
 import { RobotApi, TablesLLModel, SettingUpdateParam } from '../../openapi/wrobot';
 
 
@@ -9,6 +10,8 @@ import { RobotApi, TablesLLModel, SettingUpdateParam } from '../../openapi/wrobo
     templateUrl: 'update.html'
 })
 export class SettingUpdateComponent implements OnInit {
+
+    public fieldTypes = FieldTypes;
 
     public llmodels: Array<TablesLLModel> = [];
 
