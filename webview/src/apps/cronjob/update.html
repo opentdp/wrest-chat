@@ -48,19 +48,20 @@
             <select name="type" class="form-select" [(ngModel)]="formdata.type">
                 <option value="BAT">BAT</option>
                 <option value="POWERSHELL">POWERSHELL</option>
+                <option value="TEXT">TEXT</option>
             </select>
             <div class="form-text">
-                Windows 仅支持 BAT 和 POWERSHELL
+                BAT 和 POWERSHELL 为执行命令，TEXT 为输出内容
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
             <label class="form-label">执行超时 *</label>
             <input type="text" name="timeout" class="form-control" [(ngModel)]="formdata.timeout" required />
             <div class="form-text">
                 命令执行超时时间，单位：秒
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
             <label class="form-label">执行路径 *</label>
             <input type="text" name="directory" class="form-control" [(ngModel)]="formdata.directory" required />
             <div class="form-text">
@@ -68,7 +69,7 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">命令内容 *</label>
+            <label class="form-label">任务内容 *</label>
             <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
             <div class="form-text">
                 输出内容可投递到指定渠道，发送文件或图片请输出 <b>http://</b> 开头的链接

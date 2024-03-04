@@ -32,27 +32,40 @@ func Daemon() {
 
 }
 
+func Execute(job *tables.Cronjob) {
+
+	logger.Info("cron:run "+job.Name, "entryId", job.EntryId)
+
+	// 发送文本内容
+	if job.Type == "TEXT" {
+		if job.Deliver != "-" {
+			MsgDeliver(job.Deliver, job.Content)
+		}
+		return
+	}
+
+	// 发送命令执行结果
+	output, err := command.Exec(&command.ExecPayload{
+		Name:          "cron: " + job.Name,
+		CommandType:   job.Type,
+		WorkDirectory: job.Directory,
+		Content:       job.Content,
+		Timeout:       job.Timeout,
+	})
+	if err == nil && output != "" && job.Deliver != "-" {
+		MsgDeliver(job.Deliver, output)
+		return
+	}
+
+	logger.Warn("cron:run "+job.Name, "output", output, "error", err)
+
+}
+
 func AttachJob(job *tables.Cronjob) error {
 
 	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayOfMonth + " " + job.Month + " " + job.DayOfWeek
 
-	task := func() {
-		logger.Info("cron:run "+job.Name, "entryId", job.EntryId)
-		output, err := command.Exec(&command.ExecPayload{
-			Name:          "cron: " + job.Name,
-			CommandType:   job.Type,
-			WorkDirectory: job.Directory,
-			Content:       job.Content,
-			Timeout:       job.Timeout,
-		})
-		logger.Warn("cron:run "+job.Name, "output", output, "error", err)
-		// 将输出发送到指定的通道
-		if err == nil && output != "" && job.Deliver != "-" {
-			MsgDeliver(job.Deliver, output)
-		}
-	}
-
-	entryId, err := crontab.AddFunc(sepc, task)
+	entryId, err := crontab.AddFunc(sepc, func() { Execute(job) })
 	if err != nil {
 		return err
 	}
@@ -66,6 +79,8 @@ func AttachJob(job *tables.Cronjob) error {
 	return err
 
 }
+
+// 管理生命周期
 
 func NewById(rd uint) {
 
@@ -100,7 +115,7 @@ func RedoById(rd uint) {
 
 }
 
-// 获取任务执行状态
+// 获取执行状态
 
 type JobStatus struct {
 	EntryId  int64 `json:"entry_id"`
