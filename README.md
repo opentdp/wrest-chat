@@ -38,7 +38,7 @@
 
 ## 开发指南
 
-查看和调试 *HTTP* 接口，请使用浏览器访问 `http://localhost:7600/swagger/`
+查看和调试 *HTTP/WS* 接口，请使用浏览器访问 `http://localhost:7600/swagger/`
 
 ### API 模块
 
@@ -58,7 +58,7 @@
 
 ## 代码提交
 
-提交代码时请使用 `feat: something` 作为说明，支持的标识如需
+提交代码时请使用 `feat: something` 作为说明，支持的标识如下
 
 - `feat` 新功能（feature）
 - `fix` 错误修复
