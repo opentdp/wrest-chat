@@ -54,6 +54,7 @@ export class ProfileUpdateComponent implements OnInit {
     public changeConacts() {
         const id = this.formdata.roomid || '-';
         this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        this.getWcfRoomMembers([this.formdata.roomid]);
     }
 
     public getWcfFriends() {
@@ -65,7 +66,6 @@ export class ProfileUpdateComponent implements OnInit {
     public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
-            this.getWcfRoomMembers(this.wcfChatrooms.map((item) => item.wxid));
         });
     }
 
