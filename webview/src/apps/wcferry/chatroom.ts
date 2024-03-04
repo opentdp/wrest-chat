@@ -12,6 +12,7 @@ export class WcferryChatroomComponent {
 
     public avatars: Record<string, string> = {};
     public chatrooms: Array<WcfrestContactPayload> = [];
+    public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public selected!: WcfrestContactPayload;
     public members: Array<WcfrestContactPayload> = [];
@@ -31,7 +32,12 @@ export class WcferryChatroomComponent {
 
     public getChatroom(room: WcfrestContactPayload) {
         this.selected = room;
+        if (this.roomMembers[room.wxid]) {
+            this.members = this.roomMembers[room.wxid];
+            return;
+        }
         WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
+            this.roomMembers[room.wxid] = data || [];
             this.members = data || [];
             // 批量获取头像
             const ids = this.members.map((item) => item.wxid);
