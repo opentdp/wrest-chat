@@ -71,8 +71,6 @@ func (*Chatroom) create(c *gin.Context) {
 	}
 
 	if id, err := chatroom.Create(rq); err == nil {
-		// 刷新机器人配置
-		robot.ReshroomHandler()
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
 		robot.Redo()
