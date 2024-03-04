@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {RobotApi, LlmodelCreateParam, LlmodelUpdateParam} from '../../openapi/wrobot';
+import { RobotApi, LlmodelUpdateParam } from '../../openapi/wrobot';
 
 
 @Component({
     selector: 'page-llmodel-create',
     templateUrl: 'update.html'
 })
-export class LLModelUpdateComponent {
+export class LLModelUpdateComponent implements OnInit {
 
-    public formdata: LlmodelUpdateParam = {} as LlmodelUpdateParam
+    public formdata: LlmodelUpdateParam = {} as LlmodelUpdateParam;
 
     constructor(
         private router: Router,
@@ -23,8 +23,8 @@ export class LLModelUpdateComponent {
     }
 
     public getLLModel(mid: string) {
-        RobotApi.llmodelDetail({mid}).then((data) => {
-            this.formdata = data
+        RobotApi.llmodelDetail({ mid }).then((data) => {
+            this.formdata = data;
         });
     }
 

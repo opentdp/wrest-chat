@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { KeywordLevels } from 'src/openapi/const';
-import {RobotApi, KeywordCreateParam, KeywordUpdateParam} from '../../openapi/wrobot';
+import { RobotApi, KeywordUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -10,7 +10,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
     selector: 'page-keyword-create',
     templateUrl: 'update.html'
 })
-export class KeywordUpdateComponent {
+export class KeywordUpdateComponent implements OnInit {
 
     public keywordLevels = KeywordLevels;
 
@@ -27,19 +27,19 @@ export class KeywordUpdateComponent {
 
     public ngOnInit() {
         const rd = this.route.snapshot.paramMap.get('rd');
-        rd && this.getKeyWord(+rd)
+        rd && this.getKeyWord(+rd);
     }
 
     public getKeyWord(rd: number) {
-        RobotApi.keywordDetail({rd}).then((data) => {
+        RobotApi.keywordDetail({ rd }).then((data) => {
             this.formdata = data;
-        })
+        });
     }
 
     public updateKeyWord() {
         RobotApi.keywordUpdate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
-        })
+        });
     }
 
     public getWcfChatrooms() {

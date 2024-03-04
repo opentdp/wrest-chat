@@ -38,7 +38,7 @@ export class ProfileUpdateComponent implements OnInit {
 
     public getProfile(rd: number) {
         RobotApi.profileDetail({ rd }).then((data) => {
-            data && Object.assign(this.formdata, data);
+            this.formdata = data;
         });
     }
 
