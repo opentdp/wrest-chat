@@ -16,43 +16,14 @@ import (
 func receiver(msg *wcferry.WxMsg) {
 
 	switch msg.Type {
-	case 0: //朋友圈消息
 	case 1: //文字
 		hook1(msg)
-	case 3: //图片
-	case 34: //语音
 	case 37: //好友确认
 		hook37(msg)
-	case 40: //POSSIBLEFRIEND_MSG
-	case 42: //名片
-	case 43: //视频
-	case 47: //石头剪刀布 | 表情图片
-	case 48: //位置
-	case 49: //共享实时位置、文件、转账、链接
-	case 50: //VOIPMSG
-	case 51: //微信初始化
-	case 52: //VOIPNOTIFY
-	case 53: //VOIPINVITE
-	case 62: //小视频
-	case 66: //微信红包
-	case 9999: //SYSNOTICE
 	case 10000: //红包、系统消息
 		hook10000(msg)
 	case 10002: //撤回消息
 		hook10002(msg)
-	case 1048625: //搜狗表情
-	case 16777265: //链接
-	case 436207665: //微信红包
-	case 536936497: //红包封面
-	case 754974769: //视频号视频
-	case 771751985: //视频号名片
-	case 822083633: //引用消息
-	case 922746929: //拍一拍
-	case 973078577: //视频号直播
-	case 974127153: //商品链接
-	case 975175729: //视频号直播
-	case 1040187441: //音乐链接
-	case 1090519089: //文件case
 	}
 
 }
