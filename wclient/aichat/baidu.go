@@ -3,7 +3,6 @@ package aichat
 import (
 	"context"
 	"errors"
-	"io"
 	"strings"
 
 	"github.com/liudding/go-llm-api/baidu"
@@ -53,26 +52,13 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	})
 
 	// 请求模型接口
+	res, err := client.CreateChatCompletion(context.Background(), req)
 
-	stream, err := client.CreateChatCompletionStream(context.Background(), req)
 	if err != nil {
 		return "", err
 	}
 
-	defer stream.Close()
-
-	reply := ""
-
-	for {
-		response, err := stream.Recv()
-		if err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return reply, err
-		}
-		reply += response.Result
-	}
+	reply := res.Result
 
 	if reply == "" {
 		return "", errors.New("未得到预期的结果")
