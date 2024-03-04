@@ -30,14 +30,16 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新关键词
 
-type UpdateParam = CreateParam
+type UpdateParam struct {
+	CreateParam
+	Rd uint `json:"rd"`
+}
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
-			Roomid: data.Roomid,
-			Phrase: data.Phrase,
+			Rd: data.Rd,
 		}).
 		Updates(tables.Keyword{
 			Roomid: data.Roomid,
@@ -51,7 +53,7 @@ func Update(data *UpdateParam) error {
 
 // 合并关键词
 
-type ReplaceParam = CreateParam
+type ReplaceParam = UpdateParam
 
 func Replace(data *ReplaceParam) error {
 
@@ -63,7 +65,11 @@ func Replace(data *ReplaceParam) error {
 	if err == nil && item.Rd > 0 {
 		err = Update(data)
 	} else {
-		_, err = Create(data)
+		_, err = Create(&CreateParam{
+			Roomid: data.Roomid,
+			Phrase: data.Phrase,
+			Level:  data.Level,
+		})
 	}
 
 	return err
