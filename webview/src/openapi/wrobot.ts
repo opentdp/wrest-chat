@@ -316,6 +316,7 @@ export interface KeywordFetchParam {
 }
 
 export interface KeywordUpdateParam {
+    rd: number;
     // 等级
     level: number;
     // 词语或短语

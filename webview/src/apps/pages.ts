@@ -12,9 +12,11 @@ import { CronjobUpdateComponent } from './cronjob/update';
 
 import { LLModelCreateComponent } from './llmodel/create';
 import { LLModelListComponent } from './llmodel/list';
+import { LLModelUpdateComponent } from './llmodel/update';
 
 import { KeywordListComponent } from './keyword/list';
 import { KeywordCreateComponent } from './keyword/create';
+import {KeywordUpdateComponent} from "./keyword/update";
 
 import { ProfileListComponent } from './profile/list';
 import { ProfileCreateComponent } from './profile/create';
@@ -41,9 +43,11 @@ export const AppComponents = [
 
     LLModelCreateComponent,
     LLModelListComponent,
+    LLModelUpdateComponent,
 
     KeywordListComponent,
     KeywordCreateComponent,
+    KeywordUpdateComponent,
 
     ProfileListComponent,
     ProfileCreateComponent,
@@ -73,9 +77,11 @@ export const AppRoutes: Routes = [
 
     { path: 'llmodel/create', component: LLModelCreateComponent, canActivate: [LoginGuard] },
     { path: 'llmodel/list', component: LLModelListComponent, canActivate: [LoginGuard] },
+    { path: 'llmodel/update/:mid', component: LLModelUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'keyword/list', component: KeywordListComponent, canActivate: [LoginGuard] },
     { path: 'keyword/create', component: KeywordCreateComponent, canActivate: [LoginGuard] },
+    { path: 'keyword/update/:rd', component: KeywordUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'profile/list', component: ProfileListComponent, canActivate: [LoginGuard] },
     { path: 'profile/create', component: ProfileCreateComponent, canActivate: [LoginGuard] },
