@@ -6,13 +6,13 @@ require (
 	github.com/clbanning/mxj v1.8.4
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/generative-ai-go v0.8.0
+	github.com/gorilla/websocket v1.5.1
 	github.com/liudding/go-llm-api v0.1.18
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.6.0
 	github.com/sashabaranov/go-openai v1.19.4
 	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2
-	golang.org/x/net v0.21.0
 	google.golang.org/api v0.165.0
 	google.golang.org/protobuf v1.32.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -49,7 +49,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.1 // indirect
-	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -77,6 +76,7 @@ require (
 	golang.org/x/arch v0.7.0 // indirect
 	golang.org/x/crypto v0.19.0 // indirect
 	golang.org/x/mod v0.15.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/oauth2 v0.17.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect

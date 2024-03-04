@@ -7,7 +7,7 @@ import { Component, OnDestroy } from '@angular/core';
 })
 export class WcferryReceiverComponent implements OnDestroy {
 
-    public wst!: WebSocket;
+    public wss!: WebSocket;
     public messages: Array<string> = [];
 
     constructor() {
@@ -15,24 +15,25 @@ export class WcferryReceiverComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.wst && this.wst.close();
+        this.wss && this.wss.close();
         this.messages = [];
     }
 
     public async startSocket() {
         const url = location.origin.replace(/^http/, 'ws');
-        const wst = new WebSocket(url + '/wcf/socket_receiver');
-        wst.onopen = () => {
-            this.messages.push('WebSocket is connected.');
-            this.wst = wst;
+        const wss = new WebSocket(url + '/wcf/socket_receiver');
+        wss.onopen = () => {
+            this.messages.push('websocket is connected');
+            this.wss = wss;
         };
-        wst.onclose = () => {
-            this.messages.push('WebSocket is closed now.');
+        wss.onclose = () => {
+            this.messages.push('websocket is closed');
         };
-        wst.onerror = (error) => {
-            this.messages.push('WebSocket Error:' + error);
+        wss.onerror = (event) => {
+            this.messages.push('websocket error, details to console');
+            console.log(event);
         };
-        wst.onmessage = (event) => {
+        wss.onmessage = (event) => {
             this.messages.push(event.data);
         };
     }

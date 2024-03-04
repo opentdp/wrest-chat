@@ -3,9 +3,9 @@ package wcfrest
 import (
 	"errors"
 
+	"github.com/gorilla/websocket"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
-	"golang.org/x/net/websocket"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -20,7 +20,11 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 
 	logman.Warn("enable receiver", "url", url)
 
-	if urlReceiverKey == "" {
+	if urlReceiverList[url] {
+		return errors.New("url already exists")
+	}
+
+	if len(urlReceiverList) == 0 {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
 			for u := range urlReceiverList {
@@ -34,10 +38,6 @@ func (wc *Controller) enableUrlReceiver(url string) error {
 		urlReceiverKey = key
 	}
 
-	if _, ok := urlReceiverList[url]; ok {
-		return errors.New("url already exists")
-	}
-
 	urlReceiverList[url] = true
 	return nil
 
@@ -47,12 +47,11 @@ func (wc *Controller) disableUrlReceiver(url string) error {
 
 	logman.Warn("disable receiver", "url", url)
 
-	if _, ok := urlReceiverList[url]; !ok {
+	if !urlReceiverList[url] {
 		return errors.New("url not exists")
 	}
 
 	delete(urlReceiverList, url)
-
 	if len(urlReceiverList) == 0 {
 		return wc.DisableReceiver(urlReceiverKey)
 	}
@@ -65,22 +64,22 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
 	logman.Warn("enable receiver", "socket", ws.RemoteAddr().String())
 
+	if socketReceiverList[ws] {
+		return errors.New("socket already exists")
+	}
+
 	if len(socketReceiverList) == 0 {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
 			for s := range socketReceiverList {
 				logman.Info("call receiver", "socket", s.RemoteAddr().String(), "Id", ret.Id)
-				go websocket.JSON.Send(s, ret)
+				go s.WriteJSON(ret)
 			}
 		})
 		if err != nil {
 			return err
 		}
 		socketReceiverKey = key
-	}
-
-	if _, ok := socketReceiverList[ws]; ok {
-		return errors.New("socket already exists")
 	}
 
 	socketReceiverList[ws] = true
@@ -92,12 +91,11 @@ func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
 
 	logman.Warn("disable receiver", "socket", ws.RemoteAddr().String())
 
-	if _, ok := socketReceiverList[ws]; !ok {
+	if !socketReceiverList[ws] {
 		return errors.New("socket not exists")
 	}
 
 	delete(socketReceiverList, ws)
-
 	if len(socketReceiverList) == 0 {
 		return wc.DisableReceiver(socketReceiverKey)
 	}

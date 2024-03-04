@@ -4,9 +4,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
-	"github.com/opentdp/go-helper/logman"
-	"golang.org/x/net/websocket"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -24,6 +23,9 @@ type CommonPayload struct {
 	// 错误信息
 	Error error `json:"error,omitempty"`
 }
+
+// Websocket 升级
+var wsUpgrader = websocket.Upgrader{}
 
 // @Summary 登录二维码
 // @Produce json
@@ -913,19 +915,20 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 // @Router /wcf/socket_receiver [get]
 func (wc *Controller) socketReceiver(c *gin.Context) {
 
-	cb := func(ws *websocket.Conn) {
-		wc.enableSocketReceiver(ws)
-		for {
-			var rq string
-			if err := websocket.Message.Receive(ws, &rq); err != nil {
-				logman.Error("read:error", "error", err)
-				break
-			}
-		}
-		wc.disableSocketReceiver(ws)
+	ws, err := wsUpgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		c.Set("Error", err)
+		return
 	}
 
-	websocket.Handler(cb).ServeHTTP(c.Writer, c.Request)
+	defer ws.Close()
+	wc.enableSocketReceiver(ws)
+	for {
+		if _, _, err := ws.ReadMessage(); err != nil {
+			break
+		}
+	}
+	wc.disableSocketReceiver(ws)
 
 	c.Set("Payload", "连接已关闭")
 
