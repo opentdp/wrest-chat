@@ -3,12 +3,11 @@ import { Component, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'page-wcferry-receiver',
-    templateUrl: 'receiver.html',
-    styleUrls: ['receiver.scss']
+    templateUrl: 'receiver.html'
 })
 export class WcferryReceiverComponent implements OnDestroy {
 
-    public ws!: WebSocket;
+    public wss!: WebSocket;
     public messages: Array<string> = [];
 
     constructor() {
@@ -16,24 +15,26 @@ export class WcferryReceiverComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.ws.close();
+        this.wss && this.wss.close();
         this.messages = [];
     }
 
     public async startSocket() {
         const url = location.origin.replace(/^http/, 'ws');
-        this.ws = new WebSocket(url + '/api/socket_receiver');
-        this.ws.onopen = () => {
-            this.messages.push('WebSocket is connected.');
+        const wss = new WebSocket(url + '/wcf/socket_receiver');
+        wss.onopen = () => {
+            this.messages.push('websocket is connected');
+            this.wss = wss;
         };
-        this.ws.onmessage = event => {
+        wss.onclose = () => {
+            this.messages.push('websocket is closed');
+        };
+        wss.onerror = (event) => {
+            this.messages.push('websocket error, details to console');
+            console.log(event);
+        };
+        wss.onmessage = (event) => {
             this.messages.push(event.data);
-        };
-        this.ws.onerror = (error) => {
-            this.messages.push('WebSocket Error:' + error);
-        };
-        this.ws.onclose = () => {
-            this.messages.push('WebSocket is closed now.');
         };
     }
 

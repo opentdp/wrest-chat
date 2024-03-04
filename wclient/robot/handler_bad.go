@@ -15,6 +15,8 @@ var keywordList = []*tables.Keyword{}
 
 func badHandler() {
 
+	updateBadWord()
+
 	handlers["/bad"] = &Handler{
 		Level:    7,
 		Order:    30,
@@ -59,12 +61,23 @@ func updateBadWord() {
 
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
+	// 管理员豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 	if !msg.IsGroup || up.Level >= 7 {
 		return ""
 	}
 
+	// 遍历关键词
 	for _, v := range keywordList {
+		if v.Roomid != "-" {
+			if msg.IsGroup {
+				if v.Roomid != msg.Roomid {
+					continue
+				}
+			} else {
+				continue
+			}
+		}
 		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
 			badMember[msg.Sender] += int(v.Level)
 			if badMember[msg.Sender] > 10 {

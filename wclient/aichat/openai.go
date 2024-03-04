@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/sashabaranov/go-openai"
-
-	"github.com/opentdp/wechat-rest/args"
 )
 
 func OpenaiText(id, rid, ask string) (string, error) {
@@ -29,9 +27,9 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	// 设置上下文
 
-	if args.LLM.RoleContext != "" {
+	if llmc.RoleContext != "" {
 		req.Messages = []openai.ChatCompletionMessage{
-			{Content: args.LLM.RoleContext, Role: openai.ChatMessageRoleUser},
+			{Content: llmc.RoleContext, Role: openai.ChatMessageRoleUser},
 			{Content: "OK", Role: openai.ChatMessageRoleAssistant},
 		}
 	}

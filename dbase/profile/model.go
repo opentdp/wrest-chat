@@ -61,9 +61,9 @@ func Update(data *UpdateParam) error {
 
 // 合并配置
 
-type MigrateParam = CreateParam
+type ReplaceParam = CreateParam
 
-func Migrate(data *MigrateParam) error {
+func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
 		Wxid:   data.Wxid,
@@ -83,7 +83,8 @@ func Migrate(data *MigrateParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Wxid   string `binding:"required" json:"wxid"`
+	Rd     uint   `json:"rd"`
+	Wxid   string `json:"wxid"`
 	Roomid string `json:"roomid"`
 }
 
@@ -93,6 +94,7 @@ func Fetch(data *FetchParam) (*tables.Profile, error) {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
+			Rd:     data.Rd,
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).
@@ -116,6 +118,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
+			Rd:     data.Rd,
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
 		}).

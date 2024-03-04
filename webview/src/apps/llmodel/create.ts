@@ -6,8 +6,7 @@ import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 
 @Component({
     selector: 'page-llmodel-create',
-    templateUrl: 'create.html',
-    styleUrls: ['create.scss']
+    templateUrl: 'create.html'
 })
 export class LLModelCreateComponent {
 

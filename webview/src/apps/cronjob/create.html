@@ -1,0 +1,89 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/cronjob/list">计划任务</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="createCronjob()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">名称 *</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" required />
+            <div class="form-text">
+                计划任务名称
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">计划 *</label>
+            <div class="row g-3">
+                <div class="col-2">
+                    <input type="text" name="second" class="form-control" [(ngModel)]="formdata.second" required />
+                </div>
+                <div class="col-2">
+                    <input type="text" name="minute" class="form-control" [(ngModel)]="formdata.minute" required />
+                </div>
+                <div class="col-2">
+                    <input type="text" name="hour" class="form-control" [(ngModel)]="formdata.hour" required />
+                </div>
+                <div class="col-2">
+                    <input type="text" name="day_of_month" class="form-control" [(ngModel)]="formdata.day_of_month" required />
+                </div>
+                <div class="col-2">
+                    <input type="text" name="month" class="form-control" [(ngModel)]="formdata.month" required />
+                </div>
+                <div class="col-2">
+                    <input type="text" name="day_of_week" class="form-control" [(ngModel)]="formdata.day_of_week" required />
+                </div>
+            </div>
+            <div class="form-text">
+                执行时间排程：秒 分 时 日 月 周
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">命令类型 *</label>
+            <select name="type" class="form-select" [(ngModel)]="formdata.type">
+                @for (item of cronjobTypes | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                任务回调处理方式
+            </div>
+        </div>
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
+            <label class="form-label">执行超时 *</label>
+            <input type="text" name="timeout" class="form-control" [(ngModel)]="formdata.timeout" required />
+            <div class="form-text">
+                命令超时时间，单位：秒
+            </div>
+        </div>
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
+            <label class="form-label">执行路径 *</label>
+            <input type="text" name="directory" class="form-control" [(ngModel)]="formdata.directory" required />
+            <div class="form-text">
+                命令执行路径
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">任务内容 *</label>
+            <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
+            <div class="form-text">
+                输出的内容可投递到指定渠道，发送文件或图片请输出 <b>http://</b> 开头的链接
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">投递渠道 *</label>
+            <input name="deliver" class="form-control" rows="5" [(ngModel)]="formdata.deliver" required />
+            <div class="form-text">
+                格式："wechat,wxid" 或 "wechat,roomid" 或 "wechat,wxid,roomid"
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

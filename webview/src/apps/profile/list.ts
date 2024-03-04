@@ -7,8 +7,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-profile-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class ProfileListComponent {
 
@@ -38,8 +37,7 @@ export class ProfileListComponent {
     }
 
     public deleteProfile(item: TablesProfile) {
-        const rq = { wxid: item.wxid, roomid: item.roomid };
-        RobotApi.profileDelete(rq).then(() => {
+        RobotApi.profileDelete({ rd: item.rd }).then(() => {
             this.getProfiles();
         });
     }

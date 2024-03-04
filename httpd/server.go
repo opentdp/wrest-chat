@@ -4,6 +4,7 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wechat-rest/httpd/cronjob"
 	"github.com/opentdp/wechat-rest/httpd/midware"
 	"github.com/opentdp/wechat-rest/httpd/wcfrest"
 	"github.com/opentdp/wechat-rest/httpd/wrobot"
@@ -21,6 +22,9 @@ import (
 func Server() {
 
 	httpd.Engine(args.Debug)
+
+	// Cronjob 路由
+	cronjob.Route()
 
 	// Wcfrest 路由
 	wcfrest.Route()

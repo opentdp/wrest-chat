@@ -7,8 +7,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-keyword-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class KeywordListComponent {
 
@@ -30,8 +29,7 @@ export class KeywordListComponent {
     }
 
     public deleteKeyword(item: TablesKeyword) {
-        const rq = { phrase: item.phrase, roomid: item.roomid };
-        RobotApi.keywordDelete(rq).then(() => {
+        RobotApi.keywordDelete({ rd: item.rd }).then(() => {
             this.getKeywords();
         });
     }

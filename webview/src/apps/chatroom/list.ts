@@ -7,8 +7,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-chatroom-list',
-    templateUrl: 'list.html',
-    styleUrls: ['list.scss']
+    templateUrl: 'list.html'
 })
 export class ChatroomListComponent {
 

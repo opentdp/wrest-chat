@@ -9,8 +9,6 @@ import (
 var Configer *Config
 
 type ConfigData struct {
-	Bot *IBot `yaml:"Bot"`
-	LLM *ILLM `yaml:"LLM"`
 	Log *ILog `yaml:"Log"`
 	Wcf *IWcf `yaml:"Wcf"`
 	Web *IWeb `yaml:"Web"`
@@ -30,7 +28,7 @@ func init() {
 
 	Configer = &Config{
 		File: "config.yml",
-		Data: &ConfigData{Bot, LLM, Log, Wcf, Web},
+		Data: &ConfigData{Log, Wcf, Web},
 	}
 
 	if len(os.Args) > 1 {

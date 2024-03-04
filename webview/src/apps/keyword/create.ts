@@ -8,8 +8,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-keyword-create',
-    templateUrl: 'create.html',
-    styleUrls: ['create.scss']
+    templateUrl: 'create.html'
 })
 export class KeywordCreateComponent {
 

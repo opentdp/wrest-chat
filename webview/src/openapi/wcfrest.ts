@@ -8,7 +8,7 @@ export const WrestApi = {
      */
     acceptNewFriend(body: WcfrestAcceptNewFriendRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/accept_new_friend', options);
+        return httpRequest('/wcf/accept_new_friend', options);
     },
     /**
      * @summary 添加群成员
@@ -17,7 +17,7 @@ export const WrestApi = {
      */
     addChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/add_chatroom_members', options);
+        return httpRequest('/wcf/add_chatroom_members', options);
     },
     /**
      * @summary 获取群成员昵称
@@ -26,7 +26,7 @@ export const WrestApi = {
      */
     aliasInChatroom(body: WcfrestGetAliasInChatRoomRequest, options: RequestInit = {}): Promise<string> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/alias_in_chatroom', options);
+        return httpRequest('/wcf/alias_in_chatroom', options);
     },
     /**
      * @summary 获取头像列表
@@ -35,7 +35,7 @@ export const WrestApi = {
      */
     avatars(body: WcfrestGetAvatarsRequest, options: RequestInit = {}): Promise<Array<WcfrestAvatarPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/avatars', options);
+        return httpRequest('/wcf/avatars', options);
     },
     /**
      * @summary 获取群成员列表
@@ -44,7 +44,7 @@ export const WrestApi = {
      */
     chatroomMembers(body: WcfrestGetChatRoomMembersRequest, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/chatroom_members', options);
+        return httpRequest('/wcf/chatroom_members', options);
     },
     /**
      * @summary 获取群列表
@@ -53,7 +53,7 @@ export const WrestApi = {
      */
     chatrooms(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/chatrooms', options);
+        return httpRequest('/wcf/chatrooms', options);
     },
     /**
      * @summary 获取完整通讯录
@@ -62,7 +62,7 @@ export const WrestApi = {
      */
     contacts(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/contacts', options);
+        return httpRequest('/wcf/contacts', options);
     },
     /**
      * @summary 获取数据库列表
@@ -71,7 +71,7 @@ export const WrestApi = {
      */
     dbNames(body?: unknown, options: RequestInit = {}): Promise<Array<string>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/db_names', options);
+        return httpRequest('/wcf/db_names', options);
     },
     /**
      * @summary 执行数据库查询
@@ -80,7 +80,7 @@ export const WrestApi = {
      */
     dbQuerySql(body: WcfrestDbSqlQueryRequest, options: RequestInit = {}): Promise<Array<{ [key: string]: unknown; }>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/db_query_sql', options);
+        return httpRequest('/wcf/db_query_sql', options);
     },
     /**
      * @summary 获取数据库表列表
@@ -89,7 +89,7 @@ export const WrestApi = {
      */
     dbTables(body: WcfrestGetDbTablesRequest, options: RequestInit = {}): Promise<Array<WcfrestDbTablePayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/db_tables', options);
+        return httpRequest('/wcf/db_tables', options);
     },
     /**
      * @summary 删除群成员
@@ -98,7 +98,7 @@ export const WrestApi = {
      */
     delChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/del_chatroom_members', options);
+        return httpRequest('/wcf/del_chatroom_members', options);
     },
     /**
      * @summary 关闭推送消息到URL
@@ -107,7 +107,7 @@ export const WrestApi = {
      */
     disableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/disable_receiver', options);
+        return httpRequest('/wcf/disable_receiver', options);
     },
     /**
      * @summary 下载附件
@@ -116,7 +116,7 @@ export const WrestApi = {
      */
     downloadAttach(body: WcfrestDownloadAttachRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/download_attach', options);
+        return httpRequest('/wcf/download_attach', options);
     },
     /**
      * @summary 下载图片
@@ -125,7 +125,7 @@ export const WrestApi = {
      */
     downloadImage(body: WcfrestDownloadImageRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/download_image', options);
+        return httpRequest('/wcf/download_image', options);
     },
     /**
      * @summary 开启推送消息到URL
@@ -134,7 +134,7 @@ export const WrestApi = {
      */
     enableReceiver(body: WcfrestReceiverRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/enable_receiver', options);
+        return httpRequest('/wcf/enable_receiver', options);
     },
     /**
      * @summary 转发消息
@@ -143,7 +143,7 @@ export const WrestApi = {
      */
     forwardMsg(body: WcfrestForwardMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/forward_msg', options);
+        return httpRequest('/wcf/forward_msg', options);
     },
     /**
      * @summary 获取好友列表
@@ -152,7 +152,7 @@ export const WrestApi = {
      */
     friends(body?: unknown, options: RequestInit = {}): Promise<Array<WcfrestContactPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/friends', options);
+        return httpRequest('/wcf/friends', options);
     },
     /**
      * @summary 获取语音消息
@@ -161,7 +161,7 @@ export const WrestApi = {
      */
     getAudioMsg(body: WcfrestGetAudioMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/get_audio_msg', options);
+        return httpRequest('/wcf/get_audio_msg', options);
     },
     /**
      * @summary 获取OCR识别结果
@@ -170,7 +170,7 @@ export const WrestApi = {
      */
     getOcrResult(body: WcfrestGetOcrRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/get_ocr_result', options);
+        return httpRequest('/wcf/get_ocr_result', options);
     },
     /**
      * @summary 邀请群成员
@@ -179,7 +179,7 @@ export const WrestApi = {
      */
     inviteChatroomMembers(body: WcfrestChatroomMembersRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/invite_chatroom_members', options);
+        return httpRequest('/wcf/invite_chatroom_members', options);
     },
     /**
      * @summary 检查登录状态
@@ -188,7 +188,7 @@ export const WrestApi = {
      */
     isLogin(body?: unknown, options: RequestInit = {}): Promise<boolean> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/is_login', options);
+        return httpRequest('/wcf/is_login', options);
     },
     /**
      * @summary 登录二维码
@@ -197,7 +197,7 @@ export const WrestApi = {
      */
     loginQr(body?: unknown, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/login_qr', options);
+        return httpRequest('/wcf/login_qr', options);
     },
     /**
      * @summary 获取所有消息类型
@@ -206,7 +206,7 @@ export const WrestApi = {
      */
     msgTypes(body?: unknown, options: RequestInit = {}): Promise<{ [key: string]: string; }> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/msg_types', options);
+        return httpRequest('/wcf/msg_types', options);
     },
     /**
      * @summary 接受转账
@@ -215,7 +215,7 @@ export const WrestApi = {
      */
     receiveTransfer(body: WcfrestReceiveTransferRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/receive_transfer', options);
+        return httpRequest('/wcf/receive_transfer', options);
     },
     /**
      * @summary 刷新朋友圈
@@ -224,7 +224,7 @@ export const WrestApi = {
      */
     refreshPyq(body: WcfrestRefreshPyqRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/refresh_pyq', options);
+        return httpRequest('/wcf/refresh_pyq', options);
     },
     /**
      * @summary 撤回消息
@@ -233,7 +233,7 @@ export const WrestApi = {
      */
     revokeMsg(body: WcfrestRevokeMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/revoke_msg', options);
+        return httpRequest('/wcf/revoke_msg', options);
     },
     /**
      * @summary 获取登录账号个人信息
@@ -242,7 +242,7 @@ export const WrestApi = {
      */
     selfInfo(body?: unknown, options: RequestInit = {}): Promise<WcfrestUserInfoPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/self_info', options);
+        return httpRequest('/wcf/self_info', options);
     },
     /**
      * @summary 获取登录账号wxid
@@ -251,7 +251,7 @@ export const WrestApi = {
      */
     selfWxid(body?: unknown, options: RequestInit = {}): Promise<string> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/self_wxid', options);
+        return httpRequest('/wcf/self_wxid', options);
     },
     /**
      * @summary 发送文件消息
@@ -260,7 +260,7 @@ export const WrestApi = {
      */
     sendFile(body: WcfrestSendFileRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/send_file', options);
+        return httpRequest('/wcf/send_file', options);
     },
     /**
      * @summary 发送图片消息
@@ -269,7 +269,7 @@ export const WrestApi = {
      */
     sendImg(body: WcfrestSendImgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/send_img', options);
+        return httpRequest('/wcf/send_img', options);
     },
     /**
      * @summary 拍一拍群友
@@ -278,7 +278,7 @@ export const WrestApi = {
      */
     sendPatMsg(body: WcfrestSendPatMsgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/send_pat_msg', options);
+        return httpRequest('/wcf/send_pat_msg', options);
     },
     /**
      * @summary 发送卡片消息
@@ -287,7 +287,7 @@ export const WrestApi = {
      */
     sendRichText(body: WcfrestSendRichTextRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/send_rich_text', options);
+        return httpRequest('/wcf/send_rich_text', options);
     },
     /**
      * @summary 发送文本消息
@@ -296,7 +296,7 @@ export const WrestApi = {
      */
     sendTxt(body: WcfrestSendTxtRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/send_txt', options);
+        return httpRequest('/wcf/send_txt', options);
     },
     /**
      * @summary 根据wxid获取个人信息
@@ -305,10 +305,9 @@ export const WrestApi = {
      */
     userInfo(body: WcfrestGetInfoByWxidRequest, options: RequestInit = {}): Promise<WcfrestContactPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/user_info', options);
+        return httpRequest('/wcf/user_info', options);
     },
 };
-
 
 export interface WcfrestAcceptNewFriendRequest {
     // 添加方式：17 名片，30 扫码

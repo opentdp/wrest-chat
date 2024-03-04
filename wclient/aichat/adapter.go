@@ -1,9 +1,9 @@
 package aichat
 
 import (
-	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
@@ -36,7 +36,14 @@ func Text(id, rid, msg string) string {
 
 }
 
-func UserModel(id, rid string) *tables.LLModel {
+// User LLModel
+
+type UserLLModel struct {
+	RoleContext string
+	*tables.LLModel
+}
+
+func UserModel(id, rid string) *UserLLModel {
 
 	var llmc *tables.LLModel
 
@@ -47,14 +54,14 @@ func UserModel(id, rid string) *tables.LLModel {
 	}
 
 	if llmc == nil {
-		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: args.LLM.Default})
+		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
 
 	if llmc == nil {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return llmc
+	return &UserLLModel{LLModel: llmc, RoleContext: setting.ModelContext}
 
 }
 
@@ -65,7 +72,7 @@ type MsgHistory struct {
 	Role    string
 }
 
-var msgHistories = make(map[string][]*MsgHistory)
+var msgHistories = map[string][]*MsgHistory{}
 
 func ResetHistory(id string) {
 
@@ -85,7 +92,7 @@ func CountHistory(id string) int {
 
 func AppendHistory(id string, items ...*MsgHistory) {
 
-	if len(msgHistories[id]) >= args.LLM.HistoryNum {
+	if len(msgHistories[id]) >= setting.ModelHistory {
 		msgHistories[id] = msgHistories[id][len(items):]
 	}
 

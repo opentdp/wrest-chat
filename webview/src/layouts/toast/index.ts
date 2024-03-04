@@ -18,16 +18,15 @@ export class LayoutToastComponent {
     constructor() {
         // 处理 js 异常
         window.onerror = (message) => {
-            message = String(message);
-            this.show({ message, classname: 'bg-danger text-light' });
+            this.show({ message: String(message), classname: 'bg-danger text-light' });
         };
         // 处理 postMessage
         window.addEventListener('message', e => {
-            if (typeof e.data === 'string') {
-                this.show({ message: e.data, classname: 'bg-success text-light' });
-            } else {
-                e.data.message && this.show(e.data);
+            const toast = { message: String(e.data.message || e.data), classname: '' };
+            if (e.data.type) {
+                toast.classname = `bg-${e.data.type} text-light`;
             }
+            this.show(toast);
         });
         // 处理 promise 未捕获的 rejection
         window.addEventListener("unhandledrejection", e => {

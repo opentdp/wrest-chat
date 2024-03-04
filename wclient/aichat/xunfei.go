@@ -7,8 +7,6 @@ import (
 	"strings"
 
 	"github.com/liudding/go-llm-api/xunfei"
-
-	"github.com/opentdp/wechat-rest/args"
 )
 
 func XunfeiText(id, rid, ask string) (string, error) {
@@ -31,9 +29,9 @@ func XunfeiText(id, rid, ask string) (string, error) {
 
 	// 设置上下文
 
-	if args.LLM.RoleContext != "" {
+	if llmc.RoleContext != "" {
 		req.Messages = []xunfei.ChatCompletionMessage{
-			{Content: args.LLM.RoleContext, Role: xunfei.ChatMessageRoleUser},
+			{Content: llmc.RoleContext, Role: xunfei.ChatMessageRoleUser},
 			{Content: "OK", Role: xunfei.ChatMessageRoleAssistant},
 		}
 	}

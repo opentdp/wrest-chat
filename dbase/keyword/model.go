@@ -31,18 +31,15 @@ func Create(data *CreateParam) (uint, error) {
 // 更新关键词
 
 type UpdateParam struct {
-	Rd     uint   `binding:"required" json:"rd"`
-	Roomid string `json:"roomid"`
-	Phrase string `json:"phrase"`
-	Level  int32  `json:"level"`
+	Rd uint `json:"rd"`
+	CreateParam
 }
 
 func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
-			Roomid: data.Roomid,
-			Phrase: data.Phrase,
+			Rd: data.Rd,
 		}).
 		Updates(tables.Keyword{
 			Roomid: data.Roomid,
@@ -56,9 +53,9 @@ func Update(data *UpdateParam) error {
 
 // 合并关键词
 
-type MigrateParam = CreateParam
+type ReplaceParam = UpdateParam
 
-func Migrate(data *MigrateParam) error {
+func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
 		Roomid: data.Roomid,
@@ -66,14 +63,14 @@ func Migrate(data *MigrateParam) error {
 	})
 
 	if err == nil && item.Rd > 0 {
-		err = Update(&UpdateParam{
-			Rd:     item.Rd,
+		data.Rd = item.Rd
+		err = Update(data)
+	} else {
+		_, err = Create(&CreateParam{
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 			Level:  data.Level,
 		})
-	} else {
-		_, err = Create(data)
 	}
 
 	return err
@@ -83,8 +80,9 @@ func Migrate(data *MigrateParam) error {
 // 获取关键词
 
 type FetchParam struct {
-	Roomid string `binding:"required" json:"roomid"`
-	Phrase string `binding:"required" json:"phrase"`
+	Rd     uint   `json:"rd"`
+	Roomid string `json:"roomid"`
+	Phrase string `json:"phrase"`
 }
 
 func Fetch(data *FetchParam) (*tables.Keyword, error) {
@@ -93,6 +91,7 @@ func Fetch(data *FetchParam) (*tables.Keyword, error) {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
@@ -116,6 +115,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).

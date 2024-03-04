@@ -2,8 +2,8 @@ import { httpRequest } from "./request";
 
 export const RobotApi = {
     /**
-     * @summary 添加群聊
-     * @param {ChatroomCreateParam} body 添加群聊参数
+     * @summary 添加群聊配置
+     * @param {ChatroomCreateParam} body 添加群聊配置参数
      * @param {*} [options] Override http request option.
      */
     chatroomCreate(body: ChatroomCreateParam, options: RequestInit = {}): Promise<number> {
@@ -11,8 +11,8 @@ export const RobotApi = {
         return httpRequest('/bot/chatroom/create', options);
     },
     /**
-     * @summary 删除群聊
-     * @param {ChatroomDeleteParam} body 删除群聊参数
+     * @summary 删除群聊配置
+     * @param {ChatroomDeleteParam} body 删除群聊配置参数
      * @param {*} [options] Override http request option.
      */
     chatroomDelete(body: ChatroomDeleteParam, options: RequestInit = {}): Promise<unknown> {
@@ -20,8 +20,8 @@ export const RobotApi = {
         return httpRequest('/bot/chatroom/delete', options);
     },
     /**
-     * @summary 获取群聊
-     * @param {ChatroomFetchParam} body 获取群聊参数
+     * @summary 获取群聊配置
+     * @param {ChatroomFetchParam} body 获取群聊配置参数
      * @param {*} [options] Override http request option.
      */
     chatroomDetail(body: ChatroomFetchParam, options: RequestInit = {}): Promise<TablesChatroom> {
@@ -29,8 +29,8 @@ export const RobotApi = {
         return httpRequest('/bot/chatroom/detail', options);
     },
     /**
-     * @summary 群聊列表
-     * @param {ChatroomFetchAllParam} body 获取群聊列表参数
+     * @summary 群聊配置列表
+     * @param {ChatroomFetchAllParam} body 获取群聊配置列表参数
      * @param {*} [options] Override http request option.
      */
     chatroomList(body: ChatroomFetchAllParam, options: RequestInit = {}): Promise<TablesChatroom[]> {
@@ -38,8 +38,8 @@ export const RobotApi = {
         return httpRequest('/bot/chatroom/list', options);
     },
     /**
-     * @summary 修改群聊
-     * @param {ChatroomUpdateParam} body 修改群聊参数
+     * @summary 修改群聊配置
+     * @param {ChatroomUpdateParam} body 修改群聊配置参数
      * @param {*} [options] Override http request option.
      */
     chatroomUpdate(body: ChatroomUpdateParam, options: RequestInit = {}): Promise<unknown> {
@@ -137,8 +137,8 @@ export const RobotApi = {
         return httpRequest('/bot/llmodel/update', options);
     },
     /**
-     * @summary 添加配置
-     * @param {ProfileCreateParam} body 添加配置参数
+     * @summary 添加用户配置
+     * @param {ProfileCreateParam} body 添加用户配置参数
      * @param {*} [options] Override http request option.
      */
     profileCreate(body: ProfileCreateParam, options: RequestInit = {}): Promise<number> {
@@ -146,8 +146,8 @@ export const RobotApi = {
         return httpRequest('/bot/profile/create', options);
     },
     /**
-     * @summary 删除配置
-     * @param {ProfileDeleteParam} body 删除配置参数
+     * @summary 删除用户配置
+     * @param {ProfileDeleteParam} body 删除用户配置参数
      * @param {*} [options] Override http request option.
      */
     profileDelete(body: ProfileDeleteParam, options: RequestInit = {}): Promise<unknown> {
@@ -155,8 +155,8 @@ export const RobotApi = {
         return httpRequest('/bot/profile/delete', options);
     },
     /**
-     * @summary 获取配置
-     * @param {ProfileFetchParam} body 获取配置参数
+     * @summary 获取用户配置
+     * @param {ProfileFetchParam} body 获取用户配置参数
      * @param {*} [options] Override http request option.
      */
     profileDetail(body: ProfileFetchParam, options: RequestInit = {}): Promise<TablesProfile> {
@@ -164,8 +164,8 @@ export const RobotApi = {
         return httpRequest('/bot/profile/detail', options);
     },
     /**
-     * @summary 配置列表
-     * @param {ProfileFetchAllParam} body 获取配置列表参数
+     * @summary 用户配置列表
+     * @param {ProfileFetchAllParam} body 获取用户配置列表参数
      * @param {*} [options] Override http request option.
      */
     profileList(body: ProfileFetchAllParam, options: RequestInit = {}): Promise<TablesProfile[]> {
@@ -173,13 +173,58 @@ export const RobotApi = {
         return httpRequest('/bot/profile/list', options);
     },
     /**
-     * @summary 修改配置
-     * @param {ProfileUpdateParam} body 修改配置参数
+     * @summary 修改用户配置
+     * @param {ProfileUpdateParam} body 修改用户配置参数
      * @param {*} [options] Override http request option.
      */
     profileUpdate(body: ProfileUpdateParam, options: RequestInit = {}): Promise<unknown> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/bot/profile/update', options);
+    },
+    /**
+     * @summary 创建全局设置
+     * @param {SettingCreateParam} body 创建全局设置参数
+     * @param {*} [options] Override http request option.
+     */
+    settingCreate(body: SettingCreateParam, options: RequestInit = {}): Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/bot/setting/create', options);
+    },
+    /**
+     * @summary 删除全局设置
+     * @param {SettingDeleteParam} body 删除全局设置参数
+     * @param {*} [options] Override http request option.
+     */
+    settingDelete(body: SettingDeleteParam, options: RequestInit = {}): Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/bot/setting/delete', options);
+    },
+    /**
+     * @summary 获取全局设置
+     * @param {SettingFetchParam} body 获取全局设置参数
+     * @param {*} [options] Override http request option.
+     */
+    settingDetail(body: SettingFetchParam, options: RequestInit = {}): Promise<TablesSetting> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/bot/setting/detail', options);
+    },
+    /**
+     * @summary 全局设置列表
+     * @param {SettingFetchAllParam} body 获取全局设置列表参数
+     * @param {*} [options] Override http request option.
+     */
+    settingList(body: SettingFetchAllParam, options: RequestInit = {}): Promise<TablesSetting[]> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/bot/setting/list', options);
+    },
+    /**
+     * @summary 修改全局设置
+     * @param {SettingUpdateParam} body 修改全局设置参数
+     * @param {*} [options] Override http request option.
+     */
+    settingUpdate(body: SettingUpdateParam, options: RequestInit = {}): Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/bot/setting/update', options);
     },
 };
 
@@ -247,9 +292,11 @@ export interface KeywordCreateParam {
 
 export interface KeywordDeleteParam {
     // 词语或短语
-    phrase: string;
+    phrase?: string;
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordFetchAllParam {
@@ -261,9 +308,11 @@ export interface KeywordFetchAllParam {
 
 export interface KeywordFetchParam {
     // 词语或短语
-    phrase: string;
+    phrase?: string;
+    // 主键
+    rd?: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface KeywordUpdateParam {
@@ -331,6 +380,8 @@ export interface ProfileCreateParam {
     ai_argot?: string;
     // 会话模型
     ai_model?: string;
+    // 封禁期限
+    ban_expire?: number;
     // 等级
     level?: number;
     // 备注
@@ -342,10 +393,12 @@ export interface ProfileCreateParam {
 }
 
 export interface ProfileDeleteParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileFetchAllParam {
@@ -356,10 +409,12 @@ export interface ProfileFetchAllParam {
 }
 
 export interface ProfileFetchParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
     // 微信 id
-    wxid: string;
+    wxid?: string;
 }
 
 export interface ProfileUpdateParam {
@@ -367,6 +422,8 @@ export interface ProfileUpdateParam {
     ai_argot: string;
     // 会话模型
     ai_model: string;
+    // 封禁期限
+    ban_expire: number;
     // 等级
     level: number;
     // 备注
@@ -378,12 +435,16 @@ export interface ProfileUpdateParam {
 }
 
 export interface SettingCreateParam {
+    // 分组
+    group?: string;
     // 键
-    name?: string;
+    name: string;
     // 备注
     remark?: string;
     // 标题
     title?: string;
+    // 类型
+    type?: string;
     // 值
     value?: string;
 }
@@ -394,7 +455,8 @@ export interface SettingDeleteParam {
 }
 
 export interface SettingFetchAllParam {
-    // 暂无参数
+    // 分组
+    group?: string;
 }
 
 export interface SettingFetchParam {
@@ -403,12 +465,16 @@ export interface SettingFetchParam {
 }
 
 export interface SettingUpdateParam {
+    // 分组
+    group: string;
     // 键
     name: string;
     // 备注
     remark: string;
     // 标题
     title: string;
+    // 类型
+    type: string;
     // 值
     value: string;
 }
@@ -500,6 +566,8 @@ export interface TablesProfile {
 export interface TablesSetting {
     // 创建时间戳
     createdAt: number;
+    // 分组
+    group: string;
     // 键
     name: string;
     // 主键
@@ -508,6 +576,8 @@ export interface TablesSetting {
     remark: string;
     // 标题
     title: string;
+    // 类型
+    type: string;
     // 最后更新时间戳
     updatedAt: number;
     // 值

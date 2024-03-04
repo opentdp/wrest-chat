@@ -1,0 +1,43 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">全局配置</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <div class="text-end mb-3">
+        <button class="btn btn-sm btn-primary" [routerLink]="['/setting/create']">添加</button>
+    </div>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">名称</th>
+                <th scope="col" class="d-none d-lg-table-cell">类型</th>
+                <th scope="col">键名</th>
+                <th scope="col" class="d-none d-xl-table-cell">键值</th>
+                <th scope="col" class="d-none d-xxl-table-cell">备注</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of settings; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>{{item.title}}</td>
+                <td class="d-none d-lg-table-cell">{{item.type}}</td>
+                <td>{{item.name}}</td>
+                <td class="d-none d-xl-table-cell">{{item.value}}</td>
+                <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
+                <td class="text-nowrap">
+                    <button class="btn btn-sm btn-danger" routerLink="/setting/update/{{item.name}}">编辑</button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

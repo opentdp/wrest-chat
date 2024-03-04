@@ -3,6 +3,7 @@ package dbase
 import (
 	"github.com/opentdp/go-helper/dborm"
 
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/dbase/tables"
 )
 
@@ -17,11 +18,16 @@ func Connect() {
 	// 实施自动迁移
 	dborm.Db.AutoMigrate(
 		&tables.Chatroom{},
+		&tables.Cronjob{},
 		&tables.Contact{},
 		&tables.Keyword{},
 		&tables.LLModel{},
 		&tables.Message{},
 		&tables.Profile{},
+		&tables.Setting{},
 	)
+
+	// 全局配置迁移
+	setting.DataMigrate()
 
 }

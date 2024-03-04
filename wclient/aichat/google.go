@@ -7,8 +7,6 @@ import (
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
-
-	"github.com/opentdp/wechat-rest/args"
 )
 
 func GoogleText(id, rid, ask string) (string, error) {
@@ -40,9 +38,9 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 	// 设置上下文
 
-	if args.LLM.RoleContext != "" {
+	if llmc.RoleContext != "" {
 		req.History = []*genai.Content{
-			{Parts: []genai.Part{genai.Text(args.LLM.RoleContext)}, Role: "user"},
+			{Parts: []genai.Part{genai.Text(llmc.RoleContext)}, Role: "user"},
 			{Parts: []genai.Part{genai.Text("OK")}, Role: "model"},
 		}
 	}

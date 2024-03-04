@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/tables"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -18,7 +19,7 @@ type Handler struct {
 	PreCheck func(msg *wcferry.WxMsg) string
 }
 
-var handlers = make(map[string]*Handler)
+var handlers = map[string]*Handler{}
 
 func setupHandlers() {
 
@@ -33,11 +34,16 @@ func setupHandlers() {
 
 }
 
-func applyHandlers(msg *wcferry.WxMsg) string {
+func clearHandlers() {
 
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
+	badMember = map[string]int{}
+	keywordList = []*tables.Keyword{}
+
+	handlers = map[string]*Handler{}
+
+}
+
+func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 前置检查
 	for _, v := range handlers {

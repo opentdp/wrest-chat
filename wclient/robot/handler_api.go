@@ -62,7 +62,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 尝试发送文件
-	if fileReply(msg, res) == 0 {
+	if wc.CmdClient.SendFlexMsg(res, msg.Sender, msg.Roomid) == 0 {
 		return ""
 	}
 

@@ -2,8 +2,11 @@
 *.lock
 .DS_Store
 
+.idea
+.vscode
+
 .local.yml
-wrest.db3
+wrest.db*
 
 node_modules/
 build/

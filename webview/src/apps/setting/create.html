@@ -1,0 +1,73 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/setting/list">全局配置</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="createSetting()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">名称 *</label>
+            <input type="text" name="title" class="form-control" [(ngModel)]="formdata.title" required />
+        </div>
+        <div class="col-12">
+            <label class="form-label">类型 *</label>
+            <select name="type" class="form-select" [(ngModel)]="formdata.type" required>
+                @for (item of fieldTypes | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label">键名 *</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" required readonly />
+        </div>
+        <div class="col-12">
+            <label class="form-label">键值 *</label>
+            @switch (formdata.type) {
+            @case ("bool") {
+            <select name="value" class="form-select" [(ngModel)]="formdata.value">
+                <option value="true">是 / 启用</option>
+                <option value="false">否 / 禁用</option>
+            </select>
+            }
+            @case ("lmodel") {
+            <select name="value" class="form-select" [(ngModel)]="formdata.value">
+                @for (item of llmodels; track item.rd) {
+                <option [value]="item.mid">{{item.mid}}（{{item.model}}）</option>
+                }
+            </select>
+            }
+            @case ("number") {
+            <input type="number" name="value" class="form-control" [(ngModel)]="formdata.value" required />
+            <div class="form-text">
+                若无特殊说明取，消或者禁用该功能，可修改为 “-1”
+            </div>
+            }
+            @case ("text") {
+            <textarea name="value" class="form-control" [(ngModel)]="formdata.value" required></textarea>
+            <div class="form-text">
+                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+            </div>
+            }
+            @default {
+            <input type="text" name="value" class="form-control" [(ngModel)]="formdata.value" required />
+            <div class="form-text">
+                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+            </div>
+            }
+            }
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注</label>
+            <input type="text" name="remark" class="form-control" [(ngModel)]="formdata.remark" required />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

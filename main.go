@@ -18,7 +18,7 @@ func main() {
 
 	dbase.Connect()
 
-	robot.Register()
+	robot.Start()
 	httpd.Server()
 
 }

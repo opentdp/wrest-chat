@@ -8,8 +8,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 @Component({
     selector: 'page-profile-create',
-    templateUrl: 'create.html',
-    styleUrls: ['create.scss']
+    templateUrl: 'create.html'
 })
 export class ProfileCreateComponent {
 
@@ -42,8 +41,7 @@ export class ProfileCreateComponent {
         });
     }
 
-    public changeRoomid() {
-        this.formdata.wxid = '';
+    public changeConacts() {
         const id = this.formdata.roomid || '-';
         this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
     }
