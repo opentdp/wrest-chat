@@ -2,7 +2,6 @@ package robot
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
@@ -33,25 +32,20 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
-	for k, v := range handlers {
+	for _, k := range orderHandlers() {
+		v := handlers[k]
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限
 			}
 		}
-		if msg.IsGroup {
-			if v.RoomAble { // 群聊指令
-				helper = append(helper, k+" "+v.Describe)
-			}
-		} else {
-			if v.ChatAble { // 私聊指令
-				helper = append(helper, k+" "+v.Describe)
-			}
+		if (msg.IsGroup && v.RoomAble) || (!msg.IsGroup && v.ChatAble) {
+			o := fmt.Sprintf("%s %s", k, v.Describe)
+			helper = append(helper, o)
 		}
 	}
 
-	// 排序后转为字符串
-	sort.Strings(helper)
+	// 数组转为字符串
 	text := strings.Join(helper, "\n") + "\n"
 	if up.Level > 0 {
 		text += fmt.Sprintf("级别 %d；", up.Level)

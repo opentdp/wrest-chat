@@ -2,6 +2,7 @@ package robot
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/profile"
@@ -40,6 +41,21 @@ func clearHandlers() {
 	keywordList = []*tables.Keyword{}
 
 	handlers = map[string]*Handler{}
+
+}
+
+func orderHandlers() []string {
+
+	keys := make([]string, 0, len(handlers))
+	for k, _ := range handlers {
+		keys = append(keys, k)
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		return handlers[keys[i]].Order < handlers[keys[j]].Order
+	})
+
+	return keys
 
 }
 
