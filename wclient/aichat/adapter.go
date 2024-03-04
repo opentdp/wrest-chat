@@ -24,6 +24,8 @@ func Text(id, rid, msg string) string {
 		res, err = OpenaiText(id, rid, msg)
 	case "xunfei":
 		res, err = XunfeiText(id, rid, msg)
+	case "baidu":
+		res, err = BaiDuText(id, rid, msg)
 	default:
 		res = "暂不支持此模型"
 	}
