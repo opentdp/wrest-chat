@@ -31,7 +31,7 @@ export class SettingUpdateComponent implements OnInit {
 
     public getSetting(name: string) {
         RobotApi.settingDetail({ name }).then((data) => {
-            data && Object.assign(this.formdata, data);
+            this.formdata = data;
         });
     }
 
