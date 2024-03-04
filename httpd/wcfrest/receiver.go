@@ -72,7 +72,7 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
 			ret := wcferry.ParseWxMsg(msg)
 			for s := range socketReceiverList {
-				logman.Info("call receiver", "socket", s.RemoteAddr().String(), "Id", ret.Id)
+				logman.Info("call receiver", "addr", s.RemoteAddr(), "Id", ret.Id)
 				go s.WriteJSON(ret)
 			}
 		})
@@ -89,7 +89,7 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
 func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
 
-	logman.Warn("disable receiver", "socket", ws.RemoteAddr().String())
+	logman.Warn("disable receiver", "addr", ws.RemoteAddr())
 
 	if !socketReceiverList[ws] {
 		return errors.New("socket not exists")
