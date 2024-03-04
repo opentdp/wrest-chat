@@ -33,6 +33,9 @@ export class WcferryChatroomComponent {
         this.selected = room;
         WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.members = data || [];
+            // 批量获取头像
+            const ids = this.members.map((item) => item.wxid);
+            this.getAvatars(ids);
         });
     }
 
