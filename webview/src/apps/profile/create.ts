@@ -44,6 +44,7 @@ export class ProfileCreateComponent {
     public changeConacts() {
         const id = this.formdata.roomid || '-';
         this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        this.getWcfRoomMembers([this.formdata.roomid]);
     }
 
     public getWcfFriends() {
@@ -55,15 +56,18 @@ export class ProfileCreateComponent {
     public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
-            this.getWcfRoomMembers(this.wcfChatrooms.map((item) => item.wxid));
         });
     }
 
     public getWcfRoomMembers(ids: string[]) {
         [...new Set(ids)].forEach((id) => {
-            WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-                this.wcfRoomMembers[id] = data || [];
-            });
+            // 不存在则查询，存在跳过
+            if (!this.wcfRoomMembers[id]){
+                WrestApi.chatroomMembers({ roomid: id }).then((data) => {
+                    this.wcfRoomMembers[id] = data || [];
+                });
+            }
+           
         });
     }
 

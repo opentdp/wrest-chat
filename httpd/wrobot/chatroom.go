@@ -96,6 +96,7 @@ func (*Chatroom) update(c *gin.Context) {
 	}
 
 	if err := chatroom.Update(rq); err == nil {
+
 		c.Set("Message", "更新成功")
 		robot.Redo()
 	} else {
