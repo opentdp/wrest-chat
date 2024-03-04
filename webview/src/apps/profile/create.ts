@@ -61,9 +61,13 @@ export class ProfileCreateComponent {
 
     public getWcfRoomMembers(ids: string[]) {
         [...new Set(ids)].forEach((id) => {
-            WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-                this.wcfRoomMembers[id] = data || [];
-            });
+            // 不存在则查询，存在跳过
+            if (!this.wcfRoomMembers[id]){
+                WrestApi.chatroomMembers({ roomid: id }).then((data) => {
+                    this.wcfRoomMembers[id] = data || [];
+                });
+            }
+           
         });
     }
 
