@@ -34,6 +34,7 @@
                 <option value="google">Google</option>
                 <option value="opeanai">OpenAI</option>
                 <option value="xunfei">科大讯飞</option>
+                <option value="baidu">百度千帆（文心一言）</option>
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
@@ -54,7 +55,7 @@
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
             <div class="form-text">
-                Google 和 OpenAI 填写 KEY，科大讯飞填写 APP-ID,API-KEY,API-SECRET
+                Google 和 OpenAI 填写 KEY，科大讯飞填写 APP-ID,API-KEY,API-SECRET，文心一言填写 API-KEY,API-SECRET
             </div>
         </div>
         <div class="col-12">
