@@ -18,7 +18,7 @@
                 <th scope="col">#</th>
                 <th scope="col">名称</th>
                 <th scope="col" class="d-none d-sm-table-cell">计划</th>
-                <th scope="col" class="d-none d-lg-table-cell">超时</th>
+                <th scope="col" class="d-none d-lg-table-cell">类型</th>
                 <th scope="col" class="d-none d-md-table-cell">上次执行</th>
                 <th scope="col" class="d-none d-xl-table-cell">下次执行</th>
                 <th scope="col">操作</th>
@@ -32,7 +32,9 @@
                 <td class="d-none d-sm-table-cell">
                     {{ item.second }} {{ item.minute }} {{ item.hour }} {{ item.day_of_month }} {{ item.month }} {{ item.day_of_week }}
                 </td>
-                <td class="d-none d-lg-table-cell">{{item.timeout}}s</td>
+                <td class="d-none d-lg-table-cell">
+                    {{cronjobTypes[item.type] && cronjobTypes[item.type].name || '-'}}
+                </td>
                 <td class="d-none d-md-table-cell">
                     @if (status[item.rd] && status[item.rd].prev_time > 0) {
                     {{status[item.rd].prev_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}

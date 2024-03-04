@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { CronjobTypes } from '../../openapi/const';
 import { CronApi, CronjobStatusPayload, TablesCronjob } from '../../openapi/cronjob';
 
 
@@ -8,6 +9,8 @@ import { CronApi, CronjobStatusPayload, TablesCronjob } from '../../openapi/cron
     templateUrl: 'list.html'
 })
 export class CronjobListComponent {
+
+    public cronjobTypes = CronjobTypes;
 
     public cronjobs: Array<TablesCronjob> = [];
     public status: Record<number, CronjobStatusPayload> = [];

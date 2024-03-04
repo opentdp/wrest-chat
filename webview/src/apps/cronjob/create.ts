@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { CronjobTypes } from '../../openapi/const';
 import { CronApi, CronjobCreateParam } from '../../openapi/cronjob';
 
 
@@ -10,6 +11,8 @@ import { CronApi, CronjobCreateParam } from '../../openapi/cronjob';
 })
 export class CronjobCreateComponent {
 
+    public cronjobTypes = CronjobTypes;
+
     public formdata: CronjobCreateParam = {
         name: '',
         second: '0',
@@ -18,10 +21,10 @@ export class CronjobCreateComponent {
         day_of_month: '*',
         month: '*',
         day_of_week: '*',
-        type: 'BAT',
+        type: 'TEXT',
         timeout: 30,
         directory: '.',
-        content: '@echo off\n',
+        content: '',
         deliver: '-',
     };
 

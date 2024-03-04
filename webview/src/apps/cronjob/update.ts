@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { CronjobTypes } from '../../openapi/const';
 import { CronApi, CronjobUpdateParam } from '../../openapi/cronjob';
 
 
@@ -9,6 +10,8 @@ import { CronApi, CronjobUpdateParam } from '../../openapi/cronjob';
     templateUrl: 'update.html'
 })
 export class CronjobUpdateComponent implements OnInit {
+
+    public cronjobTypes = CronjobTypes;
 
     public formdata = {} as CronjobUpdateParam;
 
