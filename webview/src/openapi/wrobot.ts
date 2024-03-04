@@ -310,17 +310,18 @@ export interface KeywordFetchParam {
     // 词语或短语
     phrase?: string;
     // 主键
-    rd: number;
+    rd?: number;
     // 群聊 id
     roomid?: string;
 }
 
 export interface KeywordUpdateParam {
-    rd: number;
     // 等级
     level: number;
     // 词语或短语
     phrase: string;
+    // 主键
+    rd: number;
     // 群聊 id
     roomid: string;
 }

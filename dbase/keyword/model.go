@@ -31,8 +31,8 @@ func Create(data *CreateParam) (uint, error) {
 // 更新关键词
 
 type UpdateParam struct {
-	CreateParam
 	Rd uint `json:"rd"`
+	CreateParam
 }
 
 func Update(data *UpdateParam) error {
@@ -63,6 +63,7 @@ func Replace(data *ReplaceParam) error {
 	})
 
 	if err == nil && item.Rd > 0 {
+		data.Rd = item.Rd
 		err = Update(data)
 	} else {
 		_, err = Create(&CreateParam{
