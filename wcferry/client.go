@@ -2,7 +2,6 @@ package wcferry
 
 import (
 	"errors"
-	"net/url"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -50,40 +49,6 @@ func (c *Client) Connect() error {
 	})
 	// 返回连接结果
 	return c.CmdClient.init(5)
-}
-
-// 发送消息（文本、网络图片或文件）
-// param wxid string 接收人 wxid
-// param roomid string 群聊 id
-// param message string 消息
-// return int32 0 为成功，其他失败
-func (c *Client) SendMessage(wxid, roomid, message string) int32 {
-	// 发送网络文件
-	if u, err := url.Parse(message); err == nil {
-		if u.Scheme == "http" || u.Scheme == "https" {
-			if IsImageFile(u.Path) {
-				if roomid == "" {
-					return c.CmdClient.SendImg(message, wxid)
-				}
-				return c.CmdClient.SendImg(message, roomid)
-			}
-			if roomid == "" {
-				return c.CmdClient.SendFile(message, wxid)
-			}
-			return c.CmdClient.SendFile(message, roomid)
-		}
-	}
-	// 发送文本信息
-	if roomid == "" {
-		return c.CmdClient.SendTxt(message, wxid, "")
-	}
-	if wxid != "" {
-		user := c.CmdClient.GetInfoByWxid(wxid)
-		if user != nil && user.Name != "" {
-			message = "@" + user.Name + "\n" + message
-		}
-	}
-	return c.CmdClient.SendTxt(message, roomid, wxid)
 }
 
 // 启动消息接收器

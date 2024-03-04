@@ -10,6 +10,7 @@ func MsgDeliver(deliver, message string) {
 
 	deliver = strings.TrimSpace(deliver)
 	message = strings.TrimSpace(message)
+	logger.Warn("cron:deliver "+deliver, "message", message)
 
 	args := strings.Split(deliver, ",")
 	if len(args) < 2 {
@@ -40,6 +41,6 @@ func wechatMessage(args []string, message string) int32 {
 		return -1
 	}
 
-	return wc.SendMessage(wxid, roomid, message)
+	return wc.CmdClient.SendFlexMsg(message, wxid, roomid)
 
 }
