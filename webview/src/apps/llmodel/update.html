@@ -55,7 +55,17 @@
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
             <div class="form-text">
-                Google 和 OpenAI 填写 KEY，科大讯飞填写 APP-ID,API-KEY,API-SECRET，文心一言填写 API-KEY,API-SECRET
+                @switch (formdata.provider) {
+                @case ('xunfei') {
+                科大讯飞填写 APP-ID,API-KEY,API-SECRET
+                }
+                @case ('baidu') {
+                文心一言填写 API-KEY,API-SECRET
+                }
+                @default {
+                请填写从服务商获取的 API-KEY
+                }
+                }
             </div>
         </div>
         <div class="col-12">
