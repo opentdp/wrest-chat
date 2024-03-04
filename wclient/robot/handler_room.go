@@ -36,11 +36,3 @@ func roomHandler() {
 	}
 
 }
-
-func ReshroomHandler() {
-	roomHandler()
-}
-func DeleroomHandler(joinArgot string) {
-	cmdkey := "/g:" + joinArgot
-	delete(handlers, cmdkey)
-}
