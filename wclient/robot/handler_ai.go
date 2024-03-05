@@ -2,6 +2,7 @@ package robot
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
@@ -46,12 +47,10 @@ func aiHandler() {
 
 	for _, v := range models {
 		v := v // copy
-		if v.Level < 0 {
-			v.Level = 0
-		}
-		cmdkey := "/m:" + v.Mid
+		ll := math.Max(float64(v.Level), 0)
+		cmdkey := "/" + v.Mid
 		handlers[cmdkey] = &Handler{
-			Level:    v.Level,
+			Level:    int32(ll),
 			Order:    12,
 			ChatAble: true,
 			RoomAble: true,
@@ -64,7 +63,7 @@ func aiHandler() {
 	}
 
 	if len(models) > 3 {
-		handlers["/mr"] = &Handler{
+		handlers["/rand"] = &Handler{
 			Level:    0,
 			Order:    13,
 			ChatAble: true,

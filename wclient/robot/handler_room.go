@@ -16,16 +16,16 @@ func roomHandler() {
 		if len(v.JoinArgot) < 2 {
 			continue
 		}
-		room := v // copy
-		cmdkey := "/g:" + room.JoinArgot
+		v := v // copy
+		cmdkey := "/" + v.JoinArgot
 		handlers[cmdkey] = &Handler{
 			Level:    0,
 			Order:    70,
 			ChatAble: true,
 			RoomAble: false,
-			Describe: "加入群聊 " + room.Name,
+			Describe: "加入群聊 " + v.Name,
 			Callback: func(msg *wcferry.WxMsg) string {
-				resp := wc.CmdClient.InviteChatroomMembers(room.Roomid, msg.Sender)
+				resp := wc.CmdClient.InviteChatroomMembers(v.Roomid, msg.Sender)
 				if resp == 1 {
 					return "已发送群邀请，稍后请点击进入"
 				} else {
