@@ -11,6 +11,7 @@ import (
 type CreateParam struct {
 	Rd       uint   `json:"rd"`
 	Mid      string `binding:"required" json:"mid"`
+	Level    int32  `binding:"required" json:"level"`
 	Family   string `binding:"required" json:"family"`
 	Provider string `binding:"required" json:"provider"`
 	Model    string `binding:"required" json:"model"`
@@ -22,6 +23,7 @@ func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.LLModel{
 		Mid:      data.Mid,
+		Level:    data.Level,
 		Family:   data.Family,
 		Provider: data.Provider,
 		Model:    data.Model,
@@ -47,6 +49,7 @@ func Update(data *UpdateParam) error {
 		}).
 		Updates(tables.LLModel{
 			Mid:      data.Mid,
+			Level:    data.Level,
 			Family:   data.Family,
 			Provider: data.Provider,
 			Model:    data.Model,
@@ -127,6 +130,7 @@ func Delete(data *DeleteParam) error {
 // 获取模型列表
 
 type FetchAllParam struct {
+	Level    int32  `json:"level"`
 	Family   string `json:"family"`
 	Provider string `json:"provider"`
 	Model    string `json:"model"`
@@ -138,8 +142,9 @@ func FetchAll(data *FetchAllParam) ([]*tables.LLModel, error) {
 
 	result := dborm.Db.
 		Where(&tables.LLModel{
-			Provider: data.Provider,
+			Level:    data.Level,
 			Family:   data.Family,
+			Provider: data.Provider,
 			Model:    data.Model,
 		}).
 		Find(&items)
@@ -159,8 +164,9 @@ func Count(data *CountParam) (int64, error) {
 	result := dborm.Db.
 		Model(&tables.LLModel{}).
 		Where(&tables.LLModel{
-			Provider: data.Provider,
+			Level:    data.Level,
 			Family:   data.Family,
+			Provider: data.Provider,
 			Model:    data.Model,
 		}).
 		Count(&count)

@@ -5,6 +5,7 @@ package tables
 type LLModel struct {
 	Rd        uint   `gorm:"primaryKey" json:"rd"`   // 主键
 	Mid       string `gorm:"uniqueIndex" json:"mid"` // 模型 Id，用于生成模型切换指令
+	Level     int32  `json:"level"`                  // 等级，用于限制用户访问
 	Family    string `json:"family"`                 // 模型家族，用于在指令中描述模型类型
 	Provider  string `json:"provider"`               // 服务商 [google, openai, xunfei]
 	Model     string `json:"model"`                  // 模型，必须和服务商对应

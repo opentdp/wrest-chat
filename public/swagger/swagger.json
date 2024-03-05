@@ -2200,6 +2200,7 @@
             "type": "object",
             "required": [
                 "family",
+                "level",
                 "mid",
                 "model",
                 "provider",
@@ -2211,6 +2212,9 @@
                 },
                 "family": {
                     "type": "string"
+                },
+                "level": {
+                    "type": "integer"
                 },
                 "mid": {
                     "type": "string"
@@ -2246,6 +2250,9 @@
                 "family": {
                     "type": "string"
                 },
+                "level": {
+                    "type": "integer"
+                },
                 "model": {
                     "type": "string"
                 },
@@ -2269,6 +2276,7 @@
             "type": "object",
             "required": [
                 "family",
+                "level",
                 "mid",
                 "model",
                 "provider",
@@ -2280,6 +2288,9 @@
                 },
                 "family": {
                     "type": "string"
+                },
+                "level": {
+                    "type": "integer"
                 },
                 "mid": {
                     "type": "string"
@@ -2650,6 +2661,10 @@
                 "family": {
                     "description": "模型家族，用于在指令中描述模型类型",
                     "type": "string"
+                },
+                "level": {
+                    "description": "等级，用于限制用户访问",
+                    "type": "integer"
                 },
                 "mid": {
                     "description": "模型 Id，用于生成模型切换指令",

@@ -337,6 +337,8 @@ export interface LlmodelCreateParam {
     endpoint?: string;
     // 模型家族
     family: string;
+    // 等级
+    level?: number;
     // 模型 Id
     mid: string;
     // 模型名称
@@ -357,6 +359,8 @@ export interface LlmodelDeleteParam {
 export interface LlmodelFetchAllParam {
     // 模型家族
     family?: string;
+    // 等级
+    level?: number;
     // 模型名称
     model?: string;
     // 服务商名称
@@ -375,6 +379,8 @@ export interface LlmodelUpdateParam {
     endpoint: string;
     // 模型家族
     family: string;
+    // 等级
+    level: number;
     // 模型 Id
     mid: string;
     // 模型名称
@@ -546,6 +552,8 @@ export interface TablesLLModel {
     endpoint: string;
     // 模型家族，用于生成模型切换指令
     family: string;
+    // 等级，用于限制用户访问
+    level?: number;
     // 模型 Id
     mid: string;
     // 模型，必须和服务商提供的值对应
