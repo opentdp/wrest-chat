@@ -27,6 +27,8 @@ var (
 	ApiEndpoint = "https://api.rehi.org/format=yaml/"
 	// API 指令卡片使用的图标
 	ApiEndpointIcon = "https://api.rehi.org/assets/icon.png"
+	// HELP 指令扩展内容
+	HelpAdditive = ""
 )
 
 // 从数据库加载配置
@@ -62,6 +64,8 @@ func Laod() {
 			ApiEndpoint = item.Value
 		case "ApiEndpointIcon":
 			ApiEndpointIcon = item.Value
+		case "HelpAdditive":
+			HelpAdditive = item.Value
 		}
 	}
 
@@ -83,6 +87,7 @@ func DataMigrate() {
 		{0, "ModelHistory", "number", "bot", strconv.Itoa(ModelHistory), "上下文总数", "AI 聊天最大记录数，值越大消耗的 Token 越多"},
 		{0, "ApiEndpoint", "string", "bot", ApiEndpoint, "API 指令地址", "/api 指令请求的网址"},
 		{0, "ApiEndpointIcon", "string", "bot", ApiEndpointIcon, "API 指令图标", "/api 卡片消息使用的图标"},
+		{0, "HelpAdditive", "text", "bot", HelpAdditive, "HELP 指令扩展", "/help 指令扩展内容，可添加自定义菜单等"},
 	}
 
 	for _, item := range settings {

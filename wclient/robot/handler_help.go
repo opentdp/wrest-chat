@@ -47,6 +47,13 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 数组转为字符串
 	text := strings.Join(helper, "\n") + "\n"
+
+	// 自定义帮助信息
+	if len(setting.HelpAdditive) > 1 {
+		text += setting.HelpAdditive + "\n"
+	}
+
+	// 当前用户状态信息
 	if up.Level > 0 {
 		text += fmt.Sprintf("级别 %d；", up.Level)
 	}
