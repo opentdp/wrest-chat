@@ -37,6 +37,9 @@ export class LayoutToastComponent {
 
     public show(toast: Toast) {
         this.items.push(toast);
+        if (typeof toast.message !== 'string') {
+            console.log(toast.message);
+        }
     }
 
     public remove(toast: Toast) {

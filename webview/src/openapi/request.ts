@@ -13,21 +13,21 @@ export async function httpRequest(input: string, options: RequestInit = {}) {
     try {
         const response = await fetch(input, options);
         const data = await response.json();
-        if (data.Message) {
-            window.postMessage({ message: data.Message, type: 'success' });
-        }
         if (data.Error) {
             if (data.Error.Message) {
                 throw new Error(data.Error.Message);
             }
             throw data.Error;
         }
-        if (response.status < 200 || response.status > 500) {
+        if (data.Message) {
+            window.postMessage({ message: data.Message, type: 'success' });
+        }
+        if (response.status < 200 || response.status > 400) {
             throw new Error(response.statusText);
         }
         return data.Payload;
     } catch (error) {
-        window.postMessage({ message: String(error), type: 'danger' });
+        window.postMessage({ message: error, type: 'danger' });
         throw error;
     }
 }
