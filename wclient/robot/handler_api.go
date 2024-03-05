@@ -39,6 +39,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	url := setting.ApiEndpoint + strings.Join(cmd, "/")
 	res, err := request.TextGet(url, request.H{
 		"User-Agent": args.AppName + "/" + args.Version,
+		"Client-Id":  self().Wxid + "," + msg.Sender,
 	})
 	if err != nil {
 		return err.Error()
