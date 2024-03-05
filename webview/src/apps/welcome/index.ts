@@ -16,9 +16,20 @@ export class WelcomeComponent {
     public user!: WcfrestUserInfoPayload;
     public avatar!: WcfrestAvatarPayload;
 
+    public formdata = {
+        token: '',
+    };
+
     constructor() {
         this.checkLogin();
         this.refreshQrcode();
+        // 获取会话存储的令牌
+        this.formdata.token = sessionStorage.getItem('token') || '';
+    }
+
+    public submitForm() {
+        sessionStorage.setItem('token', this.formdata.token);
+        location.reload();
     }
 
     public async checkLogin() {
