@@ -14,7 +14,7 @@
 
 ## 快速开始
 
-请仔细阅读文档后再使用；目前收集到的问题，大部分是版本不匹配或未配置运行参数导致的。
+请仔细阅读本文档和[常见问题](#常见问题)后再开始使用；首次使用可参照下面的步骤开始：
 
 - 下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
 
@@ -27,7 +27,7 @@
 
 ## 配置文件
 
-机器人相关参数均已支持从 WEB 界面管理，[config.yml](./config.yml) 文件主要用来配置一些核心能力，一般情况下保持默认即可。
+机器人相关参数均已支持从 WEB 界面管理，[config.yml](./config.yml) 用来配置一些核心能力，一般情况下保持默认即可。
 
 - 修改 `config.yml` 中的参数，需重启 **wrest.exe** 才能生效
 
