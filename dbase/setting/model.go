@@ -93,6 +93,7 @@ func Fetch(data *FetchParam) (*tables.Setting, error) {
 
 	result := dborm.Db.
 		Where(&tables.Setting{
+			Rd:   data.Rd,
 			Name: data.Name,
 		}).
 		First(&item)
