@@ -17,6 +17,8 @@ func ApiGuard(c *gin.Context) {
 	parts := strings.SplitN(authcode, " ", 2)
 	if len(parts) == 2 && parts[0] == "Bearer" {
 		token = parts[1]
+	} else {
+		token = c.Query("token")
 	}
 
 	// 校验 Token

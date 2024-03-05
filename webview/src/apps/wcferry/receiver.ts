@@ -20,14 +20,16 @@ export class WcferryReceiverComponent implements OnDestroy {
     }
 
     public async startSocket() {
-        const url = location.origin.replace(/^http/, 'ws');
-        const wss = new WebSocket(url + '/wcf/socket_receiver');
+        const token = sessionStorage.getItem('token');
+        const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
+        const wss = new WebSocket(url + (token ? '?token=' + token : ''));
         wss.onopen = () => {
             this.messages.push('websocket is connected');
             this.wss = wss;
         };
         wss.onclose = () => {
-            this.messages.push('websocket is closed');
+            this.messages.push('websocket is closed, retry in 5s');
+            setTimeout(() => this.startSocket(), 5 * 1000);
         };
         wss.onerror = (event) => {
             this.messages.push('websocket error, details to console');
