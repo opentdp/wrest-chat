@@ -72,9 +72,19 @@ func hook10000(msg *wcferry.WxMsg) {
 		return
 	}
 
-	// 有人进群时响应
-	re := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
-	if matches := re.FindStringSubmatch(msg.Content); len(matches) > 1 {
+	// 邀请"xxx"加入了群聊
+	r1 := regexp.MustCompile(`邀请"(.+)"加入了群聊`)
+	if matches := r1.FindStringSubmatch(msg.Content); len(matches) > 1 {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		if strings.Trim(room.WelcomeMsg, "-") != "" {
+			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+		}
+		return
+	}
+
+	// "xxx"通过扫描"xxx"分享的二维码加入群聊
+	r2 := regexp.MustCompile(`"(.+)"通过扫描"(.+)"分享的二维码加入群聊`)
+	if matches := r2.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if strings.Trim(room.WelcomeMsg, "-") != "" {
 			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
