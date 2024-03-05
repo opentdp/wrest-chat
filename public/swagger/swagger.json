@@ -1883,6 +1883,9 @@
                 "pat_return": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -1899,10 +1902,10 @@
         },
         "chatroom.DeleteParam": {
             "type": "object",
-            "required": [
-                "roomid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 }
@@ -1918,10 +1921,10 @@
         },
         "chatroom.FetchParam": {
             "type": "object",
-            "required": [
-                "roomid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 }
@@ -1944,6 +1947,9 @@
                 },
                 "pat_return": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "remark": {
                     "type": "string"
@@ -2122,6 +2128,9 @@
                 "phrase": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 }
@@ -2212,6 +2221,9 @@
                 "provider": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "secret": {
                     "type": "string"
                 }
@@ -2219,12 +2231,12 @@
         },
         "llmodel.DeleteParam": {
             "type": "object",
-            "required": [
-                "mid"
-            ],
             "properties": {
                 "mid": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2244,12 +2256,12 @@
         },
         "llmodel.FetchParam": {
             "type": "object",
-            "required": [
-                "mid"
-            ],
             "properties": {
                 "mid": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2278,6 +2290,9 @@
                 "provider": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "secret": {
                     "type": "string"
                 }
@@ -2299,6 +2314,9 @@
                     "type": "integer"
                 },
                 "level": {
+                    "type": "integer"
+                },
+                "rd": {
                     "type": "integer"
                 },
                 "remark": {
@@ -2369,6 +2387,9 @@
                 "level": {
                     "type": "integer"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -2392,6 +2413,9 @@
                 "name": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -2408,12 +2432,12 @@
         },
         "setting.DeleteParam": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2427,12 +2451,12 @@
         },
         "setting.FetchParam": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2447,6 +2471,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "remark": {
                     "type": "string"

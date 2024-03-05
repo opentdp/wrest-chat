@@ -79,7 +79,7 @@ export const AppRoutes: Routes = [
 
     { path: 'llmodel/create', component: LLModelCreateComponent, canActivate: [LoginGuard] },
     { path: 'llmodel/list', component: LLModelListComponent, canActivate: [LoginGuard] },
-    { path: 'llmodel/update/:mid', component: LLModelUpdateComponent, canActivate: [LoginGuard] },
+    { path: 'llmodel/update/:rd', component: LLModelUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'keyword/list', component: KeywordListComponent, canActivate: [LoginGuard] },
     { path: 'keyword/create', component: KeywordCreateComponent, canActivate: [LoginGuard] },
@@ -91,7 +91,7 @@ export const AppRoutes: Routes = [
 
     { path: 'setting/list', component: SettingListComponent, canActivate: [LoginGuard] },
     { path: 'setting/create', component: SettingCreateComponent, canActivate: [LoginGuard] },
-    { path: 'setting/update/:name', component: SettingUpdateComponent, canActivate: [LoginGuard] },
+    { path: 'setting/update/:rd', component: SettingUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },

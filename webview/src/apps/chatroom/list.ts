@@ -30,7 +30,7 @@ export class ChatroomListComponent {
     }
 
     public deleteChatroom(item: TablesChatroom) {
-        RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
+        RobotApi.chatroomDelete({ rd: item.rd }).then(() => {
             this.getChatrooms();
         });
     }

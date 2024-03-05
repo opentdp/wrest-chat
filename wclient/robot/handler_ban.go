@@ -44,7 +44,7 @@ func banHandler() {
 					}
 					// 拉黑用户
 					expire := time.Now().Unix() + int64(second)
-					profile.Replace(&profile.UpdateParam{Wxid: v, Roomid: prid(msg), BanExpire: expire})
+					profile.Replace(&profile.ReplaceParam{Wxid: v, Roomid: prid(msg), BanExpire: expire})
 				}
 				return fmt.Sprintf("已拉黑，有效期 %d 秒", second)
 			}
@@ -74,7 +74,7 @@ func banHandler() {
 						return "禁止操作管理员"
 					}
 					// 解封用户
-					profile.Replace(&profile.UpdateParam{Wxid: v, Roomid: prid(msg), BanExpire: -1})
+					profile.Replace(&profile.ReplaceParam{Wxid: v, Roomid: prid(msg), BanExpire: -1})
 				}
 				return "已解封用户"
 			}

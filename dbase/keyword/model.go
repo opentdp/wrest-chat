@@ -9,6 +9,7 @@ import (
 // 创建关键词
 
 type CreateParam struct {
+	Rd     uint   `json:"rd"`
 	Roomid string `binding:"required" json:"roomid"`
 	Phrase string `binding:"required" json:"phrase"`
 	Level  int32  `json:"level"`
@@ -30,10 +31,7 @@ func Create(data *CreateParam) (uint, error) {
 
 // 更新关键词
 
-type UpdateParam struct {
-	Rd uint `json:"rd"`
-	CreateParam
-}
+type UpdateParam = CreateParam
 
 func Update(data *UpdateParam) error {
 
@@ -53,11 +51,12 @@ func Update(data *UpdateParam) error {
 
 // 合并关键词
 
-type ReplaceParam = UpdateParam
+type ReplaceParam = CreateParam
 
 func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
+		Rd:     data.Rd,
 		Roomid: data.Roomid,
 		Phrase: data.Phrase,
 	})
@@ -66,11 +65,7 @@ func Replace(data *ReplaceParam) error {
 		data.Rd = item.Rd
 		err = Update(data)
 	} else {
-		_, err = Create(&CreateParam{
-			Roomid: data.Roomid,
-			Phrase: data.Phrase,
-			Level:  data.Level,
-		})
+		_, err = Create(data)
 	}
 
 	return err

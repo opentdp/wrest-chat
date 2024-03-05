@@ -9,6 +9,7 @@ import (
 // 创建配置
 
 type CreateParam struct {
+	Rd     uint   `json:"rd"`
 	Name   string `binding:"required" json:"name"`
 	Type   string `json:"type"`
 	Group  string `json:"group"`
@@ -42,9 +43,10 @@ func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Setting{
-			Name: data.Name,
+			Rd: data.Rd,
 		}).
 		Updates(tables.Setting{
+			Name:   data.Name,
 			Type:   data.Type,
 			Group:  data.Group,
 			Value:  data.Value,
@@ -63,10 +65,12 @@ type ReplaceParam = CreateParam
 func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
+		Rd:   data.Rd,
 		Name: data.Name,
 	})
 
 	if err == nil && item.Rd > 0 {
+		data.Rd = item.Rd
 		err = Update(data)
 	} else {
 		_, err = Create(data)
@@ -79,7 +83,8 @@ func Replace(data *ReplaceParam) error {
 // 获取配置
 
 type FetchParam struct {
-	Name string `binding:"required" json:"name"`
+	Rd   uint   `json:"rd"`
+	Name string `json:"name"`
 }
 
 func Fetch(data *FetchParam) (*tables.Setting, error) {

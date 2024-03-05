@@ -12,7 +12,7 @@
     <form class="row gy-3" (ngSubmit)="updateLLModel()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">指令 *</label>
-            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" readonly />
+            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
                 用于生成模型切换指令，不影响接口请求
             </div>

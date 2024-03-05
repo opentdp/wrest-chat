@@ -248,8 +248,10 @@ export interface ChatroomCreateParam {
 }
 
 export interface ChatroomDeleteParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface ChatroomFetchAllParam {
@@ -258,8 +260,10 @@ export interface ChatroomFetchAllParam {
 }
 
 export interface ChatroomFetchParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface ChatroomUpdateParam {
@@ -275,6 +279,8 @@ export interface ChatroomUpdateParam {
     remark: string;
     // 防撤回消息
     revoke_msg: string;
+    // 主键
+    rd: number;
     // 群聊 id
     roomid: string;
     // 欢迎消息
@@ -310,7 +316,7 @@ export interface KeywordFetchParam {
     // 词语或短语
     phrase?: string;
     // 主键
-    rd?: number;
+    rd: number;
     // 群聊 id
     roomid?: string;
 }
@@ -343,7 +349,9 @@ export interface LlmodelCreateParam {
 
 export interface LlmodelDeleteParam {
     // 模型 Id
-    mid: string;
+    mid?: string;
+    // 主键
+    rd: number;
 }
 
 export interface LlmodelFetchAllParam {
@@ -357,7 +365,9 @@ export interface LlmodelFetchAllParam {
 
 export interface LlmodelFetchParam {
     // 模型 Id
-    mid: string;
+    mid?: string;
+    // 主键
+    rd: number;
 }
 
 export interface LlmodelUpdateParam {
@@ -371,6 +381,8 @@ export interface LlmodelUpdateParam {
     model: string;
     // 服务商名称
     provider: string;
+    // 主键
+    rd: number;
     // 密钥
     secret: string;
 }
@@ -428,6 +440,8 @@ export interface ProfileUpdateParam {
     level: number;
     // 备注
     remark: string;
+    // 主键
+    rd: number;
     // 群聊 id
     roomid: string;
     // 微信 id
@@ -437,7 +451,7 @@ export interface ProfileUpdateParam {
 export interface SettingCreateParam {
     // 分组
     group?: string;
-    // 键
+    // 键名
     name: string;
     // 备注
     remark?: string;
@@ -445,13 +459,15 @@ export interface SettingCreateParam {
     title?: string;
     // 类型
     type?: string;
-    // 值
+    // 键值
     value?: string;
 }
 
 export interface SettingDeleteParam {
-    // 键
-    name: string;
+    // 键名
+    name?: string;
+    // 主键
+    rd: number;
 }
 
 export interface SettingFetchAllParam {
@@ -460,22 +476,26 @@ export interface SettingFetchAllParam {
 }
 
 export interface SettingFetchParam {
-    // 键
-    name: string;
+    // 键名
+    name?: string;
+    // 主键
+    rd: number;
 }
 
 export interface SettingUpdateParam {
     // 分组
     group: string;
-    // 键
+    // 键名
     name: string;
+    // 主键
+    rd: number;
     // 备注
     remark: string;
     // 标题
     title: string;
     // 类型
     type: string;
-    // 值
+    // 键值
     value: string;
 }
 
@@ -568,7 +588,7 @@ export interface TablesSetting {
     createdAt: number;
     // 分组
     group: string;
-    // 键
+    // 键名
     name: string;
     // 主键
     rd: number;
@@ -580,6 +600,6 @@ export interface TablesSetting {
     type: string;
     // 最后更新时间戳
     updatedAt: number;
-    // 值
+    // 键值
     value: string;
 }

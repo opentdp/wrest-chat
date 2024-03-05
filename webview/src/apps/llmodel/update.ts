@@ -18,12 +18,12 @@ export class LLModelUpdateComponent implements OnInit {
     ) { }
 
     public ngOnInit() {
-        const mid = this.route.snapshot.paramMap.get('mid');
-        mid && this.getLLModel(mid);
+        const rd = this.route.snapshot.paramMap.get('rd');
+        rd && this.getLLModel(+rd);
     }
 
-    public getLLModel(mid: string) {
-        RobotApi.llmodelDetail({ mid }).then((data) => {
+    public getLLModel(rd: number) {
+        RobotApi.llmodelDetail({ rd }).then((data) => {
             this.formdata = data;
         });
     }

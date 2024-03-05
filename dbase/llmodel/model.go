@@ -9,6 +9,7 @@ import (
 // 创建模型
 
 type CreateParam struct {
+	Rd       uint   `json:"rd"`
 	Mid      string `binding:"required" json:"mid"`
 	Family   string `binding:"required" json:"family"`
 	Provider string `binding:"required" json:"provider"`
@@ -42,9 +43,10 @@ func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.LLModel{
-			Mid: data.Mid,
+			Rd: data.Rd,
 		}).
 		Updates(tables.LLModel{
+			Mid:      data.Mid,
 			Family:   data.Family,
 			Provider: data.Provider,
 			Model:    data.Model,
@@ -63,10 +65,12 @@ type ReplaceParam = CreateParam
 func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
+		Rd:  data.Rd,
 		Mid: data.Mid,
 	})
 
 	if err == nil && item.Rd > 0 {
+		data.Rd = item.Rd
 		err = Update(data)
 	} else {
 		_, err = Create(data)
@@ -79,7 +83,8 @@ func Replace(data *ReplaceParam) error {
 // 获取模型
 
 type FetchParam struct {
-	Mid string `binding:"required" json:"mid"`
+	Rd  uint   `json:"rd"`
+	Mid string `json:"mid"`
 }
 
 func Fetch(data *FetchParam) (*tables.LLModel, error) {
@@ -88,6 +93,7 @@ func Fetch(data *FetchParam) (*tables.LLModel, error) {
 
 	result := dborm.Db.
 		Where(&tables.LLModel{
+			Rd:  data.Rd,
 			Mid: data.Mid,
 		}).
 		First(&item)

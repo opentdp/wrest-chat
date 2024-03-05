@@ -22,7 +22,7 @@ export class LLModelListComponent {
     }
 
     public deleteLLModel(item: TablesLLModel) {
-        RobotApi.llmodelDelete({ mid: item.mid }).then(() => {
+        RobotApi.llmodelDelete({ rd: item.rd }).then(() => {
             this.getLLModels();
         });
     }
