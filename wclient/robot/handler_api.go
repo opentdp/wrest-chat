@@ -2,6 +2,7 @@ package robot
 
 import (
 	"strings"
+	"unicode/utf8"
 
 	"github.com/opentdp/go-helper/request"
 
@@ -44,7 +45,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 返回卡片消息
-	if len(res) > 100 {
+	if utf8.RuneCountInString(res) > 120 {
 		receiver := msg.Sender
 		if msg.IsGroup {
 			receiver = msg.Roomid
