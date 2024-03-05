@@ -40,6 +40,7 @@
                 <td class="d-none d-xxl-table-cell">{{item.welcome_msg}}</td>
                 <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
                 <td class="text-nowrap">
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/chatroom/update/{{item.rd}}">编辑</button>
                     <button class="btn btn-sm btn-danger" (click)="deleteChatroom(item)">删除</button>
                 </td>
             </tr>

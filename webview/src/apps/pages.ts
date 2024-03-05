@@ -5,6 +5,7 @@ import { Alert404Component } from './alert/404';
 
 import { ChatroomListComponent } from './chatroom/list';
 import { ChatroomCreateComponent } from './chatroom/create';
+import { ChatroomUpdateComponent } from './chatroom/update';
 
 import { CronjobListComponent } from './cronjob/list';
 import { CronjobCreateComponent } from './cronjob/create';
@@ -16,7 +17,7 @@ import { LLModelUpdateComponent } from './llmodel/update';
 
 import { KeywordListComponent } from './keyword/list';
 import { KeywordCreateComponent } from './keyword/create';
-import {KeywordUpdateComponent} from "./keyword/update";
+import { KeywordUpdateComponent } from "./keyword/update";
 
 import { ProfileListComponent } from './profile/list';
 import { ProfileCreateComponent } from './profile/create';
@@ -37,6 +38,7 @@ export const AppComponents = [
 
     ChatroomListComponent,
     ChatroomCreateComponent,
+    ChatroomUpdateComponent,
 
     CronjobListComponent,
     CronjobCreateComponent,
@@ -72,6 +74,7 @@ export const AppRoutes: Routes = [
 
     { path: 'chatroom/list', component: ChatroomListComponent, canActivate: [LoginGuard] },
     { path: 'chatroom/create', component: ChatroomCreateComponent, canActivate: [LoginGuard] },
+    { path: 'chatroom/update/:rd', component: ChatroomUpdateComponent, canActivate: [LoginGuard] },
 
     { path: 'cronjob/list', component: CronjobListComponent, canActivate: [LoginGuard] },
     { path: 'cronjob/create', component: CronjobCreateComponent, canActivate: [LoginGuard] },
