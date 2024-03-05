@@ -32,6 +32,9 @@ export class LLModelUpdateComponent implements OnInit {
     }
 
     public updateLLModel() {
+        if (this.formdata.level) {
+            this.formdata.level = +this.formdata.level;
+        }
         RobotApi.llmodelUpdate(this.formdata).then(() => {
             this.router.navigate(['llmodel/list']);
         });

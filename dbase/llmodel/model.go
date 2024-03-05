@@ -11,7 +11,7 @@ import (
 type CreateParam struct {
 	Rd       uint   `json:"rd"`
 	Mid      string `binding:"required" json:"mid"`
-	Level    int32  `binding:"required" json:"level"`
+	Level    int32  `json:"level"`
 	Family   string `binding:"required" json:"family"`
 	Provider string `binding:"required" json:"provider"`
 	Model    string `binding:"required" json:"model"`
