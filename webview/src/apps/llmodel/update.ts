@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { UserLevels } from 'src/openapi/const';
 import { RobotApi, LlmodelUpdateParam } from '../../openapi/wrobot';
 
 
@@ -9,6 +10,8 @@ import { RobotApi, LlmodelUpdateParam } from '../../openapi/wrobot';
     templateUrl: 'update.html'
 })
 export class LLModelUpdateComponent implements OnInit {
+
+    public userLevels = UserLevels;
 
     public formdata: LlmodelUpdateParam = {} as LlmodelUpdateParam;
 

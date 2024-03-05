@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { UserLevels } from 'src/openapi/const';
 import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 
 
@@ -9,6 +10,8 @@ import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
     templateUrl: 'create.html'
 })
 export class LLModelCreateComponent {
+
+    public userLevels = UserLevels;
 
     public formdata: LlmodelCreateParam = {
         mid: '',

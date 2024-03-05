@@ -553,7 +553,7 @@ export interface TablesLLModel {
     // 模型家族，用于生成模型切换指令
     family: string;
     // 等级，用于限制用户访问
-    level?: number;
+    level: number;
     // 模型 Id
     mid: string;
     // 模型，必须和服务商提供的值对应

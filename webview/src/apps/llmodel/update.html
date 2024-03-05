@@ -18,6 +18,17 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                大模型使用权限
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">族类 *</label>
             <select name="family" class="form-select" [(ngModel)]="formdata.family" required>
                 <option value="Gemini">Gemini</option>
