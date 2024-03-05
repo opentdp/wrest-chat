@@ -18,6 +18,7 @@
                 <th scope="col">#</th>
                 <th scope="col">指令</th>
                 <th scope="col">模型</th>
+                <th scope="col" class="d-none d-md-table-cell">级别</th>
                 <th scope="col" class="d-none d-lg-table-cell">族类</th>
                 <th scope="col" class="d-none d-md-table-cell">供应商</th>
                 <th scope="col" class="d-none d-xl-table-cell">接入点</th>
@@ -30,6 +31,9 @@
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.mid}}</td>
                 <td>{{item.model}}</td>
+                <td class="d-none d-md-table-cell">
+                    {{userLevels[item.level] && userLevels[item.level].name || '-'}}
+                </td>
                 <td class="d-none d-lg-table-cell">{{item.family}}</td>
                 <td class="d-none d-md-table-cell">{{item.provider}}</td>
                 <td class="d-none d-xl-table-cell">{{item.endpoint}}</td>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { UserLevels } from 'src/openapi/const';
 import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
 
 
@@ -8,6 +9,8 @@ import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
     templateUrl: 'list.html'
 })
 export class LLModelListComponent {
+
+    public userLevels = UserLevels;
 
     public llmodels: Array<TablesLLModel> = [];
 
