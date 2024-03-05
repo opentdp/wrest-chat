@@ -119,6 +119,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.LLModel{
+			Rd:  data.Rd,
 			Mid: data.Mid,
 		}).
 		Delete(&item)

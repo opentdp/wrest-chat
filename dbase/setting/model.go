@@ -115,6 +115,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Setting{
+			Rd:   data.Rd,
 			Name: data.Name,
 		}).
 		Delete(&item)

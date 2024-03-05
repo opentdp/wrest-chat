@@ -12,9 +12,6 @@ export async function httpRequest(input: string, options: RequestInit = {}) {
     // 发起 HTTP 请求
     try {
         const response = await fetch(input, options);
-        if (response.status < 200 || response.status > 300) {
-            throw new Error(response.statusText);
-        }
         const data = await response.json();
         if (data.Message) {
             window.postMessage({ message: data.Message, type: 'success' });
@@ -24,6 +21,9 @@ export async function httpRequest(input: string, options: RequestInit = {}) {
                 throw new Error(data.Error.Message);
             }
             throw data.Error;
+        }
+        if (response.status < 200 || response.status > 500) {
+            throw new Error(response.statusText);
         }
         return data.Payload;
     } catch (error) {

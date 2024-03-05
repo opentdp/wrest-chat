@@ -122,6 +122,7 @@ func Delete(data *DeleteParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 		}).
 		Delete(&item)
