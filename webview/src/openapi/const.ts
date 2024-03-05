@@ -32,6 +32,6 @@ export const FieldTypes: Record<string, LevelData> = {
     bool: { name: '布尔' },
     number: { name: '数字' },
     string: { name: '字符串' },
-    text: { name: '大段文字' },
+    text: { name: '多行文本' },
     lmodel: { name: 'AI 模型' },
 };
