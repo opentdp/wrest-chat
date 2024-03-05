@@ -105,6 +105,8 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	// 重写消息
 	if len(matches) == 2 {
 		msg.Content = strings.TrimSpace(matches[1])
+	} else {
+		msg.Content = ""
 	}
 
 	// 执行指令
