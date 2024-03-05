@@ -37,6 +37,9 @@ export class KeywordUpdateComponent implements OnInit {
     }
 
     public updateKeyWord() {
+        if (this.formdata.level) {
+            this.formdata.level = +this.formdata.level;
+        }
         RobotApi.keywordUpdate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
         });
