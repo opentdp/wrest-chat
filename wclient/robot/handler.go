@@ -1,11 +1,11 @@
 package robot
 
 import (
-	"regexp"
 	"sort"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/profile"
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/dbase/tables"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -70,31 +70,17 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	// 空白消息
+	// 忽略消息
 	content := strings.TrimSpace(msg.Content)
-	if len(content) == 0 {
+	if len(content) < 2 || content[0] != '/' {
 		return ""
 	}
 
 	// 解析指令
-	re := regexp.MustCompile(`^(/[\w:-]{2,20})\s*(.*)$`)
-	matches := re.FindStringSubmatch(content)
-	if len(matches) != 3 {
-		return ""
-	}
-
-	// 查找指令
-	handler, ok := handlers[matches[1]]
+	matches := strings.SplitN(content, " ", 2)
+	handler, ok := handlers[matches[0]]
 	if !ok {
-		return "指令未注册或参数错误"
-	}
-
-	// 验证级别
-	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.Level < handler.Level {
-			return "此指令已被限制使用"
-		}
+		return setting.InvalidHandler
 	}
 
 	// 验证场景
@@ -108,8 +94,20 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
+	// 验证权限
+	if handler.Level > 0 {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if up.Level < handler.Level {
+			return "此指令已被限制使用"
+		}
+	}
+
+	// 重写消息
+	if len(matches) == 2 {
+		msg.Content = strings.TrimSpace(matches[1])
+	}
+
 	// 执行指令
-	msg.Content = strings.TrimSpace(matches[2])
 	return handler.Callback(msg)
 
 }
