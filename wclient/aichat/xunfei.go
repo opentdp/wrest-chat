@@ -85,8 +85,8 @@ func XunfeiText(id, rid, ask string) (string, error) {
 
 	// 更新历史记录
 
-	item1 := &MsgHistory{Content: ask, Role: xunfei.ChatMessageRoleUser}
-	item2 := &MsgHistory{Content: reply, Role: xunfei.ChatMessageRoleAssistant}
+	item1 := &MsgHistory{Content: ask, Role: "user"}
+	item2 := &MsgHistory{Content: reply, Role: "model"}
 
 	AppendHistory(id, item1, item2)
 

@@ -52,22 +52,20 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	})
 
 	// 请求模型接口
-	res, err := client.CreateChatCompletion(context.Background(), req)
 
+	res, err := client.CreateChatCompletion(context.Background(), req)
 	if err != nil {
 		return "", err
 	}
 
-	reply := res.Result
-
-	if reply == "" {
+	if res.Result == "" {
 		return "", errors.New("未得到预期的结果")
 	}
 
 	// 更新历史记录
 
-	item1 := &MsgHistory{Content: ask, Role: baidu.ChatMessageRoleUser}
-	item2 := &MsgHistory{Content: reply, Role: baidu.ChatMessageRoleAssistant}
+	item1 := &MsgHistory{Content: ask, Role: "user"}
+	item2 := &MsgHistory{Content: res.Result, Role: "model"}
 
 	AppendHistory(id, item1, item2)
 
