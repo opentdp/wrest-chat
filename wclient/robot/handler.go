@@ -28,6 +28,7 @@ func setupHandlers() {
 	apiHandler()
 	badHandler()
 	banHandler()
+	topHandler()
 	roomHandler()
 	wgetHandler()
 
