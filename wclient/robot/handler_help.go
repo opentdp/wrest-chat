@@ -75,16 +75,19 @@ func helpCallback(msg *wcferry.WxMsg) string {
 func helpPreCheck(msg *wcferry.WxMsg) string {
 
 	if setting.WhiteLimit {
+		// 管理豁免
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if up.Level >= 7 {
+			return ""
+		}
+		// 权限检查
 		if msg.IsGroup {
 			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 			if room.Level < 2 {
 				return "-"
 			}
-		} else {
-			up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-			if up.Level < 2 {
-				return "-"
-			}
+		} else if up.Level < 2 {
+			return "-"
 		}
 	}
 

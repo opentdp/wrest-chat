@@ -66,7 +66,7 @@ func badMessagePrefix(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
-	// 权限检查
+	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 	if up.Level >= 7 {
 		return ""

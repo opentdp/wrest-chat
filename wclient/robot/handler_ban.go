@@ -37,7 +37,7 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					// 权限检查
+					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
 					if up.Level >= 7 {
 						return "禁止操作管理员"
@@ -68,7 +68,7 @@ func banHandler() {
 					if v == "" {
 						continue
 					}
-					// 权限检查
+					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
 					if up.Level >= 7 {
 						return "禁止操作管理员"
@@ -86,17 +86,23 @@ func banHandler() {
 
 func banPreCheck(msg *wcferry.WxMsg) string {
 
+	// 管理豁免
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+	if up.Level >= 7 {
+		return ""
+	}
+
+	// 群聊已拉黑
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if room.Level == 1 {
-			msg.Content = ""
-			return ""
+			return "-"
 		}
 	}
 
-	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+	// 用户已拉黑
 	if up.Level == 1 || up.BanExpire > time.Now().Unix() {
-		msg.Content = ""
+		return "-"
 	}
 
 	return ""
