@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -21,7 +20,6 @@ func helpHandler() {
 		RoomAble: true,
 		Describe: "查看帮助信息",
 		Callback: helpCallback,
-		PreCheck: helpPreCheck,
 	}
 
 }
@@ -32,7 +30,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
-	for _, k := range orderHandlers() {
+	for _, k := range handlerKeys {
 		v := handlers[k]
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
@@ -69,28 +67,5 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	}
 
 	return text + "祝你好运！"
-
-}
-
-func helpPreCheck(msg *wcferry.WxMsg) string {
-
-	if setting.WhiteLimit {
-		// 管理豁免
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.Level >= 7 {
-			return ""
-		}
-		// 权限检查
-		if msg.IsGroup {
-			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-			if room.Level < 2 {
-				return "-"
-			}
-		} else if up.Level < 2 {
-			return "-"
-		}
-	}
-
-	return ""
 
 }

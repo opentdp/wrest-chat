@@ -24,7 +24,7 @@ var (
 	// 历史消息数量
 	ModelHistory = 20
 	// 未注册指令时响应的内容
-	InvalidHandler = "指令未注册，请输入 /help 获取帮助信息"
+	InvalidHandler = "-"
 	// API 指令请求的网址
 	ApiEndpoint = "https://api.rehi.org/format=yaml/"
 	// API 指令卡片使用的图标

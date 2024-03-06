@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/dbase/tables"
@@ -11,16 +12,17 @@ import (
 )
 
 type Handler struct {
-	Level    int32  // 0:不限制 9:管理员
-	Order    int32  // 排序，越小越靠前
-	ChatAble bool   // 是否允许在私聊使用
-	RoomAble bool   // 是否允许在群聊使用
-	Describe string // 指令描述
-	Callback func(msg *wcferry.WxMsg) string
-	PreCheck func(msg *wcferry.WxMsg) string
+	Level    int32                       // 0:不限制 7:群管理 9:创始人
+	Order    int32                       // 排序，越小越靠前
+	ChatAble bool                        // 是否允许在私聊使用
+	RoomAble bool                        // 是否允许在群聊使用
+	Describe string                      // 指令的描述信息
+	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截所有聊天内容
+	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
 }
 
 var handlers = map[string]*Handler{}
+var handlerKeys = []string{}
 
 func setupHandlers() {
 
@@ -34,36 +36,37 @@ func setupHandlers() {
 
 	helpHandler()
 
+	// 对 handlers 进行排序
+
+	for k := range handlers {
+		handlerKeys = append(handlerKeys, k)
+	}
+	sort.Slice(handlerKeys, func(i, j int) bool {
+		return handlers[handlerKeys[i]].Order < handlers[handlerKeys[j]].Order
+	})
+
 }
 
 func clearHandlers() {
 
+	handlers = map[string]*Handler{}
+	handlerKeys = []string{}
+
 	badMember = map[string]int{}
 	keywordList = []*tables.Keyword{}
-
-	handlers = map[string]*Handler{}
-
-}
-
-func orderHandlers() []string {
-
-	keys := make([]string, 0, len(handlers))
-	for k, _ := range handlers {
-		keys = append(keys, k)
-	}
-
-	sort.Slice(keys, func(i, j int) bool {
-		return handlers[keys[i]].Order < handlers[keys[j]].Order
-	})
-
-	return keys
 
 }
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	// 前置检查
-	for _, v := range handlers {
+	// 白名单
+	if txt := whiteLimit(msg); txt != "" {
+		return txt
+	}
+
+	// 前置钩子
+	for _, k := range handlerKeys {
+		v := handlers[k]
 		if v.PreCheck != nil {
 			if txt := v.PreCheck(msg); txt != "" {
 				return txt
@@ -71,16 +74,10 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	// 忽略消息
-	content := strings.TrimSpace(msg.Content)
-	if len(content) < 2 || content[0] != '/' {
-		return ""
-	}
-
 	// 解析指令
-	matches := strings.SplitN(content, " ", 2)
-	handler, ok := handlers[matches[0]]
-	if !ok {
+	matches := strings.SplitN(msg.Content, " ", 2)
+	handler := handlers[matches[0]]
+	if handler == nil {
 		return setting.InvalidHandler
 	}
 
@@ -112,5 +109,32 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 执行指令
 	return handler.Callback(msg)
+
+}
+
+// 白名单模式
+func whiteLimit(msg *wcferry.WxMsg) string {
+
+	if !setting.WhiteLimit {
+		return ""
+	}
+
+	// 管理豁免
+	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+	if up.Level >= 7 {
+		return ""
+	}
+
+	// 验证权限
+	if msg.IsGroup {
+		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+		if room.Level < 2 {
+			return "-"
+		}
+	} else if up.Level < 2 {
+		return "-"
+	}
+
+	return ""
 
 }
