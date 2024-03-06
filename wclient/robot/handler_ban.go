@@ -22,7 +22,7 @@ func banHandler() {
 		RoomAble: true,
 		Describe: "拉黑指定的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
-			ret := &types.AtMsgSource{}
+			ret := &types.MsgXmlAtUser{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
 				// 获取拉黑时限
@@ -60,7 +60,7 @@ func banHandler() {
 		RoomAble: true,
 		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
-			ret := &types.AtMsgSource{}
+			ret := &types.MsgXmlAtUser{}
 			err := xml.Unmarshal([]byte(msg.Xml), ret)
 			if err == nil && ret.AtUserList != "" {
 				users := strings.Split(ret.AtUserList, ",")
