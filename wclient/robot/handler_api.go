@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/opentdp/go-helper/request"
@@ -32,6 +33,9 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	cmd := []string{"help"}
 	if msg.Content != "" {
 		cmd = strings.SplitN(msg.Content, " ", 2)
+		if len(cmd) > 1 {
+			cmd[1] = url.QueryEscape(cmd[1])
+		}
 	}
 
 	// 获取结果
