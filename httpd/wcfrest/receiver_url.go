@@ -3,7 +3,6 @@ package wcfrest
 import (
 	"errors"
 
-	"github.com/gorilla/websocket"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
 
@@ -12,9 +11,6 @@ import (
 
 var urlReceiverKey = ""
 var urlReceiverList = map[string]bool{}
-
-var socketReceiverKey = ""
-var socketReceiverList = map[*websocket.Conn]bool{}
 
 func (wc *Controller) enableUrlReceiver(url string) error {
 
@@ -54,50 +50,6 @@ func (wc *Controller) disableUrlReceiver(url string) error {
 	delete(urlReceiverList, url)
 	if len(urlReceiverList) == 0 {
 		return wc.DisableReceiver(urlReceiverKey)
-	}
-
-	return nil
-
-}
-
-func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
-
-	logman.Warn("enable receiver", "socket", ws.RemoteAddr().String())
-
-	if socketReceiverList[ws] {
-		return errors.New("socket already exists")
-	}
-
-	if len(socketReceiverList) == 0 {
-		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
-			ret := wcferry.ParseWxMsg(msg)
-			for s := range socketReceiverList {
-				logman.Info("call receiver", "addr", s.RemoteAddr(), "Id", ret.Id)
-				go s.WriteJSON(ret)
-			}
-		})
-		if err != nil {
-			return err
-		}
-		socketReceiverKey = key
-	}
-
-	socketReceiverList[ws] = true
-	return nil
-
-}
-
-func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
-
-	logman.Warn("disable receiver", "addr", ws.RemoteAddr())
-
-	if !socketReceiverList[ws] {
-		return errors.New("socket not exists")
-	}
-
-	delete(socketReceiverList, ws)
-	if len(socketReceiverList) == 0 {
-		return wc.DisableReceiver(socketReceiverKey)
 	}
 
 	return nil

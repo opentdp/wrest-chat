@@ -203,6 +203,12 @@ func hook10002(msg *wcferry.WxMsg) {
 		return
 	}
 
+	if revoke.Type == 47 {
+		output += "\n-------\n一个浪漫无敌的表情"
+		reply(msg, output)
+		return
+	}
+
 	output += "\n-------\n暂不支持回显的消息类型"
 	reply(msg, output)
 
