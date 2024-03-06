@@ -90,6 +90,14 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
+	// 验证权限
+	if handler.Level > 0 {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if up.Level < handler.Level {
+			return setting.InvalidHandler
+		}
+	}
+
 	// 验证场景
 	if msg.IsGroup {
 		if !handler.RoomAble {
@@ -98,14 +106,6 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	} else {
 		if !handler.ChatAble {
 			return "此指令仅在群聊中可用"
-		}
-	}
-
-	// 验证权限
-	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.Level < handler.Level {
-			return "此指令已被限制使用"
 		}
 	}
 
