@@ -18,10 +18,13 @@ type MsgContent49 struct {
 	Scene        int32  `xml:"scene"`
 }
 
+// 聊天记录 type=19
+
 // 引用 type=57
 
 type ReferMsg struct {
-	Svrid string `xml:"svrid"`
+	Svrid uint64 `xml:"svrid"`
+	Type  int32  `xml:"type"`
 }
 
 // 文件 type=6

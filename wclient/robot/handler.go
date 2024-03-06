@@ -59,6 +59,11 @@ func clearHandlers() {
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
+	// 注册
+	if len(handlers) == 0 {
+		setupHandlers()
+	}
+
 	// 白名单
 	if txt := whiteLimit(msg); txt != "" {
 		return txt

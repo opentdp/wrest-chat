@@ -71,3 +71,39 @@ func GoogleText(id, rid, ask string) (string, error) {
 	return item2.Content, nil
 
 }
+
+func GoogleImage(id, rid, ask, img, mime string) (string, error) {
+
+	llmc := UserModel(id, rid)
+
+	// 初始化模型
+
+	client := google.NewClient(llmc.Secret)
+
+	if llmc.Endpoint != "" {
+		client.ApiBaseUrl = llmc.Endpoint
+	}
+
+	// 请求模型接口
+
+	resp, err := client.CreateImageCompletion(ask, img, mime)
+	if err != nil {
+		return "", err
+	}
+
+	if resp.Error != nil {
+		return "", errors.New(resp.Error.Message)
+	}
+
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+		if resp.PromptFeedback.BlockReason != "" {
+			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
+		}
+		return "", errors.New("未得到预期的结果")
+	}
+
+	// 返回结果
+
+	return resp.Candidates[0].Content.Parts[0].Text, nil
+
+}

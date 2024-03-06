@@ -1,6 +1,10 @@
 package aichat
 
 import (
+	"encoding/base64"
+	"net/http"
+	"os"
+
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -37,6 +41,50 @@ func Text(id, rid, msg string) string {
 		return err.Error()
 	}
 	return res
+
+}
+
+func Image(id, rid, msg, img string) string {
+
+	var err error
+	var res string
+
+	// 预设模型参数
+	CountHistory(id)
+	llmc := UserModel(id, rid)
+
+	// 调用接口生成文本
+	switch llmc.Provider {
+	case "google":
+		base64String, mimeType := GetImage(img)
+		if mimeType+mimeType != "" {
+			res, err = GoogleImage(id, rid, msg, base64String, mimeType)
+		} else {
+			res = "图片格式不支持"
+		}
+	default:
+		res = "当前模型不支持分析图片"
+	}
+
+	// 返回结果
+	if err != nil {
+		return err.Error()
+	}
+	return res
+
+}
+
+func GetImage(img string) (string, string) {
+
+	fileContent, err := os.ReadFile(img)
+	if err != nil {
+		return "", ""
+	}
+
+	base64String := base64.StdEncoding.EncodeToString(fileContent)
+	mimeType := http.DetectContentType(fileContent)
+
+	return base64String, mimeType
 
 }
 

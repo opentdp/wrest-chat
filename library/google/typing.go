@@ -25,12 +25,12 @@ type ResponseBody struct {
 
 type Content struct {
 	Parts []*Part `json:"parts"`
-	Role  string  `json:"role"`
+	Role  string  `json:"role,omitempty"`
 }
 
 type Part struct {
-	Text       string      `json:"text"`
-	InlineData *InlineData `json:"inline_data"`
+	Text       string      `json:"text,omitempty"`
+	InlineData *InlineData `json:"inline_data,omitempty"`
 }
 
 type InlineData struct {

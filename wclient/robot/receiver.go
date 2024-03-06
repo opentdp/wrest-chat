@@ -16,6 +16,7 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
 func receiver(msg *wcferry.WxMsg) {
@@ -27,6 +28,8 @@ func receiver(msg *wcferry.WxMsg) {
 		hook3(msg)
 	case 37: //好友确认
 		hook37(msg)
+	case 49: //混合消息
+		hook49(msg)
 	case 10000: //红包、系统消息
 		hook10000(msg)
 	case 10002: //撤回消息
@@ -37,11 +40,6 @@ func receiver(msg *wcferry.WxMsg) {
 
 // 处理新消息
 func hook1(msg *wcferry.WxMsg) {
-
-	// 注册指令函数
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
 
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
@@ -84,6 +82,30 @@ func hook37(msg *wcferry.WxMsg) {
 		err := xml.Unmarshal([]byte(msg.Content), &ret)
 		if err == nil && ret.FromUserName != "" {
 			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
+		}
+	}
+
+}
+
+// 处理混合消息
+func hook49(msg *wcferry.WxMsg) {
+
+	ret := types.MsgContent49{}
+	err := xml.Unmarshal([]byte(msg.Content), &ret)
+	if err != nil {
+		return
+	}
+
+	if ret.AppMsg.Type == 57 {
+		// 处理图片分析消息
+		if ret.AppMsg.ReferMsg.Type == 3 {
+			id := ret.AppMsg.ReferMsg.Svrid
+			origin, err := message.Fetch(&message.FetchParam{Id: id})
+			if err != nil || origin.Content == "" {
+				return
+			}
+			output := aichat.Image(msg.Sender, msg.Roomid, ret.AppMsg.Title, origin.Remark)
+			reply(msg, output)
 		}
 	}
 
