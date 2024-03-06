@@ -19,7 +19,7 @@ func topHandler() {
 			res := ""
 			// 聊天统计
 			if items := message.TalkTop10(msg.Roomid); len(items) > 0 {
-				res += "\n今日水王\n----------------\n"
+				res += "\n🏊 今日水王\n----------------\n"
 				for _, v := range items {
 					u := wc.CmdClient.GetAliasInChatRoom(v.Sender, msg.Roomid)
 					res += fmt.Sprintf("%s:   %d 次\n", u, v.RecordCount)
@@ -27,7 +27,7 @@ func topHandler() {
 			}
 			// 图片统计
 			if items := message.ImageTop10(msg.Roomid); len(items) > 0 {
-				res += "\n今日图王\n----------------\n"
+				res += "\n🌅 今日图王\n----------------\n"
 				for _, v := range items {
 					u := wc.CmdClient.GetAliasInChatRoom(v.Sender, msg.Roomid)
 					res += fmt.Sprintf("%s:   %d 次\n", u, v.RecordCount)
