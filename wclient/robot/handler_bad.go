@@ -61,9 +61,14 @@ func updateBadWord() {
 
 func badMessagePrefix(msg *wcferry.WxMsg) string {
 
-	// 管理员豁免
+	// 私聊豁免
+	if !msg.IsGroup {
+		return ""
+	}
+
+	// 权限检查
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if !msg.IsGroup || up.Level >= 7 {
+	if up.Level >= 7 {
 		return ""
 	}
 
