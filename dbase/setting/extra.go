@@ -23,7 +23,7 @@ var (
 	ModelContext = "你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题"
 	// 历史消息数量
 	ModelHistory = 20
-	// 未注册指令时响应的内容
+	// 未注册指令时响应的内容，仅对"/"开头的指令有效
 	InvalidHandler = "-"
 	// API 指令请求的网址
 	ApiEndpoint = "https://api.rehi.org/format=yaml/"
@@ -89,7 +89,7 @@ func DataMigrate() {
 		{0, "ModelDefault", "lmodel", "bot", ModelDefault, "默认模型", "用户的默认大模型代码"},
 		{0, "ModelContext", "text", "bot", ModelContext, "模型预定义", "大模型扮演的身份定义"},
 		{0, "ModelHistory", "number", "bot", strconv.Itoa(ModelHistory), "上下文总数", "AI 聊天最大记录数，值越大消耗的 Token 越多"},
-		{0, "InvalidHandler", "text", "bot", InvalidHandler, "指令未注册", "未注册指令时响应的内容"},
+		{0, "InvalidHandler", "text", "bot", InvalidHandler, "指令未注册", "未注册指令时响应的内容，仅对\"/\"开头的指令有效"},
 		{0, "ApiEndpoint", "string", "bot", ApiEndpoint, "API 指令地址", "/api 指令请求的网址"},
 		{0, "ApiEndpointIcon", "string", "bot", ApiEndpointIcon, "API 指令图标", "/api 卡片消息使用的图标"},
 		{0, "HelpAdditive", "text", "bot", HelpAdditive, "HELP 指令扩展", "/help 指令扩展内容，可添加自定义菜单等"},

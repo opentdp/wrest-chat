@@ -74,11 +74,20 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
+	// 忽略空白
+	msg.Content = strings.TrimSpace(msg.Content)
+	if msg.Content == "" {
+		return ""
+	}
+
 	// 解析指令
 	matches := strings.SplitN(msg.Content, " ", 2)
 	handler := handlers[matches[0]]
 	if handler == nil {
-		return setting.InvalidHandler
+		if msg.Content[0] == '/' {
+			return setting.InvalidHandler
+		}
+		return ""
 	}
 
 	// 验证场景
