@@ -130,7 +130,7 @@ func hook10002(msg *wcferry.WxMsg) {
 	}
 
 	// 解析已撤回的消息
-	ret := &types.SysMsg{}
+	ret := &types.RevokeMsg{}
 	err := xml.Unmarshal([]byte(msg.Content), ret)
 	if err != nil || ret.RevokeMsg.NewMsgID == "" {
 		return
