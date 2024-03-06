@@ -1,9 +1,8 @@
 package types
 
 // 好友请求消息
-// @field Msg.Content
 
-type FriendRequestContent struct {
+type MsgContent37 struct {
 	FromUserName      string `xml:"fromusername,attr"`
 	EncryptUserName   string `xml:"encryptusername,attr"`
 	FromNickName      string `xml:"fromnickname,attr"`

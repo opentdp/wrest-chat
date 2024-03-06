@@ -1,9 +1,8 @@
 package types
 
 // 撤回消息提示
-// @field Msg.Content
 
-type RevokeContent struct {
+type MsgContent10002 struct {
 	Type      string `xml:"type,attr"`
 	RevokeMsg struct {
 		Session    string `xml:"session"`

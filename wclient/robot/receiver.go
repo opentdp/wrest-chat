@@ -80,8 +80,8 @@ func hook37(msg *wcferry.WxMsg) {
 
 	// 自动接受新朋友
 	if setting.FriendAccept {
-		ret := &types.FriendRequestContent{}
-		err := xml.Unmarshal([]byte(msg.Content), ret)
+		ret := types.MsgContent37{}
+		err := xml.Unmarshal([]byte(msg.Content), &ret)
 		if err == nil && ret.FromUserName != "" {
 			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
 		}
@@ -157,26 +157,26 @@ func hook10002(msg *wcferry.WxMsg) {
 	}
 
 	// 解析已撤回的消息
-	ret := &types.RevokeContent{}
-	err := xml.Unmarshal([]byte(msg.Content), ret)
-	if err != nil || ret.RevokeMsg.NewMsgID == "" {
+	revoke := types.MsgContent10002{}
+	err := xml.Unmarshal([]byte(msg.Content), &revoke)
+	if err != nil || revoke.RevokeMsg.NewMsgID == "" {
 		return
 	}
 
 	// 获取已撤回消息的 Id
-	id, err := strconv.Atoi(ret.RevokeMsg.NewMsgID)
+	id, err := strconv.Atoi(revoke.RevokeMsg.NewMsgID)
 	if err != nil || id == 0 {
 		return
 	}
 
 	// 取回已撤回的消息内容
-	revoke, err := message.Fetch(&message.FetchParam{Id: uint64(id)})
-	if err != nil || revoke.Content == "" {
+	origin, err := message.Fetch(&message.FetchParam{Id: uint64(id)})
+	if err != nil || origin.Content == "" {
 		return
 	}
 
 	// 提示已撤回的消息内容
-	str := strings.TrimSpace(revoke.Content)
+	str := strings.TrimSpace(origin.Content)
 	xmlPrefixes := []string{"<?xml", "<sysmsg", "<msg"}
 	for _, prefix := range xmlPrefixes {
 		if strings.HasPrefix(str, prefix) {
@@ -190,12 +190,12 @@ func hook10002(msg *wcferry.WxMsg) {
 		return
 	}
 
-	if revoke.Type == 3 {
-		if revoke.Remark != "" {
-			if revoke.IsGroup {
-				wc.CmdClient.SendImg(revoke.Remark, revoke.Roomid)
+	if origin.Type == 3 {
+		if origin.Remark != "" {
+			if origin.IsGroup {
+				wc.CmdClient.SendImg(origin.Remark, origin.Roomid)
 			} else {
-				wc.CmdClient.SendImg(revoke.Remark, revoke.Sender)
+				wc.CmdClient.SendImg(origin.Remark, origin.Sender)
 			}
 		}
 		output += "\n-------\n一张不可描述的图片"
@@ -203,10 +203,29 @@ func hook10002(msg *wcferry.WxMsg) {
 		return
 	}
 
-	if revoke.Type == 47 {
-		output += "\n-------\n一个浪漫无敌的表情"
+	if origin.Type == 47 {
+		output += "\n-------\n一个震惊四座的表情"
 		reply(msg, output)
 		return
+	}
+
+	if origin.Type == 49 {
+		appmsg := types.MsgContent49{}
+		err := xml.Unmarshal([]byte(origin.Content), &appmsg)
+		if err == nil {
+			switch appmsg.AppMsg.Type {
+			case 6:
+				output += "\n-------\n一份暗藏机密的文件"
+			case 19:
+				output += "\n-------\n多条来自异界的消息"
+			case 57:
+				output += "\n-------\n" + appmsg.AppMsg.Title
+			default:
+				output += "\n-------\n暂不支持回显的消息类型"
+			}
+			reply(msg, output)
+			return
+		}
 	}
 
 	output += "\n-------\n暂不支持回显的消息类型"

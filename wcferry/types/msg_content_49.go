@@ -1,68 +1,55 @@
 package types
 
-// 引用消息
-// @field Msg.Content
-
-type ReferContent struct {
-	Msg struct {
-		AppMsg struct {
-			Action   string `json:"action"`
-			Des      string `json:"des"`
-			ReferMsg struct {
-				Svrid string `json:"svrid"`
-			} `json:"refermsg"`
-			Title string `json:"title"`
-			Type  string `json:"type"` // 57
-			URL   string `json:"url"`
-		} `json:"appmsg"`
-		CommentURL   string `json:"commenturl"`
-		FromUsername string `json:"fromusername"`
-		Scene        string `json:"scene"`
-	} `json:"msg"`
+// 共享实时位置、文件、转账、链接、群邀请等
+type MsgContent49 struct {
+	AppMsg struct {
+		Action     string    `xml:"action"`
+		AppAttach  AppAttach `xml:"appattach"` // 6
+		Des        string    `xml:"des"`
+		RecordItem string    `xml:"recorditem"` // 19
+		ReferMsg   ReferMsg  `xml:"refermsg"`   // 57
+		Title      string    `xml:"title"`
+		Type       int32     `xml:"type"`
+		URL        string    `xml:"url"`
+		WCPayInfo  WCPayInfo `xml:"wcpayinfo"` // 1,3
+	} `xml:"appmsg"`
+	CommentURL   string `xml:"commenturl"`
+	FromUsername string `xml:"fromusername"`
+	Scene        int32  `xml:"scene"`
 }
 
-// 聊天记录
-// @field Msg.Content
+// 引用 type=57
 
-type RecordContent struct {
-	Msg struct {
-		AppMsg struct {
-			Action     string `json:"action"`
-			Des        string `json:"des"`
-			RecordItem string `json:"recorditem"`
-			Title      string `json:"title"`
-			Type       string `json:"type"` // 19
-			URL        string `json:"url"`
-		} `json:"appmsg"`
-		CommentURL   string `json:"commenturl"`
-		FromUsername string `json:"fromusername"`
-		Scene        string `json:"scene"`
-	} `json:"msg"`
+type ReferMsg struct {
+	Svrid string `xml:"svrid"`
 }
 
-// 接收转账
-// @field Msg.Content
+// 文件 type=6
 
-type TransferReceiveContent struct {
-	Msg struct {
-		AppMsg struct {
-			Action    string `json:"action"`
-			Des       string `json:"des"`
-			Title     string `json:"title"`
-			Type      string `json:"type"` // 1:转账 3:已收款
-			URL       string `json:"url"`
-			WCPayInfo struct {
-				BeginTransferTime string `json:"begintransfertime"`
-				EffectiveDate     string `json:"effectivedate"`
-				FeeDesc           string `json:"feedesc"`
-				InvalidTime       string `json:"invalidtime"`
-				PayMemo           string `json:"pay_memo"`
-				PayerUsername     string `json:"payer_username"`
-				PaySubtype        string `json:"paysubtype"`
-				ReceiverUsername  string `json:"receiver_username"`
-				TranscationID     string `json:"transcationid"`
-				TransferID        string `json:"transferid"`
-			} `json:"wcpayinfo"`
-		} `json:"appmsg"`
-	} `json:"msg"`
+type AppAttach struct {
+	AesKey            string `xml:"aeskey"`
+	AttachID          string `xml:"attachid"`
+	CDNAttachURL      string `xml:"cdnattachurl"`
+	EmoticonMD5       string `xml:"emoticonmd5"`
+	EncryVer          string `xml:"encryver"`
+	FileExt           string `xml:"fileext"`
+	FileKey           string `xml:"filekey"`
+	FileUploadToken   string `xml:"fileuploadtoken"`
+	OverwriteNewMsgID string `xml:"overwrite_newmsgid"`
+	TotalLen          string `xml:"totallen"`
+}
+
+// 接收转账 type=1:转账,3:已收款
+
+type WCPayInfo struct {
+	BeginTransferTime string `xml:"begintransfertime"`
+	EffectiveDate     string `xml:"effectivedate"`
+	FeeDesc           string `xml:"feedesc"`
+	InvalidTime       string `xml:"invalidtime"`
+	PayMemo           string `xml:"pay_memo"`
+	PayerUsername     string `xml:"payer_username"`
+	PaySubtype        string `xml:"paysubtype"`
+	ReceiverUsername  string `xml:"receiver_username"`
+	TranscationID     string `xml:"transcationid"`
+	TransferID        string `xml:"transferid"`
 }
