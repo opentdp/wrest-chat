@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
@@ -67,7 +68,10 @@ func hook10000(msg *wcferry.WxMsg) {
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
 		if len(setting.FriendHello) > 1 {
-			wc.CmdClient.SendTxt(setting.FriendHello, msg.Sender, "")
+			go (func() {
+				time.Sleep(2 * time.Second)
+				wc.CmdClient.SendTxt(setting.FriendHello, msg.Sender, "")
+			})()
 		}
 		return
 	}
@@ -77,7 +81,10 @@ func hook10000(msg *wcferry.WxMsg) {
 	if matches := r1.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if strings.Trim(room.WelcomeMsg, "-") != "" {
-			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+			go (func() {
+				time.Sleep(3 * time.Second)
+				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+			})()
 		}
 		return
 	}
@@ -87,7 +94,10 @@ func hook10000(msg *wcferry.WxMsg) {
 	if matches := r2.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if strings.Trim(room.WelcomeMsg, "-") != "" {
-			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+			go (func() {
+				time.Sleep(3 * time.Second)
+				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
+			})()
 		}
 		return
 	}
