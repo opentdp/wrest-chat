@@ -29,7 +29,13 @@ type Content struct {
 }
 
 type Part struct {
-	Text string `json:"text"`
+	Text       string      `json:"text"`
+	InlineData *InlineData `json:"inline_data"`
+}
+
+type InlineData struct {
+	MimeType string `json:"mime_type"`
+	Data     string `json:"data"`
 }
 
 type Error struct {
