@@ -2,7 +2,6 @@ package robot
 
 import (
 	"fmt"
-	"math"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
@@ -45,21 +44,30 @@ func aiHandler() {
 		},
 	}
 
-	for _, v := range models {
-		v := v // copy
-		ll := math.Max(float64(v.Level), 0)
-		cmdkey := "/" + v.Mid
-		handlers[cmdkey] = &Handler{
-			Level:    int32(ll),
-			Order:    12,
-			ChatAble: true,
-			RoomAble: true,
-			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
-			Callback: func(msg *wcferry.WxMsg) string {
-				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
-				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
-			},
-		}
+	handlers["/wake"] = &Handler{
+		Level:    0,
+		Order:    12,
+		ChatAble: true,
+		RoomAble: true,
+		Describe: "自定义唤醒词",
+		Callback: func(msg *wcferry.WxMsg) string {
+			argot := msg.Content
+			// 校验唤醒词
+			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
+				return "唤醒词不允许包含 @ 或 /"
+			} else if argot == "" {
+				argot = "-"
+			}
+			// 更新唤醒词
+			profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiArgot: argot})
+			if argot == "-" {
+				if msg.IsGroup {
+					return "已禁用自定义唤醒词"
+				}
+				return "已启用无唤醒词对话模式"
+			}
+			return "唤醒词设置为 " + argot
+		},
 	}
 
 	if len(models) > 3 {
@@ -82,30 +90,23 @@ func aiHandler() {
 		}
 	}
 
-	handlers["/wake"] = &Handler{
-		Level:    0,
-		Order:    14,
-		ChatAble: true,
-		RoomAble: true,
-		Describe: "自定义唤醒词",
-		Callback: func(msg *wcferry.WxMsg) string {
-			argot := msg.Content
-			// 校验唤醒词
-			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
-				return "唤醒词不允许包含 @ 或 /"
-			} else if argot == "" {
-				argot = "-"
-			}
-			// 更新唤醒词
-			profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiArgot: argot})
-			if argot == "-" {
-				if msg.IsGroup {
-					return "已禁用自定义唤醒词"
-				}
-				return "已启用无唤醒词对话模式"
-			}
-			return "唤醒词设置为 " + argot
-		},
+	for _, v := range models {
+		v := v // copy
+		cmdkey := "/" + v.Mid
+		handlers[cmdkey] = &Handler{
+			Level:    0,
+			Order:    14,
+			ChatAble: true,
+			RoomAble: true,
+			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
+			Callback: func(msg *wcferry.WxMsg) string {
+				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
+				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
+			},
+		}
+		if v.Level > 0 {
+			handlers[cmdkey].Level = v.Level
+		}
 	}
 
 }
