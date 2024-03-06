@@ -15,6 +15,8 @@ var (
 	PatReturn = true
 	// 私聊撤回消息时响应的内容，留空则忽略
 	RevokeMsg = "撤回了寂寞？"
+	// 自动下载消息中的图片
+	AutoSaveImage = true
 	// 开启后只有白名单内的群或好友可以使用机器人
 	WhiteLimit = false
 	// 用户的默认模型代码
@@ -54,6 +56,8 @@ func Laod() {
 			PatReturn = item.Value == "true"
 		case "RevokeMsg":
 			RevokeMsg = item.Value
+		case "AutoSaveImage":
+			AutoSaveImage = item.Value == "true"
 		case "WhiteLimit":
 			WhiteLimit = item.Value == "true"
 		case "ModelDefault":
@@ -85,6 +89,7 @@ func DataMigrate() {
 		{0, "FriendHello", "string", "bot", FriendHello, "好友打招呼", "添加好友后的响应内容"},
 		{0, "PatReturn", "bool", "bot", strconv.FormatBool(PatReturn), "回应拍拍", "私聊是否自动回应拍一拍"},
 		{0, "RevokeMsg", "string", "bot", RevokeMsg, "撤回提醒", "私聊撤回消息时响应的内容"},
+		{0, "AutoSaveImage", "bool", "bot", strconv.FormatBool(AutoSaveImage), "自动保存图片", "是否自动下载消息中的图片"},
 		{0, "WhiteLimit", "bool", "bot", strconv.FormatBool(WhiteLimit), "白名单模式", "开启后仅白名单内的群或好友可以使用机器人"},
 		{0, "ModelDefault", "lmodel", "bot", ModelDefault, "默认模型", "用户的默认大模型代码"},
 		{0, "ModelContext", "text", "bot", ModelContext, "模型预定义", "大模型扮演的身份定义"},

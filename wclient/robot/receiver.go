@@ -2,10 +2,13 @@ package robot
 
 import (
 	"encoding/xml"
+	"path"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/opentdp/go-helper/logman"
 
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
@@ -19,6 +22,8 @@ func receiver(msg *wcferry.WxMsg) {
 	switch msg.Type {
 	case 1: //文字
 		hook1(msg)
+	case 3: //图片
+		hook3(msg)
 	case 37: //好友确认
 		hook37(msg)
 	case 10000: //红包、系统消息
@@ -48,7 +53,22 @@ func hook1(msg *wcferry.WxMsg) {
 
 }
 
-// 新朋友通知
+// 处理图片消息
+func hook3(msg *wcferry.WxMsg) {
+
+	if setting.AutoSaveImage && msg.Extra != "" {
+		dir := path.Dir(msg.Extra)
+		p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, dir, 5)
+		if err == nil {
+			logman.Info("downloaded image", "path", p)
+		} else {
+			logman.Error("download image error", "err", err)
+		}
+	}
+
+}
+
+// 处理新朋友通知
 func hook37(msg *wcferry.WxMsg) {
 
 	// 自动接受新朋友
