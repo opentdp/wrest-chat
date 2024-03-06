@@ -68,10 +68,8 @@ func hook10000(msg *wcferry.WxMsg) {
 	// 接受好友后响应
 	if strings.Contains(msg.Content, "现在可以开始聊天了") {
 		if len(setting.FriendHello) > 1 {
-			go (func() {
-				time.Sleep(2 * time.Second)
-				wc.CmdClient.SendTxt(setting.FriendHello, msg.Sender, "")
-			})()
+			time.Sleep(2 * time.Second) // 延迟 2 秒
+			wc.CmdClient.SendTxt(setting.FriendHello, msg.Sender, "")
 		}
 		return
 	}
@@ -81,10 +79,8 @@ func hook10000(msg *wcferry.WxMsg) {
 	if matches := r1.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if strings.Trim(room.WelcomeMsg, "-") != "" {
-			go (func() {
-				time.Sleep(3 * time.Second)
-				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
-			})()
+			time.Sleep(3 * time.Second) // 延迟 3 秒
+			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
 		}
 		return
 	}
@@ -94,10 +90,8 @@ func hook10000(msg *wcferry.WxMsg) {
 	if matches := r2.FindStringSubmatch(msg.Content); len(matches) > 1 {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
 		if strings.Trim(room.WelcomeMsg, "-") != "" {
-			go (func() {
-				time.Sleep(3 * time.Second)
-				wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
-			})()
+			time.Sleep(3 * time.Second) // 延迟 3 秒
+			wc.CmdClient.SendTxt("@"+matches[1]+"\n"+room.WelcomeMsg, msg.Roomid, "")
 		}
 		return
 	}
