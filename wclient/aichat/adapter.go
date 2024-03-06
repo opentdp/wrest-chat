@@ -26,6 +26,8 @@ func Text(id, rid, msg string) string {
 		res, err = XunfeiText(id, rid, msg)
 	case "baidu":
 		res, err = BaiDuText(id, rid, msg)
+	case "tencent":
+		res, err = TencentText(id, rid, msg)
 	default:
 		res = "暂不支持此模型"
 	}
