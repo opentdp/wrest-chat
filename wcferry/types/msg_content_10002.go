@@ -1,7 +1,6 @@
 package types
 
 // 撤回消息提示
-// @type 10002
 // @field Msg.Content
 
 type RevokeContent struct {

@@ -1,7 +1,6 @@
 package types
 
 // 好友请求消息
-// @type 37
 // @field Msg.Content
 
 type FriendRequestContent struct {
