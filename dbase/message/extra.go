@@ -47,7 +47,7 @@ func ImageTop10(roomid string) []*TopItem {
 	sql := `
 		SELECT sender, COUNT(sender) AS record_count
 		FROM message
-		WHERE created_at >= ? AND roomid = ? AND type = 3
+		WHERE created_at >= ? AND roomid = ? AND type IN (3,47)
 		GROUP BY sender
 		ORDER BY record_count DESC
 		LIMIT 10
