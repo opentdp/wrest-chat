@@ -10,6 +10,7 @@ import (
 
 	"github.com/opentdp/go-helper/logman"
 
+	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -53,17 +54,23 @@ func hook1(msg *wcferry.WxMsg) {
 
 }
 
-// 处理图片消息
+// 自动保存图片
 func hook3(msg *wcferry.WxMsg) {
 
-	if setting.AutoSaveImage && msg.Extra != "" {
-		dir := path.Dir(msg.Extra)
-		p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, dir, 5)
-		if err == nil {
-			logman.Info("downloaded image", "path", p)
-		} else {
-			logman.Error("download image error", "err", err)
-		}
+	if !setting.AutoSaveImage || msg.Extra == "" {
+		return
+	}
+
+	dir := path.Dir(msg.Extra)
+	p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, dir, 5)
+	if err != nil || p == "" {
+		logman.Error("download image error", "err", err)
+		return
+	}
+
+	logman.Info("downloaded image", "path", p)
+	if args.Wcf.MsgStore {
+		message.Update(&message.UpdateParam{Id: msg.Id, Remark: p})
 	}
 
 }
@@ -176,12 +183,27 @@ func hook10002(msg *wcferry.WxMsg) {
 			str = ""
 		}
 	}
+
 	if str != "" {
 		output += "\n-------\n" + str
-	} else {
-		output += "\n-------\n暂不支持回显的消息类型"
+		reply(msg, output)
+		return
 	}
 
+	if revoke.Type == 3 {
+		if revoke.Remark != "" {
+			if revoke.IsGroup {
+				wc.CmdClient.SendImg(revoke.Remark, revoke.Roomid)
+			} else {
+				wc.CmdClient.SendImg(revoke.Remark, revoke.Sender)
+			}
+		}
+		output += "\n-------\n一张不可描述的图片"
+		reply(msg, output)
+		return
+	}
+
+	output += "\n-------\n暂不支持回显的消息类型"
 	reply(msg, output)
 
 }
