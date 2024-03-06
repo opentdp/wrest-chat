@@ -4,7 +4,7 @@ package types
 // @type 49
 // @field Msg.Content
 
-type TransferReceiveMsg struct {
+type TransferReceiveContent struct {
 	Msg struct {
 		AppMsg struct {
 			Action    string `json:"action"`

@@ -80,7 +80,7 @@ func hook37(msg *wcferry.WxMsg) {
 
 	// 自动接受新朋友
 	if setting.FriendAccept {
-		ret := &types.FriendRequestMsg{}
+		ret := &types.FriendRequestContent{}
 		err := xml.Unmarshal([]byte(msg.Content), ret)
 		if err == nil && ret.FromUserName != "" {
 			wc.CmdClient.AcceptNewFriend(ret.EncryptUserName, ret.Ticket, ret.Scene)
@@ -157,7 +157,7 @@ func hook10002(msg *wcferry.WxMsg) {
 	}
 
 	// 解析已撤回的消息
-	ret := &types.RevokeMsg{}
+	ret := &types.RevokeContent{}
 	err := xml.Unmarshal([]byte(msg.Content), ret)
 	if err != nil || ret.RevokeMsg.NewMsgID == "" {
 		return
