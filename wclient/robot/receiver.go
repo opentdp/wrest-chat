@@ -2,6 +2,7 @@ package robot
 
 import (
 	"encoding/xml"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -105,7 +106,7 @@ func hook49(msg *wcferry.WxMsg) {
 			wc.CmdClient.RevokeMsg(refId)
 			return
 		}
-		// 处理图片引用消息
+		// 引用图片
 		if ret.AppMsg.ReferMsg.Type == 3 {
 			origin, err := message.Fetch(&message.FetchParam{Id: refId})
 			if err == nil && origin.Remark != "" {
@@ -114,6 +115,24 @@ func hook49(msg *wcferry.WxMsg) {
 			msg.Content = title
 			msg.Extra = "image-txt"
 			hook1(msg)
+			return
+		}
+		// 引用聊天记录
+		if ret.AppMsg.ReferMsg.Type == 49 {
+			origin, err := message.Fetch(&message.FetchParam{Id: refId})
+			if err == nil && origin.Type == 49 {
+				record, err := wcferry.ParseMsgRecord(origin.Content)
+				if err == nil && record.DataList.Count > 0 {
+					items := []string{}
+					for _, v := range record.DataList.DataItems {
+						items = append(items, fmt.Sprintf("[%s]%s: %s", v.SourceTime, v.SourceName, v.DataDesc))
+					}
+					msg.Content = title + "\n聊天记录如下:\n" + strings.Join(items, "\n\n")
+					msg.Extra = "record-txt"
+					hook1(msg)
+					return
+				}
+			}
 			return
 		}
 	}

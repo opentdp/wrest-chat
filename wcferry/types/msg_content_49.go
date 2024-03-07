@@ -18,13 +18,19 @@ type MsgContent49 struct {
 	Scene        int32  `xml:"scene"`
 }
 
-// 聊天记录 type=19
+// 接收转账 type=1:转账,3:已收款
 
-// 引用 type=57
-
-type ReferMsg struct {
-	Svrid uint64 `xml:"svrid"`
-	Type  int32  `xml:"type"`
+type WCPayInfo struct {
+	BeginTransferTime string `xml:"begintransfertime"`
+	EffectiveDate     string `xml:"effectivedate"`
+	FeeDesc           string `xml:"feedesc"`
+	InvalidTime       string `xml:"invalidtime"`
+	PayMemo           string `xml:"pay_memo"`
+	PayerUsername     string `xml:"payer_username"`
+	PaySubtype        string `xml:"paysubtype"`
+	ReceiverUsername  string `xml:"receiver_username"`
+	TranscationID     string `xml:"transcationid"`
+	TransferID        string `xml:"transferid"`
 }
 
 // 文件 type=6
@@ -42,17 +48,38 @@ type AppAttach struct {
 	TotalLen          string `xml:"totallen"`
 }
 
-// 接收转账 type=1:转账,3:已收款
+// 聊天记录 type=19
+// 先 html.UnescapeString(RecordItem)，再解析
 
-type WCPayInfo struct {
-	BeginTransferTime string `xml:"begintransfertime"`
-	EffectiveDate     string `xml:"effectivedate"`
-	FeeDesc           string `xml:"feedesc"`
-	InvalidTime       string `xml:"invalidtime"`
-	PayMemo           string `xml:"pay_memo"`
-	PayerUsername     string `xml:"payer_username"`
-	PaySubtype        string `xml:"paysubtype"`
-	ReceiverUsername  string `xml:"receiver_username"`
-	TranscationID     string `xml:"transcationid"`
-	TransferID        string `xml:"transferid"`
+type RecordInfo struct {
+	Title       string `xml:"title"`
+	Description string `xml:"desc"`
+	DataList    struct {
+		Count     int `xml:"count,attr"`
+		DataItems []struct {
+			DataID         string `xml:"dataid,attr"`
+			DataType       int    `xml:"datatype,attr"`
+			DataSourceID   int64  `xml:"datasourceid,attr"`
+			CDNEncryver    int    `xml:"cdnencryver"`
+			DataDesc       string `xml:"datadesc"`
+			SourceName     string `xml:"sourcename"`
+			SourceTime     string `xml:"sourcetime"`
+			SourceHeadURL  string `xml:"sourceheadurl"`
+			FromNewMsgID   int64  `xml:"fromnewmsgid"`
+			DataItemSource struct {
+				MsgID        int64  `xml:"msgid"`
+				CreateTime   int64  `xml:"createtime"`
+				HashUsername string `xml:"hashusername"`
+			} `xml:"dataitemsource"`
+		} `xml:"dataitem"`
+	} `xml:"datalist"`
+	FavUsername   string `xml:"favusername"`
+	FavCreateTime int64  `xml:"favcreatetime"`
+}
+
+// 引用 type=57
+
+type ReferMsg struct {
+	Svrid uint64 `xml:"svrid"`
+	Type  int32  `xml:"type"`
 }

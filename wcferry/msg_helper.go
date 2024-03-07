@@ -1,7 +1,9 @@
 package wcferry
 
 import (
+	"encoding/xml"
 	"fmt"
+	"html"
 	"net/url"
 	"os"
 	"path"
@@ -12,6 +14,8 @@ import (
 	"github.com/clbanning/mxj"
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
+
+	"github.com/opentdp/wechat-rest/wcferry/types"
 )
 
 type FlexWxMsg struct {
@@ -50,6 +54,23 @@ func ParseWxMsg(msg *WxMsg) *FlexWxMsg {
 	}
 	// return
 	return ret
+}
+
+// 解析聊天记录
+// param str string 消息内容
+// return *types.RecordInfo 聊天记录
+func ParseMsgRecord(str string) (*types.RecordInfo, error) {
+	// 解析消息内容
+	content := types.MsgContent49{}
+	err := xml.Unmarshal([]byte(str), &content)
+	if err != nil || content.AppMsg.Type != 19 {
+		return nil, fmt.Errorf("非聊天记录")
+	}
+	// 解析聊天记录
+	record := types.RecordInfo{}
+	itemXml := html.UnescapeString(content.AppMsg.RecordItem)
+	err = xml.Unmarshal([]byte(itemXml), &record)
+	return &record, err
 }
 
 // 解析数据库字段
