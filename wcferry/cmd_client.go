@@ -481,7 +481,10 @@ func (c *CmdClient) GetOcrResultTimeout(extra string, timeout int) (string, erro
 // return string 成功返回存储路径
 func (c *CmdClient) DownloadImage(msgid uint64, extra, dir string, timeout int) (string, error) {
 	if c.DownloadAttach(msgid, "", extra) != 0 {
-		return "", errors.New("failed to download attach")
+		time.Sleep(1 * time.Second)
+		if c.DownloadAttach(msgid, "", extra) != 0 {
+			return "", errors.New("download failed")
+		}
 	}
 	cnt := 0
 	for cnt <= timeout {
