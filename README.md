@@ -1,6 +1,8 @@
 # WeChat Rest
 
-基于 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，主要特性如下：
+微信智能助手，内置 WEB 管理界面，可接入GPT、Gemini 、星火、文心、混元等大语言模型。本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
+
+## 主要特性
 
 - 使用 Go 语言编写，无运行时依赖
 - 提供 HTTP 接口，便于对接各类编程语言
@@ -83,3 +85,7 @@
 ### Q3 如何更新机器人，并保留配置信息
 
 从 [快速开始](#快速开始) 中下载新版本。关闭机器人后，将解压出来的 `wrest.exe` 和 `wcferry` 覆盖过去即可
+
+## 免责声明
+
+[Wechat-Rest](https://github.com/opentdp/wechat-rest) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 均仅供学习交流，不保证代码质量，不得用于商业用途。非法用途导致的后果自行承担。
