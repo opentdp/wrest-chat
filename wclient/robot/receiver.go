@@ -99,6 +99,12 @@ func hook49(msg *wcferry.WxMsg) {
 	refId := ret.AppMsg.ReferMsg.Svrid
 
 	if ret.AppMsg.Type == 57 {
+		// 撤回引用的消息
+		// TDOO: 未实现鉴权
+		if strings.HasPrefix(title, "撤回") {
+			wc.CmdClient.RevokeMsg(refId)
+			return
+		}
 		// 处理图片引用消息
 		if ret.AppMsg.ReferMsg.Type == 3 {
 			origin, err := message.Fetch(&message.FetchParam{Id: refId})
@@ -110,12 +116,6 @@ func hook49(msg *wcferry.WxMsg) {
 			hook1(msg)
 			return
 		}
-	}
-
-	// TDOO: 未实现鉴权
-	if strings.HasPrefix(title, "撤回") {
-		wc.CmdClient.RevokeMsg(refId)
-		return
 	}
 
 }
