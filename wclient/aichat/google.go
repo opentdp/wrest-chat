@@ -2,6 +2,7 @@ package aichat
 
 import (
 	"errors"
+	"regexp"
 
 	"github.com/opentdp/wechat-rest/library/google"
 )
@@ -72,7 +73,16 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 }
 
-func GoogleImage(id, rid, ask, img, mime string) (string, error) {
+func GoogleImage(id, rid, ask, img string) (string, error) {
+
+	img, mime := ReadImage(img)
+
+	imageTypeRegex := regexp.MustCompile(`^image/(png|jpeg|webp|heic|heif)$`)
+	if !imageTypeRegex.MatchString(mime) {
+		return "", errors.New("不支持此图片格式")
+	}
+
+	// 获取参数
 
 	llmc := UserModel(id, rid)
 

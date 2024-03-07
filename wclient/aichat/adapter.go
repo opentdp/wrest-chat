@@ -56,12 +56,7 @@ func Image(id, rid, msg, img string) string {
 	// 调用接口生成文本
 	switch llmc.Provider {
 	case "google":
-		base64String, mimeType := GetImage(img)
-		if mimeType+mimeType != "" {
-			res, err = GoogleImage(id, rid, msg, base64String, mimeType)
-		} else {
-			res = "图片格式不支持"
-		}
+		res, err = GoogleImage(id, rid, msg, img)
 	default:
 		res = "当前模型不支持分析图片"
 	}
@@ -74,7 +69,9 @@ func Image(id, rid, msg, img string) string {
 
 }
 
-func GetImage(img string) (string, string) {
+// 读取图片
+
+func ReadImage(img string) (string, string) {
 
 	fileContent, err := os.ReadFile(img)
 	if err != nil {
@@ -88,7 +85,7 @@ func GetImage(img string) (string, string) {
 
 }
 
-// User LLModel
+// 用户模型
 
 type UserLLModel struct {
 	RoleContext string
@@ -117,7 +114,7 @@ func UserModel(id, rid string) *UserLLModel {
 
 }
 
-// Message History
+// 历史消息
 
 type MsgHistory struct {
 	Content string
