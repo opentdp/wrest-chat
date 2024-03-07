@@ -16,7 +16,6 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wcferry/types"
-	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
 func receiver(msg *wcferry.WxMsg) {
@@ -62,11 +61,11 @@ func hook3(msg *wcferry.WxMsg) {
 	dir := path.Dir(msg.Extra)
 	p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, dir, 5)
 	if err != nil || p == "" {
-		logman.Error("download image error", "err", err)
+		logman.Error("image save failed", "err", err)
 		return
 	}
 
-	logman.Info("downloaded image", "path", p)
+	logman.Info("image saved", "path", p)
 	if args.Wcf.MsgStore {
 		message.Update(&message.UpdateParam{Id: msg.Id, Remark: p})
 	}
@@ -97,15 +96,16 @@ func hook49(msg *wcferry.WxMsg) {
 	}
 
 	if ret.AppMsg.Type == 57 {
-		// 处理图片分析消息
+		// 处理图片引用消息
 		if ret.AppMsg.ReferMsg.Type == 3 {
-			id := ret.AppMsg.ReferMsg.Svrid
-			origin, err := message.Fetch(&message.FetchParam{Id: id})
-			if err != nil || origin.Content == "" {
-				return
+			origin, err := message.Fetch(&message.FetchParam{Id: ret.AppMsg.ReferMsg.Svrid})
+			if err == nil && origin.Remark != "" {
+				msg.Thumb = origin.Remark
 			}
-			output := aichat.Image(msg.Sender, msg.Roomid, ret.AppMsg.Title, origin.Remark)
-			reply(msg, output)
+			msg.Content = ret.AppMsg.Title
+			msg.Extra = "image-txt"
+			hook1(msg)
+			return
 		}
 	}
 

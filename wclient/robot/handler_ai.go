@@ -24,10 +24,16 @@ func aiHandler() {
 		RoomAble: true,
 		Describe: "提问或交谈",
 		Callback: func(msg *wcferry.WxMsg) string {
-			if msg.Content != "" {
-				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+			if msg.Content == "" {
+				return "请在指令后输入问题"
 			}
-			return "请在指令后输入问题"
+			if msg.Extra == "image-txt" {
+				if msg.Thumb == "" {
+					return "提取消息图片失败"
+				}
+				return aichat.Image(msg.Sender, msg.Roomid, msg.Content, msg.Thumb)
+			}
+			return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 		},
 		PreCheck: aiPreCheck,
 	}
