@@ -1,6 +1,6 @@
 # WeChat Rest Api
 
-基于 [wcferry](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的 HTTP 接口服务，已实现如下功能：
+基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的 HTTP 接口服务，已开放如下功能：
 
 ## 支持的接口列表
 

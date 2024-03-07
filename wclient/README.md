@@ -1,6 +1,6 @@
 # WeChat Rest Bot
 
-基于 [wcferry](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已实现如下功能：
+基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已开放如下功能：
 
 - 自动回应拍一拍
 - 自动接受好友请求
@@ -11,7 +11,7 @@
 - 支持禁止用户使用助手
 - 支持用户定义唤醒词
 - 支持用户选择对话模型
-- 支持 Google gemini 模型
+- 支持 Google gemini 模型（支持图片识别）
 - 支持 OpenAI gpt 模型
 - 支持 讯飞 Spark 模型
 - 支持 百度千帆（文心一言）模型
@@ -125,7 +125,3 @@ switch msg.Type {
     case 1090519089: //文件case
 }
 ```
-
-## 其他
-
-- `Google AI` 免费申请入口 <https://makersuite.google.com>

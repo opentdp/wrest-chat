@@ -1,5 +1,7 @@
 # WeChat Rest Web
 
+基于 [wcferry-gohttp](https://github.com/opentdp/wechat-rest/tree/master/httpd) 接口服务实现的 Web 界面，已开放功能如下：
+
 ## 功能列表
 
 - 机器人
