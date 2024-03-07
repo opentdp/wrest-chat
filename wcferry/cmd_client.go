@@ -3,6 +3,7 @@ package wcferry
 import (
 	"errors"
 	"net/url"
+	"path"
 	"strings"
 	"time"
 
@@ -522,6 +523,9 @@ func (c *CmdClient) DownloadAttach(msgid uint64, thumb, extra string) int32 {
 // param dir string 保存图片的目录
 // return str 解密图片的保存路径
 func (c *CmdClient) DecryptImage(src, dir string) string {
+	if dir == "" {
+		dir = path.Dir(src)
+	}
 	req := &Request{Func: Functions_FUNC_DECRYPT_IMAGE}
 	req.Msg = &Request_Dec{
 		Dec: &DecPath{

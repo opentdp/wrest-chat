@@ -2,7 +2,6 @@ package robot
 
 import (
 	"encoding/xml"
-	"path"
 	"regexp"
 	"strconv"
 	"strings"
@@ -58,8 +57,9 @@ func hook3(msg *wcferry.WxMsg) {
 		return
 	}
 
-	dir := path.Dir(msg.Extra)
-	p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, dir, 5)
+	time.Sleep(2 * time.Second) // 等待数据落库
+
+	p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, "", 5)
 	if err != nil || p == "" {
 		logman.Error("image save failed", "err", err)
 		return
