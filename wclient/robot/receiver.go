@@ -86,7 +86,7 @@ func hook37(msg *wcferry.WxMsg) {
 
 }
 
-// 处理混合消息
+// 处理混合类消息
 func hook49(msg *wcferry.WxMsg) {
 
 	ret := types.MsgContent49{}
@@ -116,7 +116,7 @@ func hook49(msg *wcferry.WxMsg) {
 			hook1(msg)
 			return
 		}
-		// 引用消息
+		// 引用混合类消息
 		if ret.AppMsg.ReferMsg.Type == 49 {
 			origin, err := message.Fetch(&message.FetchParam{Id: refId})
 			if err == nil && origin.Content != "" {

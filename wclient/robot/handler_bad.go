@@ -31,7 +31,7 @@ func badHandler() {
 			}
 			return "关键词已存在"
 		},
-		PreCheck: badMessagePrefix,
+		PreCheck: badPreCheck,
 	}
 
 	handlers["/unbad"] = &Handler{
@@ -52,14 +52,7 @@ func badHandler() {
 
 }
 
-func updateBadWord() {
-
-	list, _ := keyword.FetchAll(&keyword.FetchAllParam{})
-	keywordList = list
-
-}
-
-func badMessagePrefix(msg *wcferry.WxMsg) string {
+func badPreCheck(msg *wcferry.WxMsg) string {
 
 	// 私聊豁免
 	if !msg.IsGroup {
@@ -96,5 +89,12 @@ func badMessagePrefix(msg *wcferry.WxMsg) string {
 	}
 
 	return ""
+
+}
+
+func updateBadWord() {
+
+	list, _ := keyword.FetchAll(&keyword.FetchAllParam{})
+	keywordList = list
 
 }
