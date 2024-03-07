@@ -17,16 +17,14 @@ var Log = &ILog{
 // Wcf 服务
 
 type IWcf struct {
-	Address    string `yaml:"Address"`    // Rpc 监听地址
-	MsgStore   bool   `yaml:"MsgStore"`   // 是否存储收到的消息
-	MsgPrint   bool   `yaml:"MsgPrint"`   // 是否打印收到的消息
-	WcfBinary  string `yaml:"WcfBinary"`  // 留空则不注入微信
-	WeChatAuto bool   `yaml:"WeChatAuto"` // 是否自动启停微信
+	Address   string `yaml:"Address"`   // Rpc 监听地址
+	MsgStore  bool   `yaml:"MsgStore"`  // 是否存储收到的消息
+	MsgPrint  bool   `yaml:"MsgPrint"`  // 是否打印收到的消息
+	WcfBinary string `yaml:"WcfBinary"` // 留空则不注入微信
 }
 
 var Wcf = &IWcf{
-	Address:    "127.0.0.1:7601",
-	WeChatAuto: true,
+	Address: "127.0.0.1:7601",
 }
 
 // Web 服务

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os/exec"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/opentdp/go-helper/filer"
@@ -16,7 +15,6 @@ type Client struct {
 	WcfBinary  string     // wcf.exe 路径
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
-	WeChatAuto bool       // 自动启停微信
 	CmdClient  *CmdClient // 命令客户端
 	MsgClient  *MsgClient // 消息客户端
 }
@@ -84,13 +82,6 @@ func (c *Client) wxInitSDK() error {
 	if c.WcfBinary == "" {
 		return nil
 	}
-	// 尝试自动启动微信
-	if c.WeChatAuto {
-		out, _ := exec.Command("tasklist").Output()
-		if strings.Contains(string(out), "WeChat.exe") {
-			return errors.New("please close wechat")
-		}
-	}
 	// 查找 wcf.exe 路径
 	if !filer.Exists(c.WcfBinary) {
 		if filer.Exists("wcferry/wcf.exe") {
@@ -102,8 +93,9 @@ func (c *Client) wxInitSDK() error {
 		}
 	}
 	// 注入微信，打开 wcf 服务
-	logman.Warn(c.WcfBinary + " start " + strconv.Itoa(c.ListenPort))
-	cmd := exec.Command(c.WcfBinary, "start", strconv.Itoa(c.ListenPort))
+	port := strconv.Itoa(c.ListenPort)
+	logman.Warn(c.WcfBinary + " start " + port)
+	cmd := exec.Command(c.WcfBinary, "start", port)
 	return cmd.Run()
 }
 
@@ -116,15 +108,5 @@ func (c *Client) wxDestroySDK() error {
 	// 关闭 wcf 服务
 	logman.Warn(c.WcfBinary + " stop")
 	cmd := exec.Command(c.WcfBinary, "stop")
-	err := cmd.Run()
-	// 尝试自动关闭微信
-	if err == nil && c.WeChatAuto {
-		logman.Warn("killing wechat process")
-		cmd := exec.Command("taskkill", "/IM", "WeChat.exe", "/F")
-		if err := cmd.Run(); err != nil {
-			logman.Error("failed to kill wechat", "error", err)
-			return err
-		}
-	}
-	return err
+	return cmd.Run()
 }

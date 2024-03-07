@@ -10,7 +10,6 @@ Wcf:
     MsgStore: true # 是否存储收到的消息
     MsgPrint: false # 是否打印收到的消息
     WcfBinary: wcf.exe # 注入工具路径，留空则不注入
-    WeChatAuto: true # 是否自动启停微信，关闭微信后才能注入
 
 # Web 服务
 Web:
