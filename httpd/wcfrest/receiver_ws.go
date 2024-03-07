@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/recovery"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -36,10 +37,11 @@ func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
 
 	if len(socketReceiverList) == 0 {
 		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
+			defer recovery.Handler()
 			ret := wcferry.ParseWxMsg(msg)
 			for s := range socketReceiverList {
 				logman.Info("call receiver", "addr", s.RemoteAddr(), "Id", ret.Id)
-				go s.WriteJSON(ret)
+				s.WriteJSON(ret)
 			}
 		})
 		if err != nil {

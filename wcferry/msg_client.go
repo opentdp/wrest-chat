@@ -49,7 +49,7 @@ func (c *MsgClient) Register(cb MsgCallback) (string, error) {
 				if resp, err := c.recv(); err == nil {
 					msg := resp.GetWxmsg()
 					for _, f := range c.callbacks {
-						go f(msg)
+						go f(msg) // 异步处理
 					}
 				} else {
 					logman.Error("msg receiver", "error", err)
