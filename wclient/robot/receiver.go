@@ -95,18 +95,27 @@ func hook49(msg *wcferry.WxMsg) {
 		return
 	}
 
+	title := ret.AppMsg.Title
+	refId := ret.AppMsg.ReferMsg.Svrid
+
 	if ret.AppMsg.Type == 57 {
 		// 处理图片引用消息
 		if ret.AppMsg.ReferMsg.Type == 3 {
-			origin, err := message.Fetch(&message.FetchParam{Id: ret.AppMsg.ReferMsg.Svrid})
+			origin, err := message.Fetch(&message.FetchParam{Id: refId})
 			if err == nil && origin.Remark != "" {
 				msg.Thumb = origin.Remark
 			}
-			msg.Content = ret.AppMsg.Title
+			msg.Content = title
 			msg.Extra = "image-txt"
 			hook1(msg)
 			return
 		}
+	}
+
+	// TDOO: 未实现鉴权
+	if strings.HasPrefix(title, "撤回") {
+		wc.CmdClient.RevokeMsg(refId)
+		return
 	}
 
 }
