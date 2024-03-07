@@ -64,7 +64,7 @@ func ParseMsgRecord(str string) (*types.RecordInfo, error) {
 	content := types.MsgContent49{}
 	err := xml.Unmarshal([]byte(str), &content)
 	if err != nil || content.AppMsg.Type != 19 {
-		return nil, fmt.Errorf("非聊天记录")
+		return nil, fmt.Errorf("不支持的记录格式")
 	}
 	// 解析聊天记录
 	record := types.RecordInfo{}

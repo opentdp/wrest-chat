@@ -77,6 +77,9 @@ type RecordInfo struct {
 	FavCreateTime int64  `xml:"favcreatetime"`
 }
 
+// 聊天记录 type=40
+// 不完整的聊天记录，可能关联了其它表记录
+
 // 引用 type=57
 
 type ReferMsg struct {
