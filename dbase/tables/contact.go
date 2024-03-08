@@ -3,8 +3,8 @@ package tables
 // 联系人
 
 type Contact struct {
-	Rd        uint   `gorm:"primaryKey" json:"rd"`  // 主键
-	Wxid      string `gorm:"uniqueIndex json:wxid"` // 微信 id
+	Rd        uint   `json:"rd" gorm:"primaryKey"`  // 主键
+	Wxid      string `json:wxid" gorm:"uniqueIndex` // 微信 id
 	Code      string `json:"code"`                  // 微信号
 	Remark    string `json:"remark"`                // 备注
 	Name      string `json:"name"`                  // 微信昵称

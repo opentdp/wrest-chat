@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/opentdp/wechat-rest/dbase/keyword"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -33,6 +34,18 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 
+	// 别名映射表
+	aliasMap := map[string]map[string]string{}
+	keywords, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "handler"})
+	if err == nil {
+		for _, v := range keywords {
+			if aliasMap[v.Roomid] == nil {
+				aliasMap[v.Roomid] = map[string]string{}
+			}
+			aliasMap[v.Roomid][v.Target] = v.Phrase
+		}
+	}
+
 	// 生成指令菜单
 	helper := []string{}
 	for _, v := range Handlers {
@@ -42,8 +55,13 @@ func helpCallback(msg *wcferry.WxMsg) string {
 			}
 		}
 		if (msg.IsGroup && v.RoomAble) || (!msg.IsGroup && v.ChatAble) {
-			o := fmt.Sprintf("%s %s", v.Command, v.Describe)
-			helper = append(helper, o)
+			cmd := v.Command
+			if aliasMap[msg.Roomid] != nil && aliasMap[msg.Roomid][v.Command] != "" {
+				cmd = aliasMap[msg.Roomid][v.Command]
+			} else if aliasMap["-"] != nil && aliasMap["-"][v.Command] != "" {
+				cmd = aliasMap["-"][v.Command]
+			}
+			helper = append(helper, fmt.Sprintf("%s %s", cmd, v.Describe))
 		}
 	}
 

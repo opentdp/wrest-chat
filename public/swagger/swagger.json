@@ -1416,36 +1416,6 @@
                 }
             }
         },
-        "/wcf/geocr_result": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "获取OCR识别结果",
-                "parameters": [
-                    {
-                        "description": "获取OCR识别结果参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
         "/wcf/invite_chatroom_members": {
             "post": {
                 "produces": [
@@ -1531,6 +1501,36 @@
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/wcf/ocr_result": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "获取OCR识别结果",
+                "parameters": [
+                    {
+                        "description": "获取OCR识别结果参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetOcrRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
                         }
                     }
                 }
@@ -2118,10 +2118,14 @@
         "keyword.CreateParam": {
             "type": "object",
             "required": [
+                "group",
                 "phrase",
                 "roomid"
             ],
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "level": {
                     "type": "integer"
                 },
@@ -2142,21 +2146,13 @@
         "keyword.DeleteParam": {
             "type": "object",
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "phrase": {
                     "type": "string"
                 },
                 "rd": {
-                    "type": "integer"
-                },
-                "roomid": {
-                    "type": "string"
-                }
-            }
-        },
-        "keyword.FetchAllParam": {
-            "type": "object",
-            "properties": {
-                "level": {
                     "type": "integer"
                 },
                 "roomid": {
@@ -2167,9 +2163,23 @@
                 }
             }
         },
+        "keyword.FetchAllParam": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "roomid": {
+                    "type": "string"
+                }
+            }
+        },
         "keyword.FetchParam": {
             "type": "object",
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "phrase": {
                     "type": "string"
                 },
@@ -2178,16 +2188,23 @@
                 },
                 "roomid": {
                     "type": "string"
+                },
+                "target": {
+                    "type": "string"
                 }
             }
         },
         "keyword.UpdateParam": {
             "type": "object",
             "required": [
+                "group",
                 "phrase",
                 "roomid"
             ],
             "properties": {
+                "group": {
+                    "type": "string"
+                },
                 "level": {
                     "type": "integer"
                 },
@@ -2631,6 +2648,10 @@
                 "created_at": {
                     "description": "创建时间戳",
                     "type": "integer"
+                },
+                "group": {
+                    "description": "分组",
+                    "type": "string"
                 },
                 "level": {
                     "description": "等级",

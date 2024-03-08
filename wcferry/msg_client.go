@@ -2,6 +2,7 @@ package wcferry
 
 import (
 	"github.com/opentdp/go-helper/logman"
+	"github.com/opentdp/go-helper/recovery"
 	"github.com/opentdp/go-helper/strutil"
 )
 
@@ -45,11 +46,12 @@ func (c *MsgClient) Register(cb MsgCallback) (string, error) {
 		}
 		go func() {
 			defer c.Destroy()
+			defer recovery.Handler()
 			for len(c.callbacks) > 0 {
 				if resp, err := c.recv(); err == nil {
 					msg := resp.GetWxmsg()
 					for _, f := range c.callbacks {
-						go f(msg) // 异步处理
+						f(msg) // 推送消息
 					}
 				} else {
 					logman.Error("msg receiver", "error", err)

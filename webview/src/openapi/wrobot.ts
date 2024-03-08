@@ -288,6 +288,8 @@ export interface ChatroomUpdateParam {
 }
 
 export interface KeywordCreateParam {
+    // 分组
+    group: string;
     // 等级
     level?: number;
     // 短语
@@ -295,10 +297,12 @@ export interface KeywordCreateParam {
     // 群聊 id
     roomid: string;
     // 目标
-    target: string;
+    target?: string;
 }
 
 export interface KeywordDeleteParam {
+    // 分组
+    group?: string;
     // 短语
     phrase?: string;
     // 主键
@@ -308,6 +312,8 @@ export interface KeywordDeleteParam {
 }
 
 export interface KeywordFetchAllParam {
+    // 分组
+    group?: string;
     // 等级
     level?: number;
     // 群聊 id
@@ -317,15 +323,21 @@ export interface KeywordFetchAllParam {
 }
 
 export interface KeywordFetchParam {
+    // 分组
+    group?: string;
     // 短语
     phrase?: string;
     // 主键
     rd: number;
     // 群聊 id
     roomid?: string;
+    // 目标
+    target?: string;
 }
 
 export interface KeywordUpdateParam {
+    // 分组
+    group: string;
     // 等级
     level: number;
     // 短语
@@ -539,6 +551,8 @@ export interface TablesChatroom {
 export interface TablesKeyword {
     // 创建时间戳
     created_at: number;
+    // 分组
+    group: string;
     // 优先级等级
     level: number;
     // 短语

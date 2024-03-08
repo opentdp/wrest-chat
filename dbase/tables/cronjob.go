@@ -3,7 +3,7 @@ package tables
 // 计划任务
 
 type Cronjob struct {
-	Rd         uint   `gorm:"primaryKey" json:"rd"` // 主键
+	Rd         uint   `json:"rd" gorm:"primaryKey"` // 主键
 	Name       string `json:"name"`                 // 名称
 	Second     string `json:"second"`               // 秒
 	Minute     string `json:"minute"`               // 分

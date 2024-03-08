@@ -18,6 +18,7 @@
                 <th scope="col">#</th>
                 <th scope="col">短语</th>
                 <th scope="col">场景</th>
+                <th scope="col" class="d-none d-md-table-cell">分组</th>
                 <th scope="col" class="d-none d-md-table-cell">用途</th>
                 <th scope="col" class="d-none d-lg-table-cell">级别</th>
                 <th scope="col">操作</th>
@@ -36,7 +37,10 @@
                     }
                 </td>
                 <td class="d-none d-md-table-cell">
-                    {{ keywordTargets[item.target] && keywordTargets[item.target].name || item.target}}
+                    {{ keywordGroups[item.group] && keywordGroups[item.group].name || item.group}}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    {{ item.target}}
                 </td>
                 <td class="d-none d-lg-table-cell">
                     {{ keywordLevels[item.level] && keywordLevels[item.level].name || item.level}}

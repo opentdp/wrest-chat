@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { KeywordTargets, KeywordLevels } from '../../openapi/const';
+import { CommandList, KeywordGroups, KeywordLevels } from '../../openapi/const';
 import { RobotApi, TablesKeyword } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -11,7 +11,8 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordListComponent {
 
-    public keywordTargets = KeywordTargets;
+    public commandList = CommandList;
+    public keywordGroups = KeywordGroups;
     public keywordLevels = KeywordLevels;
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};

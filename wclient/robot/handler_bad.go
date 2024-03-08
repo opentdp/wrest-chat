@@ -11,7 +11,7 @@ import (
 )
 
 var badMember = map[string]int{}
-var keywordList = []*tables.Keyword{}
+var badwordList = []*tables.Keyword{}
 
 func badHandler() []*Handler {
 
@@ -28,7 +28,7 @@ func badHandler() []*Handler {
 		Describe: "添加违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			_, err := keyword.Create(&keyword.CreateParam{
-				Roomid: prid(msg), Phrase: msg.Content, Target: "ban", Level: 1,
+				Group: "badword", Roomid: prid(msg), Phrase: msg.Content, Level: 1,
 			})
 			if err == nil {
 				updateBadWord()
@@ -47,14 +47,12 @@ func badHandler() []*Handler {
 		Command:  "/unbad",
 		Describe: "删除违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			item, err := keyword.Fetch(&keyword.FetchParam{Roomid: prid(msg), Phrase: msg.Content})
-			if err != nil || item.Target != "ban" {
-				return msg.Content + "不是违规关键词"
-			}
-			err = keyword.Delete(&keyword.DeleteParam{Rd: item.Rd})
+			err := keyword.Delete(&keyword.DeleteParam{
+				Group: "badword", Roomid: prid(msg), Phrase: msg.Content,
+			})
 			if err == nil {
 				updateBadWord()
-				return "已删除违规关键词" + msg.Content
+				return "违规关键词删除成功"
 			}
 			return "违规关键词删除失败"
 		},
@@ -78,7 +76,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	// 遍历关键词
-	for _, v := range keywordList {
+	for _, v := range badwordList {
 		if v.Roomid != "-" {
 			if msg.IsGroup {
 				if v.Roomid != msg.Roomid {
@@ -106,8 +104,8 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 func updateBadWord() {
 
-	keywordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
-		Target: "ban",
+	badwordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
+		Group: "badword",
 	})
 
 }

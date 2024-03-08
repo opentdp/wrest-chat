@@ -15,6 +15,7 @@ func wgetHandler() []*Handler {
 		Order:    90,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/wget",
 		Describe: "获取图片或文件",
 		Callback: func(msg *wcferry.WxMsg) string {
 			u := msg.Content

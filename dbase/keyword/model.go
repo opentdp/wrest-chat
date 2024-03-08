@@ -10,6 +10,7 @@ import (
 
 type CreateParam struct {
 	Rd     uint   `json:"rd"`
+	Group  string `binding:"required" json:"group"`
 	Roomid string `binding:"required" json:"roomid"`
 	Phrase string `binding:"required" json:"phrase"`
 	Target string `json:"target"`
@@ -19,6 +20,7 @@ type CreateParam struct {
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Keyword{
+		Group:  data.Group,
 		Roomid: data.Roomid,
 		Phrase: data.Phrase,
 		Target: data.Target,
@@ -42,6 +44,7 @@ func Update(data *UpdateParam) error {
 			Rd: data.Rd,
 		}).
 		Updates(tables.Keyword{
+			Group:  data.Group,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 			Target: data.Target,
@@ -60,6 +63,7 @@ func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
 		Rd:     data.Rd,
+		Group:  data.Group,
 		Roomid: data.Roomid,
 		Phrase: data.Phrase,
 	})
@@ -79,8 +83,10 @@ func Replace(data *ReplaceParam) error {
 
 type FetchParam struct {
 	Rd     uint   `json:"rd"`
+	Group  string `json:"group"`
 	Roomid string `json:"roomid"`
 	Phrase string `json:"phrase"`
+	Target string `json:"target"`
 }
 
 func Fetch(data *FetchParam) (*tables.Keyword, error) {
@@ -90,6 +96,7 @@ func Fetch(data *FetchParam) (*tables.Keyword, error) {
 	result := dborm.Db.
 		Where(&tables.Keyword{
 			Rd:     data.Rd,
+			Group:  data.Group,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
@@ -114,6 +121,7 @@ func Delete(data *DeleteParam) error {
 	result := dborm.Db.
 		Where(&tables.Keyword{
 			Rd:     data.Rd,
+			Group:  data.Group,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
 		}).
@@ -126,9 +134,8 @@ func Delete(data *DeleteParam) error {
 // 获取关键词列表
 
 type FetchAllParam struct {
+	Group  string `json:"group"`
 	Roomid string `json:"roomid"`
-	Target string `json:"target"`
-	Level  int32  `json:"level"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Keyword, error) {
@@ -137,9 +144,8 @@ func FetchAll(data *FetchAllParam) ([]*tables.Keyword, error) {
 
 	result := dborm.Db.
 		Where(&tables.Keyword{
+			Group:  data.Group,
 			Roomid: data.Roomid,
-			Target: data.Target,
-			Level:  data.Level,
 		}).
 		Find(&items)
 
@@ -158,9 +164,8 @@ func Count(data *CountParam) (int64, error) {
 	result := dborm.Db.
 		Model(&tables.Keyword{}).
 		Where(&tables.Keyword{
+			Group:  data.Group,
 			Roomid: data.Roomid,
-			Target: data.Target,
-			Level:  data.Level,
 		}).
 		Count(&count)
 

@@ -4,10 +4,14 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/opentdp/wechat-rest/dbase/keyword"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
+
+var Handlers = []*Handler{}
+var HandlerMap = map[string]*Handler{}
 
 type Handler struct {
 	Level    int32                       // 0:不限制 7:群管理 9:创始人
@@ -15,39 +19,48 @@ type Handler struct {
 	ChatAble bool                        // 是否允许在私聊使用
 	RoomAble bool                        // 是否允许在群聊使用
 	Command  string                      // 指令
-	Alias    string                      // 指令别名
 	Describe string                      // 指令的描述信息
 	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截文本聊天内容
 	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
 }
 
-var Handlers = []*Handler{}
-var HandlerMap = map[string]*Handler{}
-
 func initHandlers() {
 
-	list := []*Handler{}
-	lmap := map[string]*Handler{}
+	hlst := []*Handler{}
+	hmap := map[string]*Handler{}
 
-	list = append(list, aiHandler()...)
-	list = append(list, apiHandler()...)
-	list = append(list, badHandler()...)
-	list = append(list, banHandler()...)
-	list = append(list, topHandler()...)
-	list = append(list, roomHandler()...)
-	list = append(list, wgetHandler()...)
-	list = append(list, helpHandler()...)
+	// 获取指令列表
+	hlst = append(hlst, aiHandler()...)
+	hlst = append(hlst, apiHandler()...)
+	hlst = append(hlst, badHandler()...)
+	hlst = append(hlst, banHandler()...)
+	hlst = append(hlst, topHandler()...)
+	hlst = append(hlst, roomHandler()...)
+	hlst = append(hlst, wgetHandler()...)
+	hlst = append(hlst, helpHandler()...)
 
-	// 格式化
-	for _, v := range list {
-		lmap[v.Command] = v
-	}
-	sort.Slice(list, func(i, j int) bool {
-		return list[i].Order < list[j].Order
+	// 指令列表排序
+	sort.Slice(hlst, func(i, j int) bool {
+		return hlst[i].Order < hlst[j].Order
 	})
 
-	// 更新列表
-	Handlers, HandlerMap = list, lmap
+	// 获取指令映射
+	for _, v := range hlst {
+		hmap[v.Command] = v
+	}
+
+	// 获取别名数据
+	kws, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "handler"})
+	if err == nil && len(kws) > 0 {
+		for _, v := range kws {
+			if hmap[v.Target] != nil {
+				hmap[v.Phrase+"@"+v.Roomid] = hmap[v.Target]
+			}
+		}
+	}
+
+	// 更新全局数据
+	Handlers, HandlerMap = hlst, hmap
 
 }
 
@@ -69,13 +82,19 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 解析指令
-	matches := strings.SplitN(msg.Content, " ", 2)
-	handler := HandlerMap[matches[0]]
+	params := strings.SplitN(msg.Content, " ", 2)
+	handler := HandlerMap[params[0]]
 	if handler == nil {
-		if msg.Content[0] == '/' {
-			return setting.InvalidHandler
+		handler = HandlerMap[params[0]+"@"+prid(msg)]
+		if handler == nil {
+			handler = HandlerMap[params[0]+"@-"]
+			if handler == nil {
+				if msg.Content[0] == '/' {
+					return setting.InvalidHandler
+				}
+				return ""
+			}
 		}
-		return ""
 	}
 
 	// 验证权限
@@ -98,8 +117,8 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 重写消息
-	if len(matches) == 2 {
-		msg.Content = strings.TrimSpace(matches[1])
+	if len(params) == 2 {
+		msg.Content = strings.TrimSpace(params[1])
 	} else {
 		msg.Content = ""
 	}

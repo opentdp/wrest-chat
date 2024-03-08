@@ -18,6 +18,17 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">分组</label>
+            <select name="group" class="form-select" [(ngModel)]="formdata.group">
+                @for (item of keywordGroups | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                关键词分组
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
                 <option value="-">全局</option>
@@ -32,7 +43,8 @@
         <div class="col-12">
             <label class="form-label">用途</label>
             <select name="target" class="form-select" [(ngModel)]="formdata.target">
-                @for (item of keywordTargets | keyvalue; track item.key) {
+                <option value="-">无</option>
+                @for (item of commandList | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
             </select>
@@ -43,6 +55,7 @@
         <div class="col-12">
             <label class="form-label">级别</label>
             <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                <option value="-1">无</option>
                 @for (item of keywordLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
