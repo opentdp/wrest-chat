@@ -1,6 +1,10 @@
 # WeChat Rest Web
 
-基于 [wcferry-gohttp](https://github.com/opentdp/wechat-rest/tree/master/httpd) 接口服务实现的 Web 界面，已开放功能如下：
+基于 [wcferry-gohttp](https://github.com/opentdp/wechat-rest/tree/master/httpd) 接口服务实现的 Web 界面。
+
+## 使用方法
+
+ 将编译产物 `public/browser` 文件夹内的所有文件覆盖到项目根目录的 `public` 文件夹内。
 
 ## 功能列表
 
