@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { KeywordLevels } from 'src/openapi/const';
+import { KeywordTargets, KeywordLevels } from '../../openapi/const';
 import { RobotApi, KeywordUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -12,6 +12,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordUpdateComponent implements OnInit {
 
+    public keywordTargets = KeywordTargets;
     public keywordLevels = KeywordLevels;
 
     public wcfChatrooms: Array<WcfrestContactPayload> = [];

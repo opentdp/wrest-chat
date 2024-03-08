@@ -290,14 +290,16 @@ export interface ChatroomUpdateParam {
 export interface KeywordCreateParam {
     // 等级
     level?: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
 }
 
 export interface KeywordDeleteParam {
-    // 词语或短语
+    // 短语
     phrase?: string;
     // 主键
     rd: number;
@@ -310,10 +312,12 @@ export interface KeywordFetchAllParam {
     level?: number;
     // 群聊 id
     roomid?: string;
+    // 目标
+    target?: string;
 }
 
 export interface KeywordFetchParam {
-    // 词语或短语
+    // 短语
     phrase?: string;
     // 主键
     rd: number;
@@ -324,12 +328,14 @@ export interface KeywordFetchParam {
 export interface KeywordUpdateParam {
     // 等级
     level: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 主键
     rd: number;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
 }
 
 export interface LlmodelCreateParam {
@@ -535,12 +541,14 @@ export interface TablesKeyword {
     created_at: number;
     // 优先级等级
     level: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 主键
     rd: number;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
     // 最后更新时间戳
     updated_at: number;
 }
