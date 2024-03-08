@@ -11,7 +11,28 @@ import (
 	"github.com/opentdp/go-helper/request"
 )
 
-// 联系人类型
+// 解析数据库字段
+// param field *DbField 字段
+// return any 解析结果
+func ParseDbField(field *DbField) any {
+	str := string(field.Content)
+	switch field.Type {
+	case 1:
+		n, _ := strconv.ParseInt(str, 10, 64)
+		return n
+	case 2:
+		n, _ := strconv.ParseFloat(str, 64)
+		return n
+	case 4:
+		return field.Content
+	case 5:
+		return nil
+	default:
+		return str
+	}
+}
+
+// 获取联系人类型
 // param wxid string 联系人wxid
 // return string 类型
 func ContactType(wxid string) string {
@@ -36,27 +57,6 @@ func ContactType(wxid string) string {
 		return "企业微信"
 	}
 	return "好友"
-}
-
-// 解析数据库字段
-// param field *DbField 字段
-// return any 解析结果
-func ParseDbField(field *DbField) any {
-	str := string(field.Content)
-	switch field.Type {
-	case 1:
-		n, _ := strconv.ParseInt(str, 10, 64)
-		return n
-	case 2:
-		n, _ := strconv.ParseFloat(str, 64)
-		return n
-	case 4:
-		return field.Content
-	case 5:
-		return nil
-	default:
-		return str
-	}
 }
 
 // 获取网络文件

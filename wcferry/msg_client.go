@@ -7,7 +7,7 @@ import (
 
 type MsgClient struct {
 	*pbSocket                        // RPC 客户端
-	callbacks map[string]MsgCallback // 消息回调列表
+	callbacks map[string]MsgCallback // 推送函数列表
 }
 
 // 消息回调函数
