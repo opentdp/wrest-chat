@@ -985,6 +985,36 @@
                 }
             }
         },
+        "/wcf/audio_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "获取语音消息",
+                "parameters": [
+                    {
+                        "description": "获取语音消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
         "/wcf/avatars": {
             "post": {
                 "produces": [
@@ -1386,37 +1416,7 @@
                 }
             }
         },
-        "/wcf/get_audio_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "获取语音消息",
-                "parameters": [
-                    {
-                        "description": "获取语音消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/wcf/get_ocr_result": {
+        "/wcf/geocr_result": {
             "post": {
                 "produces": [
                     "application/json"

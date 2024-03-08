@@ -522,7 +522,7 @@ type SendPatMsgRequest struct {
 // @Tags WCF::消息收取
 // @Param body body GetAudioMsgRequest true "获取语音消息参数"
 // @Success 200 {object} CommonPayload
-// @Router /wcf/get_audio_msg [post]
+// @Router /wcf/audio_msg [post]
 func (wc *Controller) getAudioMsg(c *gin.Context) {
 
 	var req GetAudioMsgRequest
@@ -562,7 +562,7 @@ type GetAudioMsgRequest struct {
 // @Tags WCF::消息收取
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
-// @Router /wcf/get_ocr_result [post]
+// @Router /wcf/ocr_result [post]
 func (wc *Controller) getOcrResult(c *gin.Context) {
 
 	var req GetOcrRequest
