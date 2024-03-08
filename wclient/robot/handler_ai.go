@@ -2,7 +2,6 @@ package robot
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
@@ -38,7 +37,6 @@ func aiHandler() []*Handler {
 			}
 			return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 		},
-		PreCheck: aiPreCheck,
 	})
 
 	cmds = append(cmds, &Handler{
@@ -51,33 +49,6 @@ func aiHandler() []*Handler {
 		Callback: func(msg *wcferry.WxMsg) string {
 			aichat.ResetHistory(msg.Sender)
 			return "已重置上下文"
-		},
-	})
-
-	cmds = append(cmds, &Handler{
-		Level:    0,
-		Order:    12,
-		ChatAble: true,
-		RoomAble: true,
-		Command:  "/wake",
-		Describe: "自定义唤醒词",
-		Callback: func(msg *wcferry.WxMsg) string {
-			argot := msg.Content
-			// 校验唤醒词
-			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
-				return "唤醒词不允许包含 @ 或 /"
-			} else if argot == "" {
-				argot = "-"
-			}
-			// 更新唤醒词
-			profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiArgot: argot})
-			if argot == "-" {
-				if msg.IsGroup {
-					return "已禁用自定义唤醒词"
-				}
-				return "已启用无唤醒词对话模式"
-			}
-			return "唤醒词设置为 " + argot
 		},
 	})
 
@@ -120,34 +91,5 @@ func aiHandler() []*Handler {
 	}
 
 	return cmds
-
-}
-
-func aiPreCheck(msg *wcferry.WxMsg) string {
-
-	if len(msg.Content) == 0 {
-		return ""
-	}
-
-	if msg.Content[0:1] != "/" {
-		// 处理 @机器人 的消息
-		if strings.Contains(msg.Xml, self().Wxid) {
-			msg.Content = "/ai " + msg.Content
-			return ""
-		}
-		// 处理用户自定义的唤醒词
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.AiArgot == "-" {
-			if !msg.IsGroup {
-				msg.Content = "/ai " + msg.Content
-			}
-		} else if up.AiArgot != "" {
-			if strings.HasPrefix(msg.Content, up.AiArgot) {
-				msg.Content = strings.Replace(msg.Content, up.AiArgot, "/ai ", 1)
-			}
-		}
-	}
-
-	return ""
 
 }

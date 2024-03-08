@@ -412,8 +412,6 @@ export interface LlmodelUpdateParam {
 }
 
 export interface ProfileCreateParam {
-    // 唤醒词
-    ai_argot?: string;
     // 会话模型
     ai_model?: string;
     // 封禁期限
@@ -454,8 +452,6 @@ export interface ProfileFetchParam {
 }
 
 export interface ProfileUpdateParam {
-    // 唤醒词
-    ai_argot: string;
     // 会话模型
     ai_model: string;
     // 封禁期限
@@ -591,8 +587,6 @@ export interface TablesLLModel {
 }
 
 export interface TablesProfile {
-    // 唤醒词
-    ai_argot: string;
     // 会话模型
     ai_model: string;
     // 拉黑截止时间

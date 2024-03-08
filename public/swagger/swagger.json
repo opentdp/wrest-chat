@@ -2339,9 +2339,6 @@
                 "wxid"
             ],
             "properties": {
-                "ai_argot": {
-                    "type": "string"
-                },
                 "ai_model": {
                     "type": "string"
                 },
@@ -2410,9 +2407,6 @@
                 "wxid"
             ],
             "properties": {
-                "ai_argot": {
-                    "type": "string"
-                },
                 "ai_model": {
                     "type": "string"
                 },
@@ -2727,10 +2721,6 @@
         "tables.Profile": {
             "type": "object",
             "properties": {
-                "ai_argot": {
-                    "description": "唤醒词",
-                    "type": "string"
-                },
                 "ai_model": {
                     "description": "会话模型",
                     "type": "string"
