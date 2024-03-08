@@ -94,9 +94,20 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
+	req := &google.RequestBody{
+		Contents: []*google.Content{
+			{
+				Parts: []*google.Part{
+					{Text: ask},
+					{InlineData: &google.InlineData{Data: img, MimeType: mime}},
+				},
+			},
+		},
+	}
+
 	// 请求模型接口
 
-	resp, err := client.CreateImageCompletion(ask, img, mime)
+	resp, err := client.CreateImageCompletion(req)
 	if err != nil {
 		return "", err
 	}

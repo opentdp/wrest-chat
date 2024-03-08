@@ -44,18 +44,7 @@ func (c *Client) CreateChatCompletion(rq *RequestBody) (*ResponseBody, error) {
 
 }
 
-func (c *Client) CreateImageCompletion(text, imageBase64, imageType string) (*ResponseBody, error) {
-
-	rq := RequestBody{
-		Contents: []*Content{
-			{
-				Parts: []*Part{
-					{Text: text},
-					{InlineData: &InlineData{Data: imageBase64, MimeType: imageType}},
-				},
-			},
-		},
-	}
+func (c *Client) CreateImageCompletion(rq *RequestBody) (*ResponseBody, error) {
 
 	body, _ := json.Marshal(rq)
 	heaner := request.H{

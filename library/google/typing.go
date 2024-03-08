@@ -7,20 +7,11 @@ type Client struct {
 	Model      string
 }
 
-type RequestBody struct {
-	Contents []*Content `json:"contents"`
-}
+// request
 
-type ResponseBody struct {
-	Candidates     []*Candidate `json:"candidates"`
-	Error          *Error       `json:"error"`
-	PromptFeedback struct {
-		BlockReason   string `json:"blockReason"`
-		SafetyRatings []struct {
-			Category    string `json:"category"`
-			Probability string `json:"probability"`
-		} `json:"safetyRatings"`
-	} `json:"promptFeedback"`
+type RequestBody struct {
+	Contents       []*Content       `json:"contents"`
+	SafetySettings []*SafetySetting `json:"safetySettings"`
 }
 
 type Content struct {
@@ -38,18 +29,36 @@ type InlineData struct {
 	Data     string `json:"data"`
 }
 
+type SafetySetting struct {
+	Category  string `json:"category"`
+	Threshold string `json:"threshold"`
+}
+
+// response
+
+type ResponseBody struct {
+	Candidates     []*Candidate `json:"candidates"`
+	Error          *Error       `json:"error"`
+	PromptFeedback struct {
+		BlockReason   string          `json:"blockReason"`
+		SafetyRatings []*SafetyRating `json:"safetyRatings"`
+	} `json:"promptFeedback"`
+}
+
+type Candidate struct {
+	Content       *Content        `json:"content"`
+	FinishReason  string          `json:"finishReason"`
+	Index         int             `json:"index"`
+	SafetyRatings []*SafetyRating `json:"safetyRatings"`
+}
+
+type SafetyRating struct {
+	Category    string `json:"category"`
+	Probability string `json:"probability"`
+}
+
 type Error struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Status  string `json:"status"`
-}
-
-type Candidate struct {
-	Content       *Content `json:"content"`
-	FinishReason  string   `json:"finishReason"`
-	Index         int      `json:"index"`
-	SafetyRatings []*struct {
-		Category    string `json:"category"`
-		Probability string `json:"probability"`
-	} `json:"safetyRatings"`
 }
