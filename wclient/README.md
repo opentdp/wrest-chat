@@ -88,11 +88,11 @@
 switch msg.Type {
     case 0: //朋友圈消息
     case 1: //文字
-        hook1(msg)
+        receiver1(msg)
     case 3: //图片
     case 34: //语音
     case 37: //好友确认
-        hook37(msg)
+        receiver37(msg)
     case 40: //POSSIBLEFRIEND_MSG
     case 42: //名片
     case 43: //视频
@@ -107,9 +107,9 @@ switch msg.Type {
     case 66: //微信红包
     case 9999: //SYSNOTICE
     case 10000: //红包、系统消息
-        hook10000(msg)
+        receiver10000(msg)
     case 10002: //撤回消息
-        hook10002(msg)
+        receiver10002(msg)
     case 1048625: //搜狗表情
     case 16777265: //链接
     case 436207665: //微信红包

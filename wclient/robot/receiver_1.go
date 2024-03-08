@@ -1,0 +1,21 @@
+package robot
+
+import (
+	"strings"
+
+	"github.com/opentdp/wechat-rest/wcferry"
+)
+
+// 处理新消息
+func receiver1(msg *wcferry.WxMsg) {
+
+	// 处理聊天指令
+	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
+		output := applyHandlers(msg)
+		if strings.Trim(output, "-") != "" {
+			reply(msg, output)
+		}
+		return
+	}
+
+}
