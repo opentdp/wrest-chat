@@ -11,8 +11,16 @@ export const FieldTypes: Record<string, OptionData> = {
 };
 
 export const CommandList: Record<string, OptionData> = {
-    '/bad': { name: '/bad 添加违规关键词' },
-    '/ban': { name: '/ban 拉黑用户' },
+    '/ai': { name: '/ai' },
+    '/new': { name: '/new' },
+    '/rand': { name: '/rand' },
+    '/bad': { name: '/bad' },
+    '/unbad': { name: '/unbad' },
+    '/ban': { name: '/ban' },
+    '/unban': { name: '/unban' },
+    '/api': { name: '/api' },
+    '/wget': { name: '/wget' },
+    '/help': { name: '/help' },
 };
 
 export const CronjobTypes: Record<string, OptionData> = {

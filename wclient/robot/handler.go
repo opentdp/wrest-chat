@@ -81,13 +81,18 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
+	// 修正空白
+	if msg.Content[0] == '@' {
+		msg.Content = strings.Replace(msg.Content, " ", " ", 1)
+	}
+
 	// 解析指令
 	params := strings.SplitN(msg.Content, " ", 2)
-	handler := HandlerMap[params[0]]
+	handler := HandlerMap[params[0]] // 默认
 	if handler == nil {
-		handler = HandlerMap[params[0]+"@"+prid(msg)]
+		handler = HandlerMap[params[0]+"@"+prid(msg)] // 群聊
 		if handler == nil {
-			handler = HandlerMap[params[0]+"@-"]
+			handler = HandlerMap[params[0]+"@-"] // 全局
 			if handler == nil {
 				if msg.Content[0] == '/' {
 					return setting.InvalidHandler
