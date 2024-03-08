@@ -11,20 +11,25 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-func apiHandler() {
+func apiHandler() []*Handler {
+
+	cmds := []*Handler{}
 
 	if len(setting.ApiEndpoint) < 10 {
-		return
+		return cmds
 	}
 
-	handlers["/api"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    20,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/api",
 		Describe: "调用远程接口",
 		Callback: apiCallback,
-	}
+	})
+
+	return cmds
 
 }
 

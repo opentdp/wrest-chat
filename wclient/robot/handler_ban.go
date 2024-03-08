@@ -13,13 +13,16 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry/types"
 )
 
-func banHandler() {
+func banHandler() []*Handler {
 
-	handlers["/ban"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    40,
 		ChatAble: false,
 		RoomAble: true,
+		Command:  "/ban",
 		Describe: "拉黑指定的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.MsgXmlAtUser{}
@@ -51,13 +54,14 @@ func banHandler() {
 			return "参数错误"
 		},
 		PreCheck: banPreCheck,
-	}
+	})
 
-	handlers["/unban"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    41,
 		ChatAble: false,
 		RoomAble: true,
+		Command:  "/unban",
 		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.MsgXmlAtUser{}
@@ -80,7 +84,9 @@ func banHandler() {
 			}
 			return "参数错误"
 		},
-	}
+	})
+
+	return cmds
 
 }
 

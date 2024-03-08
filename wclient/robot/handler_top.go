@@ -7,13 +7,16 @@ import (
 	"github.com/opentdp/wechat-rest/wclient"
 )
 
-func topHandler() {
+func topHandler() []*Handler {
 
-	handlers["/top"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    50,
 		ChatAble: false,
 		RoomAble: true,
+		Command:  "/top",
 		Describe: "获取群聊统计信息",
 		Callback: func(msg *wcferry.WxMsg) string {
 			res := ""
@@ -35,6 +38,8 @@ func topHandler() {
 			}
 			return res
 		},
-	}
+	})
+
+	return cmds
 
 }

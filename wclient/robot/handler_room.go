@@ -5,11 +5,13 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-func roomHandler() {
+func roomHandler() []*Handler {
+
+	cmds := []*Handler{}
 
 	rooms, err := chatroom.FetchAll(&chatroom.FetchAllParam{})
 	if err != nil {
-		return
+		return cmds
 	}
 
 	for _, v := range rooms {
@@ -18,11 +20,12 @@ func roomHandler() {
 		}
 		v := v // copy
 		cmdkey := "/" + v.JoinArgot
-		handlers[cmdkey] = &Handler{
+		cmds = append(cmds, &Handler{
 			Level:    0,
 			Order:    70,
 			ChatAble: true,
 			RoomAble: false,
+			Command:  cmdkey,
 			Describe: "加入群聊 " + v.Name,
 			Callback: func(msg *wcferry.WxMsg) string {
 				resp := wc.CmdClient.InviteChatroomMembers(v.Roomid, msg.Sender)
@@ -32,7 +35,9 @@ func roomHandler() {
 					return "发送群邀请失败"
 				}
 			},
-		}
+		})
 	}
+
+	return cmds
 
 }

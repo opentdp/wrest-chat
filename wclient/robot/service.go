@@ -28,25 +28,16 @@ func Start() {
 		return
 	}
 
+	initHandlers()
+
 	wc = wclient.Register()
-
 	clientId, _ = wc.EnrollReceiver(true, receiver)
-
-}
-
-func Stop() {
-
-	wc.DisableReceiver(clientId)
-
-	clearHandlers()
-	selfInfo = nil
-	clientId = ""
 
 }
 
 func Redo() {
 
-	clearHandlers()
+	initHandlers()
 	selfInfo = nil
 
 }

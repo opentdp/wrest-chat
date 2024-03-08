@@ -11,16 +11,21 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
-func helpHandler() {
+func helpHandler() []*Handler {
 
-	handlers["/help"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    900,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/help",
 		Describe: "查看帮助信息",
 		Callback: helpCallback,
-	}
+	})
+
+	return cmds
 
 }
 
@@ -30,15 +35,14 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
-	for _, k := range handlerKeys {
-		v := handlers[k]
+	for _, v := range Handlers {
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限
 			}
 		}
 		if (msg.IsGroup && v.RoomAble) || (!msg.IsGroup && v.ChatAble) {
-			o := fmt.Sprintf("%s %s", k, v.Describe)
+			o := fmt.Sprintf("%s %s", v.Command, v.Describe)
 			helper = append(helper, o)
 		}
 	}

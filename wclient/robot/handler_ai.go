@@ -10,18 +10,21 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
-func aiHandler() {
+func aiHandler() []*Handler {
+
+	cmds := []*Handler{}
 
 	models, err := llmodel.FetchAll(&llmodel.FetchAllParam{})
 	if err != nil || len(models) == 0 {
-		return
+		return cmds
 	}
 
-	handlers["/ai"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    10,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/ai",
 		Describe: "提问或交谈",
 		Callback: func(msg *wcferry.WxMsg) string {
 			if msg.Content == "" {
@@ -36,25 +39,27 @@ func aiHandler() {
 			return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 		},
 		PreCheck: aiPreCheck,
-	}
+	})
 
-	handlers["/new"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    11,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
 			aichat.ResetHistory(msg.Sender)
 			return "已重置上下文"
 		},
-	}
+	})
 
-	handlers["/wake"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    12,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/wake",
 		Describe: "自定义唤醒词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			argot := msg.Content
@@ -74,14 +79,15 @@ func aiHandler() {
 			}
 			return "唤醒词设置为 " + argot
 		},
-	}
+	})
 
 	if len(models) > 3 {
-		handlers["/rand"] = &Handler{
+		cmds = append(cmds, &Handler{
 			Level:    0,
 			Order:    13,
 			ChatAble: true,
 			RoomAble: true,
+			Command:  "/rand",
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
 				up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
@@ -93,27 +99,27 @@ func aiHandler() {
 				}
 				return fmt.Sprintf("没有可用的模型（Level ≤ %d）", up.Level)
 			},
-		}
+		})
 	}
 
 	for _, v := range models {
 		v := v // copy
 		cmdkey := "/" + v.Mid
-		handlers[cmdkey] = &Handler{
-			Level:    0,
+		cmds = append(cmds, &Handler{
+			Level:    v.Level,
 			Order:    14,
 			ChatAble: true,
 			RoomAble: true,
+			Command:  cmdkey,
 			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 			},
-		}
-		if v.Level > 0 {
-			handlers[cmdkey].Level = v.Level
-		}
+		})
 	}
+
+	return cmds
 
 }
 

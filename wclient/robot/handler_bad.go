@@ -13,15 +13,18 @@ import (
 var badMember = map[string]int{}
 var keywordList = []*tables.Keyword{}
 
-func badHandler() {
+func badHandler() []*Handler {
 
 	updateBadWord()
 
-	handlers["/bad"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    30,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/bad",
 		Describe: "添加违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			_, err := keyword.Create(&keyword.CreateParam{
@@ -34,13 +37,14 @@ func badHandler() {
 			return "违规关键词已存在"
 		},
 		PreCheck: badPreCheck,
-	}
+	})
 
-	handlers["/unbad"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    31,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/unbad",
 		Describe: "删除违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			item, err := keyword.Fetch(&keyword.FetchParam{Roomid: prid(msg), Phrase: msg.Content})
@@ -54,7 +58,9 @@ func badHandler() {
 			}
 			return "违规关键词删除失败"
 		},
-	}
+	})
+
+	return cmds
 
 }
 
@@ -100,7 +106,8 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 func updateBadWord() {
 
-	list, _ := keyword.FetchAll(&keyword.FetchAllParam{})
-	keywordList = list
+	keywordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
+		Target: "ban",
+	})
 
 }

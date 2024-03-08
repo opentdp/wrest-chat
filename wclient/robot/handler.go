@@ -7,7 +7,6 @@ import (
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/dbase/tables"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
@@ -16,53 +15,44 @@ type Handler struct {
 	Order    int32                       // 排序，越小越靠前
 	ChatAble bool                        // 是否允许在私聊使用
 	RoomAble bool                        // 是否允许在群聊使用
+	Command  string                      // 指令
 	Describe string                      // 指令的描述信息
 	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截所有聊天内容
 	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
 }
 
-var handlers = map[string]*Handler{}
-var handlerKeys = []string{}
+var Handlers = []*Handler{}
+var HandlerMap = map[string]*Handler{}
 
-func setupHandlers() {
+func initHandlers() {
 
-	aiHandler()
-	apiHandler()
-	badHandler()
-	banHandler()
-	topHandler()
-	roomHandler()
-	wgetHandler()
+	list := []*Handler{}
+	lmap := map[string]*Handler{}
 
-	helpHandler()
+	list = append(list, aiHandler()...)
+	list = append(list, apiHandler()...)
+	list = append(list, badHandler()...)
+	list = append(list, banHandler()...)
+	list = append(list, topHandler()...)
+	list = append(list, roomHandler()...)
+	list = append(list, wgetHandler()...)
+	list = append(list, helpHandler()...)
 
-	// 对 handlers 进行排序
-
-	for k := range handlers {
-		handlerKeys = append(handlerKeys, k)
+	// 格式化
+	for _, v := range list {
+		lmap[v.Command] = v
 	}
-	sort.Slice(handlerKeys, func(i, j int) bool {
-		return handlers[handlerKeys[i]].Order < handlers[handlerKeys[j]].Order
+	sort.Slice(list, func(i, j int) bool {
+		return list[i].Order < list[j].Order
 	})
 
-}
-
-func clearHandlers() {
-
-	handlers = map[string]*Handler{}
-	handlerKeys = []string{}
-
-	badMember = map[string]int{}
-	keywordList = []*tables.Keyword{}
+	// 更新列表
+	Handlers = list
+	HandlerMap = lmap
 
 }
 
 func applyHandlers(msg *wcferry.WxMsg) string {
-
-	// 注册
-	if len(handlers) == 0 {
-		setupHandlers()
-	}
 
 	// 白名单
 	if txt := whiteLimit(msg); txt != "" {
@@ -70,8 +60,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 前置钩子
-	for _, k := range handlerKeys {
-		v := handlers[k]
+	for _, v := range Handlers {
 		if v.PreCheck != nil {
 			if txt := v.PreCheck(msg); txt != "" {
 				return txt
@@ -87,7 +76,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 解析指令
 	matches := strings.SplitN(msg.Content, " ", 2)
-	handler := handlers[matches[0]]
+	handler := HandlerMap[matches[0]]
 	if handler == nil {
 		if msg.Content[0] == '/' {
 			return setting.InvalidHandler
