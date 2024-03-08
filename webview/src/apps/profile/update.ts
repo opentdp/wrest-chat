@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { UserLevels } from 'src/openapi/const';
+import { UserLevels } from '../../openapi/const';
 import { RobotApi, ProfileUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 

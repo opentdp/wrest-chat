@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UserLevels } from 'src/openapi/const';
+import { UserLevels } from '../../openapi/const';
 import { RobotApi, TablesProfile } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 

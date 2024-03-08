@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { RoomLevels } from 'src/openapi/const';
+import { RoomLevels } from '../../openapi/const';
 import { RobotApi, ChatroomUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
