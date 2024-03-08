@@ -24,8 +24,12 @@
 
 - 双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
 
-  - 初始化时若出现 *Attempt to access invalid address* 信息可忽略
   - 启动成功后，浏览器访问 `http://localhost:7600` 配置机器人
+
+- 若无人值守，可选择使用 `starter.bat` 启动服务，实现如下能力：
+  
+  - 写入禁止微信自动更新的注册表配置
+  - 在 `wrest.exe` 崩溃后自动重启
 
 ## 配置文件
 
