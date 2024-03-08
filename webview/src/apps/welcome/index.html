@@ -3,6 +3,22 @@
 <div class="container-lg mb-3">
     <div class="row g-3">
         <div class="col-md-6">
+            <div class="card p-3">
+                <form class="row gy-3" (ngSubmit)="submitForm()" #myform="ngForm">
+                    <div class="col-12">
+                        <label class="form-label">令牌</label>
+                        <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.token" />
+                        <div class="form-text">
+                            若服务端设置了 <b>Web.Token</b>，请在这里填写
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
             @if (!islogin && loginqr) {
             <div class="container-lg mb-3">
                 @if (loginqr.result) {
@@ -32,22 +48,6 @@
                 </ul>
             </div>
             }
-        </div>
-        <div class="col-md-6">
-            <div class="card p-3">
-                <form class="row gy-3" (ngSubmit)="submitForm()" #myform="ngForm">
-                    <div class="col-12">
-                        <label class="form-label">令牌</label>
-                        <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.token" />
-                        <div class="form-text">
-                            如果服务器设置了 <b>Web.Token</b>，请在这里填写
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 </div>
