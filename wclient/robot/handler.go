@@ -77,20 +77,20 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 忽略空白
-	msg.Content = strings.TrimSpace(msg.Content)
-	if msg.Content == "" {
+	content := strings.TrimSpace(msg.Content)
+	if content == "" {
 		return ""
 	}
 
 	// 解析指令
-	params := regexp.MustCompile(`\s+`).Split(msg.Content, -1)
+	params := regexp.MustCompile(`\s+`).Split(content, -1)
 	handler := HandlerMap[params[0]] // 默认
 	if handler == nil {
 		handler = HandlerMap[params[0]+"@"+prid(msg)] // 群聊
 		if handler == nil {
 			handler = HandlerMap[params[0]+"@-"] // 全局
 			if handler == nil {
-				if msg.Content[0] == '/' {
+				if content[0] == '/' {
 					return setting.InvalidHandler
 				}
 				return ""
@@ -118,7 +118,7 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 重写消息
-	if len(params) == 2 {
+	if len(params) > 1 {
 		msg.Content = strings.TrimSpace(params[1])
 	} else {
 		msg.Content = ""
