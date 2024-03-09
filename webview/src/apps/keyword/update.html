@@ -40,22 +40,23 @@
                 关键词应用场景，暂用作生效范围
             </div>
         </div>
+        @if (formdata.group == 'handler') {
         <div class="col-12">
-            <label class="form-label">用途</label>
+            <label class="form-label">指令</label>
             <select name="target" class="form-select" [(ngModel)]="formdata.target">
-                <option value="-">无</option>
                 @for (item of robotHandler; track item.command) {
-                    <option [value]="item.command">{{item.command}} {{item.describe}}</option>
-                    }
+                <option [value]="item.command">{{item.command}} {{item.describe}}</option>
+                }
             </select>
             <div class="form-text">
                 关键词处理程序或应用目标
             </div>
         </div>
+        }
+        @if (formdata.group == 'badword') {
         <div class="col-12">
             <label class="form-label">级别</label>
             <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                <option value="-1">无</option>
                 @for (item of keywordLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
@@ -66,6 +67,7 @@
                 }
             </div>
         </div>
+        }
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">更新</button>
         </div>
