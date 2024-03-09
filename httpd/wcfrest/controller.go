@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
-	"github.com/opentdp/go-helper/logman"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -860,85 +859,4 @@ type ReceiveTransferRequest struct {
 	Tfid string `json:"tfid,omitempty"`
 	// Transaction id
 	Taid string `json:"taid,omitempty"`
-}
-
-// @Summary 开启推送消息到URL
-// @Produce json
-// @Tags WCF::消息推送
-// @Param body body ReceiverRequest true "推送消息到URL参数"
-// @Success 200 {object} CommonPayload
-// @Router /wcf/enable_receiver [post]
-func (wc *Controller) enabledReceiver(c *gin.Context) {
-
-	var req ReceiverRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Set("Error", err)
-		return
-	}
-
-	if !strings.HasPrefix(req.Url, "http") {
-		c.Set("Error", "url must start with http(s)://")
-		return
-	}
-
-	err := wc.enableUrlReceiver(req.Url)
-	c.Set("Payload", CommonPayload{
-		Success: err == nil,
-		Error:   err,
-	})
-
-}
-
-type ReceiverRequest struct {
-	// 接收推送消息的 url
-	Url string `json:"url"`
-}
-
-// @Summary 关闭推送消息到URL
-// @Produce json
-// @Tags WCF::消息推送
-// @Param body body ReceiverRequest true "推送消息到URL参数"
-// @Success 200 {object} CommonPayload
-// @Router /wcf/disable_receiver [post]
-func (wc *Controller) disableReceiver(c *gin.Context) {
-
-	var req ReceiverRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.Set("Error", err)
-		return
-	}
-
-	err := wc.disableUrlReceiver(req.Url)
-	c.Set("Payload", CommonPayload{
-		Success: err == nil,
-		Error:   err,
-	})
-
-}
-
-// @Summary 推送消息到Socket
-// @Produce json
-// @Tags WCF::消息推送
-// @Success 101 {string} string "Switching Protocols 响应"
-// @Router /wcf/socket_receiver [get]
-func (wc *Controller) socketReceiver(c *gin.Context) {
-
-	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		logman.Error("websocket upgrade", "error", err)
-		c.Set("Error", err)
-		return
-	}
-
-	defer ws.Close()
-	wc.enableSocketReceiver(ws)
-	for {
-		if _, _, err := ws.ReadMessage(); err != nil {
-			break
-		}
-	}
-	wc.disableSocketReceiver(ws)
-
-	logman.Info("websocket closed", "addr", ws.RemoteAddr())
-
 }
