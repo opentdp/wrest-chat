@@ -134,6 +134,7 @@ func Delete(data *DeleteParam) error {
 type FetchAllParam struct {
 	Wxid   string `json:"wxid"`
 	Roomid string `json:"roomid"`
+	Level  int32  `json:"level"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
@@ -144,6 +145,7 @@ func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
 		Where(&tables.Profile{
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
+			Level:  data.Level,
 		}).
 		Find(&items)
 
@@ -164,6 +166,7 @@ func Count(data *CountParam) (int64, error) {
 		Where(&tables.Profile{
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
+			Level:  data.Level,
 		}).
 		Count(&count)
 

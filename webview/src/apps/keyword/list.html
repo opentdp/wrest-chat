@@ -8,15 +8,15 @@
 </nav>
 
 <div class="container-lg mb-3">
-    <div class="row justify-content-between mb-3">
-        <div class="col-5 col-md-4 col-xl-3">
+    <div class="row justify-content-between">
+        <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.group" (change)="getKeywords()">
                 @for (item of keywordGroups | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
             </select>
         </div>
-        <div class="col-5 col-md-4 col-xl-3">
+        <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
                 <option value="-">全局</option>
                 @for (item of wcfChatrooms | keyvalue; track item.key) {
@@ -28,7 +28,9 @@
             <button class="btn btn-primary" [routerLink]="['/keyword/create']">添加</button>
         </div>
     </div>
+</div>
 
+<div class="container-lg mb-3">
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>

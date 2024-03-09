@@ -2398,6 +2398,9 @@
         "profile.FetchAllParam": {
             "type": "object",
             "properties": {
+                "level": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 },

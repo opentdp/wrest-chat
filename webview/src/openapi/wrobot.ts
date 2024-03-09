@@ -445,6 +445,8 @@ export interface ProfileDeleteParam {
 }
 
 export interface ProfileFetchAllParam {
+    // 等级
+    level?: number;
     // 群聊 id
     roomid?: string;
     // 微信 id
