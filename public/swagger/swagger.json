@@ -319,6 +319,25 @@
                 }
             }
         },
+        "/bot/handlers": {
+            "post": {
+                "tags": [
+                    "BOT::杂项"
+                ],
+                "summary": "机器人指令集",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/robot.Handler"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/bot/keyword/create": {
             "post": {
                 "produces": [
@@ -2427,6 +2446,35 @@
                 },
                 "wxid": {
                     "type": "string"
+                }
+            }
+        },
+        "robot.Handler": {
+            "type": "object",
+            "properties": {
+                "chat_able": {
+                    "description": "是否允许在私聊使用",
+                    "type": "boolean"
+                },
+                "command": {
+                    "description": "指令",
+                    "type": "string"
+                },
+                "describe": {
+                    "description": "指令的描述信息",
+                    "type": "string"
+                },
+                "level": {
+                    "description": "0:不限制 7:群管理 9:创始人",
+                    "type": "integer"
+                },
+                "order": {
+                    "description": "排序，越小越靠前",
+                    "type": "integer"
+                },
+                "room_able": {
+                    "description": "是否允许在群聊使用",
+                    "type": "boolean"
                 }
             }
         },

@@ -46,4 +46,8 @@ func Route() {
 	rg.POST("setting/update", setting.update)
 	rg.POST("setting/delete", setting.delete)
 
+	// sundry
+
+	rg.POST("handlers", handlers)
+
 }

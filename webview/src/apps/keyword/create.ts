@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CommandList, KeywordGroups, KeywordLevels } from '../../openapi/const';
-import { RobotApi, KeywordCreateParam } from '../../openapi/wrobot';
+import { KeywordGroups, KeywordLevels } from '../../openapi/const';
+import { RobotApi, KeywordCreateParam, RobotHandler } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -12,10 +12,10 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordCreateComponent {
 
-    public commandList = CommandList;
     public keywordGroups = KeywordGroups;
     public keywordLevels = KeywordLevels;
 
+    public robotHandler: Array<RobotHandler> = [];
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
     public formdata: KeywordCreateParam = {
@@ -27,6 +27,7 @@ export class KeywordCreateComponent {
     };
 
     constructor(private router: Router) {
+        this.getRobotHandlers();
         this.getWcfChatrooms();
     }
 
@@ -36,6 +37,12 @@ export class KeywordCreateComponent {
         }
         RobotApi.keywordCreate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
+        });
+    }
+
+    public getRobotHandlers() {
+        RobotApi.robotHandlers().then((data) => {
+            this.robotHandler = data || [];
         });
     }
 

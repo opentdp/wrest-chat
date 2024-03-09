@@ -10,19 +10,6 @@ export const FieldTypes: Record<string, OptionData> = {
     lmodel: { name: 'AI 模型' },
 };
 
-export const CommandList: Record<string, OptionData> = {
-    '/ai': { name: '/ai' },
-    '/new': { name: '/new' },
-    '/rand': { name: '/rand' },
-    '/bad': { name: '/bad' },
-    '/unbad': { name: '/unbad' },
-    '/ban': { name: '/ban' },
-    '/unban': { name: '/unban' },
-    '/api': { name: '/api' },
-    '/wget': { name: '/wget' },
-    '/help': { name: '/help' },
-};
-
 export const CronjobTypes: Record<string, OptionData> = {
     TEXT: { name: '文本内容' },
     BAT: { name: 'BAT 批处理' },
