@@ -28,14 +28,14 @@
 /ai 提问或交谈
 /new 重置上下文内容
 /wake 自定义唤醒词
-/m:gpt 切换为 GPT [gpt-3.5-turbo]
-/m:gem 切换为 Gemini [gemini-pro]
-/m:spa 切换为 Spark [v3]
+/m:gpt 换模型：GPT [gpt-3.5-turbo]
+/m:gem 换模型：Gemini [gemini-pro]
+/m:spa 换模型：Spark [v3]
 /api 调用远程接口
 /bad 添加违规关键词
 /unbad 删除违规关键词
-/g:chat 加入群聊 OpenTDP 聊天群
-/g:dev 加入群聊 OpenTDP 开发群
+/g:chat 加群聊：OpenTDP 聊天
+/g:dev 加群聊：OpenTDP 开发
 /wget 获取图片或文件
 /help 查看帮助信息
 级别 9；唤醒词 ai；对话模型 GPT；上下文长度 0/20；祝你好运！
@@ -47,9 +47,9 @@
 /ai 提问或交谈
 /new 重置上下文内容
 /wake 自定义唤醒词
-/m:gpt 切换为 GPT [gpt-3.5-turbo]
-/m:spa 切换为 Spark [v3]
-/m:gem 切换为 Gemini [gemini-pro]
+/m:gpt 换模型 GPT [gpt-3.5-turbo]
+/m:spa 换模型 Spark [v3]
+/m:gem 换模型 Gemini [gemini-pro]
 /api 调用远程接口
 /bad 添加违规关键词
 /unbad 删除违规关键词
