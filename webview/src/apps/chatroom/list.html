@@ -31,7 +31,7 @@
             @for (item of chatrooms; track item.rd) {
             <tr>
                 <th scope="row">{{item.rd}}</th>
-                <td>{{wcfChatrooms[item.roomid] ? wcfChatrooms[item.roomid].name : item.roomid}}</td>
+                <td>{{wcfChatrooms[item.roomid] && wcfChatrooms[item.roomid].name || item.roomid}}</td>
                 <td>{{roomLevels[item.level] && roomLevels[item.level].name || '-'}}</td>
                 <td class="d-none d-md-table-cell">{{item.join_argot}}</td>
                 <td class="d-none d-lg-table-cell">{{item.name}}</td>

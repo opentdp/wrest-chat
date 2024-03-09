@@ -56,13 +56,13 @@
                     }
                 </td>
                 <td class="d-none d-md-table-cell">
-                    {{ keywordGroups[item.group] && keywordGroups[item.group].name || item.group}}
+                    {{keywordGroups[item.group] && keywordGroups[item.group].name || '-'}}
                 </td>
                 <td class="d-none d-md-table-cell">
-                    {{ item.target}}
+                    {{item.target}}
                 </td>
                 <td class="d-none d-lg-table-cell">
-                    {{ keywordLevels[item.level] && keywordLevels[item.level].name || item.level}}
+                    {{keywordLevels[item.level] && keywordLevels[item.level].name || '-'}}
                 </td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary me-2" routerLink="/keyword/update/{{item.rd}}">编辑</button>

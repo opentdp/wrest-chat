@@ -62,7 +62,7 @@
                     @if (item.roomid == '-') {
                     私聊
                     } @else {
-                    {{wcfChatrooms[item.roomid] ? wcfChatrooms[item.roomid].name : item.roomid}}
+                    {{wcfChatrooms[item.roomid] && wcfChatrooms[item.roomid].name || '-'}}
                     }
                 </td>
                 <td class="d-none d-md-table-cell">
