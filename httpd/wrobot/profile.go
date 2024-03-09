@@ -13,7 +13,7 @@ type Profile struct{}
 // @Produce json
 // @Tags BOT::用户配置
 // @Param body body profile.FetchAllParam true "获取用户配置列表参数"
-// @Success 200 {object} []tables.Profile
+// @Success 200 {array} tables.Profile
 // @Router /bot/profile/list [post]
 func (*Profile) list(c *gin.Context) {
 

@@ -12,7 +12,7 @@ type Setting struct{}
 // @Produce json
 // @Tags BOT::全局配置
 // @Param body body setting.FetchAllParam true "获取全局配置列表参数"
-// @Success 200 {object} []tables.Setting
+// @Success 200 {array} tables.Setting
 // @Router /bot/setting/list [post]
 func (*Setting) list(c *gin.Context) {
 

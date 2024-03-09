@@ -13,7 +13,7 @@ type Keyword struct{}
 // @Produce json
 // @Tags BOT::关键字
 // @Param body body keyword.FetchAllParam true "获取关键字列表参数"
-// @Success 200 {object} []tables.Keyword
+// @Success 200 {array} tables.Keyword
 // @Router /bot/keyword/list [post]
 func (*Keyword) list(c *gin.Context) {
 

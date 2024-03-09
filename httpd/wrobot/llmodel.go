@@ -13,7 +13,7 @@ type LLModel struct{}
 // @Produce json
 // @Tags BOT::大语言模型
 // @Param body body llmodel.FetchAllParam true "获取模型列表参数"
-// @Success 200 {object} []tables.LLModel
+// @Success 200 {array} tables.LLModel
 // @Router /bot/llmodel/list [post]
 func (*LLModel) list(c *gin.Context) {
 

@@ -13,7 +13,7 @@ type Chatroom struct{}
 // @Produce json
 // @Tags BOT::群聊配置
 // @Param body body chatroom.FetchAllParam true "获取群聊配置列表参数"
-// @Success 200 {object} []tables.Chatroom
+// @Success 200 {array} tables.Chatroom
 // @Router /bot/chatroom/list [post]
 func (*Chatroom) list(c *gin.Context) {
 

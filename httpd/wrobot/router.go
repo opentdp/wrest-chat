@@ -48,6 +48,6 @@ func Route() {
 
 	// sundry
 
-	rg.POST("handlers", handlers)
+	rg.POST("handlers", robotHandlers)
 
 }
