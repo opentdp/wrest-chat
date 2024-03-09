@@ -89,8 +89,8 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
 			badMember[msg.Sender] += int(v.Level)
 			if badMember[msg.Sender] > 10 {
-				wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
-				delete(badMember, msg.Sender)
+				defer delete(badMember, msg.Sender)
+				defer wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
 				return "我送你离开，天涯之外你是否还在"
 			}
 			str := "违规风险 +%d，当前累计：%d，大于 10 将被请出群聊"
