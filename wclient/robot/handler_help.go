@@ -61,7 +61,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 			} else if aliasMap["-"] != nil && aliasMap["-"][v.Command] != "" {
 				cmd = aliasMap["-"][v.Command]
 			}
-			helper = append(helper, fmt.Sprintf("%s %s", cmd, v.Describe))
+			helper = append(helper, fmt.Sprintf("【%s】%s", cmd, v.Describe))
 		}
 	}
 
@@ -72,6 +72,9 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	if len(setting.HelpAdditive) > 1 {
 		text += setting.HelpAdditive + "\n"
 	}
+
+	// 分割线
+	text += "----------------\n"
 
 	// 当前用户状态信息
 	if up.Level > 0 {
