@@ -1,7 +1,6 @@
 package robot
 
 import (
-	"regexp"
 	"sort"
 	"strings"
 
@@ -76,14 +75,15 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	// 忽略空白
+	// 清理空白
 	content := strings.TrimSpace(msg.Content)
+	content = strings.ReplaceAll(content, " ", " ")
 	if content == "" {
 		return ""
 	}
 
 	// 解析指令
-	params := regexp.MustCompile(`\s+`).Split(content, -1)
+	params := strings.SplitN(content, " ", 2)
 	handler := HandlerMap[params[0]] // 默认
 	if handler == nil {
 		handler = HandlerMap[params[0]+"@"+prid(msg)] // 群聊
