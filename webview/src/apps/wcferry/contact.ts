@@ -23,6 +23,8 @@ export class WcferryContactComponent {
         '企业微信': /@openim$/,
     };
 
+    public contactType = '好友';
+
     constructor() {
         this.getContacts();
     }

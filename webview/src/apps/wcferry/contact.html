@@ -9,11 +9,24 @@
 </nav>
 
 <div class="container-lg mb-3">
+    <div class="row justify-content-between">
+        <div class="col"></div>
+        <div class="col-5 col-md-4 text-end">
+            <select class="form-select" [(ngModel)]="contactType">
+                <option value="好友">好友</option>
+                @for (item of contactTypes | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.key}}</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="container-lg mb-3">
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">type</th>
                 <th scope="col">wxid</th>
                 <th scope="col">code</th>
                 <th scope="col">name</th>
@@ -25,9 +38,9 @@
         </thead>
         <tbody>
             @for (item of contacts; track item.wxid; let i = $index) {
+            @if (item.type == contactType) {
             <tr>
                 <th scope="row">{{i+1}}</th>
-                <td>{{item.type}}</td>
                 <td>{{item.wxid}}</td>
                 <td>{{item.code}}</td>
                 <td>{{item.name}}</td>
@@ -36,6 +49,7 @@
                 <td>{{item.province}}</td>
                 <td>{{item.remark}}</td>
             </tr>
+            }
             }
         </tbody>
     </table>
