@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { RobotApi, RobotHandler } from '../../openapi/wrobot';
 
@@ -12,8 +11,7 @@ export class HandlerListComponent {
 
     public robotHandler: Array<RobotHandler> = [];
 
-
-    constructor(private router: Router) {
+    constructor() {
         this.getRobotHandlers();
     }
 
