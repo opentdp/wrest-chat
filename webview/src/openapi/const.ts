@@ -17,7 +17,7 @@ export const CronjobTypes: Record<string, OptionData> = {
 };
 
 export const KeywordGroups: Record<string, OptionData> = {
-    badword: { name: '敏感或违规' },
+    badword: { name: '违规词' },
     handler: { name: '指令别名' },
 };
 
