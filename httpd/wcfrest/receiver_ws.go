@@ -10,7 +10,7 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-func socketReceiver(ws *websocket.Conn) wcferry.MsgCallback {
+func socketReceiver(ws *websocket.Conn) wcferry.MsgConsumer {
 
 	mu := sync.Mutex{}
 

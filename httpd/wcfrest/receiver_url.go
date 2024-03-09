@@ -12,7 +12,7 @@ import (
 
 var urlReceiverList = map[string]string{}
 
-func urlReciever(url string) wcferry.MsgCallback {
+func urlReciever(url string) wcferry.MsgConsumer {
 
 	return func(msg *wcferry.WxMsg) {
 		ret := wcferry.ParseWxMsg(msg)
