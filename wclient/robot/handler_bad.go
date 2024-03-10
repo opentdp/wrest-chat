@@ -21,7 +21,7 @@ func badHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    30,
+		Order:    310,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/bad",
@@ -41,7 +41,7 @@ func badHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    31,
+		Order:    311,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/unbad",

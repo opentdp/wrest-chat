@@ -21,7 +21,7 @@ func apiHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    20,
+		Order:    200,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/api",

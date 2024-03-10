@@ -12,7 +12,7 @@ func wgetHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    90,
+		Order:    380,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/wget",

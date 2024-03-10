@@ -10,7 +10,7 @@ func revokeHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    800,
+		Order:    390,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/revoke",

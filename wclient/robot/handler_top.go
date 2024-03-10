@@ -13,7 +13,7 @@ func topHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    50,
+		Order:    330,
 		ChatAble: false,
 		RoomAble: true,
 		Command:  "/top",

@@ -14,7 +14,7 @@ func roomHandler() []*Handler {
 		return cmds
 	}
 
-	for _, v := range rooms {
+	for k, v := range rooms {
 		if len(v.JoinArgot) < 2 {
 			continue
 		}
@@ -22,7 +22,7 @@ func roomHandler() []*Handler {
 		cmdkey := "/jr:" + v.JoinArgot
 		cmds = append(cmds, &Handler{
 			Level:    0,
-			Order:    70,
+			Order:    400 + int32(k),
 			ChatAble: true,
 			RoomAble: false,
 			Command:  cmdkey,

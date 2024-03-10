@@ -21,7 +21,7 @@ func aiHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    10,
+		Order:    100,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/ai",
@@ -31,7 +31,7 @@ func aiHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    11,
+		Order:    101,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/ai:new",
@@ -45,7 +45,7 @@ func aiHandler() []*Handler {
 	if len(models) > 3 {
 		cmds = append(cmds, &Handler{
 			Level:    0,
-			Order:    13,
+			Order:    103,
 			ChatAble: true,
 			RoomAble: true,
 			Command:  "/ai:rand",
@@ -63,12 +63,12 @@ func aiHandler() []*Handler {
 		})
 	}
 
-	for _, v := range models {
+	for k, v := range models {
 		v := v // copy
 		cmdkey := "/cm:" + v.Mid
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
-			Order:    14,
+			Order:    110 + int32(k),
 			ChatAble: true,
 			RoomAble: true,
 			Command:  cmdkey,
@@ -90,6 +90,7 @@ func aiCallback(msg *wcferry.WxMsg) string {
 		return "请在指令后输入问题"
 	}
 
+	// 处理引用的消息
 	if msg.Extra == "refer-msg" {
 		origin, err := message.Fetch(&message.FetchParam{Id: msg.Id})
 		if err != nil || origin.Id == 0 {
@@ -110,7 +111,7 @@ func aiCallback(msg *wcferry.WxMsg) string {
 			}
 		// 默认提示
 		default:
-			return "暂不支持处理此消息类型"
+			return "暂不支持处理此类消息"
 		}
 	}
 
