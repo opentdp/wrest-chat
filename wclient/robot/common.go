@@ -10,8 +10,6 @@ import (
 )
 
 var wc *wcferry.Client
-
-var clientId string
 var selfInfo *wcferry.UserInfo
 
 func Start() {
@@ -23,7 +21,7 @@ func Start() {
 		return
 	}
 
-	if clientId != "" {
+	if wc != nil {
 		logman.Warn("robot already started")
 		return
 	}
@@ -31,7 +29,10 @@ func Start() {
 	initHandlers()
 
 	wc = wclient.Register()
-	clientId, _ = wc.EnrollReceiver(true, receiver)
+	_, err := wc.EnrollReceiver(true, receiver)
+	if err != nil {
+		logman.Fatal("robot start failed", "error", err)
+	}
 
 }
 
