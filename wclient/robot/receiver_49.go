@@ -18,8 +18,10 @@ func receiver49(msg *wcferry.WxMsg) {
 
 	// 引用消息
 	if ret.AppMsg.Type == 57 {
-		msg.Id = ret.AppMsg.ReferMsg.Svrid
+		msg.Extra = msg.Content
 		msg.Content = ret.AppMsg.Title
+		msg.Id = ret.AppMsg.ReferMsg.Svrid
+		msg.Type = ret.AppMsg.ReferMsg.Type
 		msg.Sign = "refer-msg"
 		receiver1(msg)
 		return

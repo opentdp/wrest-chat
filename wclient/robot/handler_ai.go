@@ -92,21 +92,27 @@ func aiCallback(msg *wcferry.WxMsg) string {
 
 	// 处理引用的消息
 	if msg.Sign == "refer-msg" {
-		origin, err := message.Fetch(&message.FetchParam{Id: msg.Id})
-		if err != nil || origin.Id == 0 {
-			return "未找到引用消息"
+		ref, err := message.Fetch(&message.FetchParam{Id: msg.Id})
+		if err != nil { //TODO: 此处无法提取机器人发的消息
+			ref.Content = msg.Extra
 		}
-		switch origin.Type {
+		switch msg.Type {
+		// 文本
+		case 1:
+			if ref.Content != "" {
+				msg.Content += "\n内容如下:\n" + ref.Content
+				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+			}
 		// 图片
 		case 3:
-			if origin.Remark == "" {
+			if ref.Remark == "" {
 				return "提取消息图片失败"
 			}
-			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, origin.Remark)
+			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
 		// 混合类消息
 		case 49:
-			if origin.Content != "" {
-				msg.Content += "\nXML数据如下:\n" + origin.Content
+			if ref.Content != "" {
+				msg.Content += "\nXML数据如下:\n" + ref.Content
 				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 			}
 		// 默认提示
