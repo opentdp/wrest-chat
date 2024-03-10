@@ -14,9 +14,12 @@ func GoogleText(id, rid, ask string) (string, error) {
 	// 初始化模型
 
 	client := google.NewClient(llmc.Secret)
-	client.Model = llmc.Model
 
-	if llmc.Endpoint != "" {
+	if len(llmc.Model) > 1 {
+		client.Model = llmc.Model
+	}
+
+	if len(llmc.Endpoint) > 1 {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 

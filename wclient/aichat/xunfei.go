@@ -18,9 +18,20 @@ func XunfeiText(id, rid, ask string) (string, error) {
 		return "", errors.New("密钥格式错误")
 	}
 
-	client := xunfei.NewClient(keys[0], keys[1], keys[2])
-
 	// 初始化模型
+
+	model := "v3"
+	if len(llmc.Model) > 1 {
+		model = llmc.Model
+	}
+
+	config := xunfei.DefaultConfig(keys[0], keys[1], keys[2])
+
+	if len(llmc.Endpoint) > 1 {
+		config.BaseURL = llmc.Endpoint
+	}
+
+	client := xunfei.NewClientWithConfig(config)
 
 	req := xunfei.ChatCompletionRequest{
 		MaxTokens: 2048,
@@ -55,7 +66,7 @@ func XunfeiText(id, rid, ask string) (string, error) {
 
 	// 请求模型接口
 
-	stream, err := client.CreateChatCompletionStream(context.Background(), req, llmc.Model)
+	stream, err := client.CreateChatCompletionStream(context.Background(), req, model)
 	if err != nil {
 		return "", err
 	}
