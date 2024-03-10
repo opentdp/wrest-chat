@@ -51,6 +51,7 @@
                 <option value="xunfei">科大讯飞</option>
                 <option value="baidu">百度千帆（文心一言）</option>
                 <option value="tencent">腾讯混元</option>
+                <option value="ali">阿里百炼（通义千问）</option>
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
@@ -87,6 +88,9 @@
                 }
                 @case ('tencent') {
                 腾讯混元填写 APP-ID,API-KEY,API-SECRET
+                }
+                @case ('ali') {
+                阿里百炼（通义千问）填写 APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET
                 }
                 @default {
                 请填写从服务商获取的 API-KEY
