@@ -28,12 +28,12 @@ export const KeywordLevels: Record<number, OptionData> = {
 };
 
 export const RoomLevels: Record<number, OptionData> = {
-    1: { name: '未验证' },
+    1: { name: '待验证' },
     2: { name: '已注册' },
 };
 
 export const UserLevels: Record<number, OptionData> = {
-    1: { name: '未验证' },
+    1: { name: '待验证' },
     2: { name: '已注册' },
     7: { name: '管理员' },
     9: { name: '创始人' }

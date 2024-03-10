@@ -24,7 +24,7 @@ export class ProfileCreateComponent {
     public formdata: ProfileCreateParam = {
         wxid: '',
         roomid: '',
-        level: 2,
+        level: 1,
     };
 
     constructor(private router: Router) {

@@ -15,6 +15,9 @@
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
                 用于生成模型切换指令，不影响接口请求
+                @if (formdata.mid && formdata.mid.length > 1) {
+                ；当前指令：<b>/cm:{{formdata.mid}}</b>
+                }
             </div>
         </div>
         <div class="col-12">

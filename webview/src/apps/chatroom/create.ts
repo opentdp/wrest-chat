@@ -17,8 +17,8 @@ export class ChatroomCreateComponent {
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
     public formdata: ChatroomCreateParam = {
-        roomid: '',
         level: 1,
+        roomid: '',
         pat_return: 'false',
     };
 
