@@ -54,7 +54,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 返回卡片消息
-	if strings.Count(res, "\n") > 7 || len(res) > 800 {
+	if strings.Count(res, "\n") > 20 || len(res) > 800 {
 		receiver := msg.Sender
 		if msg.IsGroup {
 			receiver = msg.Roomid
