@@ -11,8 +11,6 @@ var (
 	FriendAccept = true
 	// 添加好友后的响应内容，留空则忽略
 	FriendHello = "群主去修仙了，请留言"
-	// 是否自动回应拍一拍
-	PatReturn = true
 	// 私聊撤回消息时响应的内容，留空则忽略
 	RevokeMsg = "撤回了寂寞？"
 	// 自动下载消息中的图片
@@ -52,8 +50,6 @@ func Laod() {
 			FriendAccept = item.Value == "true"
 		case "FriendHello":
 			FriendHello = item.Value
-		case "PatReturn":
-			PatReturn = item.Value == "true"
 		case "RevokeMsg":
 			RevokeMsg = item.Value
 		case "AutoSaveImage":
@@ -87,7 +83,6 @@ func DataMigrate() {
 		{0, "BotEnable", "bool", "bot", strconv.FormatBool(BotEnable), "机器人", "是否启用机器人，重启生效"},
 		{0, "FriendAccept", "bool", "bot", strconv.FormatBool(FriendAccept), "确认好友", "是否自动同意新的好友请求"},
 		{0, "FriendHello", "string", "bot", FriendHello, "好友打招呼", "添加好友后的响应内容"},
-		{0, "PatReturn", "bool", "bot", strconv.FormatBool(PatReturn), "回应拍拍", "私聊是否自动回应拍一拍"},
 		{0, "RevokeMsg", "string", "bot", RevokeMsg, "撤回提醒", "私聊撤回消息时响应的内容"},
 		{0, "AutoSaveImage", "bool", "bot", strconv.FormatBool(AutoSaveImage), "自动保存图片", "是否自动下载消息中的图片"},
 		{0, "WhiteLimit", "bool", "bot", strconv.FormatBool(WhiteLimit), "白名单模式", "开启后仅已注册的群和用户可以使用机器人"},
