@@ -75,9 +75,12 @@ func reply(msg *wcferry.WxMsg, text string) int32 {
 
 	if msg.IsGroup {
 		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		return wc.CmdClient.SendTxt("@"+user.Name+"\n"+text, msg.Roomid, msg.Sender)
-	} else {
-		return wc.CmdClient.SendTxt(text, msg.Sender, "")
+		if user != nil && user.Name != "" {
+			text = "@" + user.Name + "\n" + text
+		}
+		return wc.CmdClient.SendTxt(text, msg.Roomid, msg.Sender)
 	}
+
+	return wc.CmdClient.SendTxt(text, msg.Sender, "")
 
 }

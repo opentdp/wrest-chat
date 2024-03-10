@@ -108,14 +108,8 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 验证场景
-	if msg.IsGroup {
-		if !handler.RoomAble {
-			return "此指令仅在私聊中可用"
-		}
-	} else {
-		if !handler.ChatAble {
-			return "此指令仅在群聊中可用"
-		}
+	if (msg.IsGroup && !handler.RoomAble) || (!msg.IsGroup && !handler.ChatAble) {
+		return setting.InvalidHandler
 	}
 
 	// 重写消息

@@ -91,7 +91,7 @@ func aiCallback(msg *wcferry.WxMsg) string {
 	}
 
 	// 处理引用的消息
-	if msg.Extra == "refer-msg" {
+	if msg.Sign == "refer-msg" {
 		origin, err := message.Fetch(&message.FetchParam{Id: msg.Id})
 		if err != nil || origin.Id == 0 {
 			return "未找到引用消息"

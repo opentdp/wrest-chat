@@ -18,7 +18,7 @@ func receiver3(msg *wcferry.WxMsg) {
 		return
 	}
 
-	time.Sleep(2 * time.Second) // 等待数据落库
+	time.Sleep(3 * time.Second) // 等待数据落库
 
 	p, err := wc.CmdClient.DownloadImage(msg.Id, msg.Extra, "", 5)
 	if err != nil || p == "" {

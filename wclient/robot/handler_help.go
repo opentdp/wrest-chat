@@ -18,7 +18,7 @@ func helpHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    960,
+		Order:    900,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/help",

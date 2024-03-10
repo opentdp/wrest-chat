@@ -7,7 +7,6 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry/types"
 )
 
-// 处理新朋友通知
 // 处理混合类消息
 func receiver49(msg *wcferry.WxMsg) {
 
@@ -17,10 +16,11 @@ func receiver49(msg *wcferry.WxMsg) {
 		return
 	}
 
+	// 引用消息
 	if ret.AppMsg.Type == 57 {
 		msg.Id = ret.AppMsg.ReferMsg.Svrid
 		msg.Content = ret.AppMsg.Title
-		msg.Extra = "refer-msg"
+		msg.Sign = "refer-msg"
 		receiver1(msg)
 		return
 	}
