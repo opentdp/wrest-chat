@@ -38,7 +38,7 @@
             @case ("lmodel") {
             <select name="value" class="form-select" [(ngModel)]="formdata.value">
                 @for (item of llmodels; track item.rd) {
-                <option [value]="item.mid">{{item.mid}}（{{item.model}}）</option>
+                <option [value]="item.mid">{{item.mid}}（{{item.provider}}:{{item.model}}）</option>
                 }
             </select>
             }
