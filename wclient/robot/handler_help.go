@@ -48,7 +48,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
-	for _, v := range Handlers {
+	for _, v := range handlers {
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限

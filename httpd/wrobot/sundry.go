@@ -13,7 +13,7 @@ func robotHandlers(c *gin.Context) {
 
 	items := []RobotHandler{}
 
-	for _, v := range robot.Handlers {
+	for _, v := range robot.GetHandlers() {
 		items = append(items, RobotHandler{
 			Level:    v.Level,
 			Order:    v.Order,

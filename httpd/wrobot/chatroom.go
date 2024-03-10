@@ -73,7 +73,7 @@ func (*Chatroom) create(c *gin.Context) {
 	if id, err := chatroom.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -97,7 +97,7 @@ func (*Chatroom) update(c *gin.Context) {
 
 	if err := chatroom.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -121,7 +121,7 @@ func (*Chatroom) delete(c *gin.Context) {
 
 	if err := chatroom.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}

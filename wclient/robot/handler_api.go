@@ -35,6 +35,8 @@ func apiHandler() []*Handler {
 
 func apiCallback(msg *wcferry.WxMsg) string {
 
+	self := wc.CmdClient.GetSelfInfo()
+
 	cmd := []string{"help"}
 	if msg.Content != "" {
 		cmd = strings.SplitN(msg.Content, " ", 2)
@@ -47,7 +49,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 	url := setting.ApiEndpoint + strings.Join(cmd, "/")
 	res, err := request.TextGet(url, request.H{
 		"User-Agent": args.AppName + "/" + args.Version,
-		"Client-Id":  self().Wxid + "," + msg.Sender,
+		"Client-Id":  self.Wxid + "," + msg.Sender,
 	})
 	if err != nil {
 		return err.Error()
@@ -62,7 +64,7 @@ func apiCallback(msg *wcferry.WxMsg) string {
 		title := msg.Content
 		digest := "请点击卡片查看结果"
 		icon := setting.ApiEndpointIcon
-		wc.CmdClient.SendRichText(self().Name, self().Wxid, title, digest, url, icon, receiver)
+		wc.CmdClient.SendRichText(self.Name, self.Wxid, title, digest, url, icon, receiver)
 		return ""
 	}
 

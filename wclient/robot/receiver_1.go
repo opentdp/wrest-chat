@@ -11,7 +11,7 @@ func receiver1(msg *wcferry.WxMsg) {
 
 	// 处理聊天指令
 	if msg.IsGroup || wcferry.ContactType(msg.Sender) == "好友" {
-		output := applyHandlers(msg)
+		output := ApplyHandlers(msg)
 		if strings.Trim(output, "-") != "" {
 			reply(msg, output)
 		}

@@ -10,7 +10,6 @@ import (
 )
 
 var wc *wcferry.Client
-var selfInfo *wcferry.UserInfo
 
 func Start() {
 
@@ -26,32 +25,25 @@ func Start() {
 		return
 	}
 
-	initHandlers()
-
 	wc = wclient.Register()
 	_, err := wc.EnrollReceiver(true, receiver)
 	if err != nil {
 		logman.Fatal("robot start failed", "error", err)
 	}
 
-}
-
-func Redo() {
-
-	selfInfo = nil
-	initHandlers()
+	ResetHandlers()
 
 }
 
-// 个人信息
-func self() *wcferry.UserInfo {
+func Reset() {
 
-	if selfInfo == nil {
-		selfInfo = wc.CmdClient.GetSelfInfo()
-	}
-	return selfInfo
+	setting.Laod()
+
+	ResetHandlers()
 
 }
+
+///////////////////////// COMMON METHODS /////////////////////////
 
 // 会话场景
 func prid(msg *wcferry.WxMsg) string {

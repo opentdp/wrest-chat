@@ -10,23 +10,33 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-var Handlers = []*Handler{}
-var HandlerMap = map[string]*Handler{}
+var handlers = []*Handler{}
+var handlerPre = []*Handler{}
+var handlerMap = map[string]*Handler{}
+
+type HandlerFunc func(*wcferry.WxMsg) string
 
 type Handler struct {
-	Level    int32                       // 0:不限制 7:群管理 9:创始人
-	Order    int32                       // 排序，越小越靠前
-	ChatAble bool                        // 是否允许在私聊使用
-	RoomAble bool                        // 是否允许在群聊使用
-	Command  string                      // 指令
-	Describe string                      // 指令的描述信息
-	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截文本聊天内容
-	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
+	Level    int32       // 0:不限制 7:群管理 9:创始人
+	Order    int32       // 排序，越小越靠前
+	ChatAble bool        // 是否允许在私聊使用
+	RoomAble bool        // 是否允许在群聊使用
+	Command  string      // 指令
+	Describe string      // 指令的描述信息
+	PreCheck HandlerFunc // 前置检查，可拦截文本聊天内容
+	Callback HandlerFunc // 指令回调，返回回复内容
 }
 
-func initHandlers() {
+func GetHandlers() []*Handler {
+
+	return handlers
+
+}
+
+func ResetHandlers() {
 
 	hlst := []*Handler{}
+	hpre := []*Handler{}
 	hmap := map[string]*Handler{}
 
 	// 获取指令列表
@@ -48,6 +58,9 @@ func initHandlers() {
 	// 获取指令映射
 	for _, v := range hlst {
 		hmap[v.Command] = v
+		if v.PreCheck != nil {
+			hpre = append(hpre, v)
+		}
 	}
 
 	// 获取别名数据
@@ -61,18 +74,16 @@ func initHandlers() {
 	}
 
 	// 更新全局数据
-	Handlers, HandlerMap = hlst, hmap
+	handlers, handlerPre, handlerMap = hlst, hpre, hmap
 
 }
 
-func applyHandlers(msg *wcferry.WxMsg) string {
+func ApplyHandlers(msg *wcferry.WxMsg) string {
 
 	// 前置钩子
-	for _, v := range Handlers {
-		if v.PreCheck != nil {
-			if txt := v.PreCheck(msg); txt != "" {
-				return txt
-			}
+	for _, v := range handlerPre {
+		if txt := v.PreCheck(msg); txt != "" {
+			return txt
 		}
 	}
 
@@ -85,11 +96,11 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 
 	// 解析指令
 	params := strings.SplitN(content, " ", 2)
-	handler := HandlerMap[params[0]] // 默认
+	handler := handlerMap[params[0]] // 默认
 	if handler == nil {
-		handler = HandlerMap[params[0]+"@"+prid(msg)] // 群聊
+		handler = handlerMap[params[0]+"@"+prid(msg)] // 群聊
 		if handler == nil {
-			handler = HandlerMap[params[0]+"@-"] // 全局
+			handler = handlerMap[params[0]+"@-"] // 全局
 			if handler == nil {
 				if content[0] == '/' {
 					return setting.InvalidHandler
