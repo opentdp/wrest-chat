@@ -82,7 +82,7 @@ func aiHandler() []*Handler {
 			ChatAble: true,
 			RoomAble: true,
 			Command:  cmdkey,
-			Describe: "换模型：" + v.Family + " [" + v.Model + "]",
+			Describe: "换模型：" + v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
