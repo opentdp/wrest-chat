@@ -16,7 +16,7 @@ func revokeHandler() []*Handler {
 		Command:  "/revoke",
 		Describe: "撤回引用的消息（机器人发送的）",
 		Callback: func(msg *wcferry.WxMsg) string {
-			if msg.Extra == "refer-msg" {
+			if msg.Sign == "refer-msg" {
 				wc.CmdClient.RevokeMsg(msg.Id)
 			}
 			return ""
