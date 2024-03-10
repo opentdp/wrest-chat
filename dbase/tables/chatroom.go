@@ -6,7 +6,7 @@ type Chatroom struct {
 	Rd         uint   `json:"rd" gorm:"primaryKey"`      // 主键
 	Roomid     string `json:"roomid" gorm:"uniqueIndex"` // 群聊 id
 	Name       string `json:"name"`                      // 群聊名称
-	Level      int32  `json:"level" gorm:"default:-1"`   // 等级
+	Level      int32  `json:"level" gorm:"default:-1"`   // 等级 [1:待验证, 2:已注册]
 	Remark     string `json:"remark"`                    // 备注
 	JoinArgot  string `json:"join_argot"`                // 加群指令
 	PatReturn  string `json:"pat_return"`                // 响应拍拍我

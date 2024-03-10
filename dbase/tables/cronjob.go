@@ -11,7 +11,7 @@ type Cronjob struct {
 	DayOfMonth string `json:"day_of_month"`         // 日
 	Month      string `json:"month"`                // 月
 	DayOfWeek  string `json:"day_of_week"`          // 周
-	Type       string `json:"type"`                 // 命令类型，[CMD, POWERSHELL, SHELL]
+	Type       string `json:"type"`                 // 命令类型 [CMD, POWERSHELL, SHELL]
 	Timeout    uint   `json:"timeout"`              // 超时时间（秒）
 	Directory  string `json:"directory"`            // 工作目录
 	Content    string `json:"content"`              // 命令内容

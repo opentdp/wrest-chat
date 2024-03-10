@@ -25,16 +25,16 @@ func badHandler() []*Handler {
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/bad",
-		Describe: "添加违规关键词",
+		Describe: "添加违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			_, err := keyword.Create(&keyword.CreateParam{
 				Group: "badword", Roomid: prid(msg), Phrase: msg.Content, Level: 1,
 			})
 			if err == nil {
 				updateBadWord()
-				return "违规关键词添加成功"
+				return "违禁词添加成功"
 			}
-			return "违规关键词已存在"
+			return "违禁词已存在"
 		},
 		PreCheck: badPreCheck,
 	})
@@ -45,16 +45,16 @@ func badHandler() []*Handler {
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/unbad",
-		Describe: "删除违规关键词",
+		Describe: "删除违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			err := keyword.Delete(&keyword.DeleteParam{
 				Group: "badword", Roomid: prid(msg), Phrase: msg.Content,
 			})
 			if err == nil {
 				updateBadWord()
-				return "违规关键词删除成功"
+				return "违禁词删除成功"
 			}
-			return "违规关键词删除失败"
+			return "违禁词删除失败"
 		},
 	})
 

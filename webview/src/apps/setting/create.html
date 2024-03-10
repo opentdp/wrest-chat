@@ -45,19 +45,19 @@
             @case ("number") {
             <input type="number" name="value" class="form-control" [(ngModel)]="formdata.value" required />
             <div class="form-text">
-                若无特殊说明取，消或者禁用该功能，可修改为 “-1”
+                若无特殊说明取，消或禁用该功能，可设置为 “-1”
             </div>
             }
             @case ("text") {
             <textarea name="value" class="form-control" [(ngModel)]="formdata.value" required></textarea>
             <div class="form-text">
-                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+                若无特殊说明，取消或禁用该功能，可设置为 “-”
             </div>
             }
             @default {
             <input type="text" name="value" class="form-control" [(ngModel)]="formdata.value" required />
             <div class="form-text">
-                若无特殊说明，取消或者禁用该功能，可修改为 “-”
+                若无特殊说明，取消或禁用该功能，可设置为 “-”
             </div>
             }
             }

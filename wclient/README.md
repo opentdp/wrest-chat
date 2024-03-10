@@ -22,64 +22,68 @@
 
 ## 菜单示例
 
+加群指令（`jr:xxx`）在后台添加群聊时指定，模型切换指令（`cm:xxx`）在后台添加模型时指定，外部接口指令（`/api xxx`）在后台全局设置中指定。
+
 ### 私聊菜单
 
 ```text
-/ai 提问或交谈
-/new 重置上下文内容
-/wake 自定义唤醒词
-/m:gpt 换模型：GPT [gpt-3.5-turbo]
-/m:gem 换模型：Gemini [gemini-pro]
-/m:spa 换模型：Spark [v3]
-/api 调用远程接口
-/bad 添加违规关键词
-/unbad 删除违规关键词
-/g:chat 加群聊：OpenTDP 聊天
-/g:dev 加群聊：OpenTDP 开发
-/wget 获取图片或文件
-/help 查看帮助信息
+【/ai】 提问或交谈
+【/ai:new】 重置上下文内容
+【/ai:rand】 随机选择一个模型
+【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型：Gemini [gemini-pro]
+【/cm:spa】 换模型：Spark [v3]
+【/api】 调用远程接口
+【/bad】 添加违禁词
+【/unbad】 删除违禁词
+【/jr:chat】 加群聊：OpenTDP 聊天
+【/jr:dev】 加群聊：OpenTDP 开发
+【/wget】 获取图片或文件
+【/help】 查看帮助信息
+----------------
 级别 9；唤醒词 ai；对话模型 GPT；上下文长度 0/20；祝你好运！
 ```
 
 ### 群聊菜单
 
 ```text
-/ai 提问或交谈
-/new 重置上下文内容
-/wake 自定义唤醒词
-/m:gpt 换模型 GPT [gpt-3.5-turbo]
-/m:spa 换模型 Spark [v3]
-/m:gem 换模型 Gemini [gemini-pro]
-/api 调用远程接口
-/bad 添加违规关键词
-/unbad 删除违规关键词
-/ban 拉黑指定的用户
-/unban 解封拉黑的用户
-/wget 获取图片或文件
-/top 获取群聊统计信息
-/help 查看帮助信息
+【/ai】 提问或交谈
+【/ai:new】 重置上下文内容
+【/ai:rand】 随机选择一个模型
+【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型：Gemini [gemini-pro]
+【/cm:spa】 换模型：Spark [v3]
+【/api】 调用远程接口
+【/bad】 添加违禁词
+【/unbad】 删除违禁词
+【/ban】 拉黑指定的用户
+【/unban】 解封拉黑的用户
+【/wget】 获取图片或文件
+【/top】 获取群聊统计信息
+【/help】 查看帮助信息
+----------------
 级别 9；对话模型 Gemini；上下文长度 0/20；祝你好运！
 ```
 
-### `/api` 菜单
+### 外部接口菜单
 
 ```text
-/icp/qq.com: 查询域名备案信息【kapi.9kr.cc】
-/img/大山: 按关键字返回图片
-/ip/1.2.3.4: 查询IP地址信息
-/iptv: 获取 IPTV 源数据
-/lbs/南山: 地址解析，地址转坐标
-/lbs/纬度,经度: 逆地址解析，坐标位置描述
-/news: 获取今日热点
-/paper/北京: 生成咸鱼日报
-/port/1.2.3.4: 查询IP/域名端口
-/price/商品URL: 查询商品历史价格
-/site/qq.com: 查询站点信息
-/spam/文本: 检测违规内容
-/video/北极: 按关键字返回视频
-/weather/上海: 根据地址查询天气
-/weather/经度,纬度: 根据经纬度查询天气
-/whois/qq.com: 获取域名 Whois 信息【whois.ddnsip.cn】
+【/api icp qq.com】 查询域名备案信息 <kapi.9kr.cc>
+【/api img 大山】 按关键字返回图片
+【/api ip 1.2.3.4】 查询IP地址信息
+【/api iptv】 获取 IPTV 源数据
+【/api lbs 南山】 地址解析，地址转坐标
+【/api lbs 纬度,经度】 逆地址解析，坐标位置描述
+【/api news】 获取今日热点
+【/api paper 北京】 生成咸鱼日报
+【/api port 1.2.3.4】 查询IP/域名端口
+【/api price 商品URL】 查询商品历史价格
+【/api site qq.com】 查询站点信息
+【/api spam 文本】 检测违禁词
+【/api video 北极】 按关键字返回视频
+【/api weather 上海】 根据地址查询天气
+【/api weather 经度,纬度】 根据经纬度查询天气
+【/api whois qq.com】 获取域名 Whois 信息 <whois.ddnsip.cn>
 ```
 
 ## 消息类型

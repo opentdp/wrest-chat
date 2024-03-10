@@ -44,7 +44,7 @@ func aiHandler() []*Handler {
 		Order:    11,
 		ChatAble: true,
 		RoomAble: true,
-		Command:  "/new",
+		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
 			aichat.ResetHistory(msg.Sender)
@@ -58,7 +58,7 @@ func aiHandler() []*Handler {
 			Order:    13,
 			ChatAble: true,
 			RoomAble: true,
-			Command:  "/rand",
+			Command:  "/ai:rand",
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
 				up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
@@ -75,7 +75,7 @@ func aiHandler() []*Handler {
 
 	for _, v := range models {
 		v := v // copy
-		cmdkey := "/" + v.Mid
+		cmdkey := "/cm:" + v.Mid
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
 			Order:    14,

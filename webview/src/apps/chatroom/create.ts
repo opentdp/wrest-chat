@@ -18,6 +18,8 @@ export class ChatroomCreateComponent {
 
     public formdata: ChatroomCreateParam = {
         roomid: '',
+        level: 1,
+        pat_return: 'false',
     };
 
     constructor(private router: Router) {

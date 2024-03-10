@@ -17,7 +17,7 @@ export const CronjobTypes: Record<string, OptionData> = {
 };
 
 export const KeywordGroups: Record<string, OptionData> = {
-    badword: { name: '违规词' },
+    badword: { name: '违禁词' },
     handler: { name: '指令别名' },
 };
 
@@ -28,12 +28,12 @@ export const KeywordLevels: Record<number, OptionData> = {
 };
 
 export const RoomLevels: Record<number, OptionData> = {
-    1: { name: '黑名单' },
+    1: { name: '未验证' },
     2: { name: '已注册' },
 };
 
 export const UserLevels: Record<number, OptionData> = {
-    1: { name: '黑名单' },
+    1: { name: '未验证' },
     2: { name: '已注册' },
     7: { name: '管理员' },
     9: { name: '创始人' }
