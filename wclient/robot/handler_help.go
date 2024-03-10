@@ -84,7 +84,10 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	// 对话模型相关配置
 	llmCount, _ := llmodel.Count(&llmodel.CountParam{})
 	if llmCount > 0 {
-		text += fmt.Sprintf("对话模型 %s；", aichat.UserModel(msg.Sender, msg.Roomid).Family)
+		model := aichat.UserModel(msg.Sender, msg.Roomid).Family
+		if len(model) > 1 {
+			text += fmt.Sprintf("对话模型 %s；", model)
+		}
 		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), setting.ModelHistory)
 	}
 

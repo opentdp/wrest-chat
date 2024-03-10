@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
+	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -25,18 +26,7 @@ func aiHandler() []*Handler {
 		RoomAble: true,
 		Command:  "/ai",
 		Describe: "提问或交谈",
-		Callback: func(msg *wcferry.WxMsg) string {
-			if msg.Content == "" {
-				return "请在指令后输入问题"
-			}
-			if msg.Extra == "image-txt" {
-				if msg.Thumb == "" {
-					return "提取消息图片失败"
-				}
-				return aichat.Image(msg.Sender, msg.Roomid, msg.Content, msg.Thumb)
-			}
-			return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
-		},
+		Callback: aiCallback,
 	})
 
 	cmds = append(cmds, &Handler{
@@ -91,5 +81,39 @@ func aiHandler() []*Handler {
 	}
 
 	return cmds
+
+}
+
+func aiCallback(msg *wcferry.WxMsg) string {
+
+	if msg.Content == "" {
+		return "请在指令后输入问题"
+	}
+
+	if msg.Extra == "refer-msg" {
+		origin, err := message.Fetch(&message.FetchParam{Id: msg.Id})
+		if err != nil || origin.Id == 0 {
+			return "未找到引用消息"
+		}
+		switch origin.Type {
+		// 图片
+		case 3:
+			if origin.Remark == "" {
+				return "提取消息图片失败"
+			}
+			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, origin.Remark)
+		// 混合类消息
+		case 49:
+			if origin.Content != "" {
+				msg.Content += "\nXML数据如下:\n" + origin.Content
+				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+			}
+		// 默认提示
+		default:
+			return "暂不支持处理此消息类型"
+		}
+	}
+
+	return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 
 }

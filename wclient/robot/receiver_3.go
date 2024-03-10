@@ -12,7 +12,7 @@ import (
 )
 
 // 自动保存图片
-func hook3(msg *wcferry.WxMsg) {
+func receiver3(msg *wcferry.WxMsg) {
 
 	if !setting.AutoSaveImage || msg.Extra == "" {
 		return

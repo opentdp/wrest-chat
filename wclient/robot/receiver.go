@@ -17,11 +17,11 @@ func receiver(msg *wcferry.WxMsg) {
 	case 1: //文字
 		receiver1(msg)
 	case 3: //图片
-		hook3(msg)
+		receiver3(msg)
 	case 37: //好友确认
 		receiver37(msg)
 	case 49: //混合消息
-		hook49(msg)
+		receiver49(msg)
 	case 10000: //红包、系统消息
 		receiver10000(msg)
 	case 10002: //撤回消息
