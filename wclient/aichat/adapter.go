@@ -32,6 +32,8 @@ func Text(id, rid, msg string) string {
 		res, err = BaiDuText(id, rid, msg)
 	case "tencent":
 		res, err = TencentText(id, rid, msg)
+	case "":
+		res = "当前模型已失效，请重新选择"
 	default:
 		res = "暂不支持此模型"
 	}
@@ -57,6 +59,8 @@ func Image(id, rid, msg, img string) string {
 	switch llmc.Provider {
 	case "google":
 		res, err = GoogleImage(id, rid, msg, img)
+	case "":
+		res = "当前模型已失效，请重新选择"
 	default:
 		res = "当前模型不支持分析图片"
 	}
