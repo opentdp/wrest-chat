@@ -100,39 +100,41 @@ type UserLLModel struct {
 
 func UserModel(id, rid string) *UserLLModel {
 
-	var llmc *tables.LLModel
+	llmc := &tables.LLModel{}
+	modelContext := setting.ModelContext
+	modelHistory := setting.ModelHistory
 
-	// 先获取用户自定义配置模型
+	// 用户模型配置
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
-
 	if up.Rd > 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
-	romconfig, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
-	modelContext := setting.ModelContext
-	modelHistory := setting.ModelHistory
-	// 其次获取群默认配置
-	if llmc == nil && romconfig != nil {
-		if romconfig.ModelDefault != "" {
-			llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: romconfig.ModelDefault})
+
+	// 群聊默认配置
+	rc, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
+	if rc.Rd > 0 {
+		if llmc.Rd == 0 && len(rc.ModelDefault) > 1 {
+			llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: rc.ModelDefault})
 		}
-		if romconfig.ModelContext != "" {
-			modelContext = romconfig.ModelContext
+		if len(rc.ModelContext) > 1 {
+			modelContext = rc.ModelContext
 		}
-		if romconfig.ModelHistory != 0 {
-			modelHistory = romconfig.ModelHistory
+		if rc.ModelHistory > 1 {
+			modelHistory = rc.ModelHistory
 		}
 	}
-	// 最后使用全局默认配置
-	if llmc == nil || llmc.Rd == 0 {
+
+	// 全局默认模型
+	if llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
 
-	if llmc == nil || llmc.Rd == 0 {
+	// 从数据库取第一个
+	if llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return &UserLLModel{LLModel: llmc, RoleContext: modelContext, ModelHistory: modelHistory}
+	return &UserLLModel{modelContext, modelHistory, llmc}
 
 }
 

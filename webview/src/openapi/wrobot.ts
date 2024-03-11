@@ -242,6 +242,12 @@ export interface ChatroomCreateParam {
     join_argot?: string;
     // 等级
     level?: number;
+    //  定义默认模型
+    model_default?: string;
+    // 定义模型扮演的身份
+    model_context?: string;
+    // 历史消息数量
+    model_history?: number;
     // 群聊名称
     name?: string;
     // 回应拍拍我
@@ -254,12 +260,6 @@ export interface ChatroomCreateParam {
     roomid: string;
     // 欢迎消息
     welcome_msg?: string;
-    //  定义默认模型
-    model_default?: string;
-    // 定义模型扮演的身份
-    model_context?: string;
-     // 历史消息数量
-     model_history?: number;
 }
 
 export interface ChatroomDeleteParam {
@@ -286,6 +286,12 @@ export interface ChatroomUpdateParam {
     join_argot: string;
     // 等级
     level: number;
+    //  定义默认模型
+    model_default: string;
+    // 定义模型扮演的身份
+    model_context: string;
+    // 历史消息数量
+    model_history: number;
     // 群聊名称
     name: string;
     // 回应拍拍我
@@ -300,12 +306,6 @@ export interface ChatroomUpdateParam {
     roomid: string;
     // 欢迎消息
     welcome_msg: string;
-    //  定义默认模型
-    model_default?: string;
-    // 定义模型扮演的身份
-    model_context?: string;
-    // 历史消息数量
-    model_history?: number;
 }
 
 export interface KeywordCreateParam {
@@ -564,6 +564,12 @@ export interface TablesChatroom {
     join_argot: string;
     // 等级
     level: number;
+    //  定义默认模型
+    model_default: string;
+    // 定义模型扮演的身份
+    model_context: string;
+    // 历史消息数量
+    model_history: number;
     // 群聊名称
     name: string;
     // 回应拍拍我
