@@ -37,24 +37,24 @@ func ParseDbField(field *DbField) any {
 // return string 类型
 func ContactType(wxid string) string {
 	notFriends := map[string]string{
-		"mphelper":    "公众平台助手",
 		"fmessage":    "朋友推荐消息",
-		"medianote":   "语音记事本",
-		"floatbottle": "漂流瓶",
 		"filehelper":  "文件传输助手",
+		"floatbottle": "漂流瓶",
+		"medianote":   "语音记事本",
+		"mphelper":    "公众平台助手",
 		"newsapp":     "新闻",
 	}
 	if notFriends[wxid] != "" {
 		return notFriends[wxid]
-	}
-	if strings.HasPrefix(wxid, "gh_") {
-		return "公众号"
 	}
 	if strings.HasSuffix(wxid, "@chatroom") {
 		return "群聊"
 	}
 	if strings.HasSuffix(wxid, "@openim") {
 		return "企业微信"
+	}
+	if strings.HasPrefix(wxid, "gh_") {
+		return "公众号"
 	}
 	return "好友"
 }
