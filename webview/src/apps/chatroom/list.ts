@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { RoomLevels } from 'src/openapi/const';
+import { RoomLevels } from '../../openapi/const';
 import { RobotApi, TablesChatroom } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -30,7 +30,7 @@ export class ChatroomListComponent {
     }
 
     public deleteChatroom(item: TablesChatroom) {
-        RobotApi.chatroomDelete({ roomid: item.roomid }).then(() => {
+        RobotApi.chatroomDelete({ rd: item.rd }).then(() => {
             this.getChatrooms();
         });
     }

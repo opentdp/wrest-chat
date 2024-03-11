@@ -30,13 +30,12 @@ func Register() *wcferry.Client {
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
 		WcfBinary:  args.Wcf.WcfBinary,
-		WeChatAuto: args.Wcf.WeChatAuto,
 	}
 
 	// 初始化连接
 	logman.Warn("wcf starting ...")
 	if err := wc.Connect(); err != nil {
-		logman.Fatal("failed to start wcf", "error", err)
+		logman.Fatal("wcf start failed", "error", err)
 	}
 
 	// 存储收到的消息

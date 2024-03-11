@@ -1,11 +1,13 @@
 package wcfrest
 
 import (
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
+	"github.com/opentdp/go-helper/logman"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
@@ -24,8 +26,14 @@ type CommonPayload struct {
 	Error error `json:"error,omitempty"`
 }
 
-// Websocket 升级
-var wsUpgrader = websocket.Upgrader{}
+// WS 协议升级
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
 // @Summary 登录二维码
 // @Produce json
@@ -514,7 +522,7 @@ type SendPatMsgRequest struct {
 // @Tags WCF::消息收取
 // @Param body body GetAudioMsgRequest true "获取语音消息参数"
 // @Success 200 {object} CommonPayload
-// @Router /wcf/get_audio_msg [post]
+// @Router /wcf/audio_msg [post]
 func (wc *Controller) getAudioMsg(c *gin.Context) {
 
 	var req GetAudioMsgRequest
@@ -554,7 +562,7 @@ type GetAudioMsgRequest struct {
 // @Tags WCF::消息收取
 // @Param body body GetOcrRequest true "获取OCR识别结果参数"
 // @Success 200 {object} CommonPayload
-// @Router /wcf/get_ocr_result [post]
+// @Router /wcf/ocr_result [post]
 func (wc *Controller) getOcrResult(c *gin.Context) {
 
 	var req GetOcrRequest
@@ -915,8 +923,9 @@ func (wc *Controller) disableReceiver(c *gin.Context) {
 // @Router /wcf/socket_receiver [get]
 func (wc *Controller) socketReceiver(c *gin.Context) {
 
-	ws, err := wsUpgrader.Upgrade(c.Writer, c.Request, nil)
+	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
+		logman.Error("websocket upgrade", "error", err)
 		c.Set("Error", err)
 		return
 	}
@@ -930,6 +939,6 @@ func (wc *Controller) socketReceiver(c *gin.Context) {
 	}
 	wc.disableSocketReceiver(ws)
 
-	c.Set("Payload", "连接已关闭")
+	logman.Info("websocket closed", "addr", ws.RemoteAddr())
 
 }

@@ -25,12 +25,12 @@ export class SettingUpdateComponent implements OnInit {
     }
 
     public ngOnInit() {
-        const name = this.route.snapshot.paramMap.get('name');
-        name && this.getSetting(name);
+        const rd = this.route.snapshot.paramMap.get('rd');
+        rd && this.getSetting(+rd);
     }
 
-    public getSetting(name: string) {
-        RobotApi.settingDetail({ name }).then((data) => {
+    public getSetting(rd: number) {
+        RobotApi.settingDetail({ rd }).then((data) => {
             this.formdata = data;
         });
     }

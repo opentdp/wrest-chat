@@ -127,7 +127,7 @@ func UserModel(id, rid string) *UserLLModel {
 
 }
 
-// Message History
+// 历史消息
 
 type MsgHistory struct {
 	Content string

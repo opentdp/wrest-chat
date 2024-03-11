@@ -1,0 +1,84 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">群聊配置</a></li>
+        <li class="breadcrumb-item active">修改</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <form class="row gy-3" (ngSubmit)="updateChatroom()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">群聊 *</label>
+            <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
+                @for (item of wcfChatrooms; track item.wxid) {
+                <option [value]="item.wxid">{{item.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                选择一个需要关联的群聊
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
+                @for (item of roomLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">加群指令</label>
+            <input type="text" name="join_argot" class="form-control" [(ngModel)]="formdata.join_argot" />
+            <div class="form-text">
+                用于生成加群指令，“-” 表示不邀请
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">群聊别名</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" />
+            <div class="form-text">
+                用于生成加群指令中的描述
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">回应拍拍</label>
+            <select name="pat_return" class="form-select" [(ngModel)]="formdata.pat_return" >
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+            <div class="form-text">
+                是否自动回应”拍了拍我“
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">欢迎信息</label>
+            <input type="text" name="welcome_msg" class="form-control" [(ngModel)]="formdata.welcome_msg" />
+            <div class="form-text">
+                用户入群时的欢迎信息，“-” 表示不欢迎
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">撤回提醒</label>
+            <input type="text" name="revoke_msg" class="form-control" [(ngModel)]="formdata.revoke_msg" />
+            <div class="form-text">
+                检测到撤回消息时的提醒，“-” 表示不提醒
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注</label>
+            <input type="text" name="remark" class="form-control" [(ngModel)]="formdata.remark" />
+            <div class="form-text">
+                备注信息
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+        </div>
+    </form>
+</div>

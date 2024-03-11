@@ -2,10 +2,8 @@ package robot
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -13,17 +11,21 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
-func helpHandler() {
+func helpHandler() []*Handler {
 
-	handlers["/help"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    900,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/help",
 		Describe: "查看帮助信息",
 		Callback: helpCallback,
-		PreCheck: helpPreCheck,
-	}
+	})
+
+	return cmds
 
 }
 
@@ -33,26 +35,27 @@ func helpCallback(msg *wcferry.WxMsg) string {
 
 	// 生成指令菜单
 	helper := []string{}
-	for k, v := range handlers {
+	for _, v := range Handlers {
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限
 			}
 		}
-		if msg.IsGroup {
-			if v.RoomAble { // 群聊指令
-				helper = append(helper, k+" "+v.Describe)
-			}
-		} else {
-			if v.ChatAble { // 私聊指令
-				helper = append(helper, k+" "+v.Describe)
-			}
+		if (msg.IsGroup && v.RoomAble) || (!msg.IsGroup && v.ChatAble) {
+			o := fmt.Sprintf("%s %s", v.Command, v.Describe)
+			helper = append(helper, o)
 		}
 	}
 
-	// 排序后转为字符串
-	sort.Strings(helper)
+	// 数组转为字符串
 	text := strings.Join(helper, "\n") + "\n"
+
+	// 自定义帮助信息
+	if len(setting.HelpAdditive) > 1 {
+		text += setting.HelpAdditive + "\n"
+	}
+
+	// 当前用户状态信息
 	if up.Level > 0 {
 		text += fmt.Sprintf("级别 %d；", up.Level)
 	}
@@ -68,25 +71,5 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	}
 
 	return text + "祝你好运！"
-
-}
-
-func helpPreCheck(msg *wcferry.WxMsg) string {
-
-	if setting.WhiteLimit {
-		if msg.IsGroup {
-			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-			if room.Level < 2 {
-				return "-"
-			}
-		} else {
-			up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender})
-			if up.Level < 2 {
-				return "-"
-			}
-		}
-	}
-
-	return ""
 
 }

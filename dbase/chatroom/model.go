@@ -53,7 +53,7 @@ func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
-			Roomid: data.Roomid,
+			Rd: data.Rd,
 		}).
 		Updates(tables.Chatroom{
 			Roomid:       data.Roomid,
@@ -80,10 +80,12 @@ type ReplaceParam = CreateParam
 func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
+		Rd:     data.Rd,
 		Roomid: data.Roomid,
 	})
 
 	if err == nil && item.Rd > 0 {
+		data.Rd = item.Rd
 		err = Update(data)
 	} else {
 		_, err = Create(data)
@@ -93,30 +95,11 @@ func Replace(data *ReplaceParam) error {
 
 }
 
-// 删除群聊
-
-type DeleteParam struct {
-	Roomid string `binding:"required" json:"roomid"`
-}
-
-func Delete(data *DeleteParam) error {
-
-	var item *tables.Chatroom
-
-	result := dborm.Db.
-		Where(&tables.Chatroom{
-			Roomid: data.Roomid,
-		}).
-		First(&item)
-
-	if item == nil {
-		item = &tables.Chatroom{Roomid: data.Roomid}
-	}
-
 // 获取群聊
 
 type FetchParam struct {
-	Roomid string `binding:"required" json:"roomid"`
+	Rd     uint   `json:"rd"`
+	Roomid string `json:"roomid"`
 }
 
 func Fetch(data *FetchParam) (*tables.Chatroom, error) {
@@ -125,6 +108,7 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 
 	result := dborm.Db.
 		Where(&tables.Chatroom{
+			Rd:     data.Rd,
 			Roomid: data.Roomid,
 		}).
 		First(&item)
@@ -134,6 +118,25 @@ func Fetch(data *FetchParam) (*tables.Chatroom, error) {
 	}
 
 	return item, result.Error
+
+}
+
+// 删除群聊
+
+type DeleteParam = FetchParam
+
+func Delete(data *DeleteParam) error {
+
+	var item *tables.Chatroom
+
+	result := dborm.Db.
+		Where(&tables.Chatroom{
+			Rd:     data.Rd,
+			Roomid: data.Roomid,
+		}).
+		Delete(&item)
+
+	return result.Error
 
 }
 

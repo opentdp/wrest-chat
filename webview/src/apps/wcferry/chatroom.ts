@@ -36,7 +36,7 @@ export class WcferryChatroomComponent {
         this.chatroom = room;
         if (this.roomMembers[room.wxid]) {
             this.members = this.roomMembers[room.wxid];
-            return;
+            return; // 已获取
         }
         WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = data || [];

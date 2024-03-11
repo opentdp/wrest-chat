@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { UserLevels } from 'src/openapi/const';
+import { UserLevels } from '../../openapi/const';
 import { RobotApi, ProfileUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -39,6 +39,7 @@ export class ProfileUpdateComponent implements OnInit {
     public getProfile(rd: number) {
         RobotApi.profileDetail({ rd }).then((data) => {
             this.formdata = data;
+            this.changeConacts();
         });
     }
 
@@ -51,10 +52,10 @@ export class ProfileUpdateComponent implements OnInit {
         });
     }
 
-    public changeConacts() {
+    public async changeConacts() {
         const id = this.formdata.roomid || '-';
+        await this.getWcfRoomMembers(this.formdata.roomid);
         this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
-        this.getWcfRoomMembers([this.formdata.roomid]);
     }
 
     public getWcfFriends() {
@@ -69,18 +70,12 @@ export class ProfileUpdateComponent implements OnInit {
         });
     }
 
-    public getWcfRoomMembers(ids: string[]) {
-        [...new Set(ids)].forEach((id) => {
-
-             // 不存在则查询，存在跳过
-             if (!this.wcfRoomMembers[id]){
-                WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-                    this.wcfRoomMembers[id] = data || [];
-                    // 尝试更新当前人员列表
-                    this.changeConacts();
-                });
-            }
-           
+    public getWcfRoomMembers(id: string) {
+        if (this.wcfRoomMembers[id]) {
+            return; //已获取
+        }
+        return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
+            this.wcfRoomMembers[id] = data || [];
         });
     }
 

@@ -6,9 +6,11 @@ import (
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-func wgetHandler() {
+func wgetHandler() []*Handler {
 
-	handlers["/wget"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    90,
 		ChatAble: true,
@@ -24,6 +26,8 @@ func wgetHandler() {
 			}
 			return ""
 		},
-	}
+	})
+
+	return cmds
 
 }

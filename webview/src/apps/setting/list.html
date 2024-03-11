@@ -29,12 +29,14 @@
             <tr>
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.title}}</td>
-                <td class="d-none d-lg-table-cell">{{item.type}}</td>
+                <td class="d-none d-lg-table-cell">
+                    {{fieldTypes[item.type] && fieldTypes[item.type].name || item.type}}
+                </td>
                 <td>{{item.name}}</td>
                 <td class="d-none d-xl-table-cell">{{item.value}}</td>
                 <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-danger" routerLink="/setting/update/{{item.name}}">编辑</button>
+                    <button class="btn btn-sm btn-primary" routerLink="/setting/update/{{item.rd}}">编辑</button>
                 </td>
             </tr>
             }

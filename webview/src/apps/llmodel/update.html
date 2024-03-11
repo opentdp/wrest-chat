@@ -12,9 +12,20 @@
     <form class="row gy-3" (ngSubmit)="updateLLModel()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">指令 *</label>
-            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" readonly />
+            <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
                 用于生成模型切换指令，不影响接口请求
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                大模型使用权限
             </div>
         </div>
         <div class="col-12">
@@ -32,8 +43,10 @@
             <label class="form-label">服务商 *</label>
             <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
                 <option value="google">Google</option>
-                <option value="opeanai">OpenAI</option>
+                <option value="openai">OpenAI</option>
                 <option value="xunfei">科大讯飞</option>
+                <option value="baidu">百度千帆（文心一言）</option>
+                <option value="tencent">腾讯混元</option>
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
@@ -54,7 +67,20 @@
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
             <div class="form-text">
-                Google 和 OpenAI 填写 KEY，科大讯飞填写 APP-ID,API-KEY,API-SECRET
+                @switch (formdata.provider) {
+                @case ('xunfei') {
+                科大讯飞填写 APP-ID,API-KEY,API-SECRET
+                }
+                @case ('baidu') {
+                文心一言填写 API-KEY,API-SECRET
+                }
+                @case ('tencent') {
+                腾讯混元填写 APP-ID,API-KEY,API-SECRET
+                }
+                @default {
+                请填写从服务商获取的 API-KEY
+                }
+                }
             </div>
         </div>
         <div class="col-12">

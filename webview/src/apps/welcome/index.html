@@ -1,34 +1,53 @@
 <layout-header></layout-header>
 
-@if (!islogin && loginqr) {
 <div class="container-lg mb-3">
-    @if (loginqr.result) {
-    <qr-code [value]="loginqr.result" [size]="300" [margin]="0"></qr-code>
-    <div>间隔 200 秒自动刷新</div>
-    } @else {
-    <div>未获取到二维码，稍后自动重试</div>
-    }
-</div>
-}
-
-@if (islogin && user && avatar) {
-<div class="container-lg mb-3">
-    <div class="card w-50">
-        <img [src]="avatar.big_head_img_url" class="card-img-top" />
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <b>Wxid</b> {{user.wxid}}
-            </li>
-            <li class="list-group-item">
-                <b>昵称</b> {{user.name}}
-            </li>
-            <li class="list-group-item">
-                <b>手机</b> {{user.mobile}}
-            </li>
-            <li class="list-group-item">
-                <b>目录</b> {{user.home}}
-            </li>
-        </ul>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <form class="row gy-3" (ngSubmit)="submitForm()" #myform="ngForm">
+                    <div class="col-12">
+                        <label class="form-label">令牌</label>
+                        <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.token" />
+                        <div class="form-text">
+                            若服务端设置了 <b>Web.Token</b>，请在这里填写
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            @if (!islogin && loginqr) {
+            <div class="container-lg mb-3">
+                @if (loginqr.result) {
+                <qr-code [value]="loginqr.result" [size]="300" [margin]="0"></qr-code>
+                <div>间隔 200 秒自动刷新</div>
+                } @else {
+                <div>未获取到二维码，稍后自动重试</div>
+                }
+            </div>
+            }
+            @if (islogin && user && avatar) {
+            <div class="card">
+                <img [src]="avatar.big_head_img_url" class="card-img-top" />
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <b>Wxid</b> {{user.wxid}}
+                    </li>
+                    <li class="list-group-item">
+                        <b>昵称</b> {{user.name}}
+                    </li>
+                    <li class="list-group-item">
+                        <b>手机</b> {{user.mobile}}
+                    </li>
+                    <li class="list-group-item">
+                        <b>目录</b> {{user.home}}
+                    </li>
+                </ul>
+            </div>
+            }
+        </div>
     </div>
 </div>
-}

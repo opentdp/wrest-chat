@@ -16,6 +16,7 @@ type Message struct {
 	Thumb     string `json:"thumb"`                 // 缩略图
 	Extra     string `json:"extra"`                 // 附加内容
 	Xml       string `json:"xml"`                   // 消息 xml
+	Remark    string `json:"remark"`                // 备注，非微信字段
 	CreatedAt int64  `json:"created_at"`            // 创建时间戳
 	UpdatedAt int64  `json:"updated_at"`            // 最后更新时间戳
 }

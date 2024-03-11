@@ -1,52 +1,60 @@
 package robot
 
 import (
-	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
 type Handler struct {
-	Level    int32  // 0:不限制 9:管理员
-	Order    int32  // 排序，越小越靠前
-	ChatAble bool   // 是否允许在私聊使用
-	RoomAble bool   // 是否允许在群聊使用
-	Describe string // 指令描述
-	Callback func(msg *wcferry.WxMsg) string
-	PreCheck func(msg *wcferry.WxMsg) string
+	Level    int32                       // 0:不限制 7:群管理 9:创始人
+	Order    int32                       // 排序，越小越靠前
+	ChatAble bool                        // 是否允许在私聊使用
+	RoomAble bool                        // 是否允许在群聊使用
+	Command  string                      // 指令
+	Alias    string                      // 指令别名
+	Describe string                      // 指令的描述信息
+	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截文本聊天内容
+	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
 }
 
-var handlers = map[string]*Handler{}
+var Handlers = []*Handler{}
+var HandlerMap = map[string]*Handler{}
 
-func setupHandlers() {
+func initHandlers() {
 
-	aiHandler()
-	apiHandler()
-	badHandler()
-	banHandler()
-	roomHandler()
-	wgetHandler()
+	list := []*Handler{}
+	lmap := map[string]*Handler{}
 
-	helpHandler()
+	list = append(list, aiHandler()...)
+	list = append(list, apiHandler()...)
+	list = append(list, badHandler()...)
+	list = append(list, banHandler()...)
+	list = append(list, topHandler()...)
+	list = append(list, roomHandler()...)
+	list = append(list, wgetHandler()...)
+	list = append(list, helpHandler()...)
 
-}
+	// 格式化
+	for _, v := range list {
+		lmap[v.Command] = v
+	}
+	sort.Slice(list, func(i, j int) bool {
+		return list[i].Order < list[j].Order
+	})
 
-func clearHandlers() {
-
-	badMember = map[string]int{}
-	keywordList = []*tables.Keyword{}
-
-	handlers = map[string]*Handler{}
+	// 更新列表
+	Handlers, HandlerMap = list, lmap
 
 }
 
 func applyHandlers(msg *wcferry.WxMsg) string {
 
-	// 前置检查
-	for _, v := range handlers {
+	// 前置钩子
+	for _, v := range Handlers {
 		if v.PreCheck != nil {
 			if txt := v.PreCheck(msg); txt != "" {
 				return txt
@@ -54,30 +62,27 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	// 空白消息
-	content := strings.TrimSpace(msg.Content)
-	if len(content) == 0 {
+	// 忽略空白
+	msg.Content = strings.TrimSpace(msg.Content)
+	if msg.Content == "" {
 		return ""
 	}
 
 	// 解析指令
-	re := regexp.MustCompile(`^(/[\w:-]{2,20})\s*(.*)$`)
-	matches := re.FindStringSubmatch(content)
-	if len(matches) != 3 {
+	matches := strings.SplitN(msg.Content, " ", 2)
+	handler := HandlerMap[matches[0]]
+	if handler == nil {
+		if msg.Content[0] == '/' {
+			return setting.InvalidHandler
+		}
 		return ""
 	}
 
-	// 查找指令
-	handler, ok := handlers[matches[1]]
-	if !ok {
-		return "指令未注册或参数错误"
-	}
-
-	// 验证级别
+	// 验证权限
 	if handler.Level > 0 {
 		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
 		if up.Level < handler.Level {
-			return "此指令已被限制使用"
+			return setting.InvalidHandler
 		}
 	}
 
@@ -92,8 +97,14 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 		}
 	}
 
+	// 重写消息
+	if len(matches) == 2 {
+		msg.Content = strings.TrimSpace(matches[1])
+	} else {
+		msg.Content = ""
+	}
+
 	// 执行指令
-	msg.Content = strings.TrimSpace(matches[2])
 	return handler.Callback(msg)
 
 }

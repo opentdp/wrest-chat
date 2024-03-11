@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { FieldTypes } from '../../openapi/const';
 import { RobotApi, TablesSetting } from '../../openapi/wrobot';
 
 
@@ -8,6 +9,8 @@ import { RobotApi, TablesSetting } from '../../openapi/wrobot';
     templateUrl: 'list.html'
 })
 export class SettingListComponent {
+
+    public fieldTypes = FieldTypes;
 
     public settings: Array<TablesSetting> = [];
 

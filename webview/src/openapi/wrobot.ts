@@ -254,8 +254,10 @@ export interface ChatroomCreateParam {
 }
 
 export interface ChatroomDeleteParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface ChatroomFetchAllParam {
@@ -264,8 +266,10 @@ export interface ChatroomFetchAllParam {
 }
 
 export interface ChatroomFetchParam {
+    // 主键
+    rd: number;
     // 群聊 id
-    roomid: string;
+    roomid?: string;
 }
 
 export interface ChatroomUpdateParam {
@@ -281,6 +285,8 @@ export interface ChatroomUpdateParam {
     remark: string;
     // 防撤回消息
     revoke_msg: string;
+    // 主键
+    rd: number;
     // 群聊 id
     roomid: string;
     // 欢迎消息
@@ -296,14 +302,16 @@ export interface ChatroomUpdateParam {
 export interface KeywordCreateParam {
     // 等级
     level?: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
 }
 
 export interface KeywordDeleteParam {
-    // 词语或短语
+    // 短语
     phrase?: string;
     // 主键
     rd: number;
@@ -316,13 +324,15 @@ export interface KeywordFetchAllParam {
     level?: number;
     // 群聊 id
     roomid?: string;
+    // 目标
+    target?: string;
 }
 
 export interface KeywordFetchParam {
-    // 词语或短语
+    // 短语
     phrase?: string;
     // 主键
-    rd?: number;
+    rd: number;
     // 群聊 id
     roomid?: string;
 }
@@ -330,12 +340,14 @@ export interface KeywordFetchParam {
 export interface KeywordUpdateParam {
     // 等级
     level: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 主键
     rd: number;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
 }
 
 export interface LlmodelCreateParam {
@@ -343,6 +355,8 @@ export interface LlmodelCreateParam {
     endpoint?: string;
     // 模型家族
     family: string;
+    // 等级
+    level?: number;
     // 模型 Id
     mid: string;
     // 模型名称
@@ -355,12 +369,16 @@ export interface LlmodelCreateParam {
 
 export interface LlmodelDeleteParam {
     // 模型 Id
-    mid: string;
+    mid?: string;
+    // 主键
+    rd: number;
 }
 
 export interface LlmodelFetchAllParam {
     // 模型家族
     family?: string;
+    // 等级
+    level?: number;
     // 模型名称
     model?: string;
     // 服务商名称
@@ -369,7 +387,9 @@ export interface LlmodelFetchAllParam {
 
 export interface LlmodelFetchParam {
     // 模型 Id
-    mid: string;
+    mid?: string;
+    // 主键
+    rd: number;
 }
 
 export interface LlmodelUpdateParam {
@@ -377,12 +397,16 @@ export interface LlmodelUpdateParam {
     endpoint: string;
     // 模型家族
     family: string;
+    // 等级
+    level: number;
     // 模型 Id
     mid: string;
     // 模型名称
     model: string;
     // 服务商名称
     provider: string;
+    // 主键
+    rd: number;
     // 密钥
     secret: string;
 }
@@ -440,6 +464,8 @@ export interface ProfileUpdateParam {
     level: number;
     // 备注
     remark: string;
+    // 主键
+    rd: number;
     // 群聊 id
     roomid: string;
     // 微信 id
@@ -449,7 +475,7 @@ export interface ProfileUpdateParam {
 export interface SettingCreateParam {
     // 分组
     group?: string;
-    // 键
+    // 键名
     name: string;
     // 备注
     remark?: string;
@@ -457,13 +483,15 @@ export interface SettingCreateParam {
     title?: string;
     // 类型
     type?: string;
-    // 值
+    // 键值
     value?: string;
 }
 
 export interface SettingDeleteParam {
-    // 键
-    name: string;
+    // 键名
+    name?: string;
+    // 主键
+    rd: number;
 }
 
 export interface SettingFetchAllParam {
@@ -472,22 +500,26 @@ export interface SettingFetchAllParam {
 }
 
 export interface SettingFetchParam {
-    // 键
-    name: string;
+    // 键名
+    name?: string;
+    // 主键
+    rd: number;
 }
 
 export interface SettingUpdateParam {
     // 分组
     group: string;
-    // 键
+    // 键名
     name: string;
+    // 主键
+    rd: number;
     // 备注
     remark: string;
     // 标题
     title: string;
     // 类型
     type: string;
-    // 值
+    // 键值
     value: string;
 }
 
@@ -521,12 +553,14 @@ export interface TablesKeyword {
     created_at: number;
     // 优先级等级
     level: number;
-    // 词语或短语
+    // 短语
     phrase: string;
     // 主键
     rd: number;
     // 群聊 id
     roomid: string;
+    // 目标
+    target: string;
     // 最后更新时间戳
     updated_at: number;
 }
@@ -538,6 +572,8 @@ export interface TablesLLModel {
     endpoint: string;
     // 模型家族，用于生成模型切换指令
     family: string;
+    // 等级，用于限制用户访问
+    level: number;
     // 模型 Id
     mid: string;
     // 模型，必须和服务商提供的值对应
@@ -580,7 +616,7 @@ export interface TablesSetting {
     createdAt: number;
     // 分组
     group: string;
-    // 键
+    // 键名
     name: string;
     // 主键
     rd: number;
@@ -592,6 +628,6 @@ export interface TablesSetting {
     type: string;
     // 最后更新时间戳
     updatedAt: number;
-    // 值
+    // 键值
     value: string;
 }

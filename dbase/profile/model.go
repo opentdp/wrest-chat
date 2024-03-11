@@ -9,6 +9,7 @@ import (
 // 创建配置
 
 type CreateParam struct {
+	Rd        uint   `json:"rd"`
 	Wxid      string `binding:"required" json:"wxid"`
 	Roomid    string `json:"roomid"`
 	Level     int32  `json:"level"`
@@ -44,10 +45,11 @@ func Update(data *UpdateParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Profile{
-			Wxid:   data.Wxid,
-			Roomid: data.Roomid,
+			Rd: data.Rd,
 		}).
 		Updates(tables.Profile{
+			Wxid:      data.Wxid,
+			Roomid:    data.Roomid,
 			Level:     data.Level,
 			Remark:    data.Remark,
 			AiArgot:   data.AiArgot,
@@ -66,11 +68,13 @@ type ReplaceParam = CreateParam
 func Replace(data *ReplaceParam) error {
 
 	item, err := Fetch(&FetchParam{
+		Rd:     data.Rd,
 		Wxid:   data.Wxid,
 		Roomid: data.Roomid,
 	})
 
 	if err == nil && item.Rd > 0 {
+		data.Rd = item.Rd
 		err = Update(data)
 	} else {
 		_, err = Create(data)

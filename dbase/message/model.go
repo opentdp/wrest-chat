@@ -21,6 +21,7 @@ type CreateParam struct {
 	Thumb   string `json:"thumb"`
 	Extra   string `json:"extra"`
 	Xml     string `json:"xml"`
+	Remark  string `json:"remark"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -38,6 +39,7 @@ func Create(data *CreateParam) (uint, error) {
 		Thumb:   data.Thumb,
 		Extra:   data.Extra,
 		Xml:     data.Xml,
+		Remark:  data.Remark,
 	}
 
 	result := dborm.Db.Create(item)
@@ -68,6 +70,7 @@ func Update(data *UpdateParam) error {
 			Thumb:   data.Thumb,
 			Extra:   data.Extra,
 			Xml:     data.Xml,
+			Remark:  data.Remark,
 		})
 
 	return result.Error

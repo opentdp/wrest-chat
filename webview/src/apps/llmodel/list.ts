@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { UserLevels } from '../../openapi/const';
 import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
 
 
@@ -8,6 +9,8 @@ import { RobotApi, TablesLLModel } from '../../openapi/wrobot';
     templateUrl: 'list.html'
 })
 export class LLModelListComponent {
+
+    public userLevels = UserLevels;
 
     public llmodels: Array<TablesLLModel> = [];
 
@@ -22,7 +25,7 @@ export class LLModelListComponent {
     }
 
     public deleteLLModel(item: TablesLLModel) {
-        RobotApi.llmodelDelete({ mid: item.mid }).then(() => {
+        RobotApi.llmodelDelete({ rd: item.rd }).then(() => {
             this.getLLModels();
         });
     }

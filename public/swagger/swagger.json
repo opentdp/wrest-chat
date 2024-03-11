@@ -985,6 +985,36 @@
                 }
             }
         },
+        "/wcf/audio_msg": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WCF::消息收取"
+                ],
+                "summary": "获取语音消息",
+                "parameters": [
+                    {
+                        "description": "获取语音消息参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/wcfrest.CommonPayload"
+                        }
+                    }
+                }
+            }
+        },
         "/wcf/avatars": {
             "post": {
                 "produces": [
@@ -1386,37 +1416,7 @@
                 }
             }
         },
-        "/wcf/get_audio_msg": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "WCF::消息收取"
-                ],
-                "summary": "获取语音消息",
-                "parameters": [
-                    {
-                        "description": "获取语音消息参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.GetAudioMsgRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/wcfrest.CommonPayload"
-                        }
-                    }
-                }
-            }
-        },
-        "/wcf/get_ocr_result": {
+        "/wcf/geocr_result": {
             "post": {
                 "produces": [
                     "application/json"
@@ -1883,6 +1883,9 @@
                 "pat_return": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -1899,10 +1902,10 @@
         },
         "chatroom.DeleteParam": {
             "type": "object",
-            "required": [
-                "roomid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 }
@@ -1918,10 +1921,10 @@
         },
         "chatroom.FetchParam": {
             "type": "object",
-            "required": [
-                "roomid"
-            ],
             "properties": {
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
                     "type": "string"
                 }
@@ -1944,6 +1947,9 @@
                 },
                 "pat_return": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "remark": {
                     "type": "string"
@@ -2122,7 +2128,13 @@
                 "phrase": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "roomid": {
+                    "type": "string"
+                },
+                "target": {
                     "type": "string"
                 }
             }
@@ -2148,6 +2160,9 @@
                     "type": "integer"
                 },
                 "roomid": {
+                    "type": "string"
+                },
+                "target": {
                     "type": "string"
                 }
             }
@@ -2184,6 +2199,9 @@
                 },
                 "roomid": {
                     "type": "string"
+                },
+                "target": {
+                    "type": "string"
                 }
             }
         },
@@ -2203,6 +2221,9 @@
                 "family": {
                     "type": "string"
                 },
+                "level": {
+                    "type": "integer"
+                },
                 "mid": {
                     "type": "string"
                 },
@@ -2212,6 +2233,9 @@
                 "provider": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "secret": {
                     "type": "string"
                 }
@@ -2219,12 +2243,12 @@
         },
         "llmodel.DeleteParam": {
             "type": "object",
-            "required": [
-                "mid"
-            ],
             "properties": {
                 "mid": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2233,6 +2257,9 @@
             "properties": {
                 "family": {
                     "type": "string"
+                },
+                "level": {
+                    "type": "integer"
                 },
                 "model": {
                     "type": "string"
@@ -2244,12 +2271,12 @@
         },
         "llmodel.FetchParam": {
             "type": "object",
-            "required": [
-                "mid"
-            ],
             "properties": {
                 "mid": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2269,6 +2296,9 @@
                 "family": {
                     "type": "string"
                 },
+                "level": {
+                    "type": "integer"
+                },
                 "mid": {
                     "type": "string"
                 },
@@ -2277,6 +2307,9 @@
                 },
                 "provider": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "secret": {
                     "type": "string"
@@ -2299,6 +2332,9 @@
                     "type": "integer"
                 },
                 "level": {
+                    "type": "integer"
+                },
+                "rd": {
                     "type": "integer"
                 },
                 "remark": {
@@ -2369,6 +2405,9 @@
                 "level": {
                     "type": "integer"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -2392,6 +2431,9 @@
                 "name": {
                     "type": "string"
                 },
+                "rd": {
+                    "type": "integer"
+                },
                 "remark": {
                     "type": "string"
                 },
@@ -2408,12 +2450,12 @@
         },
         "setting.DeleteParam": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2427,12 +2469,12 @@
         },
         "setting.FetchParam": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 }
             }
         },
@@ -2447,6 +2489,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "rd": {
+                    "type": "integer"
                 },
                 "remark": {
                     "type": "string"
@@ -2588,11 +2633,11 @@
                     "type": "integer"
                 },
                 "level": {
-                    "description": "优先级等级",
+                    "description": "等级",
                     "type": "integer"
                 },
                 "phrase": {
-                    "description": "词语或短语",
+                    "description": "短语",
                     "type": "string"
                 },
                 "rd": {
@@ -2601,6 +2646,10 @@
                 },
                 "roomid": {
                     "description": "群聊 id",
+                    "type": "string"
+                },
+                "target": {
+                    "description": "目标",
                     "type": "string"
                 },
                 "updated_at": {
@@ -2623,6 +2672,10 @@
                 "family": {
                     "description": "模型家族，用于在指令中描述模型类型",
                     "type": "string"
+                },
+                "level": {
+                    "description": "等级，用于限制用户访问",
+                    "type": "integer"
                 },
                 "mid": {
                     "description": "模型 Id，用于生成模型切换指令",

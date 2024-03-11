@@ -13,57 +13,67 @@ import (
 var badMember = map[string]int{}
 var keywordList = []*tables.Keyword{}
 
-func badHandler() {
+func badHandler() []*Handler {
 
 	updateBadWord()
 
-	handlers["/bad"] = &Handler{
+	cmds := []*Handler{}
+
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    30,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/bad",
 		Describe: "添加违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			_, err := keyword.Create(&keyword.CreateParam{Roomid: prid(msg), Phrase: msg.Content, Level: 1})
+			_, err := keyword.Create(&keyword.CreateParam{
+				Roomid: prid(msg), Phrase: msg.Content, Target: "ban", Level: 1,
+			})
 			if err == nil {
 				updateBadWord()
-				return "添加成功"
+				return "违规关键词添加成功"
 			}
-			return "关键词已存在"
+			return "违规关键词已存在"
 		},
-		PreCheck: badMessagePrefix,
-	}
+		PreCheck: badPreCheck,
+	})
 
-	handlers["/unbad"] = &Handler{
+	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    31,
 		ChatAble: true,
 		RoomAble: true,
+		Command:  "/unbad",
 		Describe: "删除违规关键词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			err := keyword.Delete(&keyword.DeleteParam{Roomid: prid(msg), Phrase: msg.Content})
+			item, err := keyword.Fetch(&keyword.FetchParam{Roomid: prid(msg), Phrase: msg.Content})
+			if err != nil || item.Target != "ban" {
+				return msg.Content + "不是违规关键词"
+			}
+			err = keyword.Delete(&keyword.DeleteParam{Rd: item.Rd})
 			if err == nil {
 				updateBadWord()
-				return "删除成功"
+				return "已删除违规关键词" + msg.Content
 			}
-			return "关键词不存在"
+			return "违规关键词删除失败"
 		},
+	})
+
+	return cmds
+
+}
+
+func badPreCheck(msg *wcferry.WxMsg) string {
+
+	// 私聊豁免
+	if !msg.IsGroup {
+		return ""
 	}
 
-}
-
-func updateBadWord() {
-
-	list, _ := keyword.FetchAll(&keyword.FetchAllParam{})
-	keywordList = list
-
-}
-
-func badMessagePrefix(msg *wcferry.WxMsg) string {
-
-	// 管理员豁免
+	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if !msg.IsGroup || up.Level >= 7 {
+	if up.Level >= 7 {
 		return ""
 	}
 
@@ -83,13 +93,21 @@ func badMessagePrefix(msg *wcferry.WxMsg) string {
 			if badMember[msg.Sender] > 10 {
 				wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
 				delete(badMember, msg.Sender)
-				return "送你离开，天涯之外"
+				return "我送你离开，天涯之外你是否还在"
 			}
-			str := "违规风险 %d，当前累计：%d，大于 10 将赠与免费机票。"
+			str := "违规风险 +%d，当前累计：%d，大于 10 将被请出群聊"
 			return fmt.Sprintf(str, v.Level, badMember[msg.Sender])
 		}
 	}
 
 	return ""
+
+}
+
+func updateBadWord() {
+
+	keywordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
+		Target: "ban",
+	})
 
 }
