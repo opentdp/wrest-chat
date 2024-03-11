@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/opentdp/wechat-rest/library/google"
+	"github.com/opentdp/go-helper/googai"
 )
 
 func GoogleText(id, rid, ask string) (string, error) {
@@ -13,7 +13,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 	// 初始化模型
 
-	client := google.NewClient(llmc.Secret)
+	client := googai.NewClient(llmc.Secret)
 
 	if len(llmc.Model) > 1 {
 		client.Model = llmc.Model
@@ -23,28 +23,28 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &google.RequestBody{
-		Contents: []*google.Content{},
+	req := &googai.RequestBody{
+		Contents: []*googai.Content{},
 	}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req.Contents = []*google.Content{
-			{Parts: []*google.Part{{Text: llmc.RoleContext}}, Role: "user"},
-			{Parts: []*google.Part{{Text: "OK"}}, Role: "model"},
+		req.Contents = []*googai.Content{
+			{Parts: []*googai.Part{{Text: llmc.RoleContext}}, Role: "user"},
+			{Parts: []*googai.Part{{Text: "OK"}}, Role: "model"},
 		}
 	}
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		req.Contents = append(req.Contents, &google.Content{
-			Parts: []*google.Part{{Text: msg.Content}}, Role: role,
+		req.Contents = append(req.Contents, &googai.Content{
+			Parts: []*googai.Part{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req.Contents = append(req.Contents, &google.Content{
-		Parts: []*google.Part{{Text: ask}}, Role: google.ChatMessageRoleUser,
+	req.Contents = append(req.Contents, &googai.Content{
+		Parts: []*googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口
@@ -91,18 +91,18 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 
 	// 初始化模型
 
-	client := google.NewClient(llmc.Secret)
+	client := googai.NewClient(llmc.Secret)
 
 	if llmc.Endpoint != "" {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &google.RequestBody{
-		Contents: []*google.Content{
+	req := &googai.RequestBody{
+		Contents: []*googai.Content{
 			{
-				Parts: []*google.Part{
+				Parts: []*googai.Part{
 					{Text: ask},
-					{InlineData: &google.InlineData{Data: img, MimeType: mime}},
+					{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
 				},
 			},
 		},

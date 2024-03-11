@@ -2,6 +2,7 @@ package robot
 
 import (
 	"github.com/opentdp/go-helper/logman"
+
 	"github.com/opentdp/wechat-rest/args"
 	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/dbase/setting"
