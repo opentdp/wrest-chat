@@ -92,8 +92,8 @@ func ReadImage(img string) (string, string) {
 // 用户模型
 
 type UserLLModel struct {
-	RoleContext string
 	*tables.LLModel
+	RoleContext string
 }
 
 func UserModel(id, rid string) *UserLLModel {
@@ -114,7 +114,7 @@ func UserModel(id, rid string) *UserLLModel {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return &UserLLModel{LLModel: llmc, RoleContext: setting.ModelContext}
+	return &UserLLModel{llmc, setting.ModelContext}
 
 }
 

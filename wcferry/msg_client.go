@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/go-helper/recovery"
 	"github.com/opentdp/go-helper/strutil"
 )
 
@@ -58,7 +57,6 @@ func (c *MsgClient) Register(cb MsgConsumer) (string, error) {
 
 // 消息推送执行者
 func (c *MsgClient) runner() {
-	defer recovery.Handler()
 	defer c.Destroy()
 	// 接收消息
 	for len(c.consumer) > 0 {
