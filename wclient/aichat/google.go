@@ -23,14 +23,12 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &googai.RequestBody{
-		Contents: []*googai.Content{},
-	}
+	req := []*googai.Content{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req.Contents = []*googai.Content{
+		req = []*googai.Content{
 			{Parts: []*googai.Part{{Text: llmc.RoleContext}}, Role: "user"},
 			{Parts: []*googai.Part{{Text: "OK"}}, Role: "model"},
 		}
@@ -38,12 +36,12 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		req.Contents = append(req.Contents, &googai.Content{
+		req = append(req, &googai.Content{
 			Parts: []*googai.Part{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req.Contents = append(req.Contents, &googai.Content{
+	req = append(req, &googai.Content{
 		Parts: []*googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
 	})
 
@@ -97,13 +95,11 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &googai.RequestBody{
-		Contents: []*googai.Content{
-			{
-				Parts: []*googai.Part{
-					{Text: ask},
-					{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
-				},
+	req := []*googai.Content{
+		{
+			Parts: []*googai.Part{
+				{Text: ask},
+				{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
 			},
 		},
 	}
