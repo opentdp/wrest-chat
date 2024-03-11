@@ -67,9 +67,11 @@ func reply(msg *wcferry.WxMsg, text string) int32 {
 	}
 
 	if msg.IsGroup {
-		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		if user != nil && user.Name != "" {
-			text = "@" + user.Name + "\n" + text
+		if msg.Sender != "" && wcferry.ContactType(msg.Sender) == "好友" {
+			user := wc.CmdClient.GetInfoByWxid(msg.Sender)
+			if user != nil && user.Name != "" {
+				text = "@" + user.Name + "\n" + text
+			}
 		}
 		return wc.CmdClient.SendTxt(text, msg.Roomid, msg.Sender)
 	}
