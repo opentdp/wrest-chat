@@ -102,15 +102,15 @@ func UserModel(id, rid string) *UserLLModel {
 
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
-	if up != nil {
+	if up.Rd > 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
 
-	if llmc == nil {
+	if llmc == nil || llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
 
-	if llmc == nil {
+	if llmc == nil || llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
