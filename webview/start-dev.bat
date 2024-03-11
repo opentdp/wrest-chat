@@ -25,4 +25,4 @@ ECHO %dateline% >node_modules\update.txt
 
 CALL npm start
 
-cmd /k
+IF "%1" == "" CMD /K
