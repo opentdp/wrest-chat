@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wechat-rest/wclient"
 )
 
 func wgetHandler() []*Handler {
@@ -22,7 +23,7 @@ func wgetHandler() []*Handler {
 			if !strings.HasPrefix(u, "http") {
 				return "请输入正确的网址"
 			}
-			if wc.CmdClient.SendFlexMsg(u, msg.Sender, msg.Roomid) != 0 {
+			if wclient.SendFlexMsg(u, msg.Sender, msg.Roomid) != 0 {
 				return "文件获取失败"
 			}
 			return ""

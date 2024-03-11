@@ -41,6 +41,6 @@ func wechatMessage(args []string, message string) int32 {
 		return -1
 	}
 
-	return wc.CmdClient.SendFlexMsg(message, wxid, roomid)
+	return wclient.SendFlexMsg(message, wxid, roomid)
 
 }
