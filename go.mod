@@ -10,7 +10,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.6.1-0.20240311011620-84a5d0f5f78e
 	github.com/sashabaranov/go-openai v1.19.4
-	go.nanomsg.org/mangos v2.0.0+incompatible
 	go.nanomsg.org/mangos/v3 v3.4.2
 	google.golang.org/protobuf v1.32.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -69,5 +68,4 @@ require (
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/sqlite v1.29.1 // indirect
-	nanomsg.org/go/mangos/v2 v2.0.8 // indirect
 )

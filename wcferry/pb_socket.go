@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.nanomsg.org/mangos"
+	"go.nanomsg.org/mangos/v3"
 	"go.nanomsg.org/mangos/v3/protocol"
 	"go.nanomsg.org/mangos/v3/protocol/pair1"
 	"go.nanomsg.org/mangos/v3/transport/all"
