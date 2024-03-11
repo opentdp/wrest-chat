@@ -1,6 +1,11 @@
 package aichat
 
 import (
+	"encoding/base64"
+	"net/http"
+	"os"
+
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -24,6 +29,10 @@ func Text(id, rid, msg string) string {
 		res, err = OpenaiText(id, rid, msg)
 	case "xunfei":
 		res, err = XunfeiText(id, rid, msg)
+	case "baidu":
+		res, err = BaiDuText(id, rid, msg)
+	case "tencent":
+		res, err = TencentText(id, rid, msg)
 	default:
 		res = "暂不支持此模型"
 	}
@@ -36,7 +45,48 @@ func Text(id, rid, msg string) string {
 
 }
 
-// User LLModel
+func Image(id, rid, msg, img string) string {
+
+	var err error
+	var res string
+
+	// 预设模型参数
+	CountHistory(id)
+	llmc := UserModel(id, rid)
+
+	// 调用接口生成文本
+	switch llmc.Provider {
+	case "google":
+		res, err = GoogleImage(id, rid, msg, img)
+	default:
+		res = "当前模型不支持分析图片"
+	}
+
+	// 返回结果
+	if err != nil {
+		return err.Error()
+	}
+	return res
+
+}
+
+// 读取图片
+
+func ReadImage(img string) (string, string) {
+
+	fileContent, err := os.ReadFile(img)
+	if err != nil {
+		return "", ""
+	}
+
+	base64String := base64.StdEncoding.EncodeToString(fileContent)
+	mimeType := http.DetectContentType(fileContent)
+
+	return base64String, mimeType
+
+}
+
+// 用户模型
 
 type UserLLModel struct {
 	RoleContext string
@@ -47,12 +97,24 @@ func UserModel(id, rid string) *UserLLModel {
 
 	var llmc *tables.LLModel
 
+	// 先获取用户自定义配置模型
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
 	if up != nil {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
-
+	romconfig, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
+	modelContext := setting.ModelContext
+	// 其次获取群默认配置
+	if llmc == nil && romconfig != nil {
+		if romconfig.ModelDefault != "" {
+			llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: romconfig.ModelDefault})
+		}
+		if romconfig.ModelContext != "" {
+			modelContext = romconfig.ModelContext
+		}
+	}
+	// 最后使用全局默认配置
 	if llmc == nil {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
@@ -61,7 +123,7 @@ func UserModel(id, rid string) *UserLLModel {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return &UserLLModel{LLModel: llmc, RoleContext: setting.ModelContext}
+	return &UserLLModel{LLModel: llmc, RoleContext: modelContext}
 
 }
 

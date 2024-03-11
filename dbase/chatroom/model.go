@@ -9,27 +9,34 @@ import (
 // 创建群聊
 
 type CreateParam struct {
-	Roomid     string `binding:"required" json:"roomid"`
-	Name       string `json:"name"`
-	Level      int32  `json:"level"`
-	Remark     string `json:"remark"`
-	JoinArgot  string `json:"join_argot"`
-	PatReturn  string `json:"pat_return"`
-	RevokeMsg  string `json:"revoke_msg"`
-	WelcomeMsg string `json:"welcome_msg"`
+	Rd           uint   `json:"rd"`
+	Roomid       string `binding:"required" json:"roomid"`
+	Name         string `json:"name"`
+	Level        int32  `json:"level"`
+	Remark       string `json:"remark"`
+	JoinArgot    string `json:"join_argot"`
+	PatReturn    string `json:"pat_return"`
+	RevokeMsg    string `json:"revoke_msg"`
+	WelcomeMsg   string `json:"welcome_msg"`
+	ModelContext string `json:"model_context"`
+	ModelDefault string `json:"model_default"`
+	ModelHistory int32  `json:"model_history"`
 }
 
 func Create(data *CreateParam) (uint, error) {
 
 	item := &tables.Chatroom{
-		Roomid:     data.Roomid,
-		Name:       data.Name,
-		Level:      data.Level,
-		Remark:     data.Remark,
-		JoinArgot:  data.JoinArgot,
-		PatReturn:  data.PatReturn,
-		RevokeMsg:  data.RevokeMsg,
-		WelcomeMsg: data.WelcomeMsg,
+		Roomid:       data.Roomid,
+		Name:         data.Name,
+		Level:        data.Level,
+		Remark:       data.Remark,
+		JoinArgot:    data.JoinArgot,
+		PatReturn:    data.PatReturn,
+		RevokeMsg:    data.RevokeMsg,
+		WelcomeMsg:   data.WelcomeMsg,
+		ModelContext: data.ModelContext,
+		ModelDefault: data.ModelDefault,
+		ModelHistory: data.ModelHistory,
 	}
 
 	result := dborm.Db.Create(item)
@@ -49,13 +56,17 @@ func Update(data *UpdateParam) error {
 			Roomid: data.Roomid,
 		}).
 		Updates(tables.Chatroom{
-			Name:       data.Name,
-			Level:      data.Level,
-			Remark:     data.Remark,
-			JoinArgot:  data.JoinArgot,
-			PatReturn:  data.PatReturn,
-			RevokeMsg:  data.RevokeMsg,
-			WelcomeMsg: data.WelcomeMsg,
+			Roomid:       data.Roomid,
+			Name:         data.Name,
+			Level:        data.Level,
+			Remark:       data.Remark,
+			JoinArgot:    data.JoinArgot,
+			PatReturn:    data.PatReturn,
+			RevokeMsg:    data.RevokeMsg,
+			WelcomeMsg:   data.WelcomeMsg,
+			ModelContext: data.ModelContext,
+			ModelDefault: data.ModelDefault,
+			ModelHistory: data.ModelHistory,
 		})
 
 	return result.Error
@@ -96,11 +107,11 @@ func Delete(data *DeleteParam) error {
 		Where(&tables.Chatroom{
 			Roomid: data.Roomid,
 		}).
-		Delete(&item)
+		First(&item)
 
-	return result.Error
-
-}
+	if item == nil {
+		item = &tables.Chatroom{Roomid: data.Roomid}
+	}
 
 // 获取群聊
 
