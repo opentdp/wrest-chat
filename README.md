@@ -90,6 +90,11 @@
 
 从 [快速开始](#快速开始) 中下载新版本。关闭机器人后，将解压出来的 `wrest.exe` 和 `wcferry` 覆盖过去即可
 
+### Q4 常用 AI 密钥获取地址
+
+- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
+- 阿里 通义千问 <https://dashscope.console.aliyun.com/apiKey>
+
 ## 免责声明
 
 [Wechat-Rest](https://github.com/opentdp/wechat-rest) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 均仅供学习交流，不保证代码质量，不得用于商业用途。非法用途导致的后果自行承担。
