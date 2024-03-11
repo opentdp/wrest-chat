@@ -106,7 +106,10 @@ func aiCallback(msg *wcferry.WxMsg) string {
 		// 图片
 		case 3:
 			if ref.Remark == "" {
-				return "提取消息图片失败"
+				ref.Remark = msgImage(ref.Id, ref.Extra)
+				if ref.Remark == "" {
+					return "提取消息图片失败"
+				}
 			}
 			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
 		// 混合类消息

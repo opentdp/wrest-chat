@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/opentdp/go-helper/logman"
+
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient"
@@ -38,7 +39,6 @@ func Start() {
 func Reset() {
 
 	setting.Laod()
-
 	ResetHandlers()
 
 }
