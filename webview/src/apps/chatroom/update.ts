@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { RoomLevels } from '../../openapi/const';
-import { RobotApi, ChatroomUpdateParam } from '../../openapi/wrobot';
+import { RobotApi,TablesLLModel, ChatroomUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -16,6 +16,8 @@ export class ChatroomUpdateComponent implements OnInit {
 
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
+    public llmodels: Array<TablesLLModel> = [];
+
     public formdata = {} as ChatroomUpdateParam;
 
     constructor(
@@ -23,6 +25,7 @@ export class ChatroomUpdateComponent implements OnInit {
         private route: ActivatedRoute
     ) {
         this.getWcfChatrooms();
+        this.getLLModels();
     }
 
     public ngOnInit() {
@@ -48,6 +51,11 @@ export class ChatroomUpdateComponent implements OnInit {
     public getWcfChatrooms() {
         WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
+        });
+    }
+    public getLLModels() {
+        RobotApi.llmodelList({}).then((data) => {
+            this.llmodels = data || [];
         });
     }
 

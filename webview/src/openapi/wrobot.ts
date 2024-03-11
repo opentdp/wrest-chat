@@ -254,6 +254,12 @@ export interface ChatroomCreateParam {
     roomid: string;
     // 欢迎消息
     welcome_msg?: string;
+    //  定义默认模型
+    model_default?: string;
+    // 定义模型扮演的身份
+    model_context?: string;
+     // 历史消息数量
+     model_history?: number;
 }
 
 export interface ChatroomDeleteParam {
@@ -294,6 +300,12 @@ export interface ChatroomUpdateParam {
     roomid: string;
     // 欢迎消息
     welcome_msg: string;
+    //  定义默认模型
+    model_default?: string;
+    // 定义模型扮演的身份
+    model_context?: string;
+    // 历史消息数量
+    model_history?: number;
 }
 
 export interface KeywordCreateParam {

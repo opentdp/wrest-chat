@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -92,20 +93,37 @@ func ReadImage(img string) (string, string) {
 // 用户模型
 
 type UserLLModel struct {
+	RoleContext  string
+	ModelHistory int
 	*tables.LLModel
-	RoleContext string
 }
 
 func UserModel(id, rid string) *UserLLModel {
 
 	var llmc *tables.LLModel
 
+	// 先获取用户自定义配置模型
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
 	if up.Rd > 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
-
+	romconfig, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
+	modelContext := setting.ModelContext
+	modelHistory := setting.ModelHistory
+	// 其次获取群默认配置
+	if llmc == nil && romconfig != nil {
+		if romconfig.ModelDefault != "" {
+			llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: romconfig.ModelDefault})
+		}
+		if romconfig.ModelContext != "" {
+			modelContext = romconfig.ModelContext
+		}
+		if romconfig.ModelHistory != 0 {
+			modelHistory = romconfig.ModelHistory
+		}
+	}
+	// 最后使用全局默认配置
 	if llmc == nil || llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
@@ -114,7 +132,7 @@ func UserModel(id, rid string) *UserLLModel {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return &UserLLModel{llmc, setting.ModelContext}
+	return &UserLLModel{LLModel: llmc, RoleContext: modelContext, ModelHistory: modelHistory}
 
 }
 
