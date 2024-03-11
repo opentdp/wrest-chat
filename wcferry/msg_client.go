@@ -8,13 +8,13 @@ import (
 )
 
 type MsgClient struct {
-	*pbSocket                        // RPC 客户端
-	mu        sync.Mutex             // 互斥锁
-	consumer  map[string]MsgConsumer // 消费者
+	*pbSocket             // RPC 客户端
+	consumer  MapConsumer // 消费者
+	mu        sync.Mutex  // 互斥锁
 }
 
-// 消息回调函数
 type MsgConsumer func(msg *WxMsg)
+type MapConsumer map[string]MsgConsumer
 
 // 关闭 RPC 连接
 // param ks 消息接收器标识，空则关闭所有
@@ -47,7 +47,7 @@ func (c *MsgClient) Register(cb MsgConsumer) (string, error) {
 			logman.Error("msg consumer", "error", err)
 			return "", err
 		}
-		c.consumer = map[string]MsgConsumer{k: cb}
+		c.consumer = MapConsumer{k: cb}
 		go c.runner()
 	} else {
 		c.consumer[k] = cb
