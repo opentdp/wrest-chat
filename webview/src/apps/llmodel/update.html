@@ -35,9 +35,12 @@
             <label class="form-label">族类 *</label>
             <input name="family" class="form-control" list="familyOptions" [(ngModel)]="formdata.family" required>
             <datalist id="familyOptions">
+                <option value="通义千问">通义千问</option>
+                <option value="文心一言">文心一言</option>
+                <option value="混元">混元</option>
+                <option value="星火">星火</option>
                 <option value="Gemini">Gemini</option>
                 <option value="GPT">GPT</option>
-                <option value="Spark">Spark</option>
             </datalist>
             <div class="form-text">
                 用于在指令中描述模型，不影响接口请求
@@ -46,12 +49,12 @@
         <div class="col-12">
             <label class="form-label">服务商 *</label>
             <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
-                <option value="google">Google</option>
-                <option value="openai">OpenAI</option>
-                <option value="xunfei">科大讯飞</option>
+                <option value="aliyun">阿里通义千问</option>
                 <option value="baidu">百度千帆（文心一言）</option>
                 <option value="tencent">腾讯混元</option>
-                <option value="ali">阿里百炼（通义千问）</option>
+                <option value="xunfei">科大讯飞</option>
+                <option value="google">Google</option>
+                <option value="openai">OpenAI</option>
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
@@ -61,14 +64,17 @@
             <label class="form-label">模型 *</label>
             <select name="model" class="form-select" [(ngModel)]="formdata.model" required>
                 <option value="-">不指定</option>
-                @if (formdata.provider === 'google') {
-                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                }
-                @if (formdata.provider === 'openai') {
-                <option value="gemini-pro">gemini-pro</option>
+                @if (formdata.provider === 'aliyun') {
+                <option value="qwen-max">qwen-max</option>
                 }
                 @if (formdata.provider === 'xunfei') {
                 <option value="v3">spark v3</option>
+                }
+                @if (formdata.provider === 'google') {
+                <option value="gemini-pro">gemini-pro</option>
+                }
+                @if (formdata.provider === 'openai') {
+                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                 }
             </select>
             <div class="form-text">

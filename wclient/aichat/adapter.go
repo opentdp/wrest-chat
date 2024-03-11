@@ -33,8 +33,8 @@ func Text(id, rid, msg string) string {
 		res, err = BaiDuText(id, rid, msg)
 	case "tencent":
 		res, err = TencentText(id, rid, msg)
-	case "ali":
-		res, err = AliText(id, rid, msg)
+	case "aliyun":
+		res, err = AliyunText(id, rid, msg)
 	case "":
 		res = "当前模型已失效，请重新选择"
 	default:
@@ -144,7 +144,7 @@ func UserModel(id, rid string) *UserLLModel {
 
 type MsgHistory struct {
 	Content string
-	Role    string
+	Role    string // user,assistant
 }
 
 var msgHistories = map[string][]*MsgHistory{}
