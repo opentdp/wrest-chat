@@ -33,6 +33,8 @@ func Text(id, rid, msg string) string {
 		res, err = BaiDuText(id, rid, msg)
 	case "tencent":
 		res, err = TencentText(id, rid, msg)
+	case "ali":
+		res, err = AliText(id, rid, msg)
 	case "":
 		res = "当前模型已失效，请重新选择"
 	default:
