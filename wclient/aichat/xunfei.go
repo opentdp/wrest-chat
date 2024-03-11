@@ -49,12 +49,6 @@ func XunfeiText(id, rid, ask string) (string, error) {
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		if role == "user" {
-			role = xunfei.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = xunfei.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, xunfei.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -97,7 +91,7 @@ func XunfeiText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: reply, Role: "model"}
+	item2 := &MsgHistory{Content: reply, Role: "assistant"}
 
 	AppendHistory(id, item1, item2)
 

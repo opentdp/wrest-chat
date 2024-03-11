@@ -42,12 +42,6 @@ func BaiDuText(id, rid, ask string) (string, error) {
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		if role == "user" {
-			role = baidu.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = baidu.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, baidu.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -71,7 +65,7 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: res.Result, Role: "model"}
+	item2 := &MsgHistory{Content: res.Result, Role: "assistant"}
 
 	AppendHistory(id, item1, item2)
 

@@ -41,12 +41,6 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		if role == "user" {
-			role = openai.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = openai.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, openai.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -66,7 +60,7 @@ func OpenaiText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: resp.Choices[0].Message.Content, Role: "model"}
+	item2 := &MsgHistory{Content: resp.Choices[0].Message.Content, Role: "assistant"}
 
 	AppendHistory(id, item1, item2)
 
