@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.nanomsg.org/mangos"
+	"go.nanomsg.org/mangos/v3"
 	"go.nanomsg.org/mangos/v3/protocol"
 	"go.nanomsg.org/mangos/v3/protocol/pair1"
 	"go.nanomsg.org/mangos/v3/transport/all"
@@ -53,7 +53,7 @@ func (c *pbSocket) init(d uint) (err error) {
 // 调用接口
 // param req *Request 请求参数
 // return *Response 响应参数
-func (c *CmdClient) call(req *Request) *Response {
+func (c *pbSocket) call(req *Request) *Response {
 	if err := c.send(req); err != nil {
 		logman.Error(err.Error())
 		return &Response{}

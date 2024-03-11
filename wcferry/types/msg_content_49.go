@@ -84,5 +84,5 @@ type RecordInfo struct {
 
 type ReferMsg struct {
 	Svrid uint64 `xml:"svrid"`
-	Type  int32  `xml:"type"`
+	Type  uint32 `xml:"type"`
 }

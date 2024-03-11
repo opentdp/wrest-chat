@@ -8,10 +8,31 @@
 </nav>
 
 <div class="container-lg mb-3">
-    <div class="text-end mb-3">
-        <button class="btn btn-sm btn-primary" [routerLink]="['/profile/create']">添加</button>
+    <div class="row justify-content-between">
+        <div class="col-5 col-md-4">
+            <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getProfiles()">
+                <option value="-">私聊</option>
+                @for (item of wcfChatrooms | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="col-5 col-md-4">
+            <select class="form-select" [(ngModel)]="formdata.level" (change)="getProfiles()">
+                <option value="0">全部</option>
+                <option value="-1">未注册</option>
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-primary" [routerLink]="['/profile/create']">添加</button>
+        </div>
     </div>
+</div>
 
+<div class="container-lg mb-3">
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
@@ -19,10 +40,8 @@
                 <th scope="col">用户</th>
                 <th scope="col">场景</th>
                 <th scope="col" class="d-none d-md-table-cell">级别</th>
-                <th scope="col" class="d-none d-lg-table-cell">AI 唤醒词</th>
                 <th scope="col" class="d-none d-lg-table-cell">AI 模型</th>
                 <th scope="col" class="d-none d-xl-table-cell">拉黑期限</th>
-                <th scope="col" class="d-none d-xxl-table-cell">备注</th>
                 <th scope="col">操作</th>
             </tr>
         </thead>
@@ -42,18 +61,16 @@
                     @if (item.roomid == '-') {
                     私聊
                     } @else {
-                    {{wcfContacts[item.roomid] ? wcfContacts[item.roomid].name : item.roomid}}
+                    {{wcfChatrooms[item.roomid] && wcfChatrooms[item.roomid].name || '-'}}
                     }
                 </td>
                 <td class="d-none d-md-table-cell">
                     {{userLevels[item.level] && userLevels[item.level].name || '-'}}
                 </td>
-                <td class="d-none d-lg-table-cell">{{item.ai_argot}}</td>
                 <td class="d-none d-lg-table-cell">{{item.ai_model}}</td>
                 <td class="d-none d-xl-table-cell">
                     {{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}
                 </td>
-                <td class="d-none d-xxl-table-cell">{{item.remark}}</td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary me-2" routerLink="/profile/update/{{item.rd}}">编辑</button>
                     <button class="btn btn-sm btn-danger" (click)="deleteProfile(item)">删除</button>

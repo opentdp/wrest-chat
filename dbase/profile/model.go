@@ -14,7 +14,6 @@ type CreateParam struct {
 	Roomid    string `json:"roomid"`
 	Level     int32  `json:"level"`
 	Remark    string `json:"remark"`
-	AiArgot   string `json:"ai_argot"`
 	AiModel   string `json:"ai_model"`
 	BanExpire int64  `json:"ban_expire"`
 }
@@ -26,7 +25,6 @@ func Create(data *CreateParam) (uint, error) {
 		Roomid:    data.Roomid,
 		Level:     data.Level,
 		Remark:    data.Remark,
-		AiArgot:   data.AiArgot,
 		AiModel:   data.AiModel,
 		BanExpire: data.BanExpire,
 	}
@@ -52,7 +50,6 @@ func Update(data *UpdateParam) error {
 			Roomid:    data.Roomid,
 			Level:     data.Level,
 			Remark:    data.Remark,
-			AiArgot:   data.AiArgot,
 			AiModel:   data.AiModel,
 			BanExpire: data.BanExpire,
 		})
@@ -137,6 +134,7 @@ func Delete(data *DeleteParam) error {
 type FetchAllParam struct {
 	Wxid   string `json:"wxid"`
 	Roomid string `json:"roomid"`
+	Level  int32  `json:"level"`
 }
 
 func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
@@ -147,6 +145,7 @@ func FetchAll(data *FetchAllParam) ([]*tables.Profile, error) {
 		Where(&tables.Profile{
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
+			Level:  data.Level,
 		}).
 		Find(&items)
 
@@ -167,6 +166,7 @@ func Count(data *CountParam) (int64, error) {
 		Where(&tables.Profile{
 			Wxid:   data.Wxid,
 			Roomid: data.Roomid,
+			Level:  data.Level,
 		}).
 		Count(&count)
 

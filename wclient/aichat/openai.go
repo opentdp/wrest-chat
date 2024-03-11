@@ -10,19 +10,24 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	llmc := UserModel(id, rid)
 
+	// 初始化模型
+
 	config := openai.DefaultConfig(llmc.Secret)
-	if llmc.Endpoint != "" {
+
+	if len(llmc.Endpoint) > 1 {
 		config.BaseURL = llmc.Endpoint + "/v1"
 	}
 
 	client := openai.NewClientWithConfig(config)
 
-	// 初始化模型
-
 	req := openai.ChatCompletionRequest{
-		Model:     llmc.Model,
+		Model:     "gpt-3.5-turbo",
 		MaxTokens: 2048,
 		Messages:  []openai.ChatCompletionMessage{},
+	}
+
+	if len(llmc.Model) > 1 {
+		req.Model = llmc.Model
 	}
 
 	// 设置上下文

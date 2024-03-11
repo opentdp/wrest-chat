@@ -3,7 +3,7 @@
 <nav class="container-lg mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
-        <li class="breadcrumb-item"><a routerLink="/keyword/list">关键词</a></li>
+        <li class="breadcrumb-item"><a routerLink="/keyword/list">词库管理</a></li>
         <li class="breadcrumb-item active">添加</li>
     </ol>
 </nav>
@@ -18,6 +18,17 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">分组</label>
+            <select name="group" class="form-select" [(ngModel)]="formdata.group">
+                @for (item of keywordGroups | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                关键词分组
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
                 <option value="-">全局</option>
@@ -29,17 +40,20 @@
                 关键词应用场景，暂用作生效范围
             </div>
         </div>
+        @if (formdata.group == 'handler') {
         <div class="col-12">
-            <label class="form-label">用途</label>
+            <label class="form-label">指令</label>
             <select name="target" class="form-select" [(ngModel)]="formdata.target">
-                @for (item of keywordTargets | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
+                @for (item of robotHandler; track item.command) {
+                <option [value]="item.command">{{item.command}} {{item.describe}}</option>
                 }
             </select>
             <div class="form-text">
                 关键词处理程序或应用目标
             </div>
         </div>
+        }
+        @if (formdata.group == 'badword') {
         <div class="col-12">
             <label class="form-label">级别</label>
             <select name="level" class="form-select" [(ngModel)]="formdata.level">
@@ -53,6 +67,7 @@
                 }
             </div>
         </div>
+        }
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
         </div>

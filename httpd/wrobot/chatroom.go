@@ -13,7 +13,7 @@ type Chatroom struct{}
 // @Produce json
 // @Tags BOT::群聊配置
 // @Param body body chatroom.FetchAllParam true "获取群聊配置列表参数"
-// @Success 200 {object} []tables.Chatroom
+// @Success 200 {array} tables.Chatroom
 // @Router /bot/chatroom/list [post]
 func (*Chatroom) list(c *gin.Context) {
 
@@ -73,7 +73,7 @@ func (*Chatroom) create(c *gin.Context) {
 	if id, err := chatroom.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -97,7 +97,7 @@ func (*Chatroom) update(c *gin.Context) {
 
 	if err := chatroom.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -121,7 +121,7 @@ func (*Chatroom) delete(c *gin.Context) {
 
 	if err := chatroom.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}

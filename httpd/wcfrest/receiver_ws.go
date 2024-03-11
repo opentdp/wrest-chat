@@ -1,73 +1,57 @@
 package wcfrest
 
 import (
-	"errors"
 	"sync"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/go-helper/recovery"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-var socketReceiverKey = ""
-var socketReceiverList = map[*websocket.Conn]*WebSocketMutex{}
+func socketReceiver(ws *websocket.Conn) wcferry.MsgConsumer {
 
-type WebSocketMutex struct {
-	*websocket.Conn
-	mu sync.Mutex
-}
+	mu := sync.Mutex{}
 
-func (w *WebSocketMutex) WriteJSON(v any) error {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-	return w.Conn.WriteJSON(v)
-}
-
-func (wc *Controller) enableSocketReceiver(ws *websocket.Conn) error {
-
-	logman.Warn("enable receiver", "socket", ws.RemoteAddr().String())
-
-	if socketReceiverList[ws] != nil {
-		return errors.New("socket already exists")
+	return func(msg *wcferry.WxMsg) {
+		mu.Lock()
+		defer mu.Unlock()
+		ws.WriteJSON(wcferry.ParseWxMsg(msg))
 	}
 
-	wm := &WebSocketMutex{ws, sync.Mutex{}}
+}
 
-	if len(socketReceiverList) == 0 {
-		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
-			defer recovery.Handler()
-			ret := wcferry.ParseWxMsg(msg)
-			for s := range socketReceiverList {
-				logman.Info("call receiver", "addr", s.RemoteAddr(), "Id", ret.Id)
-				s.WriteJSON(ret)
-			}
-		})
-		if err != nil {
-			return err
+// @Summary 推送消息到Socket
+// @Produce json
+// @Tags WCF::消息推送
+// @Success 101 {string} string "Switching Protocols 响应"
+// @Router /wcf/socket_receiver [get]
+func (wc *Controller) socketReceiver(c *gin.Context) {
+
+	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		logman.Error("websocket upgrade", "error", err)
+		c.Set("Error", err)
+		return
+	}
+
+	defer ws.Close()
+
+	logman.Warn("enable receiver", "socket", ws.RemoteAddr())
+	key, err := wc.EnrollReceiver(true, socketReceiver(ws))
+	if err != nil {
+		logman.Error("enroll receiver", "error", err)
+		c.Set("Error", err)
+		return
+	}
+
+	defer wc.DisableReceiver(key)
+
+	for {
+		if _, _, err := ws.ReadMessage(); err != nil {
+			break
 		}
-		socketReceiverKey = key
 	}
-
-	socketReceiverList[ws] = wm
-	return nil
-
-}
-
-func (wc *Controller) disableSocketReceiver(ws *websocket.Conn) error {
-
-	logman.Warn("disable receiver", "addr", ws.RemoteAddr())
-
-	if socketReceiverList[ws] == nil {
-		return errors.New("socket not exists")
-	}
-
-	delete(socketReceiverList, ws)
-	if len(socketReceiverList) == 0 {
-		return wc.DisableReceiver(socketReceiverKey)
-	}
-
-	return nil
 
 }

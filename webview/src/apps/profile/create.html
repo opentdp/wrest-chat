@@ -41,7 +41,18 @@
                 }
             </select>
             <div class="form-text">
-                机器人使用权限
+                用于适配机器人使用权限
+            </div>
+        </div>
+        <div class="col-12">
+            <label class="form-label">AI 模型</label>
+            <select name="ai_model" class="form-select" [(ngModel)]="formdata.ai_model">
+                @for (item of llmodels; track item.rd) {
+                <option [value]="item.mid">{{item.mid}}（{{item.provider}}:{{item.model}}）</option>
+                }
+            </select>
+            <div class="form-text">
+                用户指定使用的 AI 模型
             </div>
         </div>
         <div class="col-12">

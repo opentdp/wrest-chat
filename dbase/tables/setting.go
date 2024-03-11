@@ -3,10 +3,10 @@ package tables
 // 全局配置
 
 type Setting struct {
-	Rd        uint   `gorm:"primaryKey" json:"rd"`       // 主键
-	Name      string `gorm:"uniqueIndex" json:"name"`    // 键
-	Type      string `gorm:"default:string" json:"type"` // 类型
-	Group     string `gorm:"index" json:"group"`         // 分组
+	Rd        uint   `json:"rd" gorm:"primaryKey"`       // 主键
+	Name      string `json:"name" gorm:"uniqueIndex"`    // 键
+	Type      string `json:"type" gorm:"default:string"` // 类型
+	Group     string `json:"group" gorm:"index"`         // 分组
 	Value     string `json:"value"`                      // 值
 	Title     string `json:"title"`                      // 标题
 	Remark    string `json:"remark"`                     // 备注

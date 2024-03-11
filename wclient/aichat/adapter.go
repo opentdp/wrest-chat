@@ -33,6 +33,8 @@ func Text(id, rid, msg string) string {
 		res, err = BaiDuText(id, rid, msg)
 	case "tencent":
 		res, err = TencentText(id, rid, msg)
+	case "":
+		res = "当前模型已失效，请重新选择"
 	default:
 		res = "暂不支持此模型"
 	}
@@ -58,6 +60,8 @@ func Image(id, rid, msg, img string) string {
 	switch llmc.Provider {
 	case "google":
 		res, err = GoogleImage(id, rid, msg, img)
+	case "":
+		res = "当前模型已失效，请重新选择"
 	default:
 		res = "当前模型不支持分析图片"
 	}
@@ -101,7 +105,7 @@ func UserModel(id, rid string) *UserLLModel {
 	// 先获取用户自定义配置模型
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: id, Roomid: rid})
 
-	if up != nil {
+	if up.Rd > 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: up.AiModel})
 	}
 	romconfig, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
@@ -120,11 +124,11 @@ func UserModel(id, rid string) *UserLLModel {
 		}
 	}
 	// 最后使用全局默认配置
-	if llmc == nil {
+	if llmc == nil || llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: setting.ModelDefault})
 	}
 
-	if llmc == nil {
+	if llmc == nil || llmc.Rd == 0 {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 

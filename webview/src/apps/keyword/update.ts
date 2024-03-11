@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { KeywordTargets, KeywordLevels } from '../../openapi/const';
-import { RobotApi, KeywordUpdateParam } from '../../openapi/wrobot';
+import { KeywordGroups, KeywordLevels } from '../../openapi/const';
+import { RobotApi, KeywordUpdateParam, RobotHandler } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -12,9 +12,10 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordUpdateComponent implements OnInit {
 
-    public keywordTargets = KeywordTargets;
+    public keywordGroups = KeywordGroups;
     public keywordLevels = KeywordLevels;
 
+    public robotHandler: Array<RobotHandler> = [];
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
     public formdata: KeywordUpdateParam = {} as KeywordUpdateParam;
@@ -23,6 +24,7 @@ export class KeywordUpdateComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute
     ) {
+        this.getRobotHandlers();
         this.getWcfChatrooms();
     }
 
@@ -43,6 +45,12 @@ export class KeywordUpdateComponent implements OnInit {
         }
         RobotApi.keywordUpdate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
+        });
+    }
+
+    public getRobotHandlers() {
+        RobotApi.robotHandlers().then((data) => {
+            this.robotHandler = data || [];
         });
     }
 

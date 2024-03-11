@@ -19,7 +19,9 @@ export class ChatroomCreateComponent {
     public llmodels: Array<TablesLLModel> = [];
     
     public formdata: ChatroomCreateParam = {
+        level: 1,
         roomid: '',
+        pat_return: 'false',
     };
 
     constructor(private router: Router) {

@@ -11,7 +11,7 @@ import (
 )
 
 var badMember = map[string]int{}
-var keywordList = []*tables.Keyword{}
+var badwordList = []*tables.Keyword{}
 
 func badHandler() []*Handler {
 
@@ -21,42 +21,40 @@ func badHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    30,
+		Order:    310,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/bad",
-		Describe: "添加违规关键词",
+		Describe: "添加违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			_, err := keyword.Create(&keyword.CreateParam{
-				Roomid: prid(msg), Phrase: msg.Content, Target: "ban", Level: 1,
+				Group: "badword", Roomid: prid(msg), Phrase: msg.Content, Level: 1,
 			})
 			if err == nil {
 				updateBadWord()
-				return "违规关键词添加成功"
+				return "违禁词添加成功"
 			}
-			return "违规关键词已存在"
+			return "违禁词已存在"
 		},
 		PreCheck: badPreCheck,
 	})
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    31,
+		Order:    311,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/unbad",
-		Describe: "删除违规关键词",
+		Describe: "删除违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
-			item, err := keyword.Fetch(&keyword.FetchParam{Roomid: prid(msg), Phrase: msg.Content})
-			if err != nil || item.Target != "ban" {
-				return msg.Content + "不是违规关键词"
-			}
-			err = keyword.Delete(&keyword.DeleteParam{Rd: item.Rd})
+			err := keyword.Delete(&keyword.DeleteParam{
+				Group: "badword", Roomid: prid(msg), Phrase: msg.Content,
+			})
 			if err == nil {
 				updateBadWord()
-				return "已删除违规关键词" + msg.Content
+				return "违禁词删除成功"
 			}
-			return "违规关键词删除失败"
+			return "违禁词删除失败"
 		},
 	})
 
@@ -78,7 +76,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	// 遍历关键词
-	for _, v := range keywordList {
+	for _, v := range badwordList {
 		if v.Roomid != "-" {
 			if msg.IsGroup {
 				if v.Roomid != msg.Roomid {
@@ -91,8 +89,8 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
 			badMember[msg.Sender] += int(v.Level)
 			if badMember[msg.Sender] > 10 {
-				wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
-				delete(badMember, msg.Sender)
+				defer delete(badMember, msg.Sender)
+				defer wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
 				return "我送你离开，天涯之外你是否还在"
 			}
 			str := "违规风险 +%d，当前累计：%d，大于 10 将被请出群聊"
@@ -106,8 +104,8 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 func updateBadWord() {
 
-	keywordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
-		Target: "ban",
+	badwordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
+		Group: "badword",
 	})
 
 }

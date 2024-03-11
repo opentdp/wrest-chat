@@ -51,10 +51,10 @@ func (c *Client) Connect() error {
 
 // 启动消息接收器
 // param pyq bool 是否接收朋友圈消息
-// param cb MsgCallback 消息回调函数，可选参数
+// param cb MsgConsumer 消息回调函数，可选参数
 // return string 接收器唯一标识
-func (c *Client) EnrollReceiver(pyq bool, cb MsgCallback) (string, error) {
-	if c.MsgClient.callbacks == nil {
+func (c *Client) EnrollReceiver(pyq bool, cb MsgConsumer) (string, error) {
+	if c.MsgClient.consumer == nil {
 		if c.CmdClient.EnableMsgReciver(true) != 0 {
 			return "", errors.New("failed to enable msg server")
 		}
@@ -68,7 +68,7 @@ func (c *Client) EnrollReceiver(pyq bool, cb MsgCallback) (string, error) {
 // return error 错误信息
 func (c *Client) DisableReceiver(ks ...string) error {
 	err := c.MsgClient.Destroy(ks...)
-	if c.MsgClient.callbacks == nil {
+	if c.MsgClient.consumer == nil {
 		if c.CmdClient.DisableMsgReciver() != 0 {
 			return errors.New("failed to disable msg server")
 		}

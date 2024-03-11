@@ -59,7 +59,7 @@ func receiver10002(msg *wcferry.WxMsg) {
 	}
 
 	if str != "" {
-		output += "\n-------\n" + str
+		output += "\n----------------\n" + str
 		reply(msg, output)
 		return
 	}
@@ -72,13 +72,13 @@ func receiver10002(msg *wcferry.WxMsg) {
 				wc.CmdClient.SendImg(origin.Remark, origin.Sender)
 			}
 		}
-		output += "\n-------\n一张不可描述的图片"
+		output += "\n----------------\n一张不可描述的图片"
 		reply(msg, output)
 		return
 	}
 
 	if origin.Type == 47 {
-		output += "\n-------\n一个震惊四座的表情"
+		output += "\n----------------\n一个震惊四座的表情"
 		reply(msg, output)
 		return
 	}
@@ -89,20 +89,20 @@ func receiver10002(msg *wcferry.WxMsg) {
 		if err == nil {
 			switch appmsg.AppMsg.Type {
 			case 6:
-				output += "\n-------\n一份暗藏机密的文件"
+				output += "\n----------------\n一份暗藏机密的文件"
 			case 19:
-				output += "\n-------\n多条来自异界的消息"
+				output += "\n----------------\n多条来自异界的消息"
 			case 57:
-				output += "\n-------\n" + appmsg.AppMsg.Title
+				output += "\n----------------\n" + appmsg.AppMsg.Title
 			default:
-				output += "\n-------\n暂不支持回显的消息类型"
+				output += "\n----------------\n暂不支持回显的消息类型"
 			}
 			reply(msg, output)
 			return
 		}
 	}
 
-	output += "\n-------\n暂不支持回显的消息类型"
+	output += "\n----------------\n暂不支持回显的消息类型"
 	reply(msg, output)
 
 }

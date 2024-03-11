@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { KeywordTargets, KeywordLevels } from '../../openapi/const';
-import { RobotApi, TablesKeyword } from '../../openapi/wrobot';
+import { KeywordGroups, KeywordLevels } from '../../openapi/const';
+import { RobotApi, TablesKeyword, KeywordFetchAllParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -11,12 +11,17 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class KeywordListComponent {
 
-    public keywordTargets = KeywordTargets;
+    public keywordGroups = KeywordGroups;
     public keywordLevels = KeywordLevels;
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
     public keywords: Array<TablesKeyword> = [];
+
+    public formdata: KeywordFetchAllParam = {
+        group: 'badword',
+        roomid: '-',
+    };
 
     constructor() {
         this.getKeywords();
@@ -24,7 +29,7 @@ export class KeywordListComponent {
     }
 
     public getKeywords() {
-        RobotApi.keywordList({}).then((data) => {
+        RobotApi.keywordList(this.formdata).then((data) => {
             this.keywords = data || [];
         });
     }

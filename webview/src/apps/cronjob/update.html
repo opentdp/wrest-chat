@@ -50,11 +50,9 @@
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
             </select>
-            @if (formdata.type == "BAT") {
             <div class="form-text">
                 任务回调处理方式
             </div>
-            }
         </div>
         <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
             <label class="form-label">执行超时 *</label>

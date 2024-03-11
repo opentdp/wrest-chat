@@ -2,7 +2,6 @@ package wcferry
 
 import (
 	"errors"
-	"net/url"
 	"path"
 	"strings"
 	"time"
@@ -259,7 +258,7 @@ func (c *CmdClient) ForwardMsg(msgid uint64, receiver string) int32 {
 }
 
 // 发送文本消息
-// param msg string 要发送的消息，换行使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
+// param msg string 要发送的消息，\n使用 `\\\\n` （单杠）；如果 @ 人的话，需要带上跟 `aters` 里数量相同的 @
 // param receiver string 消息接收人，wxid 或者 roomid
 // param aters string 要 @ 的 wxid，多个用逗号分隔；`@所有人` 只需要 `notify@all`
 // return int32 0 为成功，其他失败
@@ -642,37 +641,4 @@ func (c *CmdClient) DisableMsgReciver() int32 {
 	req := &Request{Func: Functions_FUNC_DISABLE_RECV_TXT}
 	recv := c.call(req)
 	return recv.GetStatus()
-}
-
-/////////////////////// Extra ////////////////////////
-
-// 发送弹性消息（文本、网络图片或文件）
-// param msg string 要发送的消息
-// param wxid string 消息接收人，如果 roomid 存在则为 at 此人
-// param roomid string 消息接收群，空则为私聊
-// return int32 0 为成功，其他失败
-func (c *CmdClient) SendFlexMsg(msg, wxid, roomid string) int32 {
-	receiver := wxid
-	ater := ""
-	if roomid != "" {
-		receiver = roomid
-		ater = wxid
-	}
-	// 发送网络文件
-	if u, err := url.Parse(msg); err == nil {
-		if u.Scheme == "http" || u.Scheme == "https" {
-			if IsImageFile(u.Path) {
-				return c.SendImg(msg, receiver)
-			}
-			return c.SendFile(msg, receiver)
-		}
-	}
-	// 发送文本信息
-	if ater != "" {
-		user := c.GetInfoByWxid(ater)
-		if user != nil && user.Name != "" {
-			msg = "@" + user.Name + "\n" + msg
-		}
-	}
-	return c.SendTxt(msg, receiver, ater)
 }

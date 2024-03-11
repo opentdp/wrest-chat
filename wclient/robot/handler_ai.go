@@ -2,9 +2,9 @@ package robot
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
+	"github.com/opentdp/wechat-rest/dbase/message"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/wcferry"
 	"github.com/opentdp/wechat-rest/wclient/aichat"
@@ -21,32 +21,20 @@ func aiHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    10,
+		Order:    100,
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/ai",
 		Describe: "提问或交谈",
-		Callback: func(msg *wcferry.WxMsg) string {
-			if msg.Content == "" {
-				return "请在指令后输入问题"
-			}
-			if msg.Extra == "image-txt" {
-				if msg.Thumb == "" {
-					return "提取消息图片失败"
-				}
-				return aichat.Image(msg.Sender, msg.Roomid, msg.Content, msg.Thumb)
-			}
-			return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
-		},
-		PreCheck: aiPreCheck,
+		Callback: aiCallback,
 	})
 
 	cmds = append(cmds, &Handler{
 		Level:    0,
-		Order:    11,
+		Order:    101,
 		ChatAble: true,
 		RoomAble: true,
-		Command:  "/new",
+		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
 			aichat.ResetHistory(msg.Sender)
@@ -54,40 +42,13 @@ func aiHandler() []*Handler {
 		},
 	})
 
-	cmds = append(cmds, &Handler{
-		Level:    0,
-		Order:    12,
-		ChatAble: true,
-		RoomAble: true,
-		Command:  "/wake",
-		Describe: "自定义唤醒词",
-		Callback: func(msg *wcferry.WxMsg) string {
-			argot := msg.Content
-			// 校验唤醒词
-			if strings.Contains(argot, "@") || strings.Contains(argot, "/") {
-				return "唤醒词不允许包含 @ 或 /"
-			} else if argot == "" {
-				argot = "-"
-			}
-			// 更新唤醒词
-			profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiArgot: argot})
-			if argot == "-" {
-				if msg.IsGroup {
-					return "已禁用自定义唤醒词"
-				}
-				return "已启用无唤醒词对话模式"
-			}
-			return "唤醒词设置为 " + argot
-		},
-	})
-
 	if len(models) > 3 {
 		cmds = append(cmds, &Handler{
 			Level:    0,
-			Order:    13,
+			Order:    103,
 			ChatAble: true,
 			RoomAble: true,
-			Command:  "/rand",
+			Command:  "/ai:rand",
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
 				up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
@@ -102,16 +63,16 @@ func aiHandler() []*Handler {
 		})
 	}
 
-	for _, v := range models {
+	for k, v := range models {
 		v := v // copy
-		cmdkey := "/" + v.Mid
+		cmdkey := "/cm:" + v.Mid
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
-			Order:    14,
+			Order:    110 + int32(k),
 			ChatAble: true,
 			RoomAble: true,
 			Command:  cmdkey,
-			Describe: "切换为 " + v.Family + " [" + v.Model + "]",
+			Describe: "换模型：" + v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
@@ -123,31 +84,46 @@ func aiHandler() []*Handler {
 
 }
 
-func aiPreCheck(msg *wcferry.WxMsg) string {
+func aiCallback(msg *wcferry.WxMsg) string {
 
-	if len(msg.Content) == 0 {
-		return ""
+	if msg.Content == "" {
+		return "请在指令后输入问题"
 	}
 
-	if msg.Content[0:1] != "/" {
-		// 处理 @机器人 的消息
-		if strings.Contains(msg.Xml, self().Wxid) {
-			msg.Content = "/ai " + msg.Content
-			return ""
+	// 处理引用的消息
+	if msg.Sign == "refer-msg" {
+		ref, err := message.Fetch(&message.FetchParam{Id: msg.Id})
+		if err != nil { //TODO: 此处无法提取机器人发的消息
+			ref.Content = msg.Extra
 		}
-		// 处理用户自定义的唤醒词
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.AiArgot == "-" {
-			if !msg.IsGroup {
-				msg.Content = "/ai " + msg.Content
+		switch msg.Type {
+		// 文本
+		case 1:
+			if ref.Content != "" {
+				msg.Content += "\n内容如下:\n" + ref.Content
+				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 			}
-		} else if up.AiArgot != "" {
-			if strings.HasPrefix(msg.Content, up.AiArgot) {
-				msg.Content = strings.Replace(msg.Content, up.AiArgot, "/ai ", 1)
+		// 图片
+		case 3:
+			if ref.Remark == "" {
+				ref.Remark = msgImage(ref.Id, ref.Extra)
+				if ref.Remark == "" {
+					return "提取消息图片失败"
+				}
 			}
+			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
+		// 混合类消息
+		case 49:
+			if ref.Content != "" {
+				msg.Content += "\nXML数据如下:\n" + ref.Content
+				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+			}
+		// 默认提示
+		default:
+			return "暂不支持处理此类消息"
 		}
 	}
 
-	return ""
+	return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
 
 }

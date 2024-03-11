@@ -64,7 +64,7 @@ func Route() {
 
 	if args.Web.Webhook != "" {
 		for _, url := range strings.Split(args.Web.Webhook, "\n") {
-			ctrl.enableUrlReceiver(url)
+			ctrl.EnrollReceiver(true, urlReciever(url))
 		}
 	}
 

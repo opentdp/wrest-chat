@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserLevels } from '../../openapi/const';
-import { RobotApi, ProfileCreateParam } from '../../openapi/wrobot';
+import { RobotApi, TablesLLModel, ProfileCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -14,6 +14,8 @@ export class ProfileCreateComponent {
 
     public userLevels = UserLevels;
 
+    public llmodels: Array<TablesLLModel> = [];
+
     public wcfAvatars: Record<string, string> = {};
     public wcfFriends: Array<WcfrestContactPayload> = [];
     public wcfContacts: Record<string, WcfrestContactPayload> = {};
@@ -24,10 +26,11 @@ export class ProfileCreateComponent {
     public formdata: ProfileCreateParam = {
         wxid: '',
         roomid: '',
-        level: 2,
+        level: 1,
     };
 
     constructor(private router: Router) {
+        this.getLLModels();
         this.getWcfFriends();
         this.getWcfChatrooms();
     }
@@ -45,6 +48,12 @@ export class ProfileCreateComponent {
         const id = this.formdata.roomid || '-';
         await this.getWcfRoomMembers(this.formdata.roomid);
         this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+    }
+
+    public getLLModels() {
+        RobotApi.llmodelList({}).then((data) => {
+            this.llmodels = data || [];
+        });
     }
 
     public getWcfFriends() {

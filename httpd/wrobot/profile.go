@@ -13,7 +13,7 @@ type Profile struct{}
 // @Produce json
 // @Tags BOT::用户配置
 // @Param body body profile.FetchAllParam true "获取用户配置列表参数"
-// @Success 200 {object} []tables.Profile
+// @Success 200 {array} tables.Profile
 // @Router /bot/profile/list [post]
 func (*Profile) list(c *gin.Context) {
 
@@ -73,7 +73,7 @@ func (*Profile) create(c *gin.Context) {
 	if id, err := profile.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -97,7 +97,7 @@ func (*Profile) update(c *gin.Context) {
 
 	if err := profile.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -121,7 +121,7 @@ func (*Profile) delete(c *gin.Context) {
 
 	if err := profile.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}

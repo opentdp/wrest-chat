@@ -3,7 +3,7 @@ package tables
 // 计划任务
 
 type Cronjob struct {
-	Rd         uint   `gorm:"primaryKey" json:"rd"` // 主键
+	Rd         uint   `json:"rd" gorm:"primaryKey"` // 主键
 	Name       string `json:"name"`                 // 名称
 	Second     string `json:"second"`               // 秒
 	Minute     string `json:"minute"`               // 分
@@ -11,7 +11,7 @@ type Cronjob struct {
 	DayOfMonth string `json:"day_of_month"`         // 日
 	Month      string `json:"month"`                // 月
 	DayOfWeek  string `json:"day_of_week"`          // 周
-	Type       string `json:"type"`                 // 命令类型，[CMD, POWERSHELL, SHELL]
+	Type       string `json:"type"`                 // 命令类型 [CMD, POWERSHELL, SHELL]
 	Timeout    uint   `json:"timeout"`              // 超时时间（秒）
 	Directory  string `json:"directory"`            // 工作目录
 	Content    string `json:"content"`              // 命令内容

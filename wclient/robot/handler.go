@@ -4,78 +4,110 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/opentdp/wechat-rest/dbase/keyword"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
+var handlers = []*Handler{}
+var handlerPre = []*Handler{}
+var handlerMap = map[string]*Handler{}
+
+type HandlerFunc func(*wcferry.WxMsg) string
+
 type Handler struct {
-	Level    int32                       // 0:不限制 7:群管理 9:创始人
-	Order    int32                       // 排序，越小越靠前
-	ChatAble bool                        // 是否允许在私聊使用
-	RoomAble bool                        // 是否允许在群聊使用
-	Command  string                      // 指令
-	Alias    string                      // 指令别名
-	Describe string                      // 指令的描述信息
-	PreCheck func(*wcferry.WxMsg) string // 前置检查，可拦截文本聊天内容
-	Callback func(*wcferry.WxMsg) string // 指令回调，返回回复内容
+	Level    int32       // 0:不限制 7:群管理 9:创始人
+	Order    int32       // 排序，越小越靠前
+	ChatAble bool        // 是否允许在私聊使用
+	RoomAble bool        // 是否允许在群聊使用
+	Command  string      // 指令
+	Describe string      // 指令的描述信息
+	PreCheck HandlerFunc // 前置检查，可拦截文本聊天内容
+	Callback HandlerFunc // 指令回调，返回回复内容
 }
 
-var Handlers = []*Handler{}
-var HandlerMap = map[string]*Handler{}
+func GetHandlers() []*Handler {
 
-func initHandlers() {
+	return handlers
 
-	list := []*Handler{}
-	lmap := map[string]*Handler{}
+}
 
-	list = append(list, aiHandler()...)
-	list = append(list, apiHandler()...)
-	list = append(list, badHandler()...)
-	list = append(list, banHandler()...)
-	list = append(list, topHandler()...)
-	list = append(list, roomHandler()...)
-	list = append(list, wgetHandler()...)
-	list = append(list, helpHandler()...)
+func ResetHandlers() {
 
-	// 格式化
-	for _, v := range list {
-		lmap[v.Command] = v
-	}
-	sort.Slice(list, func(i, j int) bool {
-		return list[i].Order < list[j].Order
+	hlst := []*Handler{}
+	hpre := []*Handler{}
+	hmap := map[string]*Handler{}
+
+	// 获取指令列表
+	hlst = append(hlst, aiHandler()...)
+	hlst = append(hlst, apiHandler()...)
+	hlst = append(hlst, badHandler()...)
+	hlst = append(hlst, banHandler()...)
+	hlst = append(hlst, helpHandler()...)
+	hlst = append(hlst, revokeHandler()...)
+	hlst = append(hlst, roomHandler()...)
+	hlst = append(hlst, topHandler()...)
+	hlst = append(hlst, wgetHandler()...)
+
+	// 指令列表排序
+	sort.Slice(hlst, func(i, j int) bool {
+		return hlst[i].Order < hlst[j].Order
 	})
 
-	// 更新列表
-	Handlers, HandlerMap = list, lmap
-
-}
-
-func applyHandlers(msg *wcferry.WxMsg) string {
-
-	// 前置钩子
-	for _, v := range Handlers {
+	// 获取指令映射
+	for _, v := range hlst {
+		hmap[v.Command] = v
 		if v.PreCheck != nil {
-			if txt := v.PreCheck(msg); txt != "" {
-				return txt
+			hpre = append(hpre, v)
+		}
+	}
+
+	// 获取别名数据
+	kws, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "handler"})
+	if err == nil && len(kws) > 0 {
+		for _, v := range kws {
+			if hmap[v.Target] != nil {
+				hmap[v.Phrase+"@"+v.Roomid] = hmap[v.Target]
 			}
 		}
 	}
 
-	// 忽略空白
-	msg.Content = strings.TrimSpace(msg.Content)
-	if msg.Content == "" {
+	// 更新全局数据
+	handlers, handlerPre, handlerMap = hlst, hpre, hmap
+
+}
+
+func ApplyHandlers(msg *wcferry.WxMsg) string {
+
+	// 前置钩子
+	for _, v := range handlerPre {
+		if txt := v.PreCheck(msg); txt != "" {
+			return txt
+		}
+	}
+
+	// 清理空白
+	content := strings.TrimSpace(msg.Content)
+	content = strings.ReplaceAll(content, " ", " ")
+	if content == "" {
 		return ""
 	}
 
 	// 解析指令
-	matches := strings.SplitN(msg.Content, " ", 2)
-	handler := HandlerMap[matches[0]]
+	params := strings.SplitN(content, " ", 2)
+	handler := handlerMap[params[0]] // 默认
 	if handler == nil {
-		if msg.Content[0] == '/' {
-			return setting.InvalidHandler
+		handler = handlerMap[params[0]+"@"+prid(msg)] // 群聊
+		if handler == nil {
+			handler = handlerMap[params[0]+"@-"] // 全局
+			if handler == nil {
+				if content[0] == '/' {
+					return setting.InvalidHandler
+				}
+				return ""
+			}
 		}
-		return ""
 	}
 
 	// 验证权限
@@ -87,19 +119,13 @@ func applyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 验证场景
-	if msg.IsGroup {
-		if !handler.RoomAble {
-			return "此指令仅在私聊中可用"
-		}
-	} else {
-		if !handler.ChatAble {
-			return "此指令仅在群聊中可用"
-		}
+	if (msg.IsGroup && !handler.RoomAble) || (!msg.IsGroup && !handler.ChatAble) {
+		return setting.InvalidHandler
 	}
 
 	// 重写消息
-	if len(matches) == 2 {
-		msg.Content = strings.TrimSpace(matches[1])
+	if len(params) > 1 {
+		msg.Content = strings.TrimSpace(params[1])
 	} else {
 		msg.Content = ""
 	}

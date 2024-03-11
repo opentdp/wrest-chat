@@ -13,7 +13,7 @@ type Keyword struct{}
 // @Produce json
 // @Tags BOT::关键字
 // @Param body body keyword.FetchAllParam true "获取关键字列表参数"
-// @Success 200 {object} []tables.Keyword
+// @Success 200 {array} tables.Keyword
 // @Router /bot/keyword/list [post]
 func (*Keyword) list(c *gin.Context) {
 
@@ -73,7 +73,7 @@ func (*Keyword) create(c *gin.Context) {
 	if id, err := keyword.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -97,7 +97,7 @@ func (*Keyword) update(c *gin.Context) {
 
 	if err := keyword.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -121,7 +121,7 @@ func (*Keyword) delete(c *gin.Context) {
 
 	if err := keyword.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}

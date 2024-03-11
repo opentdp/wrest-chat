@@ -22,6 +22,13 @@
             </div>
         </div>
         <div class="col-12">
+            <label class="form-label">别名</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" />
+            <div class="form-text">
+                用于显示简要名称，生成加群指令中的描述
+            </div>
+        </div>
+        <div class="col-12">
             <label class="form-label">级别 *</label>
             <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
                 @for (item of roomLevels | keyvalue; track item.key) {
@@ -29,21 +36,17 @@
                 }
             </select>
             <div class="form-text">
-                机器人使用权限
+                用于适配机器人使用权限
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">加群指令</label>
             <input type="text" name="join_argot" class="form-control" [(ngModel)]="formdata.join_argot" />
             <div class="form-text">
-                用于生成加群指令，“-” 表示不邀请
-            </div>
-        </div>
-        <div class="col-12">
-            <label class="form-label">群聊别名</label>
-            <input type="text" name="name" class="form-control" [(ngModel)]="formdata.name" />
-            <div class="form-text">
-                用于生成加群指令中的描述
+                用于生成加群指令，最少2位字符，“-” 表示不启用
+                @if (formdata.join_argot && formdata.join_argot.length > 1) {
+                ；当前指令：<b>/jr:{{formdata.join_argot}}</b>
+                }
             </div>
         </div>
 
@@ -80,21 +83,21 @@
                 <option value="false">否</option>
             </select>
             <div class="form-text">
-                是否自动回应”拍了拍我“
+                是否自动回应“拍了拍我”，拍一拍对方
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">欢迎信息</label>
             <input type="text" name="welcome_msg" class="form-control" [(ngModel)]="formdata.welcome_msg" />
             <div class="form-text">
-                用户入群时的欢迎信息，“-” 表示不欢迎
+                用户入群时的欢迎信息，最少2位字符，“-” 表示不启用
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">撤回提醒</label>
             <input type="text" name="revoke_msg" class="form-control" [(ngModel)]="formdata.revoke_msg" />
             <div class="form-text">
-                检测到撤回消息时的提醒，“-” 表示不提醒
+                检测到撤回消息时的提醒，最少2位字符，“-” 表示不启用
             </div>
         </div>
         <div class="col-12">

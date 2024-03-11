@@ -1,8 +1,6 @@
 package robot
 
 import (
-	"strings"
-
 	"github.com/opentdp/wechat-rest/dbase/chatroom"
 	"github.com/opentdp/wechat-rest/dbase/profile"
 	"github.com/opentdp/wechat-rest/dbase/setting"
@@ -17,13 +15,13 @@ func receiver(msg *wcferry.WxMsg) {
 
 	switch msg.Type {
 	case 1: //文字
-		receiver1(msg)
+		receiver1(copyMsg(msg))
 	case 3: //图片
-		hook3(msg)
+		receiver3(msg)
 	case 37: //好友确认
 		receiver37(msg)
 	case 49: //混合消息
-		hook49(msg)
+		receiver49(copyMsg(msg))
 	case 10000: //红包、系统消息
 		receiver10000(msg)
 	case 10002: //撤回消息
@@ -32,44 +30,22 @@ func receiver(msg *wcferry.WxMsg) {
 
 }
 
-// 个人信息
-func self() *wcferry.UserInfo {
-
-	if selfInfo == nil {
-		selfInfo = wc.CmdClient.GetSelfInfo()
+// 复制消息
+// return 深拷贝后的消息
+func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
+	return &wcferry.WxMsg{
+		IsSelf:  msg.IsSelf,
+		IsGroup: msg.IsGroup,
+		Type:    msg.Type,
+		Ts:      msg.Ts,
+		Roomid:  msg.Roomid,
+		Content: msg.Content,
+		Sender:  msg.Sender,
+		Sign:    msg.Sign,
+		Thumb:   msg.Thumb,
+		Extra:   msg.Extra,
+		Xml:     msg.Xml,
 	}
-	return selfInfo
-
-}
-
-// 会话场景
-func prid(msg *wcferry.WxMsg) string {
-
-	if msg.IsGroup {
-		return msg.Roomid
-	}
-	return "-"
-
-}
-
-// 回复消息
-func reply(msg *wcferry.WxMsg, text string) int32 {
-
-	if msg.IsSelf {
-		return -2
-	}
-
-	if text = strings.TrimSpace(text); text == "" {
-		return -1
-	}
-
-	if msg.IsGroup {
-		user := wc.CmdClient.GetInfoByWxid(msg.Sender)
-		return wc.CmdClient.SendTxt("@"+user.Name+"\n"+text, msg.Roomid, msg.Sender)
-	} else {
-		return wc.CmdClient.SendTxt(text, msg.Sender, "")
-	}
-
 }
 
 // 白名单限制

@@ -12,16 +12,13 @@ export class WcferryContactComponent {
     public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 
     public contactTypes: Record<string, RegExp> = {
-        '公众平台助手': /^mphelper$/,
-        '朋友推荐消息': /^fmessage$/,
-        '语音记事本': /^medianote$/,
-        '漂流瓶': /^floatbottle$/,
-        '文件传输助手': /^filehelper$/,
-        '新闻': /^newsapp$/,
-        '公众号': /^gh_/,
         '群聊': /@chatroom$/,
+        '公众号': /^gh_/,
         '企业微信': /@openim$/,
+        '内置服务': /^fmessage|filehelper|floatbottle|medianote|mphelper|newsapp$/,
     };
+
+    public contactType = '好友';
 
     constructor() {
         this.getContacts();

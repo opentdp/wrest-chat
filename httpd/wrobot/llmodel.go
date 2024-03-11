@@ -13,7 +13,7 @@ type LLModel struct{}
 // @Produce json
 // @Tags BOT::大语言模型
 // @Param body body llmodel.FetchAllParam true "获取模型列表参数"
-// @Success 200 {object} []tables.LLModel
+// @Success 200 {array} tables.LLModel
 // @Router /bot/llmodel/list [post]
 func (*LLModel) list(c *gin.Context) {
 
@@ -73,7 +73,7 @@ func (*LLModel) create(c *gin.Context) {
 	if id, err := llmodel.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -97,7 +97,7 @@ func (*LLModel) update(c *gin.Context) {
 
 	if err := llmodel.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}
@@ -121,7 +121,7 @@ func (*LLModel) delete(c *gin.Context) {
 
 	if err := llmodel.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
-		robot.Redo()
+		robot.Reset()
 	} else {
 		c.Set("Error", err)
 	}

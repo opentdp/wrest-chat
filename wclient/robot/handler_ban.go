@@ -19,7 +19,7 @@ func banHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    40,
+		Order:    320,
 		ChatAble: false,
 		RoomAble: true,
 		Command:  "/ban",
@@ -58,7 +58,7 @@ func banHandler() []*Handler {
 
 	cmds = append(cmds, &Handler{
 		Level:    7,
-		Order:    41,
+		Order:    321,
 		ChatAble: false,
 		RoomAble: true,
 		Command:  "/unban",

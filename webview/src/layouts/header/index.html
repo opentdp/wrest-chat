@@ -16,22 +16,25 @@
                     <a class="nav-link" routerLink="/welcome" routerLinkActive="active">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/keyword/list" routerLinkActive="active">词库管理</a>
+                    <a class="nav-link" routerLink="/setting/list" routerLinkActive="active">全局配置</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/llmodel/list" routerLinkActive="active">模型配置</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/profile/list" routerLinkActive="active">用户配置</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" routerLink="/chatroom/list" routerLinkActive="active">群聊配置</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/setting/list" routerLinkActive="active">全局配置</a>
+                    <a class="nav-link" routerLink="/profile/list" routerLinkActive="active">用户配置</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/keyword/list" routerLinkActive="active">词库管理</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/cronjob/list" routerLinkActive="active">计划任务</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/handler/list" routerLinkActive="active">可用指令</a>
                 </li>
                 <li ngbDropdown class="nav-item" routerLinkActive="active">
                     <a class="nav-link" ngbDropdownToggle>
@@ -40,6 +43,7 @@
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <a ngbDropdownItem routerLink="/wcferry/chatroom" routerLinkActive="active">群聊</a>
                         <a ngbDropdownItem routerLink="/wcferry/contact" routerLinkActive="active">通讯录</a>
+                        <a ngbDropdownItem routerLink="/wcferry/dbquery" routerLinkActive="active">数据库</a>
                         <a ngbDropdownItem routerLink="/wcferry/receiver" routerLinkActive="active">消息监听</a>
                     </div>
                 </li>

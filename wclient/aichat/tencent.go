@@ -19,14 +19,19 @@ func TencentText(id, rid, ask string) (string, error) {
 	}
 
 	appId, err := strconv.ParseInt(keys[0], 10, 64)
-
 	if err != nil {
 		return "", errors.New("AppID错误")
 	}
 
-	client := tencent.NewClient(appId, keys[1], keys[2])
-
 	// 初始化模型
+
+	config := tencent.DefaultConfig(appId, keys[1], keys[2])
+
+	if len(llmc.Endpoint) > 1 {
+		config.BaseURL = llmc.Endpoint
+	}
+
+	client := tencent.NewClientWithConfig(config)
 
 	req := tencent.ChatCompletionRequest{
 		Messages: []tencent.ChatCompletionMessage{},

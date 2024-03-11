@@ -15,6 +15,9 @@
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
                 用于生成模型切换指令，不影响接口请求
+                @if (formdata.mid && formdata.mid.length > 1) {
+                ；当前指令：<b>/cm:{{formdata.mid}}</b>
+                }
             </div>
         </div>
         <div class="col-12">
@@ -25,18 +28,19 @@
                 }
             </select>
             <div class="form-text">
-                大模型使用权限
+                用于限制模型使用权限
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">族类 *</label>
-            <select name="family" class="form-select" [(ngModel)]="formdata.family" required>
+            <input name="family" class="form-control" list="familyOptions" [(ngModel)]="formdata.family" required>
+            <datalist id="familyOptions">
                 <option value="Gemini">Gemini</option>
                 <option value="GPT">GPT</option>
                 <option value="Spark">Spark</option>
-            </select>
+            </datalist>
             <div class="form-text">
-                用于在指令中描述模型类型，不影响接口请求
+                用于在指令中描述模型，不影响接口请求
             </div>
         </div>
         <div class="col-12">
@@ -55,9 +59,16 @@
         <div class="col-12">
             <label class="form-label">模型 *</label>
             <select name="model" class="form-select" [(ngModel)]="formdata.model" required>
-                <option value="gemini-pro">gemini-pro</option>
+                <option value="-">不指定</option>
+                @if (formdata.provider === 'google') {
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                }
+                @if (formdata.provider === 'openai') {
+                <option value="gemini-pro">gemini-pro</option>
+                }
+                @if (formdata.provider === 'xunfei') {
                 <option value="v3">spark v3</option>
+                }
             </select>
             <div class="form-text">
                 必须和服务商对应，缺失模型请提 Issue 或 PR 补全
@@ -87,11 +98,11 @@
             <label class="form-label">接入点</label>
             <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
             <div class="form-text">
-                仅 Google 和 OpenAI 支持自定义，留空则使用官方接口
+                自定义接口地址，留空则使用官方接口
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">更新</button>
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
         </div>
     </form>
 </div>

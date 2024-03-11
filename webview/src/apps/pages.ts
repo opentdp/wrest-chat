@@ -27,8 +27,11 @@ import { SettingListComponent } from './setting/list';
 import { SettingCreateComponent } from './setting/create';
 import { SettingUpdateComponent } from './setting/update';
 
+import { HandlerListComponent } from './handler/list';
+
 import { WcferryChatroomComponent } from './wcferry/chatroom';
 import { WcferryContactComponent } from './wcferry/contact';
+import { WcferryDbqueryComponent } from './wcferry/dbquery';
 import { WcferryReceiverComponent } from './wcferry/receiver';
 
 
@@ -60,8 +63,11 @@ export const AppComponents = [
     SettingCreateComponent,
     SettingUpdateComponent,
 
+    HandlerListComponent,
+
     WcferryChatroomComponent,
     WcferryContactComponent,
+    WcferryDbqueryComponent,
     WcferryReceiverComponent,
 ];
 
@@ -96,8 +102,11 @@ export const AppRoutes: Routes = [
     { path: 'setting/create', component: SettingCreateComponent, canActivate: [LoginGuard] },
     { path: 'setting/update/:rd', component: SettingUpdateComponent, canActivate: [LoginGuard] },
 
+    { path: 'handler/list', component: HandlerListComponent, canActivate: [LoginGuard] },
+
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },
+    { path: 'wcferry/dbquery', component: WcferryDbqueryComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/receiver', component: WcferryReceiverComponent, canActivate: [LoginGuard] },
 
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },

@@ -1,59 +1,98 @@
 package wcfrest
 
 import (
-	"errors"
+	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/go-helper/recovery"
 	"github.com/opentdp/go-helper/request"
 
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
-var urlReceiverKey = ""
-var urlReceiverList = map[string]bool{}
+var urlReceiverList = map[string]string{}
 
-func (wc *Controller) enableUrlReceiver(url string) error {
+func urlReciever(url string) wcferry.MsgConsumer {
 
-	logman.Warn("enable receiver", "url", url)
-
-	if urlReceiverList[url] {
-		return errors.New("url already exists")
+	return func(msg *wcferry.WxMsg) {
+		ret := wcferry.ParseWxMsg(msg)
+		request.JsonPost(url, ret, request.H{})
 	}
-
-	if len(urlReceiverList) == 0 {
-		key, err := wc.EnrollReceiver(true, func(msg *wcferry.WxMsg) {
-			defer recovery.Handler()
-			ret := wcferry.ParseWxMsg(msg)
-			for u := range urlReceiverList {
-				logman.Info("call receiver", "url", u, "Id", ret.Id)
-				request.JsonPost(u, ret, request.H{})
-			}
-		})
-		if err != nil {
-			return err
-		}
-		urlReceiverKey = key
-	}
-
-	urlReceiverList[url] = true
-	return nil
 
 }
 
-func (wc *Controller) disableUrlReceiver(url string) error {
+// @Summary 开启推送消息到URL
+// @Produce json
+// @Tags WCF::消息推送
+// @Param body body ReceiverRequest true "推送消息到URL参数"
+// @Success 200 {object} CommonPayload
+// @Router /wcf/enable_receiver [post]
+func (wc *Controller) enabledReceiver(c *gin.Context) {
 
-	logman.Warn("disable receiver", "url", url)
-
-	if !urlReceiverList[url] {
-		return errors.New("url not exists")
+	var req ReceiverRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
 	}
 
-	delete(urlReceiverList, url)
-	if len(urlReceiverList) == 0 {
-		return wc.DisableReceiver(urlReceiverKey)
+	if !strings.HasPrefix(req.Url, "http") {
+		c.Set("Error", "url must start with http(s)://")
+		return
 	}
 
-	return nil
+	if urlReceiverList[req.Url] != "" {
+		c.Set("Error", "url already exists")
+		return
+	}
+
+	logman.Warn("enable receiver", "url", req.Url)
+	key, err := wc.EnrollReceiver(true, urlReciever(req.Url))
+	if err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	urlReceiverList[req.Url] = key
+
+	c.Set("Payload", CommonPayload{
+		Success: err == nil,
+		Result:  key,
+		Error:   err,
+	})
+
+}
+
+type ReceiverRequest struct {
+	// 接收推送消息的 url
+	Url string `json:"url"`
+}
+
+// @Summary 关闭推送消息到URL
+// @Produce json
+// @Tags WCF::消息推送
+// @Param body body ReceiverRequest true "推送消息到URL参数"
+// @Success 200 {object} CommonPayload
+// @Router /wcf/disable_receiver [post]
+func (wc *Controller) disableReceiver(c *gin.Context) {
+
+	var req ReceiverRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	logman.Warn("disable receiver", "url", req.Url)
+	if urlReceiverList[req.Url] == "" {
+		c.Set("Error", "url not exists")
+		return
+	}
+
+	err := wc.DisableReceiver(urlReceiverList[req.Url])
+	delete(urlReceiverList, req.Url)
+
+	c.Set("Payload", CommonPayload{
+		Success: err == nil,
+		Error:   err,
+	})
 
 }

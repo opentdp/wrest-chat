@@ -20,41 +20,41 @@ func TodayUnix() int64 {
 
 }
 
-func TalkTop10(roomid string) []*TopItem {
+func TalkTop10(roomid string, day int64) []*TopItem {
 
-	var result []*TopItem
+	ts := TodayUnix() - 86400*day
 
 	sql := `
 		SELECT sender, COUNT(sender) AS record_count
 		FROM message
-		WHERE ts >= ? AND roomid = ?
+		WHERE ? <= ts AND ts <= ? AND roomid = ?
 		GROUP BY sender
 		ORDER BY record_count DESC
 		LIMIT 10
 	`
 
-	timestamp := TodayUnix()
-	dborm.Db.Raw(sql, timestamp, roomid).Scan(&result)
+	var result []*TopItem
+	dborm.Db.Raw(sql, ts, ts+86400, roomid).Scan(&result)
 
 	return result
 
 }
 
-func ImageTop10(roomid string) []*TopItem {
+func ImageTop10(roomid string, day int64) []*TopItem {
 
-	var result []*TopItem
+	ts := TodayUnix() - 86400*day
 
 	sql := `
 		SELECT sender, COUNT(sender) AS record_count
 		FROM message
-		WHERE ts >= ? AND roomid = ? AND type IN (3,47)
+		WHERE ? <= ts AND ts <= ? AND roomid = ? AND type IN (3,47)
 		GROUP BY sender
 		ORDER BY record_count DESC
 		LIMIT 10
 	`
 
-	timestamp := TodayUnix()
-	dborm.Db.Raw(sql, timestamp, roomid).Scan(&result)
+	var result []*TopItem
+	dborm.Db.Raw(sql, ts, ts+86400, roomid).Scan(&result)
 
 	return result
 
