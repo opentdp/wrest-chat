@@ -89,7 +89,8 @@ func ReadImage(img string) (string, string) {
 // 用户模型
 
 type UserLLModel struct {
-	RoleContext string
+	RoleContext  string
+	ModelHistory int
 	*tables.LLModel
 }
 
@@ -105,6 +106,7 @@ func UserModel(id, rid string) *UserLLModel {
 	}
 	romconfig, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: rid})
 	modelContext := setting.ModelContext
+	modelHistory := setting.ModelHistory
 	// 其次获取群默认配置
 	if llmc == nil && romconfig != nil {
 		if romconfig.ModelDefault != "" {
@@ -112,6 +114,9 @@ func UserModel(id, rid string) *UserLLModel {
 		}
 		if romconfig.ModelContext != "" {
 			modelContext = romconfig.ModelContext
+		}
+		if romconfig.ModelHistory != 0 {
+			modelHistory = romconfig.ModelHistory
 		}
 	}
 	// 最后使用全局默认配置
@@ -123,7 +128,7 @@ func UserModel(id, rid string) *UserLLModel {
 		llmc, _ = llmodel.Fetch(&llmodel.FetchParam{})
 	}
 
-	return &UserLLModel{LLModel: llmc, RoleContext: modelContext}
+	return &UserLLModel{LLModel: llmc, RoleContext: modelContext, ModelHistory: modelHistory}
 
 }
 

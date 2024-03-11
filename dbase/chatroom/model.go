@@ -20,7 +20,7 @@ type CreateParam struct {
 	WelcomeMsg   string `json:"welcome_msg"`
 	ModelContext string `json:"model_context"`
 	ModelDefault string `json:"model_default"`
-	ModelHistory int32  `json:"model_history"`
+	ModelHistory int    `json:"model_history"`
 }
 
 func Create(data *CreateParam) (uint, error) {
