@@ -112,7 +112,7 @@ func UserModel(id, rid string) *UserLLModel {
 	modelContext := setting.ModelContext
 	modelHistory := setting.ModelHistory
 	// 其次获取群默认配置
-	if llmc == nil && romconfig != nil {
+	if llmc == nil {
 		if romconfig.ModelDefault != "" {
 			llmc, _ = llmodel.Fetch(&llmodel.FetchParam{Mid: romconfig.ModelDefault})
 		}
