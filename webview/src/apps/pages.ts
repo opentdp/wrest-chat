@@ -31,6 +31,7 @@ import { HandlerListComponent } from './handler/list';
 
 import { WcferryChatroomComponent } from './wcferry/chatroom';
 import { WcferryContactComponent } from './wcferry/contact';
+import { WcferryDbqueryComponent } from './wcferry/dbquery';
 import { WcferryReceiverComponent } from './wcferry/receiver';
 
 
@@ -66,6 +67,7 @@ export const AppComponents = [
 
     WcferryChatroomComponent,
     WcferryContactComponent,
+    WcferryDbqueryComponent,
     WcferryReceiverComponent,
 ];
 
@@ -104,6 +106,7 @@ export const AppRoutes: Routes = [
 
     { path: 'wcferry/chatroom', component: WcferryChatroomComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },
+    { path: 'wcferry/dbquery', component: WcferryDbqueryComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/receiver', component: WcferryReceiverComponent, canActivate: [LoginGuard] },
 
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },

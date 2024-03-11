@@ -1,0 +1,41 @@
+<layout-header></layout-header>
+
+<nav class="container-lg mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">Wcferry</li>
+        <li class="breadcrumb-item active">数据库</li>
+    </ol>
+</nav>
+
+<div class="container-lg mb-3">
+    <div class="row justify-content-between">
+        <div class="col-5 col-md-4 text-end">
+            <select class="form-select" [(ngModel)]="dbName" (change)="getDbTables()">
+                <option value="">选择数据库</option>
+                @for (item of dbList; track item) {
+                <option [value]="item">{{item}}</option>
+                }
+            </select>
+        </div>
+        <div class="col-5 col-md-4 text-end">
+            <select class="form-select" [(ngModel)]="tableName" [disabled]="!dbName">
+                <option value="">选择表</option>
+                @for (item of tableList; track item.name) {
+                <option [value]="item.name">{{item.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-primary" (click)="getDbTableRecords()" [disabled]="!tableName">查询</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-lg mb-3">
+    <textarea class="form-control" rows="2" [(ngModel)]="sql">{{sql}}</textarea>
+</div>
+
+<div class="container-lg mb-3">
+    <textarea class="form-control" rows="20" [(ngModel)]="result"></textarea>
+</div>
