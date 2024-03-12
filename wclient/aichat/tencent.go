@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/liudding/go-llm-api/tencent"
+	"github.com/rehiy/one-llm/tencent"
 )
 
 func TencentText(id, rid, ask string) (string, error) {

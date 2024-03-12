@@ -3,7 +3,7 @@ package aichat
 import (
 	"errors"
 
-	"github.com/opentdp/go-helper/aliqwen"
+	"github.com/rehiy/one-llm/aliyun"
 )
 
 func AliyunText(id, rid, ask string) (string, error) {
@@ -12,7 +12,7 @@ func AliyunText(id, rid, ask string) (string, error) {
 
 	// 初始化模型
 
-	client := aliqwen.NewClient(llmc.Secret)
+	client := aliyun.NewClient(llmc.Secret)
 
 	if len(llmc.Model) > 1 {
 		client.Model = llmc.Model
@@ -22,25 +22,25 @@ func AliyunText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*aliqwen.Messages{}
+	req := []*aliyun.Messages{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []*aliqwen.Messages{
-			{Content: llmc.RoleContext, Role: aliqwen.ChatMessageRoleSystem},
+		req = []*aliyun.Messages{
+			{Content: llmc.RoleContext, Role: aliyun.ChatMessageRoleSystem},
 		}
 	}
 
 	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		req = append(req, &aliqwen.Messages{
+		req = append(req, &aliyun.Messages{
 			Content: msg.Content, Role: role,
 		})
 	}
 
-	req = append(req, &aliqwen.Messages{
-		Content: ask, Role: aliqwen.ChatMessageRoleUser,
+	req = append(req, &aliyun.Messages{
+		Content: ask, Role: aliyun.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口

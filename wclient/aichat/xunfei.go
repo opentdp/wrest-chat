@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/liudding/go-llm-api/xunfei"
+	"github.com/rehiy/one-llm/xunfei"
 )
 
 func XunfeiText(id, rid, ask string) (string, error) {

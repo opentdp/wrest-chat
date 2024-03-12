@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/liudding/go-llm-api/baidu"
+	"github.com/rehiy/one-llm/baidu"
 )
 
 func BaiDuText(id, rid, ask string) (string, error) {

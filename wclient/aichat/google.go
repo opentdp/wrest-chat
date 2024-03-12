@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/opentdp/go-helper/googai"
+	"github.com/rehiy/one-llm/google"
 )
 
 func GoogleText(id, rid, ask string) (string, error) {
@@ -13,7 +13,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 	// 初始化模型
 
-	client := googai.NewClient(llmc.Secret)
+	client := google.NewClient(llmc.Secret)
 
 	if len(llmc.Model) > 1 {
 		client.Model = llmc.Model
@@ -23,29 +23,29 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*googai.Content{}
+	req := []*google.Content{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []*googai.Content{
-			{Parts: []*googai.Part{{Text: llmc.RoleContext}}, Role: googai.ChatMessageRoleUser},
-			{Parts: []*googai.Part{{Text: "OK"}}, Role: googai.ChatMessageRoleAssistant},
+		req = []*google.Content{
+			{Parts: []*google.Part{{Text: llmc.RoleContext}}, Role: google.ChatMessageRoleUser},
+			{Parts: []*google.Part{{Text: "OK"}}, Role: google.ChatMessageRoleAssistant},
 		}
 	}
 
 	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
 		if role == "assistant" {
-			role = googai.ChatMessageRoleAssistant
+			role = google.ChatMessageRoleAssistant
 		}
-		req = append(req, &googai.Content{
-			Parts: []*googai.Part{{Text: msg.Content}}, Role: role,
+		req = append(req, &google.Content{
+			Parts: []*google.Part{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req = append(req, &googai.Content{
-		Parts: []*googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
+	req = append(req, &google.Content{
+		Parts: []*google.Part{{Text: ask}}, Role: google.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口
@@ -92,17 +92,17 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 
 	// 初始化模型
 
-	client := googai.NewClient(llmc.Secret)
+	client := google.NewClient(llmc.Secret)
 
 	if llmc.Endpoint != "" {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*googai.Content{
+	req := []*google.Content{
 		{
-			Parts: []*googai.Part{
+			Parts: []*google.Part{
 				{Text: ask},
-				{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
+				{InlineData: &google.InlineData{Data: img, MimeType: mime}},
 			},
 		},
 	}
