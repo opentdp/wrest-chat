@@ -12,6 +12,7 @@ export const FieldTypes: Record<string, OptionData> = {
 
 export const CronjobTypes: Record<string, OptionData> = {
     TEXT: { name: '文本内容' },
+    AI: { name: 'AI 生成文本' },
     BAT: { name: 'BAT 批处理' },
     POWERSHELL: { name: 'PowerShell 脚本' },
 };
