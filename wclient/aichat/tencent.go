@@ -68,9 +68,7 @@ func TencentText(id, rid, ask string) (string, error) {
 		return "", errors.New("未得到预期的结果")
 	}
 
-	reply := ""
-
-	reply += res.Choices[0].Messages.Content
+	reply := res.Choices[0].Messages.Content
 
 	// 更新历史记录
 	item1 := &MsgHistory{Content: ask, Role: "user"}

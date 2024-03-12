@@ -17,6 +17,11 @@ func BaiDuText(id, rid, ask string) (string, error) {
 		return "", errors.New("密钥格式错误")
 	}
 
+	model := "completions_pro"
+	if len(llmc.Model) > 1 {
+		model = llmc.Model
+	}
+
 	// 初始化模型
 
 	config := baidu.DefaultConfig(keys[0], keys[1], true)
@@ -53,7 +58,7 @@ func BaiDuText(id, rid, ask string) (string, error) {
 
 	// 请求模型接口
 
-	res, err := client.CreateChatCompletion(context.Background(), req)
+	res, err := client.CreateChatCompletion(context.Background(), req, model)
 	if err != nil {
 		return "", err
 	}

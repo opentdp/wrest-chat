@@ -8,7 +8,7 @@ require (
 	github.com/gorilla/websocket v1.5.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.6.2
-	github.com/rehiy/one-llm v0.0.0-20240312044550-e53258310885
+	github.com/rehiy/one-llm v0.0.1
 	github.com/sashabaranov/go-openai v1.19.4
 	go.nanomsg.org/mangos/v3 v3.4.2
 	google.golang.org/protobuf v1.32.0

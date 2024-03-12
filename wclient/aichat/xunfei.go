@@ -18,12 +18,12 @@ func XunfeiText(id, rid, ask string) (string, error) {
 		return "", errors.New("密钥格式错误")
 	}
 
-	// 初始化模型
-
-	model := "v3"
+	model := "v3.5"
 	if len(llmc.Model) > 1 {
 		model = llmc.Model
 	}
+
+	// 初始化模型
 
 	config := xunfei.DefaultConfig(keys[0], keys[1], keys[2])
 
