@@ -23,18 +23,18 @@ func Text(id, rid, msg string) string {
 
 	// 调用接口生成文本
 	switch llmc.Provider {
+	case "aliyun":
+		res, err = AliyunText(id, rid, msg)
+	case "baidu":
+		res, err = BaiDuText(id, rid, msg)
 	case "google":
 		res, err = GoogleText(id, rid, msg)
 	case "openai":
 		res, err = OpenaiText(id, rid, msg)
-	case "xunfei":
-		res, err = XunfeiText(id, rid, msg)
-	case "baidu":
-		res, err = BaiDuText(id, rid, msg)
 	case "tencent":
 		res, err = TencentText(id, rid, msg)
-	case "aliyun":
-		res, err = AliyunText(id, rid, msg)
+	case "xunfei":
+		res, err = XunfeiText(id, rid, msg)
 	case "":
 		res = "当前模型已失效，请重新选择"
 	default:
