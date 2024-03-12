@@ -37,6 +37,7 @@
                 <td class="d-none d-xxl-table-cell w-max150 text-truncate">{{item.remark}}</td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary" routerLink="/setting/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteSetting(item)" [disabled]="item.group == 'bot'">删除</button>
                 </td>
             </tr>
             }
