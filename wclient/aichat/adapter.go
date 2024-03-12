@@ -18,7 +18,6 @@ func Text(id, rid, msg string) string {
 	var res string
 
 	// 预设模型参数
-	CountHistory(id)
 	llmc := UserModel(id, rid)
 
 	// 调用接口生成文本
@@ -55,7 +54,6 @@ func Image(id, rid, msg, img string) string {
 	var res string
 
 	// 预设模型参数
-	CountHistory(id)
 	llmc := UserModel(id, rid)
 
 	// 调用接口生成文本
@@ -137,40 +135,5 @@ func UserModel(id, rid string) *UserLLModel {
 	}
 
 	return &UserLLModel{modelContext, modelHistory, llmc}
-
-}
-
-// 历史消息
-
-type MsgHistory struct {
-	Content string
-	Role    string // user,assistant
-}
-
-var msgHistories = map[string][]*MsgHistory{}
-
-func ResetHistory(id string) {
-
-	msgHistories[id] = []*MsgHistory{}
-
-}
-
-func CountHistory(id string) int {
-
-	if _, ok := msgHistories[id]; !ok {
-		ResetHistory(id)
-	}
-
-	return len(msgHistories[id])
-
-}
-
-func AppendHistory(id string, items ...*MsgHistory) {
-
-	if len(msgHistories[id]) >= setting.ModelHistory {
-		msgHistories[id] = msgHistories[id][len(items):]
-	}
-
-	msgHistories[id] = append(msgHistories[id], items...)
 
 }

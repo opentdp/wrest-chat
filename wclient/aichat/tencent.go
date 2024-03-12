@@ -46,7 +46,7 @@ func TencentText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
 		req.Messages = append(req.Messages, tencent.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
@@ -76,7 +76,7 @@ func TencentText(id, rid, ask string) (string, error) {
 	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: reply, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 

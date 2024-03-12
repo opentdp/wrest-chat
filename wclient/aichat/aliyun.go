@@ -32,7 +32,7 @@ func AliyunText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
 		req = append(req, &aliqwen.Messages{
 			Content: msg.Content, Role: role,
@@ -63,7 +63,7 @@ func AliyunText(id, rid, ask string) (string, error) {
 	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: resp.Output.Text, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 
