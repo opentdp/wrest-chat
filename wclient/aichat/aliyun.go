@@ -22,24 +22,24 @@ func AliyunText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*aliyun.Messages{}
+	req := []aliyun.ChatCompletionMessage{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []*aliyun.Messages{
+		req = []aliyun.ChatCompletionMessage{
 			{Content: llmc.RoleContext, Role: aliyun.ChatMessageRoleSystem},
 		}
 	}
 
 	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		req = append(req, &aliyun.Messages{
+		req = append(req, aliyun.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
 	}
 
-	req = append(req, &aliyun.Messages{
+	req = append(req, aliyun.ChatCompletionMessage{
 		Content: ask, Role: aliyun.ChatMessageRoleUser,
 	})
 

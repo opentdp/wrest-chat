@@ -23,14 +23,14 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*google.Content{}
+	req := []google.ChatCompletionMessage{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []*google.Content{
-			{Parts: []*google.Part{{Text: llmc.RoleContext}}, Role: google.ChatMessageRoleUser},
-			{Parts: []*google.Part{{Text: "OK"}}, Role: google.ChatMessageRoleAssistant},
+		req = []google.ChatCompletionMessage{
+			{Parts: []google.ChatCompletionMessagePart{{Text: llmc.RoleContext}}, Role: google.ChatMessageRoleUser},
+			{Parts: []google.ChatCompletionMessagePart{{Text: "OK"}}, Role: google.ChatMessageRoleAssistant},
 		}
 	}
 
@@ -39,13 +39,13 @@ func GoogleText(id, rid, ask string) (string, error) {
 		if role == "assistant" {
 			role = google.ChatMessageRoleAssistant
 		}
-		req = append(req, &google.Content{
-			Parts: []*google.Part{{Text: msg.Content}}, Role: role,
+		req = append(req, google.ChatCompletionMessage{
+			Parts: []google.ChatCompletionMessagePart{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req = append(req, &google.Content{
-		Parts: []*google.Part{{Text: ask}}, Role: google.ChatMessageRoleUser,
+	req = append(req, google.ChatCompletionMessage{
+		Parts: []google.ChatCompletionMessagePart{{Text: ask}}, Role: google.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口
@@ -55,11 +55,11 @@ func GoogleText(id, rid, ask string) (string, error) {
 		return "", err
 	}
 
-	if resp.Error != nil {
+	if resp.Error.Message != "" {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
@@ -98,27 +98,27 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []*google.Content{
+	req := []google.ChatCompletionMessage{
 		{
-			Parts: []*google.Part{
+			Parts: []google.ChatCompletionMessagePart{
 				{Text: ask},
-				{InlineData: &google.InlineData{Data: img, MimeType: mime}},
+				{InlineData: &google.ChatCompletionInlineData{Data: img, MimeType: mime}},
 			},
 		},
 	}
 
 	// 请求模型接口
 
-	resp, err := client.CreateImageCompletion(req)
+	resp, err := client.CreateVisionCompletion(req)
 	if err != nil {
 		return "", err
 	}
 
-	if resp.Error != nil {
+	if resp.Error.Message != "" {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
