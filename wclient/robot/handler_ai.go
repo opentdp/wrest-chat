@@ -37,7 +37,7 @@ func aiHandler() []*Handler {
 		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
-			aichat.ResetHistory(msg.Sender)
+			aichat.ResetHistory(msg.Sender, msg.Roomid)
 			return "已重置上下文"
 		},
 	})

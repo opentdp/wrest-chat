@@ -38,7 +38,7 @@ func OpenaiText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
 		req.Messages = append(req.Messages, openai.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
@@ -61,7 +61,7 @@ func OpenaiText(id, rid, ask string) (string, error) {
 	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: resp.Choices[0].Message.Content, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 

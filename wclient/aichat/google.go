@@ -34,7 +34,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
 		if role == "assistant" {
 			role = googai.ChatMessageRoleAssistant
@@ -71,7 +71,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 	item1 := &MsgHistory{Content: ask, Role: "user"}
 	item2 := &MsgHistory{Content: resp.Candidates[0].Content.Parts[0].Text, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 
