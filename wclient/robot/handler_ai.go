@@ -2,6 +2,7 @@ package robot
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/opentdp/wechat-rest/dbase/llmodel"
 	"github.com/opentdp/wechat-rest/dbase/message"
@@ -52,11 +53,16 @@ func aiHandler() []*Handler {
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
 				up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-				for _, v := range models {
+				ks := []int{}
+				for k, v := range models {
 					if v.Level <= up.Level {
-						profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
-						return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
+						ks = append(ks, k)
 					}
+				}
+				if len(ks) > 0 {
+					v := models[ks[rand.Intn(len(ks))]]
+					profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
+					return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
 				}
 				return fmt.Sprintf("没有可用的模型（Level ≤ %d）", up.Level)
 			},
