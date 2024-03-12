@@ -14,9 +14,9 @@
             <label class="form-label">指令 *</label>
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
-                用于生成模型切换指令，应尽量简短（不影响接口请求）
+                用于生成模型切换指令，不影响接口请求
                 @if (formdata.mid && formdata.mid.length > 1) {
-                ；当前指令：<b>/cm:{{formdata.mid}}</b>
+                【 注册指令 <b>/cm:{{formdata.mid}}</b> 】
                 }
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <option value="星火">星火</option>
             </datalist>
             <div class="form-text">
-                用于在指令中描述模型，列表内容仅供参考（不影响接口请求）
+                用于在指令中描述模型，列表内容仅供参考，不影响接口请求
             </div>
         </div>
         <div class="col-12">
