@@ -17,11 +17,11 @@ var (
 	AutoSaveImage = true
 	// 开启后仅已注册的群和用户可以使用机器人
 	WhiteLimit = false
-	// 用户的默认模型代码
+	// 用户和群默认使用的模型
 	ModelDefault = ""
 	// 定义模型扮演的身份
 	ModelContext = "你是由 OpenTDP 开发的群助手，必须使用尽可能少的字数回答接下来的所有问题"
-	// 历史消息数量
+	// 模型历史消息数
 	ModelHistory = 20
 	// 未注册指令时响应的内容，仅对"/"开头的指令有效
 	InvalidHandler = "-"

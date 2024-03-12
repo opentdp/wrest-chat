@@ -14,7 +14,7 @@
             <label class="form-label">指令 *</label>
             <input type="text" name="mid" class="form-control" [(ngModel)]="formdata.mid" required />
             <div class="form-text">
-                用于生成模型切换指令，不影响接口请求
+                用于生成模型切换指令，应尽量简短（不影响接口请求）
                 @if (formdata.mid && formdata.mid.length > 1) {
                 ；当前指令：<b>/cm:{{formdata.mid}}</b>
                 }
@@ -37,24 +37,24 @@
             <datalist id="familyOptions">
                 <option value="通义千问">通义千问</option>
                 <option value="文心一言">文心一言</option>
+                <option value="Gemini">Gemini</option>
+                <option value="GPT-3.5">GPT-3.5</option>
                 <option value="混元">混元</option>
                 <option value="星火">星火</option>
-                <option value="Gemini">Gemini</option>
-                <option value="GPT">GPT</option>
             </datalist>
             <div class="form-text">
-                用于在指令中描述模型，不影响接口请求
+                用于在指令中描述模型，列表内容仅供参考（不影响接口请求）
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">服务商 *</label>
             <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
                 <option value="aliyun">阿里通义千问</option>
-                <option value="baidu">百度千帆（文心一言）</option>
+                <option value="baidu">百度文心</option>
+                <option value="google">Google Gemini</option>
+                <option value="openai">OpenAI GPT</option>
                 <option value="tencent">腾讯混元</option>
                 <option value="xunfei">科大讯飞</option>
-                <option value="google">Google</option>
-                <option value="openai">OpenAI</option>
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
