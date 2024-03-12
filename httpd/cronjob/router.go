@@ -4,6 +4,7 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/httpd/midware"
+	"github.com/opentdp/wechat-rest/wclient/crond"
 )
 
 func Route() {
@@ -19,6 +20,6 @@ func Route() {
 	rg.POST("delete", cronjob.delete)
 	rg.POST("status", cronjob.status)
 
-	Daemon() // 启动定时任务
+	crond.Daemon() // 启动定时任务
 
 }

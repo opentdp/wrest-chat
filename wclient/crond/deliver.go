@@ -1,4 +1,4 @@
-package cronjob
+package crond
 
 import (
 	"strings"
