@@ -23,14 +23,14 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []googai.Content{}
+	req := []*googai.Content{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []googai.Content{
-			{Parts: []googai.Part{{Text: llmc.RoleContext}}, Role: googai.ChatMessageRoleUser},
-			{Parts: []googai.Part{{Text: "OK"}}, Role: googai.ChatMessageRoleAssistant},
+		req = []*googai.Content{
+			{Parts: []*googai.Part{{Text: llmc.RoleContext}}, Role: googai.ChatMessageRoleUser},
+			{Parts: []*googai.Part{{Text: "OK"}}, Role: googai.ChatMessageRoleAssistant},
 		}
 	}
 
@@ -39,13 +39,13 @@ func GoogleText(id, rid, ask string) (string, error) {
 		if role == "assistant" {
 			role = googai.ChatMessageRoleAssistant
 		}
-		req = append(req, googai.Content{
-			Parts: []googai.Part{{Text: msg.Content}}, Role: role,
+		req = append(req, &googai.Content{
+			Parts: []*googai.Part{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req = append(req, googai.Content{
-		Parts: []googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
+	req = append(req, &googai.Content{
+		Parts: []*googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口
@@ -55,11 +55,11 @@ func GoogleText(id, rid, ask string) (string, error) {
 		return "", err
 	}
 
-	if resp.Error.Message != "" {
+	if resp.Error != nil {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
@@ -98,11 +98,11 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []googai.Content{
+	req := []*googai.Content{
 		{
-			Parts: []googai.Part{
+			Parts: []*googai.Part{
 				{Text: ask},
-				{InlineData: googai.InlineData{Data: img, MimeType: mime}},
+				{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
 			},
 		},
 	}
@@ -114,11 +114,11 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		return "", err
 	}
 
-	if resp.Error.Message != "" {
+	if resp.Error != nil {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}

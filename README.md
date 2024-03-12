@@ -92,8 +92,9 @@
 
 ### Q4 常用 AI 密钥获取地址
 
-- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
 - 阿里 通义千问 <https://dashscope.console.aliyun.com/apiKey>
+- 讯飞 星火 <https://console.xfyun.cn/services/bm3>
+- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
 
 ## 免责声明
 

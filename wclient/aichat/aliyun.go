@@ -22,25 +22,24 @@ func AliyunText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := []aliqwen.Messages{}
+	req := []*aliqwen.Messages{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req = []aliqwen.Messages{
-			{Content: llmc.RoleContext, Role: aliqwen.ChatMessageRoleUser},
-			{Content: "OK", Role: aliqwen.ChatMessageRoleAssistant},
+		req = []*aliqwen.Messages{
+			{Content: llmc.RoleContext, Role: aliqwen.ChatMessageRoleSystem},
 		}
 	}
 
 	for _, msg := range msgHistories[id] {
 		role := msg.Role
-		req = append(req, aliqwen.Messages{
+		req = append(req, &aliqwen.Messages{
 			Content: msg.Content, Role: role,
 		})
 	}
 
-	req = append(req, aliqwen.Messages{
+	req = append(req, &aliqwen.Messages{
 		Content: ask, Role: aliqwen.ChatMessageRoleUser,
 	})
 
@@ -51,7 +50,11 @@ func AliyunText(id, rid, ask string) (string, error) {
 		return "", err
 	}
 
-	if resp.Output.Text == "" && resp.Output.FinishReason != "" {
+	if resp.Message != "" {
+		return "", errors.New(resp.Message)
+	}
+
+	if resp.Output.Text == "" {
 		return "", errors.New(resp.Output.FinishReason)
 	}
 

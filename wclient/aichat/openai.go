@@ -34,8 +34,7 @@ func OpenaiText(id, rid, ask string) (string, error) {
 
 	if llmc.RoleContext != "" {
 		req.Messages = []openai.ChatCompletionMessage{
-			{Content: llmc.RoleContext, Role: openai.ChatMessageRoleUser},
-			{Content: "OK", Role: openai.ChatMessageRoleAssistant},
+			{Content: llmc.RoleContext, Role: openai.ChatMessageRoleSystem},
 		}
 	}
 
