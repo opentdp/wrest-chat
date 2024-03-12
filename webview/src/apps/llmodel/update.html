@@ -66,14 +66,18 @@
                 <option value="-">不指定</option>
                 @if (formdata.provider === 'aliyun') {
                 <option value="qwen-max">qwen-max</option>
+                <option value="qwen-plus">qwen-plus</option>
                 }
                 @if (formdata.provider === 'xunfei') {
-                <option value="v3">spark v3</option>
+                <option value="v3.5">星火 v3.5</option>
+                <option value="v3">星火 v3</option>
                 }
                 @if (formdata.provider === 'google') {
                 <option value="gemini-pro">gemini-pro</option>
                 }
                 @if (formdata.provider === 'openai') {
+                <option value="gpt-4">gpt-4</option>
+                <option value="gpt-4-32k">gpt-4-32k</option>
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                 }
             </select>
