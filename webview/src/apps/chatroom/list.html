@@ -21,8 +21,8 @@
                 <th scope="col" class="d-none d-sm-table-cell">级别</th>
                 <th scope="col" class="d-none d-md-table-cell">加群指令</th>
                 <th scope="col" class="d-none d-xl-table-cell">回应拍拍</th>
-                <th scope="col" class="d-none d-xl-table-cell">撤回提示</th>
-                <th scope="col" class="d-none d-xxl-table-cell">入群欢迎</th>
+                <th scope="col" class="d-none d-xxl-table-cell">撤回提示</th>
+                <th scope="col" class="d-none d-xl-table-cell">默认模型</th>
                 <th scope="col">操作</th>
             </tr>
         </thead>
@@ -35,8 +35,8 @@
                 <td class="d-none d-sm-table-cell">{{roomLevels[item.level] && roomLevels[item.level].name || '-'}}</td>
                 <td class="d-none d-md-table-cell">{{item.join_argot}}</td>
                 <td class="d-none d-xl-table-cell">{{item.pat_return && item.pat_return == 'true' ? '是' : '否'}}</td>
-                <td class="d-none d-xl-table-cell">{{item.revoke_msg}}</td>
-                <td class="d-none d-xxl-table-cell w-max150 text-truncate">{{item.welcome_msg}}</td>
+                <td class="d-none d-xxl-table-cell w-max150 text-truncate">{{item.revoke_msg}}</td>
+                <td class="d-none d-xl-table-cell">{{item.model_default}}</td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary me-2" routerLink="/chatroom/update/{{item.rd}}">编辑</button>
                     <button class="btn btn-sm btn-danger" (click)="deleteChatroom(item)">删除</button>
