@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
-import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
+import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../openapi/wcfrest';
 
 
 @Component({
@@ -8,9 +8,10 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
     templateUrl: 'chatroom.html',
     styleUrls: ['chatroom.scss']
 })
-export class WcferryChatroomComponent {
+export class WcferryChatroomComponent implements OnDestroy {
 
     public avatars: Record<string, string> = {};
+    public allMembers: Record<string, WcfrestContactPayload> = {};
     public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public chatrooms: Array<WcfrestContactPayload> = [];
@@ -21,6 +22,11 @@ export class WcferryChatroomComponent {
 
     constructor() {
         this.getChatrooms();
+        this.startSocket();
+    }
+
+    public ngOnDestroy() {
+        this.stopSocket();
     }
 
     public getChatrooms() {
@@ -41,8 +47,12 @@ export class WcferryChatroomComponent {
         WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = data || [];
             this.members = data || [];
+            // 存储会员列表
+            const ids = this.members.map((item) => {
+                this.allMembers[item.wxid] = item;
+                return item.wxid;
+            });
             // 批量获取头像
-            const ids = this.members.map((item) => item.wxid);
             this.getAvatars(ids);
         });
     }
@@ -55,4 +65,93 @@ export class WcferryChatroomComponent {
         });
     }
 
+    // 聊天记录
+
+    public wss!: WebSocket;
+    public messages: Array<IMessage> = [];
+    public self = {} as WcfrestUserInfoPayload;
+
+    public content = '';
+
+    public sendTxt() {
+        const rq = {
+            msg: this.content,
+            receiver: this.chatroom.wxid,
+        };
+        WrestApi.sendTxt(rq).then(() => {
+            const msg: IMessage = {
+                ts: Date.now(),
+                roomid: this.chatroom.wxid,
+                sender: this.self.wxid,
+                content: this.content,
+                is_group: true,
+                id: 0,
+                type: 1,
+                sign: '',
+            };
+            this.messages.push(msg);
+            this.content = '';
+        });
+    }
+
+    public stopSocket() {
+        this.wss && this.wss.close();
+        this.messages = [];
+    }
+
+    public async startSocket() {
+        this.self = await WrestApi.selfInfo();
+        const token = sessionStorage.getItem('token');
+        const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
+        const wss = new WebSocket(url + (token ? '?token=' + token : ''));
+        wss.onopen = () => {
+            const data = {
+                ts: Date.now(),
+                sender: 'system',
+                content: 'websocket is connected'
+            };
+            this.messages.push(data as IMessage);
+            this.wss = wss;
+        };
+        wss.onclose = () => {
+            const data = {
+                ts: Date.now(),
+                sender: 'system',
+                content: 'websocket is closed, retry in 5s'
+            };
+            this.messages.push(data as IMessage);
+            setTimeout(() => this.startSocket(), 5 * 1000);
+        };
+        wss.onerror = (event) => {
+            const data = {
+                ts: Date.now(),
+                sender: 'system',
+                content: 'websocket error, details to console'
+            };
+            this.messages.push(data as IMessage);
+            console.log(event);
+        };
+        wss.onmessage = (event) => {
+            const data = JSON.parse(event.data) as IMessage;
+            data.ts = data.ts * 1000;
+            this.messages.push(data);
+        };
+    }
+
+}
+
+interface IMessage {
+    is_group: boolean;
+    id: number;
+    type: number;
+    ts: number;
+    roomid: string;
+    sender: string;
+    sign: string;
+    content: string;
+    xml?: {
+        msgsource: {
+            atuserlist: string;
+        };
+    };
 }

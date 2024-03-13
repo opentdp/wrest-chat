@@ -14,7 +14,7 @@ export class WcferryReceiverComponent implements OnDestroy {
         this.startSocket();
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy() {
         this.wss && this.wss.close();
         this.messages = [];
     }
