@@ -18,7 +18,6 @@ export class ProfileUpdateComponent implements OnInit {
 
     public wcfAvatars: Record<string, string> = {};
     public wcfFriends: Array<WcfrestContactPayload> = [];
-    public wcfContacts: Record<string, WcfrestContactPayload> = {};
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
