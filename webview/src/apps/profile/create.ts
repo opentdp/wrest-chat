@@ -29,6 +29,8 @@ export class ProfileCreateComponent {
         level: 1,
     };
 
+    public conactsFilter = '';
+
     constructor(private router: Router) {
         this.getLLModels();
         this.getWcfFriends();

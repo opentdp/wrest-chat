@@ -24,11 +24,18 @@
         </div>
         <div class="col-12">
             <label class="form-label">用户 *</label>
-            <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" [disabled]="conacts.length == 0" required>
-                @for (item of conacts; track item.wxid) {
-                <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
-                }
-            </select>
+            <div class="row g-3">
+                <div class="col col-md-8">
+                    <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" [disabled]="conacts.length == 0" required>
+                        @for (item of conacts | filter:'wxid,name':conactsFilter; track item.wxid) {
+                        <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
+                        }
+                    </select>
+                </div>
+                <div class="d-none d-md-block col-md-4">
+                    <input type="text" class="form-control" placeholder="过滤条件" [(ngModel)]="conactsFilter" [disabled]="conacts.length == 0" />
+                </div>
+            </div>
             <div class="form-text">
                 关联的用户，非好友无法添加私聊配置
             </div>

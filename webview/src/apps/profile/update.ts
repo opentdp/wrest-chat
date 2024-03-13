@@ -25,6 +25,8 @@ export class ProfileUpdateComponent implements OnInit {
     public conacts: Array<WcfrestContactPayload> = [];
     public formdata = {} as ProfileUpdateParam;
 
+    public conactsFilter = '';
+
     constructor(
         private router: Router,
         private route: ActivatedRoute
