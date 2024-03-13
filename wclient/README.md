@@ -1,6 +1,6 @@
 # WeChat Rest Bot
 
-基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已开放如下功能：
+基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已开放如下功能 
 
 - 自动回应拍一拍
 - 自动接受好友请求
@@ -30,14 +30,14 @@
 【/ai】 提问或交谈
 【/ai:new】 重置上下文内容
 【/ai:rand】 随机选择一个模型
-【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
-【/cm:gem】 换模型：Gemini [gemini-pro]
-【/cm:spa】 换模型：Spark [v3]
+【/cm:gpt】 换模型 GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型 Gemini [gemini-pro]
+【/cm:spa】 换模型 Spark [v3]
 【/api】 调用远程接口
 【/bad】 添加违禁词
 【/unbad】 删除违禁词
-【/jr:chat】 加群聊：OpenTDP 聊天
-【/jr:dev】 加群聊：OpenTDP 开发
+【/jr:chat】 加群聊 OpenTDP 聊天
+【/jr:dev】 加群聊 OpenTDP 开发
 【/wget】 获取图片或文件
 【/help】 查看帮助信息
 ----------------
@@ -50,9 +50,9 @@
 【/ai】 提问或交谈
 【/ai:new】 重置上下文内容
 【/ai:rand】 随机选择一个模型
-【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
-【/cm:gem】 换模型：Gemini [gemini-pro]
-【/cm:spa】 换模型：Spark [v3]
+【/cm:gpt】 换模型 GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型 Gemini [gemini-pro]
+【/cm:spa】 换模型 Spark [v3]
 【/api】 调用远程接口
 【/bad】 添加违禁词
 【/unbad】 删除违禁词
@@ -88,7 +88,7 @@
 
 ## 自定义 API 使用说明
 
-`/api` 命令会将用户输入的参数和后台设置的 `ApiEndpoint` 一起构造为一个完整的 URL，并通过 `http.Get` 发送请求。为方便前端用户输入，指令和参数由空格分隔，且第三部分及之后的任意字符都将整体被转义，示例：
+`/api` 命令会将用户输入的参数和后台设置的 `ApiEndpoint` 一起构造为一个完整的 URL，并通过 `http.Get` 发送请求。为方便前端用户输入，指令和参数由空格分隔，且第三部分及之后的任意字符都将整体被转义，示例 
 
 - `/api` 组装为 `https://example.com/help`
 - `/api icp qq.com` 组装为 `https://example.com/icp/qq.com`
