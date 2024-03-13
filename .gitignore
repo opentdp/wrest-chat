@@ -5,6 +5,7 @@
 .idea
 .vscode
 
+.rst
 .local.yml
 wrest.db*
 
