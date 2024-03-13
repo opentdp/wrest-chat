@@ -63,6 +63,8 @@ func Register() *wcferry.Client {
 // param roomid string 消息接收群，空则为私聊
 // return int32 0 为成功，其他失败
 func SendFlexMsg(msg, wxid, roomid string) int32 {
+	wxid = strings.Trim(wxid, "-")
+	roomid = strings.Trim(roomid, "-")
 	receiver, ater := wxid, ""
 	if roomid != "" {
 		receiver, ater = roomid, wxid

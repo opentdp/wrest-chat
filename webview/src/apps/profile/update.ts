@@ -22,9 +22,10 @@ export class ProfileUpdateComponent implements OnInit {
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
+    public conactsFilter = '';
+
     public formdata = {} as ProfileUpdateParam;
 
-    public conactsFilter = '';
 
     constructor(
         private router: Router,

@@ -22,13 +22,13 @@ export class ProfileCreateComponent {
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
+    public conactsFilter = '';
+
     public formdata: ProfileCreateParam = {
         wxid: '',
         roomid: '',
         level: 1,
     };
-
-    public conactsFilter = '';
 
     constructor(private router: Router) {
         this.getLLModels();
