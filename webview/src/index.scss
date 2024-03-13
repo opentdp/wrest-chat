@@ -1,19 +1,6 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
-html,
-body,
-app-root,
-router-outlet~* {
-    height: 100%;
-}
-
-router-outlet~* {
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-}
-
 .cursor-pointer {
     cursor: pointer;
 }
