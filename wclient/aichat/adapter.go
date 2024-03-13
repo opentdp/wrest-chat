@@ -48,7 +48,7 @@ func Text(id, rid, msg string) string {
 
 }
 
-func Image(id, rid, msg, img string) string {
+func Vison(id, rid, msg, img string) string {
 
 	var err error
 	var res string
@@ -59,7 +59,7 @@ func Image(id, rid, msg, img string) string {
 	// 调用接口生成文本
 	switch llmc.Provider {
 	case "google":
-		res, err = GoogleImage(id, rid, msg, img)
+		res, err = GoogleVison(id, rid, msg, img)
 	case "":
 		res = "当前模型已失效，请重新选择"
 	default:

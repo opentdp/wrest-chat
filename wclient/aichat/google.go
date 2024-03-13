@@ -77,7 +77,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 }
 
-func GoogleImage(id, rid, ask, img string) (string, error) {
+func GoogleVison(id, rid, ask, img string) (string, error) {
 
 	img, mime := ReadImage(img)
 
