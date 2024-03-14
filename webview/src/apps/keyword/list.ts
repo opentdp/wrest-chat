@@ -19,8 +19,8 @@ export class KeywordListComponent {
     public keywords: Array<TablesKeyword> = [];
 
     public formdata: KeywordFetchAllParam = {
-        group: 'badword',
-        roomid: '-',
+        group: '',
+        roomid: '*',
     };
 
     constructor() {

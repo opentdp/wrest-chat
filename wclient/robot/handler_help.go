@@ -48,6 +48,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	// 生成指令菜单
 	helper := []string{}
 	for _, v := range handlers {
+		cmd := v.Command
 		if v.Level > 0 {
 			if up == nil || v.Level > up.Level {
 				continue // 没有权限
@@ -57,16 +58,22 @@ func helpCallback(msg *wcferry.WxMsg) string {
 			if v.Roomid != "*" && v.Roomid != "+" && v.Roomid != msg.Roomid {
 				continue // 没有权限
 			}
+			if aliasMap[msg.Roomid] != nil && aliasMap[msg.Roomid][v.Command] != "" {
+				cmd = aliasMap[msg.Roomid][v.Command]
+			} else if aliasMap["+"] != nil && aliasMap["+"][v.Command] != "" {
+				cmd = aliasMap["+"][v.Command]
+			} else if aliasMap["*"] != nil && aliasMap["*"][v.Command] != "" {
+				cmd = aliasMap["*"][v.Command]
+			}
 		} else {
 			if v.Roomid != "*" && v.Roomid != "-" {
 				continue // 没有权限
 			}
-		}
-		cmd := v.Command
-		if aliasMap[msg.Roomid] != nil && aliasMap[msg.Roomid][v.Command] != "" {
-			cmd = aliasMap[msg.Roomid][v.Command]
-		} else if aliasMap["-"] != nil && aliasMap["-"][v.Command] != "" {
-			cmd = aliasMap["-"][v.Command]
+			if aliasMap["-"] != nil && aliasMap["-"][v.Command] != "" {
+				cmd = aliasMap["-"][v.Command]
+			} else if aliasMap["*"] != nil && aliasMap["*"][v.Command] != "" {
+				cmd = aliasMap["*"][v.Command]
+			}
 		}
 		helper = append(helper, fmt.Sprintf("【%s】%s", cmd, v.Describe))
 	}

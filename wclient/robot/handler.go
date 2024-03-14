@@ -98,9 +98,16 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 	params := strings.SplitN(content, " ", 2)
 	handler := handlerMap[params[0]] // 默认
 	if handler == nil {
-		handler = handlerMap[params[0]+"@"+prid(msg)] // 群聊
+		if msg.IsGroup { // 群聊
+			handler = handlerMap[params[0]+"@"+msg.Roomid]
+			if handler == nil {
+				handler = handlerMap[params[0]+"@+"]
+			}
+		} else { // 私聊
+			handler = handlerMap[params[0]+"@-"]
+		}
 		if handler == nil {
-			handler = handlerMap[params[0]+"@-"] // 全局
+			handler = handlerMap[params[0]+"@*"] // 全局
 			if handler == nil {
 				if content[0] == '/' {
 					return setting.InvalidHandler
