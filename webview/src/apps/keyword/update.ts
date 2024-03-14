@@ -51,7 +51,7 @@ export class KeywordUpdateComponent implements OnInit {
     }
 
     public getRobotHandlers() {
-        RobotApi.robotHandlers().then((data) => {
+        RobotApi.robotHandlers({}).then((data) => {
             this.robotHandler = data || [];
         });
     }

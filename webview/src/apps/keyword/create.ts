@@ -43,7 +43,7 @@ export class KeywordCreateComponent {
     }
 
     public getRobotHandlers() {
-        RobotApi.robotHandlers().then((data) => {
+        RobotApi.robotHandlers({}).then((data) => {
             this.robotHandler = data || [];
         });
     }
