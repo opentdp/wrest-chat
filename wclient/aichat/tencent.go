@@ -65,7 +65,7 @@ func TencentText(id, rid, ask string) (string, error) {
 	}
 
 	if len(res.Choices) <= 0 {
-		return "", errors.New("未得到预期的结果")
+		return "", errors.New("未得到预期的结果，请稍后重试")
 	}
 
 	reply := res.Choices[0].Messages.Content

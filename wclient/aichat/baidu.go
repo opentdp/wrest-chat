@@ -64,7 +64,7 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	}
 
 	if res.Result == "" {
-		return "", errors.New("未得到预期的结果")
+		return "", errors.New("未得到预期的结果，请稍后重试")
 	}
 
 	// 更新历史记录
