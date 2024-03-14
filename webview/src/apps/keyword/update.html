@@ -31,7 +31,9 @@
         <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
-                <option value="-">全局</option>
+                <option value="*">全局</option>
+                <option value="-">私聊</option>
+                <option value="+">群聊</option>
                 @for (item of wcfChatrooms; track item.wxid) {
                 <option [value]="item.wxid">{{item.name}}</option>
                 }

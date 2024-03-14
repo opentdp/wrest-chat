@@ -75,13 +75,13 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 	// 遍历关键词
 	for _, v := range badwordList {
-		if v.Roomid != "-" {
-			if msg.IsGroup {
-				if v.Roomid != msg.Roomid {
-					continue
-				}
-			} else {
-				continue
+		if msg.IsGroup {
+			if v.Roomid != "*" && v.Roomid != "+" && v.Roomid != msg.Roomid {
+				continue // 忽略
+			}
+		} else {
+			if v.Roomid != "*" && v.Roomid != "-" {
+				continue // 忽略
 			}
 		}
 		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
