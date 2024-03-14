@@ -19,12 +19,15 @@ func cmddHandler() []*Handler {
 
 	for k, v := range keywords {
 		v := v // copy
+		if v.Remark == "" {
+			v.Remark = "神秘指令"
+		}
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
 			Order:    410 + int32(k),
 			Roomid:   v.Roomid,
 			Command:  v.Phrase,
-			Describe: "执行命令 " + v.Phrase,
+			Describe: v.Remark,
 			Callback: func(msg *wcferry.WxMsg) string {
 				exec := v.Target + " " + msg.Content
 				output, err := command.Exec(&command.ExecPayload{

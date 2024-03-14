@@ -28,6 +28,31 @@
                 关键词分组，标记短语的作用
             </div>
         </div>
+        @if (formdata.group == 'badword') {
+        <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of badwordLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于违规积分累计，当前计 {{formdata.level}} 分
+            </div>
+        </div>
+        } @else {
+        <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于限制指令使用权限，对指令别名无效
+            </div>
+        </div>
+        }
         <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
@@ -65,31 +90,13 @@
             </div>
         </div>
         }
-        @if (formdata.group == 'badword') {
         <div class="col-12">
-            <label class="form-label">级别</label>
-            <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                @for (item of badwordLevels | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
-                }
-            </select>
+            <label class="form-label">备注</label>
+            <input type="text" name="remark" class="form-control" [(ngModel)]="formdata.remark" />
             <div class="form-text">
-                用于违规积分累计，当前计 {{formdata.level}} 分
+                备注信息，指令可用于生成描述
             </div>
         </div>
-        } @else {
-        <div class="col-12">
-            <label class="form-label">级别</label>
-            <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                @for (item of userLevels | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
-                }
-            </select>
-            <div class="form-text">
-                用于限制指令使用权限，对指令别名无效
-            </div>
-        </div>
-        }
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
         </div>
