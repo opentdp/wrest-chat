@@ -496,10 +496,8 @@ export interface RobotHandler {
     level: number;
     // 排序，越小越靠前
     order: number;
-    // 是否允许在私聊使用
-    chat_able: boolean;
-    // 是否允许在群聊使用
-    room_able: boolean;
+    // 群聊 id
+    roomid: string;
     // 指令
     command: string;
     // 指令的描述信息

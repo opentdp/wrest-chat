@@ -3277,10 +3277,6 @@
         "wrobot.RobotHandler": {
             "type": "object",
             "properties": {
-                "chat_able": {
-                    "description": "是否允许在私聊使用",
-                    "type": "boolean"
-                },
                 "command": {
                     "description": "指令",
                     "type": "string"
@@ -3297,9 +3293,9 @@
                     "description": "排序，越小越靠前",
                     "type": "integer"
                 },
-                "room_able": {
-                    "description": "是否允许在群聊使用",
-                    "type": "boolean"
+                "room_id": {
+                    "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
+                    "type": "string"
                 }
             }
         }
