@@ -20,7 +20,6 @@
         <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.level" (change)="getProfiles()">
                 <option value="0">全部</option>
-                <option value="-1">未注册</option>
                 @for (item of userLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }

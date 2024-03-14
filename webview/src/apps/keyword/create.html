@@ -69,12 +69,24 @@
         <div class="col-12">
             <label class="form-label">级别</label>
             <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                @for (item of keywordLevels | keyvalue; track item.key) {
+                @for (item of badwordLevels | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
             </select>
             <div class="form-text">
                 用于违规积分累计，当前计 {{formdata.level}} 分
+            </div>
+        </div>
+        } @else {
+        <div class="col-12">
+            <label class="form-label">级别</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level">
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于限制指令使用权限，对指令别名无效
             </div>
         </div>
         }

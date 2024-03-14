@@ -57,7 +57,11 @@
                     {{item.target}}
                 </td>
                 <td class="d-none d-lg-table-cell">
-                    {{keywordLevels[item.level] && keywordLevels[item.level].name || '-'}}
+                    @if (item.group == 'badword') {
+                    {{badwordLevels[item.level] && badwordLevels[item.level].name || '-'}}
+                    } @else {
+                    {{userLevels[item.level] && userLevels[item.level].name || '-'}}
+                    }
                 </td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary" routerLink="/keyword/update/{{item.rd}}">编辑</button>
