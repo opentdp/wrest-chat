@@ -15,6 +15,7 @@ export const CronjobTypes: Record<string, OptionData> = {
     AI: { name: 'AI 生成文本' },
     BAT: { name: 'BAT 批处理' },
     POWERSHELL: { name: 'PowerShell 脚本' },
+    EXEC: { name: '可执行程序' },
 };
 
 export const KeywordGroups: Record<string, OptionData> = {

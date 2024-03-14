@@ -1,6 +1,8 @@
 package crond
 
 import (
+	"strings"
+
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
@@ -80,9 +82,11 @@ func Execute(job *tables.Cronjob) {
 
 func AttachJob(job *tables.Cronjob) error {
 
-	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayOfMonth + " " + job.Month + " " + job.DayOfWeek
+	sepc := []string{
+		job.Second, job.Minute, job.Hour, job.DayOfMonth, job.Month, job.DayOfWeek,
+	}
 
-	entryId, err := crontab.AddFunc(sepc, func() { Execute(job) })
+	entryId, err := crontab.AddFunc(strings.Join(sepc, " "), func() { Execute(job) })
 	if err != nil {
 		return err
 	}
