@@ -24,8 +24,7 @@ func apiHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    200,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/api",
 		Describe: "调用查询接口",
 		Callback: apiCallback,

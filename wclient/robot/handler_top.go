@@ -16,8 +16,7 @@ func topHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    330,
-		ChatAble: false,
-		RoomAble: true,
+		Roomid:   "+",
 		Command:  "/top",
 		Describe: "获取群聊统计信息",
 		Callback: topCallback,

@@ -22,8 +22,7 @@ func badHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    310,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/bad",
 		Describe: "添加违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
@@ -42,8 +41,7 @@ func badHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    311,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/unbad",
 		Describe: "删除违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {

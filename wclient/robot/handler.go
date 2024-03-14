@@ -19,8 +19,7 @@ type HandlerFunc func(*wcferry.WxMsg) string
 type Handler struct {
 	Level    int32       // 0:不限制 7:群管理 9:创始人
 	Order    int32       // 排序，越小越靠前
-	ChatAble bool        // 是否允许在私聊使用
-	RoomAble bool        // 是否允许在群聊使用
+	Roomid   string      // 使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]
 	Command  string      // 指令
 	Describe string      // 指令的描述信息
 	PreCheck HandlerFunc // 前置检查，可拦截文本聊天内容
@@ -120,8 +119,14 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 验证场景
-	if (msg.IsGroup && !handler.RoomAble) || (!msg.IsGroup && !handler.ChatAble) {
-		return setting.InvalidHandler
+	if msg.IsGroup {
+		if handler.Roomid != "*" && handler.Roomid != "+" && handler.Roomid != msg.Roomid {
+			return setting.InvalidHandler
+		}
+	} else {
+		if handler.Roomid != "*" && handler.Roomid != "-" {
+			return setting.InvalidHandler
+		}
 	}
 
 	// 重写消息

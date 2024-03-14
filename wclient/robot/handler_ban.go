@@ -20,8 +20,7 @@ func banHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    320,
-		ChatAble: false,
-		RoomAble: true,
+		Roomid:   "+",
 		Command:  "/ban",
 		Describe: "拉黑指定的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
@@ -59,8 +58,7 @@ func banHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    321,
-		ChatAble: false,
-		RoomAble: true,
+		Roomid:   "+",
 		Command:  "/unban",
 		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {

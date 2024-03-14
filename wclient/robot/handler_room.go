@@ -21,8 +21,7 @@ func roomHandler() []*Handler {
 			cmds = append(cmds, &Handler{
 				Level:    0,
 				Order:    510 + int32(k),
-				ChatAble: true,
-				RoomAble: false,
+				Roomid:   "-",
 				Command:  cmdkey,
 				Describe: "加群聊 " + v.Name,
 				Callback: func(msg *wcferry.WxMsg) string {

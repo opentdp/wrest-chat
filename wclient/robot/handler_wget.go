@@ -14,8 +14,7 @@ func wgetHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    7,
 		Order:    380,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/wget",
 		Describe: "获取图片或文件",
 		Callback: func(msg *wcferry.WxMsg) string {

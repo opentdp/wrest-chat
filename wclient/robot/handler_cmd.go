@@ -24,8 +24,7 @@ func cmddHandler() []*Handler {
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
 			Order:    400 + int32(k),
-			ChatAble: true,
-			RoomAble: true,
+			Roomid:   "*",
 			Command:  cmdkey,
 			Describe: "执行命令: " + cmdkey,
 			Callback: func(msg *wcferry.WxMsg) string {

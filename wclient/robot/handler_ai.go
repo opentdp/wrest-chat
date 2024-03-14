@@ -23,8 +23,7 @@ func aiHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    100,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/ai",
 		Describe: "提问或交谈",
 		Callback: aiCallback,
@@ -33,8 +32,7 @@ func aiHandler() []*Handler {
 	cmds = append(cmds, &Handler{
 		Level:    0,
 		Order:    101,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
@@ -47,8 +45,7 @@ func aiHandler() []*Handler {
 		cmds = append(cmds, &Handler{
 			Level:    0,
 			Order:    103,
-			ChatAble: true,
-			RoomAble: true,
+			Roomid:   "*",
 			Command:  "/ai:rand",
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
@@ -75,8 +72,7 @@ func aiHandler() []*Handler {
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
 			Order:    110 + int32(k),
-			ChatAble: true,
-			RoomAble: true,
+			Roomid:   "*",
 			Command:  cmdkey,
 			Describe: "换模型 " + v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
