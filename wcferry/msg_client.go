@@ -63,7 +63,7 @@ func (c *MsgClient) runner() {
 		if resp, err := c.recv(); err == nil {
 			msg := resp.GetWxmsg()
 			for _, f := range c.consumer {
-				f(msg) // 推送消息
+				go f(msg) // 异步推送
 			}
 		} else {
 			logman.Error("msg consumer", "error", err)
