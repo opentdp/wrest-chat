@@ -19,7 +19,7 @@ func roomHandler() []*Handler {
 			v := v // copy
 			cmdkey := "/jr:" + v.JoinArgot
 			cmds = append(cmds, &Handler{
-				Level:    0,
+				Level:    -1,
 				Order:    510 + int32(k),
 				Roomid:   "-",
 				Command:  cmdkey,

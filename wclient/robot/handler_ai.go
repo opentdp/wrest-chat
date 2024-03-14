@@ -21,7 +21,7 @@ func aiHandler() []*Handler {
 	}
 
 	cmds = append(cmds, &Handler{
-		Level:    0,
+		Level:    -1,
 		Order:    100,
 		Roomid:   "*",
 		Command:  "/ai",
@@ -30,7 +30,7 @@ func aiHandler() []*Handler {
 	})
 
 	cmds = append(cmds, &Handler{
-		Level:    0,
+		Level:    -1,
 		Order:    101,
 		Roomid:   "*",
 		Command:  "/ai:new",
@@ -43,7 +43,7 @@ func aiHandler() []*Handler {
 
 	if len(models) > 3 {
 		cmds = append(cmds, &Handler{
-			Level:    0,
+			Level:    -1,
 			Order:    103,
 			Roomid:   "*",
 			Command:  "/ai:rand",
