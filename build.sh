@@ -49,7 +49,6 @@ mkdir build/wcferry
 
 cp README.md build/
 cp config.yml build/
-cp public/starter.bat build/
 cp wcferry/bin/sdk.dll build/wcferry/
 cp wcferry/bin/spy.dll build/wcferry/
 cp wcferry/bin/wcf.exe build/wcferry/
