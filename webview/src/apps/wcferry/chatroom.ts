@@ -11,12 +11,12 @@ import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../o
 export class WcferryChatroomComponent implements OnDestroy {
 
     public avatars: Record<string, string> = {};
-    public allMembers: Record<string, WcfrestContactPayload> = {};
     public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public chatrooms: Array<WcfrestContactPayload> = [];
     public chatroom!: WcfrestContactPayload;
 
+    public memberMap: Record<string, WcfrestContactPayload> = {};
     public members: Array<WcfrestContactPayload> = [];
     public member!: WcfrestContactPayload;
 
@@ -47,9 +47,9 @@ export class WcferryChatroomComponent implements OnDestroy {
         WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = data || [];
             this.members = data || [];
-            // 存储会员列表
+            // 更新会员列表
             const ids = this.members.map((item) => {
-                this.allMembers[item.wxid] = item;
+                this.memberMap[item.wxid] = item;
                 return item.wxid;
             });
             // 批量获取头像
@@ -71,6 +71,7 @@ export class WcferryChatroomComponent implements OnDestroy {
     public messages: Array<IMessage> = [];
     public self = {} as WcfrestUserInfoPayload;
 
+    public showMember = false;
     public content = '';
 
     public sendTxt() {
@@ -99,8 +100,11 @@ export class WcferryChatroomComponent implements OnDestroy {
         this.messages = [];
     }
 
-    public async startSocket() {
-        this.self = await WrestApi.selfInfo();
+    public startSocket() {
+        WrestApi.selfInfo().then((data) => {
+            this.self = data;
+        });
+        // 注册消息接收
         const token = sessionStorage.getItem('token');
         const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
         const wss = new WebSocket(url + (token ? '?token=' + token : ''));
