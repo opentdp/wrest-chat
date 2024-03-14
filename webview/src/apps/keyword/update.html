@@ -14,7 +14,7 @@
             <label class="form-label">短语 *</label>
             <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.phrase" required />
             <div class="form-text">
-                用于违规检测，暂不支持统配符
+                指令作为前缀使用，违禁词检测是否包含
             </div>
         </div>
         <div class="col-12">
@@ -25,7 +25,7 @@
                 }
             </select>
             <div class="form-text">
-                关键词分组
+                关键词分组，标记短语的作用
             </div>
         </div>
         <div class="col-12">
@@ -37,9 +37,19 @@
                 }
             </select>
             <div class="form-text">
-                关键词应用场景，暂用作生效范围
+                关键词应用场景，短语作用范围
             </div>
         </div>
+        @if (formdata.group == 'command') {
+        <div class="col-12">
+            <label class="form-label">命令</label>
+            <textarea name="target" class="form-control" rows="3" [(ngModel)]="formdata.target" required></textarea>
+            <div class="form-text">
+                填写可执行程序的绝对路径及参数，如：<i>D:\\runtime\\node.exe app.js</i><br />
+                输出的内容将作为回复，发送文件或图片请输出 <b>http://</b> 开头的链接
+            </div>
+        </div>
+        }
         @if (formdata.group == 'handler') {
         <div class="col-12">
             <label class="form-label">指令</label>
@@ -49,7 +59,7 @@
                 }
             </select>
             <div class="form-text">
-                关键词处理程序或应用目标
+                以<b>{{formdata.phrase || '短语'}}</b>开头的内容，将重定向到<b>{{formdata.target || '选中的指令'}}</b>
             </div>
         </div>
         }
@@ -62,9 +72,7 @@
                 }
             </select>
             <div class="form-text">
-                @if (formdata.target == 'ban') {
-                用于违规积分累计，当计 {{formdata.level}} 分
-                }
+                用于违规积分累计，当前计 {{formdata.level}} 分
             </div>
         </div>
         }

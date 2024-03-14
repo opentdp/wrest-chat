@@ -44,6 +44,7 @@ func ResetHandlers() {
 	hlst = append(hlst, apiHandler()...)
 	hlst = append(hlst, badHandler()...)
 	hlst = append(hlst, banHandler()...)
+	hlst = append(hlst, cmddHandler()...)
 	hlst = append(hlst, helpHandler()...)
 	hlst = append(hlst, revokeHandler()...)
 	hlst = append(hlst, roomHandler()...)
@@ -57,7 +58,7 @@ func ResetHandlers() {
 
 	// 获取指令映射
 	for _, v := range hlst {
-		hmap[v.Command] = v
+		hmap[v.Command] = v // 重名会覆盖
 		if v.PreCheck != nil {
 			hpre = append(hpre, v)
 		}

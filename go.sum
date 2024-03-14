@@ -92,8 +92,8 @@ github.com/ncruces/go-strftime v0.1.9 h1:bY0MQC28UADQmHmaF5dgpLmImcShSi2kHU9XLdh
 github.com/ncruces/go-strftime v0.1.9/go.mod h1:Fwc5htZGVVkseilnfgOVb9mKy6w1naJmn9CehxcKcls=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e h1:fD57ERR4JtEqsWbfPhv4DMiApHyliiK5xCTNVSPiaAs=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
-github.com/opentdp/go-helper v0.7.0 h1:R+3QqUfeWkzyIT4VYn0I2UmVg2Fo9TITwRf25Cecx1U=
-github.com/opentdp/go-helper v0.7.0/go.mod h1:BwGtZUhKnod3RKF9RWC0yd+M5R/Qdr6scA8yqEqTr1M=
+github.com/opentdp/go-helper v0.7.1-0.20240314081626-c3e3805521f2 h1:RWeiTa/tHeV7za+7Cs6AGfcYASvpdEdxb9D3fNULlow=
+github.com/opentdp/go-helper v0.7.1-0.20240314081626-c3e3805521f2/go.mod h1:BwGtZUhKnod3RKF9RWC0yd+M5R/Qdr6scA8yqEqTr1M=
 github.com/pelletier/go-toml/v2 v2.1.1 h1:LWAJwfNvjQZCFIDKWYQaM62NcYeYViCmWIwmOStowAI=
 github.com/pelletier/go-toml/v2 v2.1.1/go.mod h1:tJU2Z3ZkXwnxa4DPO899bsyIoywizdUvyaeZurnPPDc=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
