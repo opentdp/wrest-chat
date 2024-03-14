@@ -13,8 +13,9 @@ type CreateParam struct {
 	Group  string `binding:"required" json:"group"`
 	Roomid string `binding:"required" json:"roomid"`
 	Phrase string `binding:"required" json:"phrase"`
-	Target string `json:"target"`
 	Level  int32  `json:"level"`
+	Target string `json:"target"`
+	Remark string `json:"remark"`
 }
 
 func Create(data *CreateParam) (uint, error) {
@@ -23,8 +24,9 @@ func Create(data *CreateParam) (uint, error) {
 		Group:  data.Group,
 		Roomid: data.Roomid,
 		Phrase: data.Phrase,
-		Target: data.Target,
 		Level:  data.Level,
+		Target: data.Target,
+		Remark: data.Remark,
 	}
 
 	result := dborm.Db.Create(item)
@@ -47,8 +49,9 @@ func Update(data *UpdateParam) error {
 			Group:  data.Group,
 			Roomid: data.Roomid,
 			Phrase: data.Phrase,
-			Target: data.Target,
 			Level:  data.Level,
+			Target: data.Target,
+			Remark: data.Remark,
 		})
 
 	return result.Error

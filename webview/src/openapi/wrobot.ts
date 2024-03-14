@@ -319,6 +319,8 @@ export interface KeywordCreateParam {
     roomid: string;
     // 目标
     target?: string;
+    // 备注
+    remark?: string;
 }
 
 export interface KeywordDeleteParam {
@@ -369,6 +371,8 @@ export interface KeywordUpdateParam {
     roomid: string;
     // 目标
     target: string;
+    // 备注
+    remark: string;
 }
 
 export interface LlmodelCreateParam {
@@ -601,6 +605,8 @@ export interface TablesKeyword {
     roomid: string;
     // 目标
     target: string;
+    // 备注
+    remark: string;
     // 最后更新时间戳
     updated_at: number;
 }

@@ -2172,6 +2172,9 @@
                 "rd": {
                     "type": "integer"
                 },
+                "remark": {
+                    "type": "string"
+                },
                 "roomid": {
                     "type": "string"
                 },
@@ -2250,6 +2253,9 @@
                 },
                 "rd": {
                     "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
                 },
                 "roomid": {
                     "type": "string"
@@ -2710,6 +2716,10 @@
                 "rd": {
                     "description": "主键",
                     "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
                 },
                 "roomid": {
                     "description": "群聊 id",
