@@ -3293,7 +3293,7 @@
                     "description": "排序，越小越靠前",
                     "type": "integer"
                 },
-                "room_id": {
+                "roomid": {
                     "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
                     "type": "string"
                 }

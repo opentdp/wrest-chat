@@ -30,7 +30,7 @@ func robotHandlers(c *gin.Context) {
 type RobotHandler struct {
 	Level    int32  `json:"level"`    // 0:不限制 7:群管理 9:创始人
 	Order    int32  `json:"order"`    // 排序，越小越靠前
-	Roomid   string `json:"room_id"`  // 使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]
+	Roomid   string `json:"roomid"`   // 使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]
 	Command  string `json:"command"`  // 指令
 	Describe string `json:"describe"` // 指令的描述信息
 }
