@@ -12,8 +12,7 @@
         <thead class="table-light">
             <tr>
                 <th scope="col">指令</th>
-                <th scope="col">私聊可用</th>
-                <th scope="col">群聊可用</th>
+                <th scope="col">场景</th>
                 <th scope="col">级别</th>
                 <th scope="col">顺序</th>
                 <th scope="col" class="d-none d-md-table-cell">描述</th>
@@ -23,8 +22,11 @@
             @for (item of robotHandler; track item.command) {
             <tr>
                 <th scope="row">{{item.command}}</th>
-                <td>{{item.chat_able ? '是' : '否'}}</td>
-                <td>{{item.room_able ? '是' : '否'}}</td>
+                @if (wcfChatrooms[item.roomid]) {
+                <td>{{wcfChatrooms[item.roomid].name || item.roomid}}</td>
+                } @else {
+                <td>{{specialRooms[item.roomid] && specialRooms[item.roomid].name || '-'}}</td>
+                }
                 <td>{{userLevels[item.level] && userLevels[item.level].name || '-'}}</td>
                 <td>{{item.order}}</td>
                 <td class="d-none d-md-table-cell">{{item.describe}}</td>
