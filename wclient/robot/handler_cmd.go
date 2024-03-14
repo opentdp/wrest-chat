@@ -21,7 +21,7 @@ func cmddHandler() []*Handler {
 		v := v // copy
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
-			Order:    400 + int32(k),
+			Order:    410 + int32(k),
 			Roomid:   v.Roomid,
 			Command:  v.Phrase,
 			Describe: "执行命令 " + v.Phrase,
