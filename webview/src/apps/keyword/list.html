@@ -11,9 +11,9 @@
     <div class="row justify-content-between">
         <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
-                <option value="*">全局</option>
-                <option value="-">私聊</option>
-                <option value="+">群聊全局</option>
+                @for (item of specialRooms | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
                 @for (item of wcfChatrooms | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }

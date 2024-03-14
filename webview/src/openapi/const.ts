@@ -44,3 +44,9 @@ export const UserLevels: Record<number, OptionData> = {
     7: { name: '管理员' },
     9: { name: '创始人' }
 };
+
+export const SpecialRooms: Record<string, OptionData> = {
+    '*': { name: '全局' },
+    '-': { name: '私聊' },
+    '+': { name: '群聊全局' },
+};

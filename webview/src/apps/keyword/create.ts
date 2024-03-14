@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserLevels, KeywordGroups, BadwordLevels } from '../../openapi/const';
+import { UserLevels, SpecialRooms, KeywordGroups, BadwordLevels } from '../../openapi/const';
 import { RobotApi, KeywordCreateParam, RobotHandler } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
@@ -13,6 +13,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 export class KeywordCreateComponent {
 
     public userLevels = UserLevels;
+    public specialRooms = SpecialRooms;
     public keywordGroups = KeywordGroups;
     public badwordLevels = BadwordLevels;
 
