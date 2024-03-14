@@ -109,14 +109,15 @@ export class WcferryChatroomComponent implements OnDestroy {
         const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
         const wss = new WebSocket(url + (token ? '?token=' + token : ''));
         wss.onopen = () => {
+            this.wss = wss;
             const data = {
                 ts: Date.now(),
                 sender: 'system',
                 content: 'websocket is connected'
             };
             this.messages.push(data as IMessage);
-            this.wss = wss;
         };
+        // 自动重连
         wss.onclose = () => {
             const data = {
                 ts: Date.now(),
@@ -126,6 +127,7 @@ export class WcferryChatroomComponent implements OnDestroy {
             this.messages.push(data as IMessage);
             setTimeout(() => this.startSocket(), 5 * 1000);
         };
+        // 捕获错误
         wss.onerror = (event) => {
             const data = {
                 ts: Date.now(),
@@ -135,10 +137,16 @@ export class WcferryChatroomComponent implements OnDestroy {
             this.messages.push(data as IMessage);
             console.log(event);
         };
+        // 接收消息
+        const msg = sessionStorage.getItem('messages') || '[]';
+        this.messages = JSON.parse(msg) as IMessage[];
         wss.onmessage = (event) => {
             const data = JSON.parse(event.data) as IMessage;
-            data.ts = data.ts * 1000;
-            this.messages.push(data);
+            if (data && data.ts > 0) {
+                data.ts = data.ts * 1000;
+                this.messages.push(data);
+                sessionStorage.setItem('messages', JSON.stringify(this.messages));
+            }
         };
     }
 
