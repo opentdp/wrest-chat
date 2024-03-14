@@ -325,6 +325,17 @@
                     "BOT::杂项"
                 ],
                 "summary": "机器人指令集",
+                "parameters": [
+                    {
+                        "description": "机器人指令集参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/wrobot.RobotHandlersParam"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3306,6 +3317,15 @@
                 "roomid": {
                     "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
                     "type": "string"
+                }
+            }
+        },
+        "wrobot.RobotHandlersParam": {
+            "type": "object",
+            "properties": {
+                "reset": {
+                    "description": "是否重置机器人指令",
+                    "type": "boolean"
                 }
             }
         }

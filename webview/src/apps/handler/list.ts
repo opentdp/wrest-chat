@@ -23,8 +23,8 @@ export class HandlerListComponent {
         this.getRobotHandlers();
     }
 
-    public getRobotHandlers() {
-        RobotApi.robotHandlers().then((data) => {
+    public getRobotHandlers(reset?: boolean) {
+        RobotApi.robotHandlers({ reset }).then((data) => {
             this.robotHandler = data || [];
         });
     }

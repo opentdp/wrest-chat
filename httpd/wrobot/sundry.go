@@ -7,9 +7,21 @@ import (
 
 // @Summary 机器人指令集
 // @Tags BOT::杂项
+// @Param body body RobotHandlersParam true "机器人指令集参数"
 // @Success 200 {array} RobotHandler
 // @Router /bot/handlers [post]
 func robotHandlers(c *gin.Context) {
+
+	var rq *RobotHandlersParam
+
+	if err := c.ShouldBind(&rq); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	if rq.Reset {
+		robot.Reset()
+	}
 
 	items := []RobotHandler{}
 
@@ -33,4 +45,8 @@ type RobotHandler struct {
 	Roomid   string `json:"roomid"`   // 使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]
 	Command  string `json:"command"`  // 指令
 	Describe string `json:"describe"` // 指令的描述信息
+}
+
+type RobotHandlersParam struct {
+	Reset bool `json:"reset"` // 是否重置机器人指令
 }

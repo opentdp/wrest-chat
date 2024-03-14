@@ -183,10 +183,10 @@ export const RobotApi = {
     },
     /**
      * @summary 获取指令列表
-     * @param {*} body 获取指令列表参数
+     * @param {RobotHandlerParam} body 获取指令列表参数
      * @param {*} [options] Override http request option.
      */
-    robotHandlers(body = {}, options: RequestInit = {}): Promise<RobotHandler[]> {
+    robotHandlers(body: RobotHandlerParam, options: RequestInit = {}): Promise<RobotHandler[]> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/bot/handlers', options);
     },
@@ -506,6 +506,11 @@ export interface RobotHandler {
     command: string;
     // 指令的描述信息
     describe: string;
+}
+
+export interface RobotHandlerParam {
+    // 重装指令
+    reset?: boolean;
 }
 
 export interface SettingCreateParam {
