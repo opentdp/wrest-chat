@@ -45,7 +45,6 @@ func ResetHandlers() {
 	hlst = append(hlst, banHandler()...)
 	hlst = append(hlst, cmddHandler()...)
 	hlst = append(hlst, helpHandler()...)
-	hlst = append(hlst, pluginHandler()...)
 	hlst = append(hlst, revokeHandler()...)
 	hlst = append(hlst, roomHandler()...)
 	hlst = append(hlst, topHandler()...)

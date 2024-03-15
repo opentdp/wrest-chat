@@ -332,7 +332,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wrobot.RobotHandlersParam"
+                            "$ref": "#/definitions/sundry.RobotHandlersParam"
                         }
                     }
                 ],
@@ -342,7 +342,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/wrobot.RobotHandler"
+                                "$ref": "#/definitions/sundry.RobotHandler"
                             }
                         }
                     }
@@ -633,6 +633,50 @@
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/plugin/cronjobs": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::杂项"
+                ],
+                "summary": "计划任务插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.CronjobPlugin"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/plugin/keywords": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::杂项"
+                ],
+                "summary": "外部指令插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.KeywordPlugin"
+                            }
+                        }
                     }
                 }
             }
@@ -2387,6 +2431,30 @@
                 }
             }
         },
+        "plugin.CronjobPlugin": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/cronjob.CreateParam"
+                },
+                "error": {},
+                "file": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.KeywordPlugin": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/keyword.CreateParam"
+                },
+                "error": {},
+                "file": {
+                    "type": "string"
+                }
+            }
+        },
         "profile.CreateParam": {
             "type": "object",
             "required": [
@@ -2572,6 +2640,40 @@
                 },
                 "value": {
                     "type": "string"
+                }
+            }
+        },
+        "sundry.RobotHandler": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "description": "指令",
+                    "type": "string"
+                },
+                "describe": {
+                    "description": "指令的描述信息",
+                    "type": "string"
+                },
+                "level": {
+                    "description": "0:不限制 7:群管理 9:创始人",
+                    "type": "integer"
+                },
+                "order": {
+                    "description": "排序，越小越靠前",
+                    "type": "integer"
+                },
+                "roomid": {
+                    "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
+                    "type": "string"
+                }
+            }
+        },
+        "sundry.RobotHandlersParam": {
+            "type": "object",
+            "properties": {
+                "reset": {
+                    "description": "是否重置机器人指令",
+                    "type": "boolean"
                 }
             }
         },
@@ -3292,40 +3394,6 @@
                 "wxid": {
                     "description": "用户 id",
                     "type": "string"
-                }
-            }
-        },
-        "wrobot.RobotHandler": {
-            "type": "object",
-            "properties": {
-                "command": {
-                    "description": "指令",
-                    "type": "string"
-                },
-                "describe": {
-                    "description": "指令的描述信息",
-                    "type": "string"
-                },
-                "level": {
-                    "description": "0:不限制 7:群管理 9:创始人",
-                    "type": "integer"
-                },
-                "order": {
-                    "description": "排序，越小越靠前",
-                    "type": "integer"
-                },
-                "roomid": {
-                    "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
-                    "type": "string"
-                }
-            }
-        },
-        "wrobot.RobotHandlersParam": {
-            "type": "object",
-            "properties": {
-                "reset": {
-                    "description": "是否重置机器人指令",
-                    "type": "boolean"
                 }
             }
         }
