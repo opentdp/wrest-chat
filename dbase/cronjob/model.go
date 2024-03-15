@@ -79,7 +79,7 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 合并联系人
+// 合并计划
 
 type ReplaceParam = CreateParam
 

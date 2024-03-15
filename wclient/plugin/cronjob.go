@@ -20,6 +20,7 @@ type CronjobPlugin struct {
 func CronjobPluginSetup() ([]*CronjobPlugin, error) {
 
 	configs := []*CronjobPlugin{}
+	checker := NewCache("./plugin/cronjob.txt")
 
 	err := filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
@@ -37,8 +38,12 @@ func CronjobPluginSetup() ([]*CronjobPlugin, error) {
 		}
 		// 更新插件信息
 		errstr := ""
-		if err := cronjob.Replace(config); err != nil {
-			errstr = err.Error()
+		if checker.Get(rp) == 0 {
+			if rd, err := cronjob.Create(config); err == nil {
+				checker.Put(rp, rd)
+			} else {
+				errstr = err.Error()
+			}
 		}
 		configs = append(configs, &CronjobPlugin{
 			config, errstr, info.Name(),

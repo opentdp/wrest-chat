@@ -20,6 +20,7 @@ type KeywordPlugin struct {
 func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 
 	configs := []*KeywordPlugin{}
+	checker := NewCache("./plugin/keyword.txt")
 
 	err := filepath.Walk("./plugin/keyword", func(rp string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
@@ -37,8 +38,12 @@ func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 		}
 		// 更新插件信息
 		errstr := ""
-		if err := keyword.Replace(config); err != nil {
-			errstr = err.Error()
+		if checker.Get(rp) == 0 {
+			if rd, err := keyword.Create(config); err == nil {
+				checker.Put(rp, rd)
+			} else {
+				errstr = err.Error()
+			}
 		}
 		configs = append(configs, &KeywordPlugin{
 			config, errstr, info.Name(),
