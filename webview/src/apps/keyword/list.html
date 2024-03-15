@@ -11,6 +11,7 @@
     <div class="row justify-content-between">
         <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
+                <option value="">全部</option>
                 @for (item of specialRooms | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
