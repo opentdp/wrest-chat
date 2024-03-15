@@ -6,9 +6,9 @@ import (
 	"github.com/opentdp/wechat-rest/wclient/robot"
 )
 
-// @Summary 机器人指令集
-// @Tags DRY::指令
-// @Param body body HandlerListParam true "机器人指令集参数"
+// @Summary 获取所有可用指令
+// @Tags API::指令集
+// @Param body body HandlerListParam true "获取所有可用指令参数"
 // @Success 200 {array} Handler
 // @Router /api/handler/list [post]
 func handlerList(c *gin.Context) {

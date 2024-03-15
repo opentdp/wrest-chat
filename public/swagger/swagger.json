@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "添加计划任务",
                 "parameters": [
@@ -48,7 +48,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "删除计划任务",
                 "parameters": [
@@ -75,7 +75,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "获取计划任务",
                 "parameters": [
@@ -105,7 +105,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "计划任务列表",
                 "parameters": [
@@ -138,7 +138,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "计划任务状态",
                 "responses": {
@@ -154,7 +154,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "修改计划任务",
                 "parameters": [
@@ -178,12 +178,12 @@
         "/api/handler/list": {
             "post": {
                 "tags": [
-                    "DRY::指令"
+                    "API::指令集"
                 ],
-                "summary": "机器人指令集",
+                "summary": "获取所有可用指令",
                 "parameters": [
                     {
-                        "description": "机器人指令集参数",
+                        "description": "获取所有可用指令参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -211,7 +211,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::插件"
+                    "API::插件管理"
                 ],
                 "summary": "计划任务插件列表",
                 "responses": {
@@ -233,7 +233,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "DRY::插件"
+                    "API::插件管理"
                 ],
                 "summary": "外部指令插件列表",
                 "responses": {

@@ -11,7 +11,7 @@ type Cronjob struct{}
 
 // @Summary 计划任务列表
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Param body body cronjob.FetchAllParam true "获取计划任务列表参数"
 // @Success 200 {object} []tables.Cronjob
 // @Router /api/cronjob/list [post]
@@ -34,7 +34,7 @@ func (*Cronjob) list(c *gin.Context) {
 
 // @Summary 获取计划任务
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Param body body cronjob.FetchParam true "获取计划任务参数"
 // @Success 200 {object} tables.Cronjob
 // @Router /api/cronjob/detail [post]
@@ -57,7 +57,7 @@ func (*Cronjob) detail(c *gin.Context) {
 
 // @Summary 添加计划任务
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Param body body cronjob.CreateParam true "添加计划任务参数"
 // @Success 200
 // @Router /api/cronjob/create [post]
@@ -82,7 +82,7 @@ func (*Cronjob) create(c *gin.Context) {
 
 // @Summary 修改计划任务
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Param body body cronjob.UpdateParam true "修改计划任务参数"
 // @Success 200
 // @Router /api/cronjob/update [post]
@@ -106,7 +106,7 @@ func (*Cronjob) update(c *gin.Context) {
 
 // @Summary 删除计划任务
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Param body body cronjob.DeleteParam true "删除计划任务参数"
 // @Success 200
 // @Router /api/cronjob/delete [post]
@@ -131,7 +131,7 @@ func (*Cronjob) delete(c *gin.Context) {
 
 // @Summary 计划任务状态
 // @Produce json
-// @Tags DRY::计划任务
+// @Tags API::计划任务
 // @Success 200
 // @Router /api/cronjob/status [post]
 func (*Cronjob) status(c *gin.Context) {
