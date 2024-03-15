@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/dbase/keyword"
 )
 
@@ -17,24 +18,28 @@ type KeywordPlugin struct {
 	Name   string               `json:"file"`
 }
 
-func KeywordPluginSetup() ([]*KeywordPlugin, error) {
+func KeywordPluginSetup() []*KeywordPlugin {
 
 	configs := []*KeywordPlugin{}
 	checker := NewCache("./plugin/keyword.txt")
 
-	err := filepath.Walk("./plugin/keyword", func(rp string, info os.FileInfo, err error) error {
+	filepath.Walk("./plugin/keyword", func(rp string, info os.FileInfo, err error) error {
+		// 忽略原则错误
 		if err != nil || info.IsDir() {
-			return err
+			logman.Error("invalid keyword plugin", "error", err)
+			return nil
 		}
 		// 获取绝对路径
 		fp, err := filepath.Abs(rp)
 		if err != nil {
-			return err
+			logman.Error("invalid keyword plugin", "error", err)
+			return nil
 		}
 		// 提取插件参数
 		config, err := KeywordPluginParser(fp)
 		if err != nil {
-			return err
+			configs = append(configs, &KeywordPlugin{config, err.Error(), info.Name()})
+			return nil
 		}
 		// 更新插件信息
 		errstr := ""
@@ -47,13 +52,11 @@ func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 				errstr = err.Error()
 			}
 		}
-		configs = append(configs, &KeywordPlugin{
-			config, errstr, info.Name(),
-		})
+		configs = append(configs, &KeywordPlugin{config, errstr, info.Name()})
 		return err
 	})
 
-	return configs, err
+	return configs
 
 }
 

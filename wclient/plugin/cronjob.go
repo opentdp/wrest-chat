@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/dbase/cronjob"
 )
 
@@ -17,24 +18,28 @@ type CronjobPlugin struct {
 	Name   string               `json:"file"`
 }
 
-func CronjobPluginSetup() ([]*CronjobPlugin, error) {
+func CronjobPluginSetup() []*CronjobPlugin {
 
 	configs := []*CronjobPlugin{}
 	checker := NewCache("./plugin/cronjob.txt")
 
-	err := filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
+	filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
+		// 忽略原则错误
 		if err != nil || info.IsDir() {
-			return err
+			logman.Error("invalid cronjob plugin", "error", err)
+			return nil
 		}
 		// 获取绝对路径
 		fp, err := filepath.Abs(rp)
 		if err != nil {
-			return err
+			logman.Error("invalid cronjob plugin", "error", err)
+			return nil
 		}
 		// 提取插件参数
 		config, err := CronjobPluginParser(fp)
 		if err != nil {
-			return err
+			configs = append(configs, &CronjobPlugin{config, err.Error(), info.Name()})
+			return nil
 		}
 		// 更新插件信息
 		errstr := ""
@@ -47,13 +52,11 @@ func CronjobPluginSetup() ([]*CronjobPlugin, error) {
 				errstr = err.Error()
 			}
 		}
-		configs = append(configs, &CronjobPlugin{
-			config, errstr, info.Name(),
-		})
+		configs = append(configs, &CronjobPlugin{config, errstr, info.Name()})
 		return nil
 	})
 
-	return configs, err
+	return configs
 
 }
 

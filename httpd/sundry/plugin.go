@@ -13,12 +13,7 @@ import (
 // @Router /api/plugin/cronjobs [post]
 func pluginCronjobs(c *gin.Context) {
 
-	plugins, err := plugin.CronjobPluginSetup()
-
-	if err != nil {
-		c.Set("Error", err)
-		return
-	}
+	plugins := plugin.CronjobPluginSetup()
 
 	c.Set("Payload", plugins)
 
@@ -31,12 +26,7 @@ func pluginCronjobs(c *gin.Context) {
 // @Router /api/plugin/keywords [post]
 func pluginKeywords(c *gin.Context) {
 
-	plugins, err := plugin.KeywordPluginSetup()
-
-	if err != nil {
-		c.Set("Error", err)
-		return
-	}
+	plugins := plugin.KeywordPluginSetup()
 
 	c.Set("Payload", plugins)
 
