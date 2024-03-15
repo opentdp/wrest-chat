@@ -38,9 +38,11 @@ func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 		}
 		// 更新插件信息
 		errstr := ""
-		if checker.Get(rp) == 0 {
+		config.Rd = checker.Get(rp)
+		if config.Rd == 0 {
 			if rd, err := keyword.Create(config); err == nil {
 				checker.Put(rp, rd)
+				config.Rd = rd
 			} else {
 				errstr = err.Error()
 			}
@@ -63,7 +65,7 @@ func KeywordPluginParser(fp string) (*keyword.CreateParam, error) {
 	}
 
 	// 提取插件参数
-	re := regexp.MustCompile(`(?m)^(//|::)\s*@(Rd|Roomid|Phrase|Level|Target|Remark):\s*(.*)$`)
+	re := regexp.MustCompile(`(?m)^(//|::)\s*@(Roomid|Phrase|Level|Target|Remark):\s*(.*)$`)
 	matches := re.FindAllStringSubmatch(string(content), -1)
 	if matches == nil {
 		return nil, fmt.Errorf("command config not found")
