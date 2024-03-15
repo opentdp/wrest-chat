@@ -71,7 +71,7 @@ func KeywordPluginParser(fp string) (*keyword.CreateParam, error) {
 	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Roomid|Phrase|Level|Target|Remark):\s*(.*)$`)
 	matches := re.FindAllStringSubmatch(string(content), -1)
 	if matches == nil {
-		return nil, fmt.Errorf("command config not found")
+		return nil, fmt.Errorf("keyword config not found")
 	}
 
 	// 构造插件参数
