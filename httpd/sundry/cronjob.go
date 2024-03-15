@@ -1,4 +1,4 @@
-package cronjob
+package sundry
 
 import (
 	"github.com/gin-gonic/gin"

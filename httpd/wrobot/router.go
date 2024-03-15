@@ -3,13 +3,13 @@ package wrobot
 import (
 	"github.com/opentdp/go-helper/httpd"
 
-	"github.com/opentdp/wechat-rest/httpd/midware"
+	"github.com/opentdp/wechat-rest/httpd/middle"
 )
 
 func Route() {
 
 	rg := httpd.Group("/bot")
-	rg.Use(midware.OutputHandle, midware.ApiGuard)
+	rg.Use(middle.OutputHandle, middle.ApiGuard)
 
 	chatroom := Chatroom{}
 	rg.POST("chatroom/list", chatroom.list)
@@ -45,9 +45,5 @@ func Route() {
 	rg.POST("setting/create", setting.create)
 	rg.POST("setting/update", setting.update)
 	rg.POST("setting/delete", setting.delete)
-
-	// sundry
-
-	rg.POST("handlers", robotHandlers)
 
 }
