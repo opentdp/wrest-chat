@@ -65,7 +65,7 @@ func CronjobPluginParser(fp string) (*cronjob.CreateParam, error) {
 	}
 
 	// 提取插件参数
-	re := regexp.MustCompile(`(?m)^(//|::)\s*@(Name|Second|Minute|Hour|DayOfMonth|Month|DayOfWeek|Timeout|Content|Deliver):\s*(.*)$`)
+	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Name|Second|Minute|Hour|DayOfMonth|Month|DayOfWeek|Timeout|Content|Deliver):\s*(.*)$`)
 	matches := re.FindAllStringSubmatch(string(content), -1)
 	if matches == nil {
 		return nil, fmt.Errorf("cronjob config not found")
