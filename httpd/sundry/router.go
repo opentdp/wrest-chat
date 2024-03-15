@@ -4,8 +4,6 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/httpd/middle"
-	"github.com/opentdp/wechat-rest/wclient/crond"
-	"github.com/opentdp/wechat-rest/wclient/plugin"
 )
 
 func Route() {
@@ -25,11 +23,5 @@ func Route() {
 
 	rg.POST("plugin/cronjobs", pluginCronjobs)
 	rg.POST("plugin/keywords", pluginKeywords)
-
-	// 初始化
-
-	crond.Daemon()
-	plugin.CronjobPluginSetup()
-	plugin.KeywordPluginSetup()
 
 }

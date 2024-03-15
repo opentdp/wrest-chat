@@ -14,8 +14,6 @@ var wc *wcferry.Client
 
 func Start() {
 
-	setting.Laod()
-
 	if !setting.BotEnable {
 		logman.Warn("robot disabled")
 		return

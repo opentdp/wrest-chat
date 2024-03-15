@@ -27,7 +27,8 @@ func Connect() {
 		&tables.Setting{},
 	)
 
-	// 全局配置迁移
+	// 加载全局配置
 	setting.DataMigrate()
+	setting.Laod()
 
 }
