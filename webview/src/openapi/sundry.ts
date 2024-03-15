@@ -1,7 +1,8 @@
 
 import { httpRequest } from "./request";
+import { KeywordCreateParam } from "./wrobot";
 
-export const CronApi = {
+export const SundryApi = {
     /**
      * 
      * @summary 添加计划任务
@@ -62,6 +63,33 @@ export const CronApi = {
     cronjobStatus(body: CronjobStatusParam, options: RequestInit = {}): Promise<Record<number, CronjobStatusPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/cronjob/status', options);
+    },
+    /**
+     * @summary 获取指令列表
+     * @param {HandlerListParam} body 获取指令列表参数
+     * @param {*} [options] Override http request option.
+     */
+    handlerList(body: HandlerListParam, options: RequestInit = {}): Promise<Handler[]> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/handler/list', options);
+    },
+    /**
+     * @summary 获取计划任务插件
+     * @param {*} body 获取计划任务插件参数
+     * @param {*} [options] Override http request option.
+     */
+    pluginCronjobs(body = {}, options: RequestInit = {}): Promise<Handler[]> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/plugin/cronjobs', options);
+    },
+    /**
+     * @summary 获取外部指令插件
+     * @param {*} body 获取外部指令插件参数
+     * @param {*} [options] Override http request option.
+     */
+    pluginKeywords(body = {}, options: RequestInit = {}): Promise<Handler[]> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/plugin/keywords', options);
     },
 };
 
@@ -188,4 +216,40 @@ export interface TablesCronjob {
     type: string;
     // 最后更新时间戳
     updated_at: number;
+}
+
+export interface Handler {
+    // 0:不限制 7:群管理 9:创始人
+    level: number;
+    // 排序，越小越靠前
+    order: number;
+    // 群聊 id
+    roomid: string;
+    // 指令
+    command: string;
+    // 指令的描述信息
+    describe: string;
+}
+
+export interface HandlerListParam {
+    // 重装指令
+    reset?: boolean;
+}
+
+export interface CronjobPlugin {
+    // 插件信息
+    config: CronjobCreateParam;
+    // 错误信息
+    error: string;
+    // 插件文件
+    file: string;
+}
+
+export interface KeywordPlugin {
+    // 插件信息
+    config: KeywordCreateParam;
+    // 错误信息
+    error: string;
+    // 插件文件
+    file: string;
 }

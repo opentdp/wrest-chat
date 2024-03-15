@@ -7,13 +7,13 @@ import (
 )
 
 // @Summary 机器人指令集
-// @Tags BOT::杂项
-// @Param body body RobotHandlersParam true "机器人指令集参数"
-// @Success 200 {array} RobotHandler
-// @Router /bot/handlers [post]
+// @Tags DRY::指令
+// @Param body body HandlerListParam true "机器人指令集参数"
+// @Success 200 {array} Handler
+// @Router /api/handler/list [post]
 func handlerList(c *gin.Context) {
 
-	var rq *RobotHandlersParam
+	var rq *HandlerListParam
 
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
@@ -24,10 +24,10 @@ func handlerList(c *gin.Context) {
 		robot.Reset()
 	}
 
-	items := []RobotHandler{}
+	items := []Handler{}
 
 	for _, v := range robot.GetHandlers() {
-		items = append(items, RobotHandler{
+		items = append(items, Handler{
 			Level:    v.Level,
 			Order:    v.Order,
 			Roomid:   v.Roomid,
@@ -40,7 +40,7 @@ func handlerList(c *gin.Context) {
 
 }
 
-type RobotHandler struct {
+type Handler struct {
 	Level    int32  `json:"level"`    // 0:不限制 7:群管理 9:创始人
 	Order    int32  `json:"order"`    // 排序，越小越靠前
 	Roomid   string `json:"roomid"`   // 使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]
@@ -48,6 +48,6 @@ type RobotHandler struct {
 	Describe string `json:"describe"` // 指令的描述信息
 }
 
-type RobotHandlersParam struct {
+type HandlerListParam struct {
 	Reset bool `json:"reset"` // 是否重置机器人指令
 }

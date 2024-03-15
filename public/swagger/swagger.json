@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "添加计划任务",
                 "parameters": [
@@ -48,7 +48,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "删除计划任务",
                 "parameters": [
@@ -75,7 +75,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "获取计划任务",
                 "parameters": [
@@ -105,7 +105,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "计划任务列表",
                 "parameters": [
@@ -138,7 +138,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "计划任务状态",
                 "responses": {
@@ -154,7 +154,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "DRY::计划任务"
                 ],
                 "summary": "修改计划任务",
                 "parameters": [
@@ -171,6 +171,80 @@
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/handler/list": {
+            "post": {
+                "tags": [
+                    "DRY::指令"
+                ],
+                "summary": "机器人指令集",
+                "parameters": [
+                    {
+                        "description": "机器人指令集参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.HandlerListParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/sundry.Handler"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/plugin/cronjobs": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DRY::插件"
+                ],
+                "summary": "计划任务插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.CronjobPlugin"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/plugin/keywords": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DRY::插件"
+                ],
+                "summary": "外部指令插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.KeywordPlugin"
+                            }
+                        }
                     }
                 }
             }
@@ -315,36 +389,6 @@
                 "responses": {
                     "200": {
                         "description": "OK"
-                    }
-                }
-            }
-        },
-        "/bot/handlers": {
-            "post": {
-                "tags": [
-                    "BOT::杂项"
-                ],
-                "summary": "机器人指令集",
-                "parameters": [
-                    {
-                        "description": "机器人指令集参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/sundry.RobotHandlersParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/sundry.RobotHandler"
-                            }
-                        }
                     }
                 }
             }
@@ -633,50 +677,6 @@
                 "responses": {
                     "200": {
                         "description": "OK"
-                    }
-                }
-            }
-        },
-        "/bot/plugin/cronjobs": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BOT::杂项"
-                ],
-                "summary": "计划任务插件列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/plugin.CronjobPlugin"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/bot/plugin/keywords": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "BOT::杂项"
-                ],
-                "summary": "外部指令插件列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/plugin.KeywordPlugin"
-                            }
-                        }
                     }
                 }
             }
@@ -2437,7 +2437,9 @@
                 "config": {
                     "$ref": "#/definitions/cronjob.CreateParam"
                 },
-                "error": {},
+                "error": {
+                    "type": "string"
+                },
                 "file": {
                     "type": "string"
                 }
@@ -2449,7 +2451,9 @@
                 "config": {
                     "$ref": "#/definitions/keyword.CreateParam"
                 },
-                "error": {},
+                "error": {
+                    "type": "string"
+                },
                 "file": {
                     "type": "string"
                 }
@@ -2643,7 +2647,7 @@
                 }
             }
         },
-        "sundry.RobotHandler": {
+        "sundry.Handler": {
             "type": "object",
             "properties": {
                 "command": {
@@ -2668,7 +2672,7 @@
                 }
             }
         },
-        "sundry.RobotHandlersParam": {
+        "sundry.HandlerListParam": {
             "type": "object",
             "properties": {
                 "reset": {

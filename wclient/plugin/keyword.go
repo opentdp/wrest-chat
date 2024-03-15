@@ -13,7 +13,7 @@ import (
 
 type KeywordPlugin struct {
 	Config *keyword.CreateParam `json:"config"`
-	Error  error                `json:"error"`
+	Error  string               `json:"error"`
 	Name   string               `json:"file"`
 }
 
@@ -36,9 +36,12 @@ func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 			return err
 		}
 		// 更新插件信息
-		err = keyword.Replace(config)
+		errstr := ""
+		if err := keyword.Replace(config); err != nil {
+			errstr = err.Error()
+		}
 		configs = append(configs, &KeywordPlugin{
-			config, err, info.Name(),
+			config, errstr, info.Name(),
 		})
 		return err
 	})

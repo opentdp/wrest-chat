@@ -7,10 +7,10 @@ import (
 )
 
 // @Summary 计划任务插件列表
-// @Tags BOT::杂项
+// @Tags DRY::插件
 // @Produce json
 // @Success 200 {array} plugin.CronjobPlugin
-// @Router /bot/plugin/cronjobs [post]
+// @Router /api/plugin/cronjobs [post]
 func pluginCronjobs(c *gin.Context) {
 
 	plugins, err := plugin.CronjobPluginSetup()
@@ -25,10 +25,10 @@ func pluginCronjobs(c *gin.Context) {
 }
 
 // @Summary 外部指令插件列表
-// @Tags BOT::杂项
+// @Tags DRY::插件
 // @Produce json
 // @Success 200 {array} plugin.KeywordPlugin
-// @Router /bot/plugin/keywords [post]
+// @Router /api/plugin/keywords [post]
 func pluginKeywords(c *gin.Context) {
 
 	plugins, err := plugin.KeywordPluginSetup()

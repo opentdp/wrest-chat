@@ -13,7 +13,7 @@ import (
 
 type CronjobPlugin struct {
 	Config *cronjob.CreateParam `json:"config"`
-	Error  error                `json:"error"`
+	Error  string               `json:"error"`
 	Name   string               `json:"file"`
 }
 
@@ -36,9 +36,12 @@ func CronjobPluginSetup() ([]*CronjobPlugin, error) {
 			return err
 		}
 		// 更新插件信息
-		err = cronjob.Replace(config)
+		errstr := ""
+		if err := cronjob.Replace(config); err != nil {
+			errstr = err.Error()
+		}
 		configs = append(configs, &CronjobPlugin{
-			config, err, info.Name(),
+			config, errstr, info.Name(),
 		})
 		return nil
 	})

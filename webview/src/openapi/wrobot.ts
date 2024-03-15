@@ -182,15 +182,6 @@ export const RobotApi = {
         return httpRequest('/bot/profile/update', options);
     },
     /**
-     * @summary 获取指令列表
-     * @param {RobotHandlerParam} body 获取指令列表参数
-     * @param {*} [options] Override http request option.
-     */
-    robotHandlers(body: RobotHandlerParam, options: RequestInit = {}): Promise<RobotHandler[]> {
-        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/bot/handlers', options);
-    },
-    /**
      * @summary 创建全局设置
      * @param {SettingCreateParam} body 创建全局设置参数
      * @param {*} [options] Override http request option.
@@ -493,24 +484,6 @@ export interface ProfileUpdateParam {
     roomid: string;
     // 微信 id
     wxid: string;
-}
-
-export interface RobotHandler {
-    // 0:不限制 7:群管理 9:创始人
-    level: number;
-    // 排序，越小越靠前
-    order: number;
-    // 群聊 id
-    roomid: string;
-    // 指令
-    command: string;
-    // 指令的描述信息
-    describe: string;
-}
-
-export interface RobotHandlerParam {
-    // 重装指令
-    reset?: boolean;
 }
 
 export interface SettingCreateParam {
