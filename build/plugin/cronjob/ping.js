@@ -2,14 +2,14 @@
 // 参数中的 Rd 不要重复，且导入后不可随意修改，否则将影响插件的更新
 // @Rd: 100
 // @Name: Ping
-// @Second 0
-// @Minute 0
-// @Hour 0
-// @DayOfMonth *
-// @Month *
-// @DayOfWeek *
-// @Timeout 300
-// @Content node.exe
-// @Deliver wechat,xxx@room,wxid_xxxx
+// @Second: 0
+// @Minute: 0
+// @Hour: 0
+// @DayOfMonth: *
+// @Month: *
+// @DayOfWeek: *
+// @Timeout: 300
+// @Content: node.exe
+// @Deliver: wechat,xxx@room,wxid_xxxx
 
 console.log('pong');
