@@ -1,6 +1,6 @@
 
 import { httpRequest } from "./request";
-import { KeywordCreateParam } from "./wrobot";
+import { KeywordUpdateParam } from "./wrobot";
 
 export const SundryApi = {
     /**
@@ -78,7 +78,7 @@ export const SundryApi = {
      * @param {*} body 获取计划任务插件参数
      * @param {*} [options] Override http request option.
      */
-    pluginCronjobs(body = {}, options: RequestInit = {}): Promise<Handler[]> {
+    pluginCronjobs(body = {}, options: RequestInit = {}): Promise<CronjobPlugin[]> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/plugin/cronjobs', options);
     },
@@ -87,7 +87,7 @@ export const SundryApi = {
      * @param {*} body 获取外部指令插件参数
      * @param {*} [options] Override http request option.
      */
-    pluginKeywords(body = {}, options: RequestInit = {}): Promise<Handler[]> {
+    pluginKeywords(body = {}, options: RequestInit = {}): Promise<KeywordPlugin[]> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/plugin/keywords', options);
     },
@@ -238,7 +238,7 @@ export interface HandlerListParam {
 
 export interface CronjobPlugin {
     // 插件信息
-    config: CronjobCreateParam;
+    config: CronjobUpdateParam;
     // 错误信息
     error: string;
     // 插件文件
@@ -247,7 +247,7 @@ export interface CronjobPlugin {
 
 export interface KeywordPlugin {
     // 插件信息
-    config: KeywordCreateParam;
+    config: KeywordUpdateParam;
     // 错误信息
     error: string;
     // 插件文件
