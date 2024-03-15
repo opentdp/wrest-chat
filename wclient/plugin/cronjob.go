@@ -26,13 +26,13 @@ func CronjobPluginSetup() []*CronjobPlugin {
 	filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
 		// 忽略原则错误
 		if err != nil || info.IsDir() {
-			logman.Error("invalid cronjob plugin", "error", err)
+			logman.Error("invalid cronjob plugin", "name", info.Name(), "error", err)
 			return nil
 		}
 		// 获取绝对路径
 		fp, err := filepath.Abs(rp)
 		if err != nil {
-			logman.Error("invalid cronjob plugin", "error", err)
+			logman.Error("invalid cronjob plugin", "name", info.Name(), "error", err)
 			return nil
 		}
 		// 提取插件参数

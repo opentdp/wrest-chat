@@ -29,11 +29,15 @@
             @for (item of cronjobPlugins; track item.file) {
             <tr>
                 <th scope="row">{{item.file}}</th>
+                @if (item.config) {
                 <td>{{item.config.name}}</td>
                 <td class="d-none d-sm-table-cell">
                     {{item.config.second}} {{item.config.minute}} {{item.config.hour}} {{item.config.day_of_month}} {{item.config.month}} {{item.config.day_of_week}}
                 </td>
                 <td>{{item.config.rd > 0 ? '已激活': '未激活'}}</td>
+                } @else {
+                <td colspan="3" class="text-body-tertiary">{{item.error}}</td>
+                }
             </tr>
             }
         </tbody>
@@ -63,11 +67,15 @@
             @for (item of keywordPlugins; track item.file) {
             <tr>
                 <th scope="row">{{item.file}}</th>
+                @if (item.config) {
                 <td>{{item.config.phrase}}</td>
                 <td class="d-none d-sm-table-cell">
                     {{item.config.remark}}
                 </td>
                 <td>{{item.config.rd > 0 ? '已激活': '未激活'}}</td>
+                }@else {
+                <td colspan="3" class="text-body-tertiary">{{item.error}}</td>
+                }
             </tr>
             }
         </tbody>
