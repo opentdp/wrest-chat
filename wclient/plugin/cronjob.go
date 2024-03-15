@@ -21,7 +21,7 @@ func CronjobPluginSetup() ([]*CronjobPlugin, error) {
 
 	configs := []*CronjobPlugin{}
 
-	err := filepath.Walk("./cronjob", func(rp string, info os.FileInfo, err error) error {
+	err := filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
 			return err
 		}

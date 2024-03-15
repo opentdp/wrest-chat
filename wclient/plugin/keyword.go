@@ -21,7 +21,7 @@ func KeywordPluginSetup() ([]*KeywordPlugin, error) {
 
 	configs := []*KeywordPlugin{}
 
-	err := filepath.Walk("./keyword", func(rp string, info os.FileInfo, err error) error {
+	err := filepath.Walk("./plugin/keyword", func(rp string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
 			return err
 		}
