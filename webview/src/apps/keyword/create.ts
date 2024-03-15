@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserLevels, SpecialRooms, KeywordGroups, BadwordLevels } from '../../openapi/const';
-import { RobotApi, KeywordCreateParam, RobotHandler } from '../../openapi/wrobot';
+import { SundryApi, Handler } from '../../openapi/sundry';
+import { RobotApi, KeywordCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -17,7 +18,7 @@ export class KeywordCreateComponent {
     public keywordGroups = KeywordGroups;
     public badwordLevels = BadwordLevels;
 
-    public robotHandler: Array<RobotHandler> = [];
+    public robotHandler: Array<Handler> = [];
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
 
     public formdata: KeywordCreateParam = {
@@ -43,7 +44,7 @@ export class KeywordCreateComponent {
     }
 
     public getRobotHandlers() {
-        RobotApi.robotHandlers({}).then((data) => {
+        SundryApi.handlerList({}).then((data) => {
             this.robotHandler = data || [];
         });
     }

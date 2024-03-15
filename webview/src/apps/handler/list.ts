@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { UserLevels, SpecialRooms } from '../../openapi/const';
-import { RobotApi, RobotHandler } from '../../openapi/wrobot';
+import { SundryApi, Handler } from '../../openapi/sundry';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -14,7 +14,7 @@ export class HandlerListComponent {
     public userLevels = UserLevels;
     public specialRooms = SpecialRooms;
 
-    public robotHandler: Array<RobotHandler> = [];
+    public robotHandler: Array<Handler> = [];
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
@@ -24,7 +24,7 @@ export class HandlerListComponent {
     }
 
     public getRobotHandlers(reset?: boolean) {
-        RobotApi.robotHandlers({ reset }).then((data) => {
+        SundryApi.handlerList({ reset }).then((data) => {
             this.robotHandler = data || [];
         });
     }
