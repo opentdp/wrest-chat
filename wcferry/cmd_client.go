@@ -122,7 +122,7 @@ func (c *CmdClient) GetChatRoomMembers(roomid string) []*RpcContact {
 	members := []*RpcContact{}
 	// get room data
 	roomList := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomList) == 0 || len(roomList[0]) == 0 {
+	if len(roomList) == 0 || len(roomList[0]) == 0 || roomList[0]["RoomData"] == nil {
 		return members
 	}
 	roomData := &RoomData{}
@@ -162,7 +162,7 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	}
 	// get room data
 	roomList := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
-	if len(roomList) == 0 || len(roomList[0]) == 0 {
+	if len(roomList) == 0 || len(roomList[0]) == 0 || roomList[0]["RoomData"] == nil {
 		return nickName
 	}
 	roomData := &RoomData{}
