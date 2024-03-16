@@ -6,11 +6,6 @@ import (
 	"github.com/opentdp/go-helper/dborm"
 )
 
-type TopItem struct {
-	Sender      string `json:"sender"`
-	RecordCount int32  `json:"record_count"`
-}
-
 func TodayUnix() int64 {
 
 	now := time.Now()
@@ -18,6 +13,42 @@ func TodayUnix() int64 {
 
 	return today.Unix()
 
+}
+
+// 群聊统计
+
+type RoomData struct {
+	Talk  int32 `json:"talk"`
+	Image int32 `json:"image"`
+}
+
+func RoomCount(roomid string, day int64) *RoomData {
+
+	var result = RoomData{}
+
+	ts := TodayUnix() - 86400*day
+
+	sql1 := `
+		SELECT COUNT(*) AS record_count
+		FROM message
+		WHERE ? <= ts AND ts <= ? AND roomid = ?
+	`
+	dborm.Db.Raw(sql1, ts, ts+86400, roomid).Scan(&result.Talk)
+
+	sql2 := `
+		SELECT COUNT(*) AS record_count
+		FROM message
+		WHERE ? <= ts AND ts <= ? AND roomid = ? AND type IN (3,47)
+	`
+	dborm.Db.Raw(sql2, ts, ts+86400, roomid).Scan(&result.Image)
+
+	return &result
+
+}
+
+type TopItem struct {
+	Sender      string `json:"sender"`
+	RecordCount int32  `json:"record_count"`
 }
 
 func TalkTop10(roomid string, day int64) []*TopItem {
