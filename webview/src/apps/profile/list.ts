@@ -41,7 +41,13 @@ export class ProfileListComponent {
         RobotApi.profileList(this.formdata).then((data) => {
             this.profiles = data || [];
         });
-        this.getWcfRoomMembers(this.formdata.roomid || '-');
+        if (this.formdata.roomid) {
+            this.getWcfRoomMembers(this.formdata.roomid);
+        } else {
+            Object.keys(this.wcfChatrooms).forEach((id) => {
+                this.getWcfRoomMembers(id);
+            });
+        }
     }
 
     public deleteProfile(item: TablesProfile) {
@@ -63,11 +69,11 @@ export class ProfileListComponent {
     }
 
     public getWcfRoomMembers(id: string) {
-        if (id === '-' || this.wcfRoomMembers[id]) {
-            return;
+        if (this.wcfRoomMembers[id]) {
+            return; //已获取
         }
-        this.wcfRoomMembers[id] = {};
         WrestApi.chatroomMembers({ roomid: id }).then((data) => {
+            this.wcfRoomMembers[id] = {};
             data && data.forEach((item) => {
                 this.wcfRoomMembers[id][item.wxid] = item;
             });
