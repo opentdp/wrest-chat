@@ -13,6 +13,8 @@ import (
 var badMember = map[string]int{}
 var badwordList = []*tables.Keyword{}
 
+var roomMemberAlias = map[string]string{}
+
 func badHandler() []*Handler {
 
 	updateBadWord()
@@ -74,6 +76,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	// 遍历关键词
+	text := roomMemberName(msg.Sender, msg.Roomid) + msg.Content
 	for _, v := range badwordList {
 		if msg.IsGroup {
 			if v.Roomid != "*" && v.Roomid != "+" && v.Roomid != msg.Roomid {
@@ -84,7 +87,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 				continue // 忽略
 			}
 		}
-		if v.Level > 0 && strings.Contains(msg.Content, v.Phrase) {
+		if v.Level > 0 && strings.Contains(text, v.Phrase) {
 			badMember[msg.Sender] += int(v.Level)
 			if badMember[msg.Sender] > 10 {
 				defer delete(badMember, msg.Sender)
@@ -97,6 +100,17 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 	}
 
 	return ""
+
+}
+
+func roomMemberName(wxid, roomid string) string {
+
+	k := fmt.Sprintf("%s@%s", wxid, roomid)
+
+	if roomMemberAlias[k] == "" {
+		roomMemberAlias[k] = wc.CmdClient.GetAliasInChatRoom(wxid, roomid)
+	}
+	return roomMemberAlias[k]
 
 }
 
