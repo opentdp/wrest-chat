@@ -6,6 +6,7 @@ import (
 
 	"github.com/opentdp/wechat-rest/dbase/keyword"
 	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wechat-rest/wclient"
 )
 
 func cmddHandler() []*Handler {
@@ -31,12 +32,16 @@ func cmddHandler() []*Handler {
 			Callback: func(msg *wcferry.WxMsg) string {
 				exec := v.Target + " " + msg.Content
 				output, err := command.Exec(&command.ExecPayload{
-					Name:        "Handler:" + v.Phrase,
-					CommandType: "EXEC",
-					Content:     exec,
+					Name:          "Handler:" + v.Phrase,
+					CommandType:   "EXEC",
+					WorkDirectory: ".",
+					Content:       exec,
 				})
 				if err != nil {
 					logman.Error("cmd: "+v.Phrase, "error", err)
+				}
+				if wclient.SendFlexMsg(output, msg.Sender, msg.Roomid) != 0 {
+					return ""
 				}
 				return output
 			},
