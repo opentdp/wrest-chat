@@ -6,6 +6,7 @@ require (
 	github.com/clbanning/mxj v1.8.4
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gorilla/websocket v1.5.1
+	github.com/importcjj/sensitive v0.0.0-20200106142752-42d1c505be7b
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.7.1-0.20240314081626-c3e3805521f2
 	github.com/rehiy/one-llm v0.1.0

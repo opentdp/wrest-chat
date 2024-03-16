@@ -2,22 +2,22 @@ package robot
 
 import (
 	"fmt"
-	"strings"
+
+	"github.com/importcjj/sensitive"
 
 	"github.com/opentdp/wechat-rest/dbase/keyword"
 	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/tables"
 	"github.com/opentdp/wechat-rest/wcferry"
 )
 
 var badMember = map[string]int{}
-var badwordList = []*tables.Keyword{}
+var badFilter *sensitive.Filter
 
 var roomMemberAlias = map[string]string{}
 
 func badHandler() []*Handler {
 
-	updateBadWord()
+	updateBadWordFilter()
 
 	cmds := []*Handler{}
 
@@ -32,7 +32,7 @@ func badHandler() []*Handler {
 				Group: "badword", Roomid: prid(msg), Phrase: msg.Content, Level: 1,
 			})
 			if err == nil {
-				updateBadWord()
+				badFilter.AddWord(msg.Content)
 				return "违禁词添加成功"
 			}
 			return "违禁词已存在"
@@ -51,7 +51,7 @@ func badHandler() []*Handler {
 				Group: "badword", Roomid: prid(msg), Phrase: msg.Content,
 			})
 			if err == nil {
-				updateBadWord()
+				badFilter.DelWord(msg.Content)
 				return "违禁词删除成功"
 			}
 			return "违禁词删除失败"
@@ -75,28 +75,33 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
-	// 遍历关键词
+	// 查找违禁词
 	text := roomMemberName(msg.Sender, msg.Roomid) + msg.Content
-	for _, v := range badwordList {
-		if msg.IsGroup {
-			if v.Roomid != "*" && v.Roomid != "+" && v.Roomid != msg.Roomid {
-				continue // 忽略
-			}
-		} else {
-			if v.Roomid != "*" && v.Roomid != "-" {
-				continue // 忽略
-			}
+	keys := badFilter.FindAll(text)
+	if len(keys) == 0 {
+		return ""
+	}
+
+	// 判断违禁级别
+	level := 0
+	for _, k := range keys {
+		v, _ := keyword.Fetch(&keyword.FetchParam{Group: "badword", Phrase: k})
+		if v.Level > 0 && (v.Roomid == msg.Roomid || v.Roomid == "*" || v.Roomid == "+") {
+			level += int(v.Level)
 		}
-		if v.Level > 0 && strings.Contains(text, v.Phrase) {
-			badMember[msg.Sender] += int(v.Level)
-			if badMember[msg.Sender] > 10 {
-				defer delete(badMember, msg.Sender)
-				defer wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
-				return "我送你离开，天涯之外你是否还在"
-			}
-			str := "违规风险 +%d，当前累计：%d，大于 10 将被请出群聊"
-			return fmt.Sprintf(str, v.Level, badMember[msg.Sender])
+	}
+
+	// 等级违规积分
+	if level > 0 {
+		badMember[msg.Sender] += level
+		if badMember[msg.Sender] > 10 {
+			defer delete(badMember, msg.Sender)
+			defer wc.CmdClient.DelChatRoomMembers(msg.Roomid, msg.Sender)
+			str := "违规累计 %d；送你离开，天涯之外你是否还在"
+			return fmt.Sprintf(str, badMember[msg.Sender])
 		}
+		str := "违规风险 +%d，当前累计：%d，大于 10 将被请出群聊"
+		return fmt.Sprintf(str, level, badMember[msg.Sender])
 	}
 
 	return ""
@@ -110,14 +115,22 @@ func roomMemberName(wxid, roomid string) string {
 	if roomMemberAlias[k] == "" {
 		roomMemberAlias[k] = wc.CmdClient.GetAliasInChatRoom(wxid, roomid)
 	}
+
 	return roomMemberAlias[k]
 
 }
 
-func updateBadWord() {
+func updateBadWordFilter() {
 
-	badwordList, _ = keyword.FetchAll(&keyword.FetchAllParam{
+	items, _ := keyword.FetchAll(&keyword.FetchAllParam{
 		Group: "badword",
 	})
+
+	filter := sensitive.New()
+	for _, v := range items {
+		filter.AddWord(v.Phrase)
+	}
+
+	badFilter = filter
 
 }
