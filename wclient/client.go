@@ -67,8 +67,15 @@ func Register() *wcferry.Client {
 // return int32 0 为成功，其他失败
 func SendFlexMsg(msg, wxid, roomid string) int32 {
 
-	wxid = strings.Trim(wxid, "-")
-	roomid = strings.Trim(roomid, "-")
+	// 验证参数
+	msg = strings.TrimSpace(strings.Trim(msg, "-"))
+	wxid = strings.TrimSpace(strings.Trim(wxid, "-"))
+	roomid = strings.TrimSpace(strings.Trim(roomid, "-"))
+	if msg == "" || (wxid == "" && roomid == "") {
+		return -1
+	}
+
+	// 重组参数
 	receiver, ater := wxid, ""
 	if roomid != "" {
 		receiver, ater = roomid, wxid
@@ -86,16 +93,15 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 
 	// 发送卡片信息
 	if strings.HasPrefix(msg, "card\n") {
-		if args := strings.Split(msg, "\n")[1:]; len(args) >= 6 {
-			return wc.CmdClient.SendRichText(args[0], args[1], args[2], args[3], args[4], args[5], receiver)
+		if p := strings.Split(msg, "\n")[1:]; len(p) >= 6 {
+			return wc.CmdClient.SendRichText(p[0], p[1], p[2], p[3], p[4], p[5], receiver)
 		}
 	}
 
 	// 发送文本信息
 	if ater != "" {
-		user := wc.CmdClient.GetInfoByWxid(ater)
-		if user != nil && user.Name != "" {
-			msg = "@" + user.Name + "\n" + msg
+		if u := wc.CmdClient.GetInfoByWxid(ater); u != nil && u.Name != "" {
+			msg = "@" + u.Name + "\n" + msg
 		}
 	}
 	return wc.CmdClient.SendTxt(msg, receiver, ater)
