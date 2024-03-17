@@ -158,7 +158,9 @@ func (c *CmdClient) GetAliasInChatRoom(wxid, roomid string) string {
 	nickName := ""
 	userList := c.DbSqlQuery("MicroMsg.db", "SELECT NickName FROM Contact WHERE UserName = '"+wxid+"';")
 	if len(userList) > 0 && len(userList[0]) > 0 {
-		nickName = userList[0]["NickName"].(string)
+		if userList[0]["NickName"] != nil {
+			nickName = userList[0]["NickName"].(string)
+		}
 	}
 	// get room data
 	roomList := c.DbSqlQuery("MicroMsg.db", "SELECT RoomData FROM ChatRoom WHERE ChatRoomName = '"+roomid+"';")
