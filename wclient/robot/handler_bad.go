@@ -2,6 +2,7 @@ package robot
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/importcjj/sensitive"
 
@@ -75,9 +76,10 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 		return ""
 	}
 
-	// 查找违禁词
+	// 清洗并查找
+	expr := regexp.MustCompile("[[:space:]]|[\x00-\x1F]|[\u2000-\u22ff]")
 	text := roomMemberName(msg.Sender, msg.Roomid) + msg.Content
-	keys := badFilter.FindAll(text)
+	keys := badFilter.FindAll(expr.ReplaceAllString(text, ""))
 	if len(keys) == 0 {
 		return ""
 	}
@@ -122,11 +124,11 @@ func roomMemberName(wxid, roomid string) string {
 
 func updateBadWordFilter() {
 
+	filter := sensitive.New()
+
 	items, _ := keyword.FetchAll(&keyword.FetchAllParam{
 		Group: "badword",
 	})
-
-	filter := sensitive.New()
 	for _, v := range items {
 		filter.AddWord(v.Phrase)
 	}
