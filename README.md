@@ -13,7 +13,7 @@
 - 内置 Web 管理界面，可以管理机器人各项配置
 - 内置 Api 调试工具，所有接口都可以在线调试
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
-- 支持计划任务、外部指令、指令插件等扩展功能（开发语言不限）
+- 支持计划任务、外部指令、指令插件等扩展功能，详见 [wechat-rest-plugin](https://github.com/opentdp/wechat-rest-plugin)
 
 ## 快速开始
 
@@ -47,7 +47,7 @@
 
 模块依赖示意：`WEB ---> API ---> BOT ---> SDK ---> Wcferry ---> WeChat`。其中 `BOT` 模块并非必须的，可根据自己的需求选择是否开启，`Wcferry` 模块为第三方开源依赖，必须和 `WeChat` 版本匹配使用。
 
-查看和调试 *HTTP/WS* 接口，请使用浏览器访问 `http://localhost:7600/swagger/`
+查看和调试 *HTTP/WS* 接口，可使用浏览器访问 `http://localhost:7600/swagger/`。更多插件开发资源请查阅 [wechat-rest-plugin](https://github.com/opentdp/wechat-rest-plugin) 项目。
 
 ### API 模块
 
