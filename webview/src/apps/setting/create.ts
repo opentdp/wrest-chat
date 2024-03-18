@@ -15,7 +15,10 @@ export class SettingCreateComponent {
 
     public llmodels: Array<TablesLLModel> = [];
 
-    public formdata = {} as SettingCreateParam;
+    public formdata: SettingCreateParam = {
+        type: 'string',
+        name: '',
+    };
 
     constructor(private router: Router) {
         this.getLLModels();
