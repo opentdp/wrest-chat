@@ -45,6 +45,8 @@
 
 ## 开发指南
 
+模块依赖示意：`WEB ---> API ---> BOT ---> SDK ---> Wcferry ---> WeChat`。其中 `BOT` 模块并非必须的，可根据自己的需求选择是否开启，`Wcferry` 模块为第三方开源依赖，必须和 `WeChat` 版本匹配使用。
+
 查看和调试 *HTTP/WS* 接口，请使用浏览器访问 `http://localhost:7600/swagger/`
 
 ### API 模块

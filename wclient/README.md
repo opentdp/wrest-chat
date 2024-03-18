@@ -71,7 +71,6 @@
 【/api icp qq.com】 查询域名备案信息 <kapi.9kr.cc>
 【/api img 大山】 按关键字返回图片
 【/api ip 1.2.3.4】 查询IP地址信息
-【/api iptv】 获取 IPTV 源数据
 【/api lbs 南山】 地址解析，地址转坐标
 【/api lbs 纬度,经度】 逆地址解析，坐标位置描述
 【/api news】 获取今日热点
@@ -88,7 +87,7 @@
 
 ## 自定义 API 使用说明
 
-`/api` 命令会将用户输入的参数和后台设置的 `ApiEndpoint` 一起构造为一个完整的 URL，并通过 `http.Get` 发送请求。为方便前端用户输入，指令和参数由空格分隔，且第三部分及之后的任意字符都将整体被转义，示例 
+`/api` 命令会将用户输入的参数和后台设置的 `ApiEndpoint` 一起构造为一个完整的 URL，并通过 `http.Get` 发送请求。为方便前端用户输入，指令和参数由空格分隔，且第三部分及之后的任意字符都将整体被转义，示例：
 
 - `/api` 组装为 `https://example.com/help`
 - `/api icp qq.com` 组装为 `https://example.com/icp/qq.com`
