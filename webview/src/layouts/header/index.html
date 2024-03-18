@@ -2,7 +2,7 @@
     <div class="container-lg">
 
         <a routerLink="/" class="navbar-brand">
-            <img src="/assets/icon192.png" class="align-top" width="30" height="30">
+            <img src="/assets/icon.png" class="align-top" width="30" height="30">
             <span>&nbsp; 微助手</span>
         </a>
 
@@ -33,8 +33,14 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/cronjob/list" routerLinkActive="active">计划任务</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/handler/list" routerLinkActive="active">可用指令</a>
+                <li ngbDropdown class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" ngbDropdownToggle>
+                        杂项
+                    </a>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a ngbDropdownItem routerLink="/handler/list" routerLinkActive="active">可用指令</a>
+                        <a ngbDropdownItem routerLink="/plugin/list" routerLinkActive="active">插件状态</a>
+                    </div>
                 </li>
                 <li ngbDropdown class="nav-item" routerLinkActive="active">
                     <a class="nav-link" ngbDropdownToggle>

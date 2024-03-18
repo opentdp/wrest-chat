@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { BasicModule } from '../helpers/basic';
+import { Pipes } from '../helpers/pipes';
 
 import { AppLayouts } from '../layouts';
 
@@ -18,6 +19,7 @@ import { AppComponents, AppRoutes } from './pages';
         }),
     ],
     declarations: [
+        Pipes,
         AppLayouts,
         RootComponent,
         AppComponents,

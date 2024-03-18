@@ -19,12 +19,11 @@ func roomHandler() []*Handler {
 			v := v // copy
 			cmdkey := "/jr:" + v.JoinArgot
 			cmds = append(cmds, &Handler{
-				Level:    0,
+				Level:    -1,
 				Order:    510 + int32(k),
-				ChatAble: true,
-				RoomAble: false,
+				Roomid:   "-",
 				Command:  cmdkey,
-				Describe: "加群聊：" + v.Name,
+				Describe: "加群聊 " + v.Name,
 				Callback: func(msg *wcferry.WxMsg) string {
 					resp := wc.CmdClient.InviteChatroomMembers(v.Roomid, msg.Sender)
 					if resp == 1 {

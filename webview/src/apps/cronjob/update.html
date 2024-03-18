@@ -65,21 +65,56 @@
             <label class="form-label">执行路径 *</label>
             <input type="text" name="directory" class="form-control" [(ngModel)]="formdata.directory" required />
             <div class="form-text">
-                命令执行路径
+                执行命令的上下文路径，一般无需修改
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">任务内容 *</label>
             <textarea name="content" class="form-control" rows="5" [(ngModel)]="formdata.content" required></textarea>
             <div class="form-text">
+                @if (formdata.type == 'EXEC') {
+                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i><br />
+                }
                 输出的内容可投递到指定渠道，发送文件或图片请输出 <b>http://</b> 开头的链接
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">投递渠道 *</label>
-            <input name="deliver" class="form-control" rows="5" [(ngModel)]="formdata.deliver" required />
+            <div class="row g-3">
+                <div class="col col-md-2">
+                    <select name="deliver[0]" class="form-select" [(ngModel)]="deliver[0]" required>
+                        <option value="wechat">微信</option>
+                        <option value="email" disabled>电子邮件</option>
+                    </select>
+                </div>
+                @if (deliver[0] == 'wechat') {
+                <div class="col col-md-4">
+                    <select name="deliver[1]" class="form-select" [(ngModel)]="deliver[1]" (change)="changeConacts()" required>
+                        <option value="-">私聊</option>
+                        @for (item of wcfChatrooms; track item.wxid) {
+                        <option [value]="item.wxid">{{item.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col col-md-4">
+                    <select name="deliver[2]" class="form-select" [(ngModel)]="deliver[2]" [disabled]="conacts.length == 0" required>
+                        <option value="-" [class.d-none]="deliver[1] == '-'">所有人</option>
+                        @for (item of conacts | filter:'wxid,name':conactsFilter; track item.wxid) {
+                        <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
+                        }
+                    </select>
+                </div>
+                <div class="d-none d-md-block col-md-2">
+                    <input type="text" class="form-control" placeholder="过滤条件" [(ngModel)]="conactsFilter" [disabled]="conacts.length == 0" />
+                </div>
+                } @else {
+                <div class="col col-md-10">
+                    <input type="text" name="deliver[1]" class="form-control" rows="5" [(ngModel)]="deliver[1]" required />
+                </div>
+                }
+            </div>
             <div class="form-text">
-                格式："wechat,wxid" 或 "wechat,roomid" 或 "wechat,wxid,roomid"
+                非好友无法添加私聊推送
             </div>
         </div>
         <div class="col-12">

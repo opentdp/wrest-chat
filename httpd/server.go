@@ -4,8 +4,8 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/httpd/cronjob"
-	"github.com/opentdp/wechat-rest/httpd/midware"
+	"github.com/opentdp/wechat-rest/httpd/middle"
+	"github.com/opentdp/wechat-rest/httpd/sundry"
 	"github.com/opentdp/wechat-rest/httpd/wcfrest"
 	"github.com/opentdp/wechat-rest/httpd/wrobot"
 )
@@ -23,8 +23,8 @@ func Server() {
 
 	httpd.Engine(args.Debug)
 
-	// Cronjob 路由
-	cronjob.Route()
+	// 其他路由
+	sundry.Route()
 
 	// Wcfrest 路由
 	wcfrest.Route()
@@ -33,7 +33,7 @@ func Server() {
 	wrobot.Route()
 
 	// Swagger 守卫
-	httpd.Use(midware.SwaggerGuard)
+	httpd.Use(middle.SwaggerGuard)
 
 	// 前端文件路由
 	httpd.StaticEmbed("/", "public", args.Efs)

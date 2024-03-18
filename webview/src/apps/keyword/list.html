@@ -11,7 +11,10 @@
     <div class="row justify-content-between">
         <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
-                <option value="-">全局</option>
+                <option value="">全部</option>
+                @for (item of specialRooms | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
                 @for (item of wcfChatrooms | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
@@ -19,6 +22,7 @@
         </div>
         <div class="col-5 col-md-4">
             <select class="form-select" [(ngModel)]="formdata.group" (change)="getKeywords()">
+                <option value="">全部</option>
                 @for (item of keywordGroups | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
@@ -36,7 +40,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">短语</th>
-                <th scope="col">场景</th>
                 <th scope="col" class="d-none d-md-table-cell">分组</th>
                 <th scope="col" class="d-none d-md-table-cell">用途</th>
                 <th scope="col" class="d-none d-lg-table-cell">级别</th>
@@ -48,13 +51,6 @@
             <tr>
                 <th scope="row">{{item.rd}}</th>
                 <td>{{item.phrase}}</td>
-                <td>
-                    @if (wcfChatrooms[item.roomid]) {
-                    {{wcfChatrooms[item.roomid].name}}
-                    } @else {
-                    {{item.roomid != '-' ? item.roomid : '全局'}}
-                    }
-                </td>
                 <td class="d-none d-md-table-cell">
                     {{keywordGroups[item.group] && keywordGroups[item.group].name || '-'}}
                 </td>
@@ -62,7 +58,11 @@
                     {{item.target}}
                 </td>
                 <td class="d-none d-lg-table-cell">
-                    {{keywordLevels[item.level] && keywordLevels[item.level].name || '-'}}
+                    @if (item.group == 'badword') {
+                    {{badwordLevels[item.level] && badwordLevels[item.level].name || '-'}}
+                    } @else {
+                    {{userLevels[item.level] && userLevels[item.level].name || '-'}}
+                    }
                 </td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary" routerLink="/keyword/update/{{item.rd}}">编辑</button>

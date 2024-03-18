@@ -79,16 +79,17 @@ func Update(data *UpdateParam) error {
 
 }
 
-// 合并联系人
+// 合并计划
 
 type ReplaceParam = CreateParam
 
 func Replace(data *ReplaceParam) error {
 
-	item, err := Fetch(&FetchParam{
+	rq := &FetchParam{
 		Rd: data.Rd,
-	})
+	}
 
+	item, err := Fetch(rq)
 	if err == nil && item.Rd > 0 {
 		err = Update(data)
 	} else {

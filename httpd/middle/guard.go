@@ -1,4 +1,4 @@
-package midware
+package middle
 
 import (
 	"strings"

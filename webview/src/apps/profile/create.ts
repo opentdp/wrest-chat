@@ -18,15 +18,16 @@ export class ProfileCreateComponent {
 
     public wcfAvatars: Record<string, string> = {};
     public wcfFriends: Array<WcfrestContactPayload> = [];
-    public wcfContacts: Record<string, WcfrestContactPayload> = {};
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
+    public conactsFilter = '';
+
     public formdata: ProfileCreateParam = {
         wxid: '',
         roomid: '',
-        level: 1,
+        level: -1,
     };
 
     constructor(private router: Router) {

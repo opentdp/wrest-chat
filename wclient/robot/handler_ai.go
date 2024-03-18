@@ -21,20 +21,18 @@ func aiHandler() []*Handler {
 	}
 
 	cmds = append(cmds, &Handler{
-		Level:    0,
+		Level:    -1,
 		Order:    100,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/ai",
 		Describe: "提问或交谈",
 		Callback: aiCallback,
 	})
 
 	cmds = append(cmds, &Handler{
-		Level:    0,
+		Level:    -1,
 		Order:    101,
-		ChatAble: true,
-		RoomAble: true,
+		Roomid:   "*",
 		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
@@ -45,10 +43,9 @@ func aiHandler() []*Handler {
 
 	if len(models) > 3 {
 		cmds = append(cmds, &Handler{
-			Level:    0,
+			Level:    -1,
 			Order:    103,
-			ChatAble: true,
-			RoomAble: true,
+			Roomid:   "*",
 			Command:  "/ai:rand",
 			Describe: "随机选择模型",
 			Callback: func(msg *wcferry.WxMsg) string {
@@ -75,10 +72,9 @@ func aiHandler() []*Handler {
 		cmds = append(cmds, &Handler{
 			Level:    v.Level,
 			Order:    110 + int32(k),
-			ChatAble: true,
-			RoomAble: true,
+			Roomid:   "*",
 			Command:  cmdkey,
-			Describe: "换模型：" + v.Family,
+			Describe: "换模型 " + v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
 				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
@@ -117,7 +113,7 @@ func aiCallback(msg *wcferry.WxMsg) string {
 					return "提取消息图片失败"
 				}
 			}
-			return aichat.Image(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
+			return aichat.Vison(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
 		// 混合类消息
 		case 49:
 			if ref.Content != "" {

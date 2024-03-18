@@ -28,11 +28,11 @@ func MsgDeliver(deliver, message string) {
 
 func wechatMessage(args []string, message string) int32 {
 
-	wxid := args[0]
+	roomid := args[0]
 
-	roomid := ""
+	wxid := ""
 	if len(args) > 1 {
-		roomid = args[1]
+		wxid = args[1]
 	}
 
 	wc := wclient.Register()

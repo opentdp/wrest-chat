@@ -64,11 +64,12 @@ type ReplaceParam = CreateParam
 
 func Replace(data *ReplaceParam) error {
 
-	item, err := Fetch(&FetchParam{
-		Rd:   data.Rd,
-		Name: data.Name,
-	})
+	rq := &FetchParam{Rd: data.Rd}
+	if rq.Rd == 0 {
+		rq.Name = data.Name
+	}
 
+	item, err := Fetch(rq)
 	if err == nil && item.Rd > 0 {
 		data.Rd = item.Rd
 		err = Update(data)

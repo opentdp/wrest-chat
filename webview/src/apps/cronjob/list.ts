@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { CronjobTypes } from '../../openapi/const';
-import { CronApi, CronjobStatusPayload, TablesCronjob } from '../../openapi/cronjob';
+import { SundryApi, CronjobStatusPayload, TablesCronjob } from '../../openapi/sundry';
 
 
 @Component({
@@ -21,20 +21,20 @@ export class CronjobListComponent {
     }
 
     public getCronjobs() {
-        CronApi.cronjobList({}).then((data) => {
+        SundryApi.cronjobList({}).then((data) => {
             this.cronjobs = data || [];
         });
     }
 
     public getCronStatus() {
-        CronApi.cronjobStatus({}).then((data) => {
+        SundryApi.cronjobStatus({}).then((data) => {
             this.status = data || [];
         });
     }
 
     public deleteCronjob(item: TablesCronjob) {
         const rq = { rd: item.rd };
-        CronApi.cronjobDelete(rq).then(() => {
+        SundryApi.cronjobDelete(rq).then(() => {
             this.getCronjobs();
         });
     }

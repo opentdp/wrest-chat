@@ -45,7 +45,7 @@ func init() {
 		Level:    Log.Level,
 		Target:   Log.Target,
 		Storage:  Log.Dir,
-		Filename: "wrest",
+		Filename: "common",
 	})
 
 }

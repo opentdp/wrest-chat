@@ -1,6 +1,6 @@
 # WeChat Rest Bot
 
-基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已开放如下功能：
+基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已开放如下功能 
 
 - 自动回应拍一拍
 - 自动接受好友请求
@@ -30,14 +30,14 @@
 【/ai】 提问或交谈
 【/ai:new】 重置上下文内容
 【/ai:rand】 随机选择一个模型
-【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
-【/cm:gem】 换模型：Gemini [gemini-pro]
-【/cm:spa】 换模型：Spark [v3]
+【/cm:gpt】 换模型 GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型 Gemini [gemini-pro]
+【/cm:spa】 换模型 Spark [v3]
 【/api】 调用远程接口
 【/bad】 添加违禁词
 【/unbad】 删除违禁词
-【/jr:chat】 加群聊：OpenTDP 聊天
-【/jr:dev】 加群聊：OpenTDP 开发
+【/jr:chat】 加群聊 OpenTDP 聊天
+【/jr:dev】 加群聊 OpenTDP 开发
 【/wget】 获取图片或文件
 【/help】 查看帮助信息
 ----------------
@@ -50,9 +50,9 @@
 【/ai】 提问或交谈
 【/ai:new】 重置上下文内容
 【/ai:rand】 随机选择一个模型
-【/cm:gpt】 换模型：GPT [gpt-3.5-turbo]
-【/cm:gem】 换模型：Gemini [gemini-pro]
-【/cm:spa】 换模型：Spark [v3]
+【/cm:gpt】 换模型 GPT [gpt-3.5-turbo]
+【/cm:gem】 换模型 Gemini [gemini-pro]
+【/cm:spa】 换模型 Spark [v3]
 【/api】 调用远程接口
 【/bad】 添加违禁词
 【/unbad】 删除违禁词
@@ -71,7 +71,6 @@
 【/api icp qq.com】 查询域名备案信息 <kapi.9kr.cc>
 【/api img 大山】 按关键字返回图片
 【/api ip 1.2.3.4】 查询IP地址信息
-【/api iptv】 获取 IPTV 源数据
 【/api lbs 南山】 地址解析，地址转坐标
 【/api lbs 纬度,经度】 逆地址解析，坐标位置描述
 【/api news】 获取今日热点

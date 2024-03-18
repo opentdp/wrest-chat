@@ -18,12 +18,14 @@ export class ProfileUpdateComponent implements OnInit {
 
     public wcfAvatars: Record<string, string> = {};
     public wcfFriends: Array<WcfrestContactPayload> = [];
-    public wcfContacts: Record<string, WcfrestContactPayload> = {};
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
     public wcfRoomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public conacts: Array<WcfrestContactPayload> = [];
+    public conactsFilter = '';
+
     public formdata = {} as ProfileUpdateParam;
+
 
     constructor(
         private router: Router,

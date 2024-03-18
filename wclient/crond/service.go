@@ -1,6 +1,8 @@
 package crond
 
 import (
+	"strings"
+
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
@@ -34,7 +36,12 @@ func Daemon() {
 
 }
 
-func Execute(job *tables.Cronjob) {
+func Execute(id uint) {
+
+	job, _ := cronjob.Fetch(&cronjob.FetchParam{Rd: id})
+	if job.Content == "" {
+		return
+	}
 
 	logger.Info("cron:run "+job.Name, "entryId", job.EntryId)
 
@@ -61,7 +68,7 @@ func Execute(job *tables.Cronjob) {
 		return
 	}
 
-	// 发送命令执行结果
+	// 执行命令获取结果
 	output, err := command.Exec(&command.ExecPayload{
 		Name:          "cron: " + job.Name,
 		CommandType:   job.Type,
@@ -69,20 +76,30 @@ func Execute(job *tables.Cronjob) {
 		Content:       job.Content,
 		Timeout:       job.Timeout,
 	})
-	if err == nil && output != "" && job.Deliver != "-" {
-		MsgDeliver(job.Deliver, output)
+	if err != nil {
+		logger.Warn("cron:run "+job.Name, "error", err)
 		return
 	}
 
-	logger.Warn("cron:run "+job.Name, "output", output, "error", err)
+	// 发送命令执行结果
+	logger.Warn("cron:run "+job.Name, "output", output)
+	if output != "" && job.Deliver != "-" {
+		MsgDeliver(job.Deliver, output)
+	}
 
 }
 
 func AttachJob(job *tables.Cronjob) error {
 
-	sepc := job.Second + " " + job.Minute + " " + job.Hour + " " + job.DayOfMonth + " " + job.Month + " " + job.DayOfWeek
+	cmd := func(id uint) func() {
+		return func() { Execute(id) }
+	}
 
-	entryId, err := crontab.AddFunc(sepc, func() { Execute(job) })
+	sepc := []string{
+		job.Second, job.Minute, job.Hour, job.DayOfMonth, job.Month, job.DayOfWeek,
+	}
+
+	entryId, err := crontab.AddFunc(strings.Join(sepc, " "), cmd(job.Rd))
 	if err != nil {
 		return err
 	}

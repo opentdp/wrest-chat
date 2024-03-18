@@ -14,12 +14,16 @@ export class WcferryReceiverComponent implements OnDestroy {
         this.startSocket();
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy() {
+        this.stopSocket();
+    }
+
+    public stopSocket() {
         this.wss && this.wss.close();
         this.messages = [];
     }
 
-    public async startSocket() {
+    public startSocket() {
         const token = sessionStorage.getItem('token');
         const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
         const wss = new WebSocket(url + (token ? '?token=' + token : ''));

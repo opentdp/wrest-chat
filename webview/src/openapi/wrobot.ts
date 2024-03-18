@@ -182,15 +182,6 @@ export const RobotApi = {
         return httpRequest('/bot/profile/update', options);
     },
     /**
-     * @summary 获取指令列表
-     * @param {*} body 获取指令列表参数
-     * @param {*} [options] Override http request option.
-     */
-    robotHandlers(body = {}, options: RequestInit = {}): Promise<RobotHandler[]> {
-        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/bot/handlers', options);
-    },
-    /**
      * @summary 创建全局设置
      * @param {SettingCreateParam} body 创建全局设置参数
      * @param {*} [options] Override http request option.
@@ -319,6 +310,8 @@ export interface KeywordCreateParam {
     roomid: string;
     // 目标
     target?: string;
+    // 备注
+    remark?: string;
 }
 
 export interface KeywordDeleteParam {
@@ -369,6 +362,8 @@ export interface KeywordUpdateParam {
     roomid: string;
     // 目标
     target: string;
+    // 备注
+    remark: string;
 }
 
 export interface LlmodelCreateParam {
@@ -491,21 +486,6 @@ export interface ProfileUpdateParam {
     wxid: string;
 }
 
-export interface RobotHandler {
-    // 0:不限制 7:群管理 9:创始人
-    level: number;
-    // 排序，越小越靠前
-    order: number;
-    // 是否允许在私聊使用
-    chat_able: boolean;
-    // 是否允许在群聊使用
-    room_able: boolean;
-    // 指令
-    command: string;
-    // 指令的描述信息
-    describe: string;
-}
-
 export interface SettingCreateParam {
     // 分组
     group?: string;
@@ -603,6 +583,8 @@ export interface TablesKeyword {
     roomid: string;
     // 目标
     target: string;
+    // 备注
+    remark: string;
     // 最后更新时间戳
     updated_at: number;
 }

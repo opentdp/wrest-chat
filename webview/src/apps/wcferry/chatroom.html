@@ -10,34 +10,90 @@
 
 <div class="container-lg mb-3">
     <div class="row g-3">
-        <div class="col-md-6">
-            <div class="list-group sticky-top">
-                @for (item of chatrooms; track item.wxid) {
-                <a class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer" [class.active]="chatroom && chatroom.wxid == item.wxid" (click)="getChatroom(item)">
-                    <div class="avatar me-3">
-                        <img class="rounded" [src]="avatars[item.wxid]" />
-                    </div>
-                    <div class="text-truncate">
-                        <div class="fw-bold text-truncate">{{item.remark || item.name || '-'}}</div>
-                        <small>{{item.wxid}}</small>
-                    </div>
-                </a>
-                }
+        <div class="col col-md-3">
+            <div class="card">
+                <div class="list-group list-group-flush chatrooms">
+                    @for (item of chatrooms; track item.wxid) {
+                    <a class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer" [class.active]="chatroom && chatroom.wxid == item.wxid" (click)="getChatroom(item)">
+                        <div class="avatar me-3">
+                            <img class="rounded" [src]="avatars[item.wxid]" />
+                        </div>
+                        <div class="text-truncate">
+                            <div class="fw-bold text-truncate">{{item.remark || item.name || '-'}}</div>
+                            <small>{{item.wxid}}</small>
+                        </div>
+                    </a>
+                    }
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="list-group sticky-top">
-                @for (item of members; track item.wxid) {
-                <div class="list-group-item d-flex align-items-center">
-                    <div class="avatar me-3">
-                        <img class="rounded" [src]="avatars[item.wxid] || '/assets/icon.png'" />
+        <div class="col" [class.col-md-9]="!showMember" [class.col-md-6]="showMember">
+            <div class="card" *ngIf="chatroom">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="text-truncate fs-5 me-2">
+                        {{chatroom.name}}（{{members.length}}）
                     </div>
-                    <div class="text-truncate">
-                        <div class="fw-bold text-truncate">{{item.remark || item.name || '-'}}</div>
-                        <small>{{item.wxid}}</small>
+                    @if (showMember) {
+                    <i class="bi bi-box-arrow-in-right cursor-pointer" (click)="showMember = false"></i>
+                    } @else {
+                    <i class="bi bi-box-arrow-in-left cursor-pointer" (click)="showMember = true"></i>
+                    }
+                </div>
+                <div class="list-group list-group-flush messages">
+                    @for (item of messages; track item.id) {
+                    @if(item.roomid == chatroom.wxid) {
+                    <div class="list-group-item" [class.system]="item.sender == 'system'">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar me-3">
+                                <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
+                            </div>
+                            <div class="text-truncate">
+                                <div class="fw-bold">
+                                    {{memberMap[item.sender] && memberMap[item.sender].name || '-'}}
+                                </div>
+                                <small>{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            {{item.content}}
+                        </div>
+                    </div>
+                    }
+                    @if (item.sender == 'system') {
+                    <div class="list-group-item msg-system">
+                        <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
+                    </div>
+                    }
+                    }
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入消息" [(ngModel)]="content">
+                        <button class="btn btn-primary" (click)="sendTxt()">发送</button>
                     </div>
                 </div>
-                }
+            </div>
+        </div>
+        <div class="col col-md-3" [class.d-none]="!showMember">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="fs-5">
+                        群成员
+                    </div>
+                </div>
+                <div class="list-group list-group-flush members">
+                    @for (item of members; track item.wxid) {
+                    <a class="list-group-item d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <img class="rounded" [src]="avatars[item.wxid] || '/assets/icon.png'" />
+                        </div>
+                        <div class="text-truncate">
+                            <div class="fw-bold text-truncate">{{item.remark || item.name || '-'}}</div>
+                            <small>{{item.wxid}}</small>
+                        </div>
+                    </a>
+                    }
+                </div>
             </div>
         </div>
     </div>

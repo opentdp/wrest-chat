@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "添加计划任务",
                 "parameters": [
@@ -48,7 +48,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "删除计划任务",
                 "parameters": [
@@ -75,7 +75,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "获取计划任务",
                 "parameters": [
@@ -105,7 +105,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "计划任务列表",
                 "parameters": [
@@ -138,7 +138,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "计划任务状态",
                 "responses": {
@@ -154,7 +154,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "JOB::计划任务"
+                    "API::计划任务"
                 ],
                 "summary": "修改计划任务",
                 "parameters": [
@@ -171,6 +171,80 @@
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/handler/list": {
+            "post": {
+                "tags": [
+                    "API::指令集"
+                ],
+                "summary": "获取所有可用指令",
+                "parameters": [
+                    {
+                        "description": "获取所有可用指令参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.HandlerListParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/sundry.Handler"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/plugin/cronjobs": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::插件管理"
+                ],
+                "summary": "计划任务插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.CronjobPlugin"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/plugin/keywords": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::插件管理"
+                ],
+                "summary": "外部指令插件列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/plugin.KeywordPlugin"
+                            }
+                        }
                     }
                 }
             }
@@ -315,25 +389,6 @@
                 "responses": {
                     "200": {
                         "description": "OK"
-                    }
-                }
-            }
-        },
-        "/bot/handlers": {
-            "post": {
-                "tags": [
-                    "BOT::杂项"
-                ],
-                "summary": "机器人指令集",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/wrobot.RobotHandler"
-                            }
-                        }
                     }
                 }
             }
@@ -2172,6 +2227,9 @@
                 "rd": {
                     "type": "integer"
                 },
+                "remark": {
+                    "type": "string"
+                },
                 "roomid": {
                     "type": "string"
                 },
@@ -2250,6 +2308,9 @@
                 },
                 "rd": {
                     "type": "integer"
+                },
+                "remark": {
+                    "type": "string"
                 },
                 "roomid": {
                     "type": "string"
@@ -2366,6 +2427,34 @@
                     "type": "integer"
                 },
                 "secret": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.CronjobPlugin": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/cronjob.CreateParam"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "file": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.KeywordPlugin": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/keyword.CreateParam"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "file": {
                     "type": "string"
                 }
             }
@@ -2558,6 +2647,40 @@
                 }
             }
         },
+        "sundry.Handler": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "description": "指令",
+                    "type": "string"
+                },
+                "describe": {
+                    "description": "指令的描述信息",
+                    "type": "string"
+                },
+                "level": {
+                    "description": "0:不限制 7:群管理 9:创始人",
+                    "type": "integer"
+                },
+                "order": {
+                    "description": "排序，越小越靠前",
+                    "type": "integer"
+                },
+                "roomid": {
+                    "description": "使用场景 [*:所有,-:私聊,+:群聊,其他:群聊]",
+                    "type": "string"
+                }
+            }
+        },
+        "sundry.HandlerListParam": {
+            "type": "object",
+            "properties": {
+                "reset": {
+                    "description": "是否重置机器人指令",
+                    "type": "boolean"
+                }
+            }
+        },
         "tables.Chatroom": {
             "type": "object",
             "properties": {
@@ -2710,6 +2833,10 @@
                 "rd": {
                     "description": "主键",
                     "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
                 },
                 "roomid": {
                     "description": "群聊 id",
@@ -3271,35 +3398,6 @@
                 "wxid": {
                     "description": "用户 id",
                     "type": "string"
-                }
-            }
-        },
-        "wrobot.RobotHandler": {
-            "type": "object",
-            "properties": {
-                "chat_able": {
-                    "description": "是否允许在私聊使用",
-                    "type": "boolean"
-                },
-                "command": {
-                    "description": "指令",
-                    "type": "string"
-                },
-                "describe": {
-                    "description": "指令的描述信息",
-                    "type": "string"
-                },
-                "level": {
-                    "description": "0:不限制 7:群管理 9:创始人",
-                    "type": "integer"
-                },
-                "order": {
-                    "description": "排序，越小越靠前",
-                    "type": "integer"
-                },
-                "room_able": {
-                    "description": "是否允许在群聊使用",
-                    "type": "boolean"
                 }
             }
         }

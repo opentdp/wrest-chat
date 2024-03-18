@@ -6,14 +6,14 @@ import (
 	"github.com/opentdp/go-helper/httpd"
 
 	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/httpd/midware"
+	"github.com/opentdp/wechat-rest/httpd/middle"
 	"github.com/opentdp/wechat-rest/wclient"
 )
 
 func Route() {
 
 	rg := httpd.Group("/wcf")
-	rg.Use(midware.OutputHandle, midware.ApiGuard)
+	rg.Use(middle.OutputHandle, middle.ApiGuard)
 
 	ctrl := &Controller{wclient.Register()}
 

@@ -63,7 +63,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
-		return "", errors.New("未得到预期的结果")
+		return "", errors.New("未得到预期的结果，请稍后重试")
 	}
 
 	// 更新历史记录
@@ -77,7 +77,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 }
 
-func GoogleImage(id, rid, ask, img string) (string, error) {
+func GoogleVison(id, rid, ask, img string) (string, error) {
 
 	img, mime := ReadImage(img)
 
@@ -122,11 +122,16 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
-		return "", errors.New("未得到预期的结果")
+		return "", errors.New("未得到预期的结果，请稍后重试")
 	}
 
-	// 返回结果
+	// 更新历史记录
 
-	return resp.Candidates[0].Content.Parts[0].Text, nil
+	item1 := &MsgHistory{Content: ask, Role: "user"}
+	item2 := &MsgHistory{Content: resp.Candidates[0].Content.Parts[0].Text, Role: "assistant"}
+
+	AddHistory(id, rid, item1, item2)
+
+	return item2.Content, nil
 
 }
