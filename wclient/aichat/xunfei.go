@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/liudding/go-llm-api/xunfei"
+	"github.com/rehiy/one-llm/xunfei"
 )
 
 func XunfeiText(id, rid, ask string) (string, error) {
@@ -18,12 +18,12 @@ func XunfeiText(id, rid, ask string) (string, error) {
 		return "", errors.New("密钥格式错误")
 	}
 
-	// 初始化模型
-
-	model := "v3"
+	model := "v3.5"
 	if len(llmc.Model) > 1 {
 		model = llmc.Model
 	}
+
+	// 初始化模型
 
 	config := xunfei.DefaultConfig(keys[0], keys[1], keys[2])
 
@@ -47,14 +47,8 @@ func XunfeiText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		if role == "user" {
-			role = xunfei.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = xunfei.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, xunfei.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -97,9 +91,9 @@ func XunfeiText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: reply, Role: "model"}
+	item2 := &MsgHistory{Content: reply, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 

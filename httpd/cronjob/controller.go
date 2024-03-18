@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/opentdp/wechat-rest/dbase/cronjob"
+	"github.com/opentdp/wechat-rest/wclient/crond"
 )
 
 type Cronjob struct{}
@@ -72,7 +73,7 @@ func (*Cronjob) create(c *gin.Context) {
 	if id, err := cronjob.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
 		c.Set("Payload", id)
-		NewById(id)
+		crond.NewById(id)
 	} else {
 		c.Set("Error", err)
 	}
@@ -96,7 +97,7 @@ func (*Cronjob) update(c *gin.Context) {
 
 	if err := cronjob.Update(rq); err == nil {
 		c.Set("Message", "更新成功")
-		RedoById(rq.Rd)
+		crond.RedoById(rq.Rd)
 	} else {
 		c.Set("Error", err)
 	}
@@ -118,7 +119,7 @@ func (*Cronjob) delete(c *gin.Context) {
 		return
 	}
 
-	UndoById(rq.Rd) // 先从计划列表中删除
+	crond.UndoById(rq.Rd) // 先从计划列表中删除
 
 	if err := cronjob.Delete(rq); err == nil {
 		c.Set("Message", "删除成功")
@@ -135,6 +136,6 @@ func (*Cronjob) delete(c *gin.Context) {
 // @Router /api/cronjob/status [post]
 func (*Cronjob) status(c *gin.Context) {
 
-	c.Set("Payload", GetEntries())
+	c.Set("Payload", crond.GetEntries())
 
 }

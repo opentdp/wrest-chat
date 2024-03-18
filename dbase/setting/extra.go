@@ -17,18 +17,18 @@ var (
 	AutoSaveImage = true
 	// 开启后仅已注册的群和用户可以使用机器人
 	WhiteLimit = false
-	// 用户的默认模型代码
+	// 用户和群默认使用的模型
 	ModelDefault = ""
 	// 定义模型扮演的身份
-	ModelContext = "你是由OpenTDP开发的群助手，必须使用尽可能少的字数回答接下来的所有问题"
-	// 历史消息数量
+	ModelContext = "你是由 OpenTDP 开发的群助手，必须使用尽可能少的字数回答接下来的所有问题"
+	// 模型历史消息数
 	ModelHistory = 20
 	// 未注册指令时响应的内容，仅对"/"开头的指令有效
 	InvalidHandler = "-"
 	// API 指令请求的网址
-	ApiEndpoint = "https://api.rehi.org/format=yaml/"
+	ApiEndpoint = "https://wrest.rehi.org/"
 	// API 指令卡片使用的图标
-	ApiEndpointIcon = "https://api.rehi.org/assets/icon.png"
+	ApiEndpointIcon = "https://wrest.rehi.org/assets/icon.png"
 	// HELP 指令扩展内容
 	HelpAdditive = ""
 )
@@ -86,8 +86,8 @@ func DataMigrate() {
 		{0, "RevokeMsg", "string", "bot", RevokeMsg, "撤回提醒", "私聊撤回消息时响应的内容"},
 		{0, "AutoSaveImage", "bool", "bot", strconv.FormatBool(AutoSaveImage), "自动保存图片", "是否自动下载消息中的图片"},
 		{0, "WhiteLimit", "bool", "bot", strconv.FormatBool(WhiteLimit), "白名单模式", "开启后仅已注册的群和用户可以使用机器人"},
-		{0, "ModelDefault", "lmodel", "bot", ModelDefault, "默认模型", "用户的默认大模型代码"},
-		{0, "ModelContext", "text", "bot", ModelContext, "模型预定义", "大模型扮演的身份定义"},
+		{0, "ModelDefault", "lmodel", "bot", ModelDefault, "默认模型", "默认 AI 模型，用户和群默认使用该模型"},
+		{0, "ModelContext", "text", "bot", ModelContext, "模型角色设定", "预设 AI 模型扮演的身份"},
 		{0, "ModelHistory", "number", "bot", strconv.Itoa(ModelHistory), "上下文总数", "AI 聊天最大记录数，值越大消耗的 Token 越多"},
 		{0, "InvalidHandler", "text", "bot", InvalidHandler, "指令未注册", "未注册指令时响应的内容，仅对\"/\"开头的指令有效"},
 		{0, "ApiEndpoint", "string", "bot", ApiEndpoint, "API 指令地址", "/api 指令请求的网址"},

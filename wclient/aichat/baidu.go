@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/liudding/go-llm-api/baidu"
+	"github.com/rehiy/one-llm/baidu"
 )
 
 func BaiDuText(id, rid, ask string) (string, error) {
@@ -15,6 +15,11 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	keys := strings.Split(llmc.Secret, ",")
 	if len(keys) != 2 {
 		return "", errors.New("密钥格式错误")
+	}
+
+	model := "completions_pro"
+	if len(llmc.Model) > 1 {
+		model = llmc.Model
 	}
 
 	// 初始化模型
@@ -40,14 +45,8 @@ func BaiDuText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		if role == "user" {
-			role = baidu.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = baidu.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, baidu.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -59,7 +58,7 @@ func BaiDuText(id, rid, ask string) (string, error) {
 
 	// 请求模型接口
 
-	res, err := client.CreateChatCompletion(context.Background(), req)
+	res, err := client.CreateChatCompletion(context.Background(), req, model)
 	if err != nil {
 		return "", err
 	}
@@ -71,9 +70,9 @@ func BaiDuText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: res.Result, Role: "model"}
+	item2 := &MsgHistory{Content: res.Result, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 

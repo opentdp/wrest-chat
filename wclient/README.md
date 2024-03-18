@@ -86,7 +86,93 @@
 【/api whois qq.com】 获取域名 Whois 信息 <whois.ddnsip.cn>
 ```
 
-## 消息类型
+## 自定义 API 使用说明
+
+`/api` 命令会将用户输入的参数和后台设置的 `ApiEndpoint` 一起构造为一个完整的 URL，并通过 `http.Get` 发送请求。为方便前端用户输入，指令和参数由空格分隔，且第三部分及之后的任意字符都将整体被转义，示例：
+
+- `/api` 组装为 `https://example.com/help`
+- `/api icp qq.com` 组装为 `https://example.com/icp/qq.com`
+- `/api img one two` 组装为 `https://example.com/img/one%20two`
+- `/api img one=two` 组装为 `https://example.com/img/one=two`
+
+### 回调数据结构
+
+下面的 GO 结构体用于描述自定义 API 的回调数据格式，**转为 JSON 后对应的字段均为小写**。
+
+```go
+type ApiCallbackData struct {
+    Type string
+    Card struct { 
+        Name    string
+        Account string
+        Title   string
+        Digest  string
+        Link    string
+        Icon    string
+    }
+    Link string
+    Text string
+}
+```
+
+### 字段说明
+
+| 字段   | 类型   | 说明                                                        |
+| ------ | ------ | ----------------------------------------------------------- |
+| `Type` | string | 数据类型，可选值为 `card`、`file`、`image`、`text`、`error` |
+| `Card` | struct | 当 `Type` 为 `card` 时有效，详见下表                        |
+| `Link` | string | 当 `Type` 为 `file` 或 `image` 时有效，指向文件的链接       |
+| `Text` | string | 当 `Type` 为 `text` 或 `error` 时有效，文本内容             |
+
+### `Card` 字段说明
+
+| 字段      | 类型   | 说明                              |
+| --------- | ------ | --------------------------------- |
+| `Name`    | string | 左下显示的名字，可选              |
+| `Account` | string | 公众号 id，可显示对应的头像，可选 |
+| `Title`   | string | 标题，最多显示为两行              |
+| `Digest`  | string | 摘要，最多显示为三行              |
+| `Link`    | string | 点击后跳转的链接                  |
+| `Icon`    | string | 右侧缩略图的链接，可选            |
+
+### 服务端返回消息示例
+
+```json
+{
+  "type": "card",
+  "card": {
+    "name": "公众号名称",
+    "account": "公众号 id",
+    "title": "标题",
+    "digest": "摘要",
+    "link": "链接",
+    "icon": "缩略图链接"
+  }
+}
+```
+
+```json
+{
+  "type": "file",
+  "link": "文件链接"
+}
+```
+
+```json
+{
+  "type": "text",
+  "text": "文本内容"
+}
+```
+
+```json
+{
+  "type": "error",
+  "text": "错误信息"
+}
+```
+
+## 微信消息类型
 
 ```go
 switch msg.Type {

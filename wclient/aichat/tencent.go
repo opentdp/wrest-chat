@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/liudding/go-llm-api/tencent"
+	"github.com/rehiy/one-llm/tencent"
 )
 
 func TencentText(id, rid, ask string) (string, error) {
@@ -46,14 +46,8 @@ func TencentText(id, rid, ask string) (string, error) {
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		if role == "user" {
-			role = tencent.ChatMessageRoleUser
-		}
-		if role == "model" {
-			role = tencent.ChatMessageRoleAssistant
-		}
 		req.Messages = append(req.Messages, tencent.ChatCompletionMessage{
 			Content: msg.Content, Role: role,
 		})
@@ -74,15 +68,13 @@ func TencentText(id, rid, ask string) (string, error) {
 		return "", errors.New("未得到预期的结果")
 	}
 
-	reply := ""
-
-	reply += res.Choices[0].Messages.Content
+	reply := res.Choices[0].Messages.Content
 
 	// 更新历史记录
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: reply, Role: "model"}
+	item2 := &MsgHistory{Content: reply, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 

@@ -65,8 +65,8 @@
                     {{keywordLevels[item.level] && keywordLevels[item.level].name || '-'}}
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary me-2" routerLink="/keyword/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger" (click)="deleteKeyword(item)">删除</button>
+                    <button class="btn btn-sm btn-primary" routerLink="/keyword/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteKeyword(item)">删除</button>
                 </td>
             </tr>
             }

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/opentdp/go-helper/googai"
+	"github.com/rehiy/one-llm/google"
 )
 
 func GoogleText(id, rid, ask string) (string, error) {
@@ -13,7 +13,7 @@ func GoogleText(id, rid, ask string) (string, error) {
 
 	// 初始化模型
 
-	client := googai.NewClient(llmc.Secret)
+	client := google.NewClient(llmc.Secret)
 
 	if len(llmc.Model) > 1 {
 		client.Model = llmc.Model
@@ -23,28 +23,29 @@ func GoogleText(id, rid, ask string) (string, error) {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &googai.RequestBody{
-		Contents: []*googai.Content{},
-	}
+	req := []google.ChatCompletionMessage{}
 
 	// 设置上下文
 
 	if llmc.RoleContext != "" {
-		req.Contents = []*googai.Content{
-			{Parts: []*googai.Part{{Text: llmc.RoleContext}}, Role: "user"},
-			{Parts: []*googai.Part{{Text: "OK"}}, Role: "model"},
+		req = []google.ChatCompletionMessage{
+			{Parts: []google.ChatCompletionMessagePart{{Text: llmc.RoleContext}}, Role: google.ChatMessageRoleUser},
+			{Parts: []google.ChatCompletionMessagePart{{Text: "OK"}}, Role: google.ChatMessageRoleAssistant},
 		}
 	}
 
-	for _, msg := range msgHistories[id] {
+	for _, msg := range GetHistory(id, rid) {
 		role := msg.Role
-		req.Contents = append(req.Contents, &googai.Content{
-			Parts: []*googai.Part{{Text: msg.Content}}, Role: role,
+		if role == "assistant" {
+			role = google.ChatMessageRoleAssistant
+		}
+		req = append(req, google.ChatCompletionMessage{
+			Parts: []google.ChatCompletionMessagePart{{Text: msg.Content}}, Role: role,
 		})
 	}
 
-	req.Contents = append(req.Contents, &googai.Content{
-		Parts: []*googai.Part{{Text: ask}}, Role: googai.ChatMessageRoleUser,
+	req = append(req, google.ChatCompletionMessage{
+		Parts: []google.ChatCompletionMessagePart{{Text: ask}}, Role: google.ChatMessageRoleUser,
 	})
 
 	// 请求模型接口
@@ -54,11 +55,11 @@ func GoogleText(id, rid, ask string) (string, error) {
 		return "", err
 	}
 
-	if resp.Error != nil {
+	if resp.Error.Message != "" {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}
@@ -68,9 +69,9 @@ func GoogleText(id, rid, ask string) (string, error) {
 	// 更新历史记录
 
 	item1 := &MsgHistory{Content: ask, Role: "user"}
-	item2 := &MsgHistory{Content: resp.Candidates[0].Content.Parts[0].Text, Role: "model"}
+	item2 := &MsgHistory{Content: resp.Candidates[0].Content.Parts[0].Text, Role: "assistant"}
 
-	AppendHistory(id, item1, item2)
+	AddHistory(id, rid, item1, item2)
 
 	return item2.Content, nil
 
@@ -91,35 +92,33 @@ func GoogleImage(id, rid, ask, img string) (string, error) {
 
 	// 初始化模型
 
-	client := googai.NewClient(llmc.Secret)
+	client := google.NewClient(llmc.Secret)
 
 	if llmc.Endpoint != "" {
 		client.ApiBaseUrl = llmc.Endpoint
 	}
 
-	req := &googai.RequestBody{
-		Contents: []*googai.Content{
-			{
-				Parts: []*googai.Part{
-					{Text: ask},
-					{InlineData: &googai.InlineData{Data: img, MimeType: mime}},
-				},
+	req := []google.ChatCompletionMessage{
+		{
+			Parts: []google.ChatCompletionMessagePart{
+				{Text: ask},
+				{InlineData: &google.ChatCompletionInlineData{Data: img, MimeType: mime}},
 			},
 		},
 	}
 
 	// 请求模型接口
 
-	resp, err := client.CreateImageCompletion(req)
+	resp, err := client.CreateVisionCompletion(req)
 	if err != nil {
 		return "", err
 	}
 
-	if resp.Error != nil {
+	if resp.Error.Message != "" {
 		return "", errors.New(resp.Error.Message)
 	}
 
-	if len(resp.Candidates) == 0 || resp.Candidates[0].Content == nil {
+	if len(resp.Candidates) == 0 || resp.Candidates[0].Content.Role == "" {
 		if resp.PromptFeedback.BlockReason != "" {
 			return "", errors.New("BlockReason:" + resp.PromptFeedback.BlockReason)
 		}

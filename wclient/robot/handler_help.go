@@ -88,7 +88,7 @@ func helpCallback(msg *wcferry.WxMsg) string {
 		if len(model) > 1 {
 			text += fmt.Sprintf("对话模型 %s；", model)
 		}
-		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender), setting.ModelHistory)
+		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender, msg.Roomid), setting.ModelHistory)
 	}
 
 	return text + "祝你好运！"

@@ -38,8 +38,8 @@
                 <td class="d-none d-md-table-cell">{{item.provider}}</td>
                 <td class="d-none d-xl-table-cell">{{item.endpoint}}</td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary me-2" routerLink="/llmodel/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger" (click)="deleteLLModel(item)">删除</button>
+                    <button class="btn btn-sm btn-primary" routerLink="/llmodel/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteLLModel(item)">删除</button>
                 </td>
             </tr>
             }

@@ -1,4 +1,4 @@
-package cronjob
+package crond
 
 import (
 	"github.com/opentdp/go-helper/command"
@@ -7,6 +7,8 @@ import (
 
 	"github.com/opentdp/wechat-rest/dbase/cronjob"
 	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wechat-rest/wclient/aichat"
 )
 
 var crontab *cron.Cron
@@ -40,6 +42,21 @@ func Execute(job *tables.Cronjob) {
 	if job.Type == "TEXT" {
 		if job.Deliver != "-" {
 			MsgDeliver(job.Deliver, job.Content)
+		}
+		return
+	}
+
+	// 发送AI生成的文本
+	if job.Type == "AI" {
+		if job.Deliver != "-" {
+			wc := wclient.Register()
+			if wc == nil {
+				logger.Error("cron:ai", "error", "wclient is nil")
+				return
+			}
+			self := wc.CmdClient.GetSelfInfo()
+			data := aichat.Text(self.Wxid, "", job.Content)
+			MsgDeliver(job.Deliver, data)
 		}
 		return
 	}

@@ -54,14 +54,14 @@
                 任务回调处理方式
             </div>
         </div>
-        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT' || formdata.type == 'AI'">
             <label class="form-label">执行超时 *</label>
             <input type="text" name="timeout" class="form-control" [(ngModel)]="formdata.timeout" required />
             <div class="form-text">
                 命令超时时间，单位：秒
             </div>
         </div>
-        <div class="col-12" [class.d-none]="formdata.type == 'TEXT'">
+        <div class="col-12" [class.d-none]="formdata.type == 'TEXT' || formdata.type == 'AI'">
             <label class="form-label">执行路径 *</label>
             <input type="text" name="directory" class="form-control" [(ngModel)]="formdata.directory" required />
             <div class="form-text">

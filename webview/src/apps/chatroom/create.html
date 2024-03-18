@@ -3,7 +3,7 @@
 <nav class="container-lg mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
-        <li class="breadcrumb-item"><a routerLink="/keyword/list">群聊配置</a></li>
+        <li class="breadcrumb-item"><a routerLink="/chatroom/list">群聊配置</a></li>
         <li class="breadcrumb-item active">添加</li>
     </ol>
 </nav>
@@ -45,34 +45,34 @@
             <div class="form-text">
                 用于生成加群指令，最少2位字符，“-” 表示不启用
                 @if (formdata.join_argot && formdata.join_argot.length > 1) {
-                ；当前指令：<b>/jr:{{formdata.join_argot}}</b>
+                【 注册指令 <b>/jr:{{formdata.join_argot}}</b> 】
                 }
             </div>
         </div>
 
         <div class="col-12">
-            <label class="form-label">群默认模型</label>
+            <label class="form-label">默认模型</label>
             <select name="model_default" class="form-select" [(ngModel)]="formdata.model_default">
                 @for (item of llmodels; track item.rd) {
                 <option [value]="item.mid">{{item.mid}}（{{item.model}}）</option>
                 }
             </select>
             <div class="form-text">
-                设置群的默认模型，优先级大于全局
+                设置默认模型，优先级大于全局
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">群默认角色设置</label>
+            <label class="form-label">模型角色设置</label>
             <textarea name="model_context" class="form-control" [(ngModel)]="formdata.model_context"></textarea>
             <div class="form-text">
-                设置群默认角色，优先级大于全局
+                设置模型默认角色，优先级大于全局
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">群最大上下文</label>
+            <label class="form-label">模型最大上下文</label>
             <input type="number" name="model_history" class="form-control" [(ngModel)]="formdata.model_history" />
             <div class="form-text">
-                设置群最大上下文，优先级大于全局
+                设置模型最大上下文，优先级大于全局
             </div>
         </div>
         <div class="col-12">

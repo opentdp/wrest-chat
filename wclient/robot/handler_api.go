@@ -1,6 +1,7 @@
 package robot
 
 import (
+	"encoding/json"
 	"net/url"
 	"strings"
 
@@ -26,7 +27,7 @@ func apiHandler() []*Handler {
 		ChatAble: true,
 		RoomAble: true,
 		Command:  "/api",
-		Describe: "调用远程接口",
+		Describe: "调用查询接口",
 		Callback: apiCallback,
 	})
 
@@ -34,10 +35,25 @@ func apiHandler() []*Handler {
 
 }
 
+type apiCallbackData struct {
+	Type string   `json:"type"` // 数据类型 [card, file, image, text, error]
+	Card struct { // 当 type 为 card 时有效
+		Name    string `json:"name"`    // 左下显示的名字，可选
+		Account string `json:"account"` // 公众号 id，可显示对应的头像，可选
+		Title   string `json:"title"`   // 标题，最多显示为两行
+		Digest  string `json:"digest"`  // 摘要，最多显示为三行
+		Link    string `json:"link"`    // 点击后跳转的链接
+		Icon    string `json:"icon"`    // 右侧缩略图的链接，可选
+	} `json:"card,omitempty"`
+	Link string `json:"file,omitempty"` // 当 type 为 file 或 image 时有效
+	Text string `json:"text,omitempty"` // 当 type 为 text 或 error 时有效
+}
+
 func apiCallback(msg *wcferry.WxMsg) string {
 
 	self := wc.CmdClient.GetSelfInfo()
 
+	// 组装参数
 	cmd := []string{"help"}
 	if msg.Content != "" {
 		cmd = strings.SplitN(msg.Content, " ", 2)
@@ -56,24 +72,45 @@ func apiCallback(msg *wcferry.WxMsg) string {
 		return err.Error()
 	}
 
-	// 返回卡片消息
-	if strings.Count(res, "\n") > 20 || len(res) > 900 {
-		receiver := msg.Sender
-		if msg.IsGroup {
-			receiver = msg.Roomid
+	// 解析失败
+	data := &apiCallbackData{}
+	if json.Unmarshal([]byte(res), data) != nil {
+		return res
+	}
+
+	// 构造消息
+	text := ""
+	switch data.Type {
+	case "card":
+		if data.Card.Name == "" {
+			data.Card.Name = self.Name
 		}
-		title := msg.Content
-		digest := "请点击卡片查看结果"
-		icon := setting.ApiEndpointIcon
-		wc.CmdClient.SendRichText(self.Name, self.Wxid, title, digest, url, icon, receiver)
+		if data.Card.Account == "" {
+			data.Card.Account = self.Wxid
+		}
+		if data.Card.Icon == "" {
+			data.Card.Icon = setting.ApiEndpointIcon
+		}
+		text += "card\n"
+		text += data.Card.Name + "\n"
+		text += data.Card.Account + "\n"
+		text += data.Card.Title + "\n"
+		text += data.Card.Digest + "\n"
+		text += data.Card.Link + "\n"
+		text += data.Card.Icon
+	case "file":
+		text += data.Link
+	case "image":
+		text += data.Link
+	default:
+		text += data.Text
+	}
+
+	// 发送消息
+	if wclient.SendFlexMsg(text, msg.Sender, msg.Roomid) == 0 {
 		return ""
 	}
 
-	// 尝试发送文件
-	if wclient.SendFlexMsg(res, msg.Sender, msg.Roomid) == 0 {
-		return ""
-	}
-
-	return res
+	return text
 
 }

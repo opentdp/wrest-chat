@@ -1896,6 +1896,15 @@
                 "level": {
                     "type": "integer"
                 },
+                "model_context": {
+                    "type": "string"
+                },
+                "model_default": {
+                    "type": "string"
+                },
+                "model_history": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1959,6 +1968,15 @@
                     "type": "string"
                 },
                 "level": {
+                    "type": "integer"
+                },
+                "model_context": {
+                    "type": "string"
+                },
+                "model_default": {
+                    "type": "string"
+                },
+                "model_history": {
                     "type": "integer"
                 },
                 "name": {
@@ -2552,7 +2570,19 @@
                     "type": "string"
                 },
                 "level": {
-                    "description": "等级",
+                    "description": "等级 [1:待验证, 2:已注册]",
+                    "type": "integer"
+                },
+                "model_context": {
+                    "description": "定义模型扮演的身份",
+                    "type": "string"
+                },
+                "model_default": {
+                    "description": "定义默认模型",
+                    "type": "string"
+                },
+                "model_history": {
+                    "description": "定义历史消息数量",
                     "type": "integer"
                 },
                 "name": {
@@ -2649,7 +2679,7 @@
                     "type": "integer"
                 },
                 "type": {
-                    "description": "命令类型，[CMD, POWERSHELL, SHELL]",
+                    "description": "命令类型 [CMD, POWERSHELL, SHELL]",
                     "type": "string"
                 },
                 "updated_at": {
@@ -2703,7 +2733,7 @@
                     "type": "integer"
                 },
                 "endpoint": {
-                    "description": "仅 google 和 openai 支持自定义，留空则使用官方接口",
+                    "description": "仅 google 和 openai 支持自定义",
                     "type": "string"
                 },
                 "family": {
@@ -2723,7 +2753,7 @@
                     "type": "string"
                 },
                 "provider": {
-                    "description": "服务商 [google, openai, xunfei]",
+                    "description": "服务商 [google, openai, xunfei, baidu, tencent]",
                     "type": "string"
                 },
                 "rd": {
@@ -2731,7 +2761,7 @@
                     "type": "integer"
                 },
                 "secret": {
-                    "description": "密钥，google 和 openai 填写 KEY，xunfei 填写 APP-ID,API-KEY,API-SECRET",
+                    "description": "密钥，必须和服务商对应，多个字段按指定顺序填写并用逗号隔开",
                     "type": "string"
                 },
                 "updated_at": {
@@ -2756,7 +2786,7 @@
                     "type": "integer"
                 },
                 "level": {
-                    "description": "等级",
+                    "description": "等级 [1:待验证, 2:已注册, 7:管理员, 9:创始人]",
                     "type": "integer"
                 },
                 "rd": {

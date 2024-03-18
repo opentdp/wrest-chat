@@ -16,7 +16,7 @@ export class LLModelCreateComponent {
     public formdata: LlmodelCreateParam = {
         mid: '',
         level: 1,
-        family: 'Gemini',
+        family: '',
         provider: 'google',
         model: 'gemini-pro',
         secret: '',

@@ -1,6 +1,6 @@
 # WeChat Rest
 
-微信智能助手，内置 WEB 管理界面，可接入GPT、Gemini 、星火、文心、混元等大语言模型。本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
+微信智能助手，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
 
 ## 主要特性
 
@@ -89,6 +89,12 @@
 ### Q3 如何更新机器人，并保留配置信息
 
 从 [快速开始](#快速开始) 中下载新版本。关闭机器人后，将解压出来的 `wrest.exe` 和 `wcferry` 覆盖过去即可
+
+### Q4 常用 AI 密钥获取地址
+
+- 阿里 通义千问 <https://dashscope.console.aliyun.com/apiKey>
+- 讯飞 星火 <https://console.xfyun.cn/services/bm3>
+- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
 
 ## 免责声明
 
