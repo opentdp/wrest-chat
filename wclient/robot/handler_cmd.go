@@ -40,10 +40,8 @@ func cmddHandler() []*Handler {
 				if err != nil {
 					logman.Error("cmd: "+v.Phrase, "error", err)
 				}
-				if wclient.SendFlexMsg(output, msg.Sender, msg.Roomid) != 0 {
-					return ""
-				}
-				return output
+				wclient.SendFlexMsg(output, msg.Sender, msg.Roomid)
+				return ""
 			},
 		})
 	}
