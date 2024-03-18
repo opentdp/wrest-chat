@@ -32,13 +32,13 @@ export const BadwordLevels: Record<number, OptionData> = {
 };
 
 export const RoomLevels: Record<number, OptionData> = {
-    '-1': { name: '未限制' },
+    '-1': { name: '未注册' },
     1: { name: '待验证' },
     2: { name: '已注册' },
 };
 
 export const UserLevels: Record<number, OptionData> = {
-    '-1': { name: '未限制' },
+    '-1': { name: '未注册' },
     1: { name: '待验证' },
     2: { name: '已注册' },
     7: { name: '管理员' },

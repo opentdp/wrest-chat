@@ -63,16 +63,17 @@ func whiteLimit(msg *wcferry.WxMsg) bool {
 		return false
 	}
 
-	// 验证名单
+	// 已注册用户
 	if msg.IsGroup {
 		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		if room.Level < 2 {
-			return true
+		if room.Level > 1 {
+			return false
 		}
-	} else if up.Level < 2 {
-		return true
+	} else if up.Level > 1 {
+		return false
 	}
 
-	return false
+	// 受限制用户
+	return true
 
 }
