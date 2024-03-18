@@ -28,7 +28,7 @@ export class LLModelCreateComponent {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.llmodelCreate(this.formdata).then(() => {
+        return RobotApi.llmodelCreate(this.formdata).then(() => {
             this.router.navigate(['llmodel/list']);
         });
     }

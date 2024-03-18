@@ -37,7 +37,7 @@ export class KeywordUpdateComponent implements OnInit {
     }
 
     public getKeyWord(rd: number) {
-        RobotApi.keywordDetail({ rd }).then((data) => {
+        return RobotApi.keywordDetail({ rd }).then((data) => {
             this.formdata = data;
         });
     }
@@ -46,19 +46,19 @@ export class KeywordUpdateComponent implements OnInit {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.keywordUpdate(this.formdata).then(() => {
+        return RobotApi.keywordUpdate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
         });
     }
 
     public getRobotHandlers() {
-        SundryApi.handlerList({}).then((data) => {
+        return SundryApi.handlerList({}).then((data) => {
             this.robotHandler = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

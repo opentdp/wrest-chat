@@ -42,7 +42,7 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     public getProfile(rd: number) {
-        RobotApi.profileDetail({ rd }).then((data) => {
+        return RobotApi.profileDetail({ rd }).then((data) => {
             this.formdata = data;
             this.changeConacts();
         });
@@ -52,7 +52,7 @@ export class ProfileUpdateComponent implements OnInit {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.profileUpdate(this.formdata).then(() => {
+        return RobotApi.profileUpdate(this.formdata).then(() => {
             this.router.navigate(['profile/list']);
         });
     }
@@ -64,19 +64,19 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

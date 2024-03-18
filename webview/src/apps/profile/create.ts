@@ -40,7 +40,7 @@ export class ProfileCreateComponent {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.profileCreate(this.formdata).then(() => {
+        return RobotApi.profileCreate(this.formdata).then(() => {
             this.router.navigate(['profile/list']);
         });
     }
@@ -52,19 +52,19 @@ export class ProfileCreateComponent {
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

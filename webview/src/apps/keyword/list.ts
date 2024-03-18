@@ -31,19 +31,19 @@ export class KeywordListComponent {
     }
 
     public getKeywords() {
-        RobotApi.keywordList(this.formdata).then((data) => {
+        return RobotApi.keywordList(this.formdata).then((data) => {
             this.keywords = data || [];
         });
     }
 
     public deleteKeyword(item: TablesKeyword) {
-        RobotApi.keywordDelete({ rd: item.rd }).then(() => {
+        return RobotApi.keywordDelete({ rd: item.rd }).then(() => {
             this.getKeywords();
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }

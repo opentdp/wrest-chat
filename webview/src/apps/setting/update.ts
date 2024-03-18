@@ -30,20 +30,20 @@ export class SettingUpdateComponent implements OnInit {
     }
 
     public getSetting(rd: number) {
-        RobotApi.settingDetail({ rd }).then((data) => {
+        return RobotApi.settingDetail({ rd }).then((data) => {
             this.formdata = data;
         });
     }
 
     public updateSetting() {
         this.formdata.value = String(this.formdata.value);
-        RobotApi.settingUpdate(this.formdata).then(() => {
+        return RobotApi.settingUpdate(this.formdata).then(() => {
             this.router.navigate(['setting/list']);
         });
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }

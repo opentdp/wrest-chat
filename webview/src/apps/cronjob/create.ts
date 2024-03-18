@@ -51,7 +51,7 @@ export class CronjobCreateComponent {
             return;
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
-        SundryApi.cronjobCreate(this.formdata).then(() => {
+        return SundryApi.cronjobCreate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
     }
@@ -63,13 +63,13 @@ export class CronjobCreateComponent {
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

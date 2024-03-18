@@ -22,20 +22,24 @@ export class PluginListComponent {
 
     constructor() {
         this.getWcfChatrooms();
-        this.getPlugins();
+        this.getCronjobPlugins();
+        this.getKeywordPlugins();
     }
 
-    public getPlugins() {
-        SundryApi.pluginCronjobs({}).then((data) => {
+    public getCronjobPlugins() {
+        return SundryApi.pluginCronjobs({}).then((data) => {
             this.cronjobPlugins = data || [];
         });
-        SundryApi.pluginKeywords({}).then((data) => {
+    }
+
+    public getKeywordPlugins() {
+        return SundryApi.pluginKeywords({}).then((data) => {
             this.keywordPlugins = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }

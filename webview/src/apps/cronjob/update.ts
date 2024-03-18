@@ -39,7 +39,7 @@ export class CronjobUpdateComponent implements OnInit {
     }
 
     public getCronjob(rd: number) {
-        SundryApi.cronjobDetail({ rd }).then((data) => {
+        return SundryApi.cronjobDetail({ rd }).then((data) => {
             this.formdata = data;
             const dataDeliver = data.deliver.split(',');
             for (const [k, v] of dataDeliver.entries()) {
@@ -57,7 +57,7 @@ export class CronjobUpdateComponent implements OnInit {
             return;
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
-        SundryApi.cronjobUpdate(this.formdata).then(() => {
+        return SundryApi.cronjobUpdate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
     }
@@ -69,13 +69,13 @@ export class CronjobUpdateComponent implements OnInit {
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

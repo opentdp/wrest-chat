@@ -21,20 +21,20 @@ export class CronjobListComponent {
     }
 
     public getCronjobs() {
-        SundryApi.cronjobList({}).then((data) => {
+        return SundryApi.cronjobList({}).then((data) => {
             this.cronjobs = data || [];
         });
     }
 
     public getCronStatus() {
-        SundryApi.cronjobStatus({}).then((data) => {
+        return SundryApi.cronjobStatus({}).then((data) => {
             this.status = data || [];
         });
     }
 
     public deleteCronjob(item: TablesCronjob) {
         const rq = { rd: item.rd };
-        SundryApi.cronjobDelete(rq).then(() => {
+        return SundryApi.cronjobDelete(rq).then(() => {
             this.getCronjobs();
         });
     }

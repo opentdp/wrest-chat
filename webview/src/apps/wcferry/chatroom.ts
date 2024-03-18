@@ -30,7 +30,7 @@ export class WcferryChatroomComponent implements OnDestroy {
     }
 
     public getChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.chatrooms = data || [];
             // 批量获取头像
             const ids = this.chatrooms.map((item) => item.wxid);
@@ -44,7 +44,7 @@ export class WcferryChatroomComponent implements OnDestroy {
             this.members = this.roomMembers[room.wxid];
             return; // 已获取
         }
-        WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
+        return WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = data || [];
             this.members = data || [];
             // 更新会员列表
@@ -58,7 +58,7 @@ export class WcferryChatroomComponent implements OnDestroy {
     }
 
     public getAvatars(ids: string[]) {
-        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
+        return WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
             data && data.forEach((item) => {
                 this.avatars[item.usr_name] = item.small_head_img_url;
             });
@@ -79,7 +79,7 @@ export class WcferryChatroomComponent implements OnDestroy {
             msg: this.content,
             receiver: this.chatroom.wxid,
         };
-        WrestApi.sendTxt(rq).then(() => {
+        return WrestApi.sendTxt(rq).then(() => {
             const msg: IMessage = {
                 ts: Date.now(),
                 roomid: this.chatroom.wxid,

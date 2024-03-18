@@ -38,19 +38,19 @@ export class KeywordCreateComponent {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.keywordCreate(this.formdata).then(() => {
+        return RobotApi.keywordCreate(this.formdata).then(() => {
             this.router.navigate(['keyword/list']);
         });
     }
 
     public getRobotHandlers() {
-        SundryApi.handlerList({}).then((data) => {
+        return SundryApi.handlerList({}).then((data) => {
             this.robotHandler = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

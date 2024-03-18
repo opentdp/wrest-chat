@@ -24,13 +24,13 @@ export class HandlerListComponent {
     }
 
     public getRobotHandlers(reset?: boolean) {
-        SundryApi.handlerList({ reset }).then((data) => {
+        return SundryApi.handlerList({ reset }).then((data) => {
             this.robotHandler = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }

@@ -25,7 +25,7 @@ export class WcferryContactComponent {
     }
 
     public getContacts() {
-        WrestApi.contacts().then((data) => {
+        return WrestApi.contacts().then((data) => {
             this.contacts = data.map(item => ({
                 ...item, type: this.getContactType(item)
             }));
