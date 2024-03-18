@@ -82,9 +82,10 @@
             <label class="form-label">投递渠道 *</label>
             <div class="row g-3">
                 <div class="col col-md-2">
-                    <select name="deliver[0]" class="form-select" [(ngModel)]="deliver[0]" required>
+                    <select name="deliver[0]" class="form-select" [(ngModel)]="deliver[0]" (change)="changeDeliver()" required>
+                        <option value="-">不投递</option>
                         <option value="wechat">微信</option>
-                        <option value="email" disabled>电子邮件</option>
+                        <option value="email" disabled>邮件</option>
                     </select>
                 </div>
                 @if (deliver[0] == 'wechat') {
@@ -109,7 +110,7 @@
                 </div>
                 } @else {
                 <div class="col col-md-10">
-                    <input type="text" name="deliver[1]" class="form-control" rows="5" [(ngModel)]="deliver[1]" required />
+                    <input type="text" name="deliver[1]" class="form-control" rows="5" [(ngModel)]="deliver[1]" required [disabled]="deliver[0] == '-'" />
                 </div>
                 }
             </div>

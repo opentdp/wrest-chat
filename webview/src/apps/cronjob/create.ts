@@ -21,7 +21,7 @@ export class CronjobCreateComponent {
     public conacts: Array<WcfrestContactPayload> = [];
     public conactsFilter = '';
 
-    public deliver = ['wechat', '-', '-'];
+    public deliver = ['-', '', ''];
 
     public formdata: CronjobCreateParam = {
         name: '',
@@ -54,6 +54,12 @@ export class CronjobCreateComponent {
         return SundryApi.cronjobCreate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
+    }
+
+    public changeDeliver() {
+        this.deliver[1] = '-';
+        this.deliver[2] = '-';
+        this.changeConacts();
     }
 
     public async changeConacts() {

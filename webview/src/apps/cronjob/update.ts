@@ -62,6 +62,12 @@ export class CronjobUpdateComponent implements OnInit {
         });
     }
 
+    public changeDeliver() {
+        this.deliver[1] = '-';
+        this.deliver[2] = '-';
+        this.changeConacts();
+    }
+
     public async changeConacts() {
         const id = this.deliver[1] || '-';
         await this.getWcfRoomMembers(this.deliver[1]);
