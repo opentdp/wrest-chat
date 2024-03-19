@@ -59,7 +59,7 @@ func aiHandler() []*Handler {
 				if len(ks) > 0 {
 					v := models[ks[rand.Intn(len(ks))]]
 					profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
-					return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
+					return "对话模型已切换为 " + v.Family + " [" + v.Model + "]"
 				}
 				return fmt.Sprintf("没有可用的模型（Level ≤ %d）", up.Level)
 			},
@@ -74,10 +74,10 @@ func aiHandler() []*Handler {
 			Order:    110 + int32(k),
 			Roomid:   "*",
 			Command:  cmdkey,
-			Describe: "换模型 " + v.Family,
+			Describe: v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
-				return "对话模型切换为 " + v.Family + " [" + v.Model + "]"
+				return "对话模型已切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		})
 	}
