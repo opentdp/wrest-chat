@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/dbase/keyword"
 )
@@ -20,10 +21,16 @@ type KeywordPlugin struct {
 
 func KeywordPluginSetup() []*KeywordPlugin {
 
-	configs := []*KeywordPlugin{}
-	checker := NewCache("./plugin/keyword.txt")
+	dir := "./plugin/keyword"
 
-	filepath.Walk("./plugin/keyword", func(rp string, info os.FileInfo, err error) error {
+	configs := []*KeywordPlugin{}
+	checker := NewCache(dir + ".txt")
+
+	if !filer.Exists(dir) {
+		return configs
+	}
+
+	filepath.Walk(dir, func(rp string, info os.FileInfo, err error) error {
 		// 忽略原则错误
 		if err != nil || info.IsDir() {
 			logman.Error("invalid keyword plugin", "name", info.Name(), "error", err)

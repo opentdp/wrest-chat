@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/wechat-rest/dbase/cronjob"
 )
@@ -20,10 +21,16 @@ type CronjobPlugin struct {
 
 func CronjobPluginSetup() []*CronjobPlugin {
 
-	configs := []*CronjobPlugin{}
-	checker := NewCache("./plugin/cronjob.txt")
+	dir := "./plugin/cronjob"
 
-	filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
+	configs := []*CronjobPlugin{}
+	checker := NewCache(dir + ".txt")
+
+	if !filer.Exists(dir) {
+		return configs
+	}
+
+	filepath.Walk(dir, func(rp string, info os.FileInfo, err error) error {
 		// 忽略原则错误
 		if err != nil || info.IsDir() {
 			logman.Error("invalid cronjob plugin", "name", info.Name(), "error", err)
