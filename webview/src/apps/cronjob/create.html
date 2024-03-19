@@ -99,7 +99,7 @@
                 </div>
                 <div class="col col-md-4">
                     <select name="deliver[2]" class="form-select" [(ngModel)]="deliver[2]" [disabled]="conacts.length == 0" required>
-                        <option value="-" [class.d-none]="deliver[1] == '-'">所有人</option>
+                        <option value="-">{{deliver[1] == '-' ? '选择联系人' : '不指定@的用户'}}</option>
                         @for (item of conacts | filter:'wxid,name':conactsFilter; track item.wxid) {
                         <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
                         }

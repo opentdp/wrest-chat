@@ -21,7 +21,7 @@ export class CronjobCreateComponent {
     public conacts: Array<WcfrestContactPayload> = [];
     public conactsFilter = '';
 
-    public deliver = ['-', '', ''];
+    public deliver = ['-', '-', '-'];
 
     public formdata: CronjobCreateParam = {
         name: '',
