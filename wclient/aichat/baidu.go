@@ -8,7 +8,7 @@ import (
 	"github.com/rehiy/one-llm/baidu"
 )
 
-func BaiDuText(id, rid, ask string) (string, error) {
+func BaiduText(id, rid, ask string) (string, error) {
 
 	llmc := UserModel(id, rid)
 

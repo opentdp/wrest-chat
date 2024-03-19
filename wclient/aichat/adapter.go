@@ -25,7 +25,7 @@ func Text(id, rid, msg string) string {
 	case "aliyun":
 		res, err = AliyunText(id, rid, msg)
 	case "baidu":
-		res, err = BaiDuText(id, rid, msg)
+		res, err = BaiduText(id, rid, msg)
 	case "google":
 		res, err = GoogleText(id, rid, msg)
 	case "openai":
