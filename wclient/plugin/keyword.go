@@ -22,13 +22,12 @@ type KeywordPlugin struct {
 func KeywordPluginSetup() []*KeywordPlugin {
 
 	dir := "./plugin/keyword"
+	if !filer.Exists(dir) {
+		return nil
+	}
 
 	configs := []*KeywordPlugin{}
 	checker := NewCache(dir + ".txt")
-
-	if !filer.Exists(dir) {
-		return configs
-	}
 
 	filepath.Walk(dir, func(rp string, info os.FileInfo, err error) error {
 		// 忽略原则错误
