@@ -2,24 +2,29 @@ package crond
 
 import (
 	"strings"
+	"time"
 
 	"github.com/opentdp/wechat-rest/wclient"
 )
 
-func MsgDeliver(deliver, message string) {
+func MsgDeliver(deliver, content string) {
 
-	deliver = strings.TrimSpace(deliver)
-	message = strings.TrimSpace(message)
-	logger.Warn("cron:deliver "+deliver, "message", message)
+	content = strings.TrimSpace(content)
+	delivers := strings.Split(deliver, "\n")
 
-	args := strings.Split(deliver, ",")
-	if len(args) < 2 {
-		return
-	}
-
-	switch args[0] {
-	case "wechat":
-		wechatMessage(args[1:], message)
+	for _, dr := range delivers {
+		logger.Warn("cron:deliver "+dr, "content", content)
+		// 解析参数
+		args := strings.Split(strings.TrimSpace(dr), ",")
+		if len(args) < 2 {
+			return
+		}
+		// 分渠道投递
+		switch args[0] {
+		case "wechat":
+			time.Sleep(1 * time.Second)
+			wechatMessage(args[1:], content)
+		}
 	}
 
 }
