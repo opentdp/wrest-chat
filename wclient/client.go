@@ -122,6 +122,7 @@ func ApiRequestMsg(url, wxid, roomid string) int32 {
 		"User-Agent": args.AppName + "/" + args.Version,
 		"Client-Uid": self.Wxid + "," + wxid,
 	})
+
 	if err != nil {
 		if res == "" {
 			res = err.Error()
@@ -179,7 +180,7 @@ type ApiResponse struct {
 		Link    string `json:"link"`    // 点击后跳转的链接
 		Icon    string `json:"icon"`    // 右侧缩略图的链接，可选
 	} `json:"card,omitempty"`
-	Link string `json:"file,omitempty"` // 当 type 为 file 或 image 时有效
+	Link string `json:"link,omitempty"` // 当 type 为 file 或 image 时有效
 	Text string `json:"text,omitempty"` // 当 type 为 text 或 error 时有效
 }
 

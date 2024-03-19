@@ -157,6 +157,13 @@ type ApiCallbackData struct {
 
 ```json
 {
+  "type": "image",
+  "link": "图片链接"
+}
+```
+
+```json
+{
   "type": "text",
   "text": "文本内容"
 }
