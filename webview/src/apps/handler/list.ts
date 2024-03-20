@@ -18,14 +18,19 @@ export class HandlerListComponent {
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
+    public loading = true;
+
     constructor() {
         this.getWcfChatrooms();
         this.getRobotHandlers();
     }
 
     public getRobotHandlers(reset?: boolean) {
+        this.loading = true;
         return SundryApi.handlerList({ reset }).then((data) => {
+            setTimeout(() => this.loading = false, 300);
             this.robotHandler = data || [];
+
         });
     }
 

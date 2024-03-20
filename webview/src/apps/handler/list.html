@@ -9,7 +9,13 @@
 
 <div class="container-lg mb-3">
     <div class="text-end mb-3">
+        @if (loading) {
+        <button class="btn btn-light" disabled>
+            <span class="spinner-grow spinner-grow-sm"></span> 加载中
+        </button>
+        } @else {
         <button class="btn btn-primary" (click)="getRobotHandlers(true)">重载</button>
+        }
     </div>
 
     <table class="table table-hover align-middle">
