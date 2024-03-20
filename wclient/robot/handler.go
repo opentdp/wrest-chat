@@ -68,6 +68,9 @@ func ResetHandlers() {
 		for _, v := range kws {
 			if hmap[v.Target] != nil {
 				hmap[v.Phrase+"@"+v.Roomid] = hmap[v.Target]
+				if v.Roomid == "*" {
+					hmap[v.Target].Level = v.Level
+				}
 			}
 		}
 	}

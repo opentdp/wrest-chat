@@ -51,6 +51,11 @@ export class KeywordUpdateComponent implements OnInit {
         });
     }
 
+    public changeHandler() {
+        const h = this.robotHandler.find((h) => h.command === this.formdata.target);
+        this.formdata.level = h ? h.level : -1;
+    }
+
     public getRobotHandlers() {
         return SundryApi.handlerList({}).then((data) => {
             this.robotHandler = data || [];
