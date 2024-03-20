@@ -8,7 +8,7 @@ require (
 	github.com/gorilla/websocket v1.5.1
 	github.com/importcjj/sensitive v0.0.0-20200106142752-42d1c505be7b
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/opentdp/go-helper v0.7.1-0.20240314081626-c3e3805521f2
+	github.com/opentdp/go-helper v0.7.1
 	github.com/rehiy/one-llm v0.1.1-0.20240319025233-953540e77585
 	github.com/sashabaranov/go-openai v1.20.4
 	go.nanomsg.org/mangos/v3 v3.4.2
@@ -48,7 +48,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
-	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/robfig/cron/v3 v3.0.1
@@ -65,7 +65,7 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gorm.io/driver/mysql v1.5.5 // indirect
 	gorm.io/gorm v1.25.8 // indirect
-	modernc.org/libc v1.45.2 // indirect
+	modernc.org/libc v1.45.3 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/sqlite v1.29.5 // indirect

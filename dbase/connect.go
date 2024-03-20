@@ -10,13 +10,18 @@ import (
 func Connect() {
 
 	// 连接数据库
-	dborm.Connect(&dborm.Config{
+	db := dborm.Connect(&dborm.Config{
 		Type:   "sqlite",
 		DbName: "wrest.db3",
 	})
 
+	// 设置默认参数
+	db.Exec("PRAGMA foreign_keys=ON;")
+	db.Exec("PRAGMA journal_mode=WAL;")
+	db.Exec("PRAGMA busy_timeout=5000;")
+
 	// 实施自动迁移
-	dborm.Db.AutoMigrate(
+	db.AutoMigrate(
 		&tables.Chatroom{},
 		&tables.Cronjob{},
 		&tables.Contact{},
