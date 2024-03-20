@@ -82,17 +82,14 @@ func (c *Client) wxInitSDK() error {
 	if c.WcfBinary == "" {
 		return nil
 	}
-	// 查找 wcf.exe 路径
+	// 尝试在子目录查找
 	if !filer.Exists(c.WcfBinary) {
-		if filer.Exists("wcferry/wcf.exe") {
-			c.WcfBinary = "wcferry/wcf.exe"
-		} else if filer.Exists("wcferry/bin/wcf.exe") {
-			c.WcfBinary = "wcferry/bin/wcf.exe"
-		} else {
-			return errors.New("wcf.exe not found")
+		if !filer.Exists("wcferry/" + c.WcfBinary) {
+			return errors.New(c.WcfBinary + " not found")
 		}
+		c.WcfBinary = "wcferry/" + c.WcfBinary
 	}
-	// 注入微信，打开 wcf 服务
+	// 打开 wcf 服务程序
 	port := strconv.Itoa(c.ListenPort)
 	logman.Warn(c.WcfBinary + " start " + port)
 	cmd := exec.Command(c.WcfBinary, "start", port)

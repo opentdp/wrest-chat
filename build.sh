@@ -45,15 +45,13 @@ go build -ldflags="-s -w" -o $target main.go
 
 ####################################################################
 
-mkdir build/wcferry
-
 cp README.md build/
 cp config.yml build/
-cp wcferry/bin/sdk.dll build/wcferry/
-cp wcferry/bin/spy.dll build/wcferry/
-cp wcferry/bin/wcf.exe build/wcferry/
-
 sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' build/README.md
+
+mkdir -p build/wcferry
+wget https://github.com/lich0821/WeChatFerry/releases/download/v39.0.14/v39.0.14.zip
+unzip -d build/wcferry v39.0.14.zip && rm -f v39.0.14.zip
 
 mv build wrest-chat
 zip -r wrest-chat.zip wrest-chat/

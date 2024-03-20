@@ -1,20 +1,20 @@
 # 运行日志
 Log:
-    Dir: logs # 存储目录
+    Dir: logs # 存储目录，一般无需修改
     Level: info # 记录级别，debug|info|warn|error
     Target: stdout # 输出方式，both|file|null|stdout|stderr
 
 # Wcf 服务
 Wcf:
     Address: 127.0.0.1:7601 # 监听地址，仅支持修改端口
-    MsgPrint: false # 是否打印收到的消息
-    MsgStore: true # 是否存储收到的消息
-    MsgStoreDays: 7 # 消息留存天数，0 为不清理
-    WcfBinary: wcf.exe # 注入工具路径，留空则不注入
+    MsgPrint: false # 是否将消息输出到控制台，可用于调试
+    MsgStore: true # 是否将消息写入数据库，用于防撤回和统计
+    MsgStoreDays: 7 # 启动时清理n天前的消息，0 表示不清理
+    WcfBinary: wcf.exe # wcf 二进制文件路径，留空则不托管
 
 # Web 服务
 Web:
     Address: 127.0.0.1:7600 # 监听地址，外网访问修改为 0.0.0.0:7600
-    Swagger: true # 是否启用 Api 文档和调试工具
+    Swagger: true # 是否启用内置接口文档和调试工具
     Token: "" # 使用 Token 验证请求，留空则不验证
     Webhook: "" # 消息推送地址，留空则不启用
