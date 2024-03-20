@@ -1,6 +1,6 @@
-# WeChatFerry go-sdk
+# Wrest Chat SDK
 
-`WeChatFerry` 客户端 **Go** 语言版，用于管理 `WeChatFerry RPC` 服务，并实现与微信进程的互操作。接口文档请查阅 <https://pkg.go.dev/github.com/opentdp/wrest-chat>
+这是 Wrest Chat 协议适配层，通过预定义的 [Nanomsg 协议](proto/wcferry.proto) 与聊天软件实现互操作。只要遵循该协议实现聊天软件的适配即可接入其他助手功能。
 
 ## 调用方式
 
@@ -34,7 +34,3 @@ func main() {
 go install google.golang.org/protobuf/cmd/protoc-gen-go
 protoc --proto_path=. --go_out=. proto/*.proto
 ```
-
-## 参考信息
-
-<https://github.com/lich0821/WeChatFerry/tree/master/clients/python>
