@@ -17,10 +17,11 @@ var Log = &ILog{
 // Wcf 服务
 
 type IWcf struct {
-	Address   string `yaml:"Address"`   // Rpc 监听地址
-	MsgStore  bool   `yaml:"MsgStore"`  // 是否存储收到的消息
-	MsgPrint  bool   `yaml:"MsgPrint"`  // 是否打印收到的消息
-	WcfBinary string `yaml:"WcfBinary"` // 留空则不注入微信
+	Address      string `yaml:"Address"`      // Rpc 监听地址
+	MsgPrint     bool   `yaml:"MsgPrint"`     // 是否打印收到的消息
+	MsgStore     bool   `yaml:"MsgStore"`     // 是否存储收到的消息
+	MsgStoreDays int    `yaml:"MsgStoreDays"` // 消息留存天数
+	WcfBinary    string `yaml:"WcfBinary"`    // 留空则不注入微信
 }
 
 var Wcf = &IWcf{

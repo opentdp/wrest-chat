@@ -7,8 +7,9 @@ Log:
 # Wcf 服务
 Wcf:
     Address: 127.0.0.1:7601 # 监听地址，仅支持修改端口
-    MsgStore: true # 是否存储收到的消息
     MsgPrint: false # 是否打印收到的消息
+    MsgStore: true # 是否存储收到的消息
+    MsgStoreDays: 7 # 消息留存天数，0 为不清理
     WcfBinary: wcf.exe # 注入工具路径，留空则不注入
 
 # Web 服务

@@ -44,14 +44,17 @@ func Register() *wcferry.Client {
 		logman.Fatal("wcf start failed", "error", err)
 	}
 
-	// 存储收到的消息
-	if args.Wcf.MsgStore {
-		wc.EnrollReceiver(true, msgToDatabase)
-	}
-
 	// 打印收到的消息
 	if args.Wcf.MsgPrint {
 		wc.EnrollReceiver(true, wcferry.WxMsgPrinter)
+	}
+
+	// 存储收到的消息
+	if args.Wcf.MsgStore {
+		wc.EnrollReceiver(true, msgToDatabase)
+		if (args.Wcf.MsgStoreDays) > 0 {
+			message.Shrink(args.Wcf.MsgStoreDays)
+		}
 	}
 
 	return wc
