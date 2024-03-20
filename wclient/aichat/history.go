@@ -1,7 +1,7 @@
 package aichat
 
 import (
-	"github.com/opentdp/wechat-rest/dbase/setting"
+	"github.com/opentdp/wrest-chat/dbase/setting"
 )
 
 var msgHistories = map[string][]*MsgHistory{}

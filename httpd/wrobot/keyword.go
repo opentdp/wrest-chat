@@ -3,8 +3,8 @@ package wrobot
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/wclient/robot"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/wclient/robot"
 )
 
 type Keyword struct{}

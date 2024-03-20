@@ -1,6 +1,6 @@
-# WeChat Rest Web
+# Wrest Chat Web
 
-基于 [wcferry-gohttp](https://github.com/opentdp/wechat-rest/tree/master/httpd) 接口服务实现的 Web 界面。
+基于 [wcferry-gohttp](https://github.com/opentdp/wrest-chat/tree/master/httpd) 接口服务实现的 Web 界面。
 
 ## 使用方法
 

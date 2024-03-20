@@ -1,6 +1,6 @@
 # WeChatFerry go-sdk
 
-`WeChatFerry` 客户端 **Go** 语言版，用于管理 `WeChatFerry RPC` 服务，并实现与微信进程的互操作。接口文档请查阅 <https://pkg.go.dev/github.com/opentdp/wechat-rest>
+`WeChatFerry` 客户端 **Go** 语言版，用于管理 `WeChatFerry RPC` 服务，并实现与微信进程的互操作。接口文档请查阅 <https://pkg.go.dev/github.com/opentdp/wrest-chat>
 
 ## 调用方式
 
@@ -9,7 +9,7 @@ package main
 
 import (
     "fmt"
-    "github.com/opentdp/wechat-rest/wcferry"
+    "github.com/opentdp/wrest-chat/wcferry"
 )
 
 func main() {

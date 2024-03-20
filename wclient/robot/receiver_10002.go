@@ -5,11 +5,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/dbase/message"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/message"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry/types"
 )
 
 // 处理撤回消息

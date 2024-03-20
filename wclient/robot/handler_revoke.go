@@ -1,7 +1,7 @@
 package robot
 
 import (
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 func revokeHandler() []*Handler {

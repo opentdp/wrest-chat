@@ -3,7 +3,7 @@ package sundry
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/wclient/plugin"
+	"github.com/opentdp/wrest-chat/wclient/plugin"
 )
 
 // @Summary 计划任务插件列表

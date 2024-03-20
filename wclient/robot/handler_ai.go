@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/opentdp/wechat-rest/dbase/llmodel"
-	"github.com/opentdp/wechat-rest/dbase/message"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/aichat"
+	"github.com/opentdp/wrest-chat/dbase/llmodel"
+	"github.com/opentdp/wrest-chat/dbase/message"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient/aichat"
 )
 
 func aiHandler() []*Handler {

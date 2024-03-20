@@ -3,8 +3,8 @@ package robot
 import (
 	"encoding/xml"
 
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry/types"
 )
 
 // 处理混合类消息

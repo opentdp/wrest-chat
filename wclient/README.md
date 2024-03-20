@@ -1,6 +1,6 @@
-# WeChat Rest Bot
+# Wrest Chat Bot
 
-基于 [wcferry-gosdk](https://github.com/opentdp/wechat-rest/tree/master/wcferry) 实现的微信机器人，已支持如下功能：
+基于 [wcferry-gosdk](https://github.com/opentdp/wrest-chat/tree/master/wcferry) 实现的微信机器人，已支持如下功能：
 
 - 自动回应拍一拍
 - 自动接受好友请求

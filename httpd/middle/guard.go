@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/args"
+	"github.com/opentdp/wrest-chat/args"
 )
 
 func ApiGuard(c *gin.Context) {

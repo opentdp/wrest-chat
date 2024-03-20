@@ -53,7 +53,7 @@ cp wcferry/bin/sdk.dll build/wcferry/
 cp wcferry/bin/spy.dll build/wcferry/
 cp wcferry/bin/wcf.exe build/wcferry/
 
-sed -i 's#](./#](https://github.com/opentdp/wechat-rest/blob/master/#g' build/README.md
+sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' build/README.md
 
-mv build wechat-rest
-zip -r wechat-rest.zip wechat-rest/
+mv build wrest-chat
+zip -r wrest-chat.zip wrest-chat/

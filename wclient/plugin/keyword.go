@@ -10,7 +10,7 @@ import (
 
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/wechat-rest/dbase/keyword"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
 )
 
 type KeywordPlugin struct {

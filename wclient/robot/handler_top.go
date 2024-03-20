@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
 func topHandler() []*Handler {

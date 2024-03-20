@@ -3,7 +3,7 @@ package sundry
 import (
 	"github.com/opentdp/go-helper/httpd"
 
-	"github.com/opentdp/wechat-rest/httpd/middle"
+	"github.com/opentdp/wrest-chat/httpd/middle"
 )
 
 func Route() {

@@ -5,9 +5,9 @@ import (
 
 	"github.com/opentdp/go-helper/httpd"
 
-	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/httpd/middle"
-	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/httpd/middle"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
 func Route() {

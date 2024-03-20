@@ -3,9 +3,9 @@ package robot
 import (
 	"encoding/xml"
 
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry/types"
 )
 
 func receiver37(msg *wcferry.WxMsg) {

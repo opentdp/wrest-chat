@@ -1,4 +1,4 @@
-name: WeChat Rest Builder
+name: Wrest Chat Builder
 
 on:
   push:
@@ -42,4 +42,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            ./wechat-rest.zip
+            ./wrest-chat.zip

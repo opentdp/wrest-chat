@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/dbase/llmodel"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/llmodel"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 func Text(id, rid, msg string) string {

@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/opentdp/go-helper/dborm"
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 func Shrink(days int) {

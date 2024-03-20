@@ -2,10 +2,10 @@
     "swagger": "2.0",
     "info": {
         "description": "基于 WeChatFerry RPC 实现的微信接口，使用 Go 语言编写，无第三方运行时依赖，易于对接任意编程语言。",
-        "title": "WeChat Rest Api",
+        "title": "Wrest Chat Api",
         "contact": {
             "name": "WeChatRest",
-            "url": "https://github.com/opentdp/wechat-rest"
+            "url": "https://github.com/opentdp/wrest-chat"
         },
         "license": {
             "name": "Apache 2.0",

@@ -3,8 +3,8 @@ package dbase
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 func Connect() {

@@ -7,7 +7,7 @@ import (
 	"github.com/opentdp/go-helper/logman"
 	"github.com/opentdp/go-helper/request"
 
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var urlReceiverList = map[string]string{}

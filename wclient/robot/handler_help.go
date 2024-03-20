@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/dbase/llmodel"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient/aichat"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/dbase/llmodel"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient/aichat"
 )
 
 func helpHandler() []*Handler {

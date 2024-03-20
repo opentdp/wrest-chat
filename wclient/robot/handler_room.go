@@ -1,8 +1,8 @@
 package robot
 
 import (
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 func roomHandler() []*Handler {

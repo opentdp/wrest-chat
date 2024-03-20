@@ -3,7 +3,7 @@ package sundry
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/wclient/robot"
+	"github.com/opentdp/wrest-chat/wclient/robot"
 )
 
 // @Summary 获取所有可用指令

@@ -6,9 +6,9 @@ import (
 
 	"github.com/importcjj/sensitive"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var badMember = map[string]int{}

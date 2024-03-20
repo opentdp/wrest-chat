@@ -3,7 +3,7 @@ package chatroom
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建群聊

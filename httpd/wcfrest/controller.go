@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 type Controller struct {

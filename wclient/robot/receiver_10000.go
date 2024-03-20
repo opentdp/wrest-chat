@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 // 处理系统消息

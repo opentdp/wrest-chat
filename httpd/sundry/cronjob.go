@@ -3,8 +3,8 @@ package sundry
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/dbase/cronjob"
-	"github.com/opentdp/wechat-rest/wclient/crond"
+	"github.com/opentdp/wrest-chat/dbase/cronjob"
+	"github.com/opentdp/wrest-chat/wclient/crond"
 )
 
 type Cronjob struct{}

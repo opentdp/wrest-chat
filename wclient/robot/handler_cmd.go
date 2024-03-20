@@ -4,9 +4,9 @@ import (
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
 func cmddHandler() []*Handler {

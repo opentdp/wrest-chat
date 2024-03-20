@@ -9,7 +9,7 @@ import (
 	"github.com/clbanning/mxj"
 	"github.com/opentdp/go-helper/strutil"
 
-	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wrest-chat/wcferry/types"
 )
 
 type FlexWxMsg struct {

@@ -10,10 +10,10 @@ import (
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
 
-	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/message"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/dbase/message"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var wc *wcferry.Client

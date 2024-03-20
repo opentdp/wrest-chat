@@ -3,12 +3,12 @@ package main
 import (
 	"embed"
 
-	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase"
-	"github.com/opentdp/wechat-rest/httpd"
-	"github.com/opentdp/wechat-rest/wclient/crond"
-	"github.com/opentdp/wechat-rest/wclient/plugin"
-	"github.com/opentdp/wechat-rest/wclient/robot"
+	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/dbase"
+	"github.com/opentdp/wrest-chat/httpd"
+	"github.com/opentdp/wrest-chat/wclient/crond"
+	"github.com/opentdp/wrest-chat/wclient/plugin"
+	"github.com/opentdp/wrest-chat/wclient/robot"
 )
 
 //go:embed public

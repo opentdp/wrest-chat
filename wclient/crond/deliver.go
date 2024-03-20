@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
 func MsgDeliver(deliver, content string) {

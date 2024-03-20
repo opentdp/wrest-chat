@@ -7,10 +7,10 @@ import (
 	"github.com/opentdp/go-helper/logman"
 	"github.com/robfig/cron/v3"
 
-	"github.com/opentdp/wechat-rest/dbase/cronjob"
-	"github.com/opentdp/wechat-rest/dbase/tables"
-	"github.com/opentdp/wechat-rest/wclient"
-	"github.com/opentdp/wechat-rest/wclient/aichat"
+	"github.com/opentdp/wrest-chat/dbase/cronjob"
+	"github.com/opentdp/wrest-chat/dbase/tables"
+	"github.com/opentdp/wrest-chat/wclient"
+	"github.com/opentdp/wrest-chat/wclient/aichat"
 )
 
 var crontab *cron.Cron

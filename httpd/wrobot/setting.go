@@ -3,7 +3,7 @@ package wrobot
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/dbase/setting"
+	"github.com/opentdp/wrest-chat/dbase/setting"
 )
 
 type Setting struct{}
