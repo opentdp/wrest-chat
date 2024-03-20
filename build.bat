@@ -20,8 +20,5 @@ MD build\wcferry
 
 COPY README.md build\
 COPY config.yml build\
-COPY wcferry\bin\wcf.exe build\wcferry\
-COPY wcferry\bin\sdk.dll build\wcferry\
-COPY wcferry\bin\spy.dll build\wcferry\
 
 IF "%1" == "" CMD /K
