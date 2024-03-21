@@ -28,7 +28,7 @@ export class LayoutWechatComponent implements OnDestroy {
     @Input()
     public set value(val: WcfrestContactPayload) {
         if (!val || !val.wxid) {
-            return
+            return;
         }
         this.chat = val;
         this.memberCount = 0;

@@ -6,20 +6,32 @@
 }
 
 .list-group {
-    height: calc(100% - 100px);
+    height: calc(100% - 196px);
     overflow-x: hidden;
     overflow-y: auto;
+
+    .avatar img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .system-msg {
+        color: #999;
+
+        &+.system-msg {
+            display: none;
+        }
+    }
 }
 
-.avatar img {
-    width: 40px;
-    height: 40px;
-}
+.card-footer {
+    textarea {
+        resize: none;
+    }
 
-.system-msg {
-    color: #999;
-
-    &+.system-msg {
-        display: none;
+    button {
+        position: absolute;
+        bottom: 14px;
+        right: 24px;
     }
 }
