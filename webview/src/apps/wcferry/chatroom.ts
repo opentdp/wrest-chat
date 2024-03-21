@@ -2,44 +2,42 @@ import { Component } from '@angular/core';
 
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
+import { WcferryContactComponent } from './contact';
 
 @Component({
     selector: 'page-wcferry-chatroom',
     templateUrl: 'chatroom.html',
     styleUrls: ['chatroom.scss']
 })
-export class WcferryChatroomComponent {
+export class WcferryChatroomComponent extends WcferryContactComponent {
 
     public avatars: Record<string, string> = {};
     public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
-    public chatrooms: Array<WcfrestContactPayload> = [];
-    public chatroom!: WcfrestContactPayload;
+    public chat = {} as WcfrestContactPayload;
 
-    public members: Array<WcfrestContactPayload> = [];
-
-    constructor() {
-        this.getChatrooms();
-    }
-
-    public getChatrooms() {
-        return WrestApi.chatrooms().then((data) => {
-            this.chatrooms = data || [];
-            this.getAvatars(this.chatrooms.map((v) => v.wxid));
+    override getContacts() {
+        return super.getContacts().then(() => {
+            this.contacts = this.contacts.filter((v) => v.type == '群聊' || v.type == '好友');
+            this.getAvatars(this.contacts.map((v) => v.wxid));
+            this.chat = this.contacts[0];
         });
     }
 
+    public changeChat(item: WcfrestContactPayload) {
+        this.chat = item;
+        if (item.wxid.indexOf('@chatroom') > 0) {
+            this.getChatroom(item);
+        }
+    }
+
     public getChatroom(room: WcfrestContactPayload) {
-        this.chatroom = room;
         if (this.roomMembers[room.wxid]) {
-            this.members = this.roomMembers[room.wxid];
             return; // 已获取
         }
         return WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
-            this.roomMembers[room.wxid] = data || [];
-            this.members = data || [];
-            // 批量获取头像
-            this.getAvatars(this.members.map((v) => v.wxid));
+            this.roomMembers[room.wxid] = (data = data || []);
+            this.getAvatars(data.map((v) => v.wxid));
         });
     }
 

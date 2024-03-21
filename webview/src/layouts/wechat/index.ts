@@ -11,32 +11,38 @@ import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../o
 export class LayoutWechatComponent implements OnDestroy {
 
     public wss!: WebSocket;
+    public wsMsg: Array<IMessage> = [];
 
     public messages: Array<IMessage> = [];
     public avatars: Record<string, string> = {};
     public self = {} as WcfrestUserInfoPayload;
 
-    public chatroom!: WcfrestContactPayload;
+    public chat!: WcfrestContactPayload;
     public memberMap: Record<string, WcfrestContactPayload> = {};
     public memberCount: number = 0;
 
-    public subPanel = false;
-    public talkId = '';
-
+    public showPanel = false;
+    public isGroup = false;
     public content = '';
 
     @Input()
-    public set chat(val: WcfrestContactPayload) {
-        this.chatroom = val;
-        if (this.chatroom) {
-            this.getChatroom(this.chatroom.wxid);
+    public set value(val: WcfrestContactPayload) {
+        if (!val || !val.wxid) {
+            return
         }
+        this.chat = val;
+        this.memberCount = 0;
+        this.memberMap[val.wxid] = val;
+        this.isGroup = val.wxid.includes('@chatroom');
+        this.isGroup ? this.getChatroom(val.wxid) : this.getAvatar(val.wxid);
+        this.messages = this.wsMsg.filter(v => this.checkMsg(v));
     }
 
     public constructor() {
-        this.startSocket();
+        this.restoreMsg();
         WrestApi.selfInfo().then((data) => {
             this.self = data;
+            this.startSocket();
         });
     }
 
@@ -48,74 +54,104 @@ export class LayoutWechatComponent implements OnDestroy {
     public sendTxt() {
         const rq = {
             msg: this.content,
-            receiver: this.chatroom.wxid,
+            receiver: this.chat.wxid,
         };
         return WrestApi.sendTxt(rq).then(() => {
             const msg: IMessage = {
-                ts: Date.now(),
-                roomid: this.chatroom.wxid,
-                sender: this.self.wxid,
-                content: this.content,
-                is_group: true,
                 id: 0,
                 type: 1,
+                ts: Date.now(),
+                sender: this.self.wxid,
+                is_group: this.isGroup,
+                roomid: this.isGroup ? this.chat.wxid : '',
+                receiver: this.chat.wxid,
+                content: this.content,
                 sign: '',
             };
-            this.messages.push(msg);
+            this.storeMsg(msg);
             this.content = '';
         });
     }
 
+    public checkMsg(msg: IMessage) {
+        if (!msg || !this.chat) {
+            return false;
+        }
+        // 群聊
+        if (this.isGroup) {
+            return this.chat.wxid === msg.roomid;
+        }
+        // 私聊
+        console.log(msg)
+        return !msg.is_group && (
+            msg.sender == 'system' ||
+            msg.sender == this.chat.wxid ||
+            msg.receiver == this.chat.wxid
+        );
+    }
+
+    public storeMsg(msg: IMessage) {
+        this.wsMsg.push(msg);
+        if (this.checkMsg(msg)) {
+            this.messages.push(msg);
+            this.getAvatar(msg.sender);
+        }
+        sessionStorage.setItem('wx::message', JSON.stringify(this.wsMsg));
+    }
+
+    public restoreMsg() {
+        const str = sessionStorage.getItem('wx::message') || '[]';
+        this.wsMsg = JSON.parse(str) as IMessage[];
+    }
+
     public startSocket() {
-        // 消息本地缓存
-        const sid = 'wx::message'
-        const msg = sessionStorage.getItem(sid) || '[]';
-        this.messages = JSON.parse(msg) as IMessage[];
-        // 注册消息接收
         const token = sessionStorage.getItem('token');
         const url = location.origin.replace(/^http/, 'ws') + '/wcf/socket_receiver';
         const wss = new WebSocket(url + (token ? '?token=' + token : ''));
+        // 接收消息
+        wss.onmessage = (event) => {
+            const msg = JSON.parse(event.data) as IMessage;
+            if (msg && msg.ts > 0) {
+                msg.ts = msg.ts * 1000;
+                this.storeMsg(msg);
+            }
+        };
         // 连接成功
         wss.onopen = () => {
             this.wss = wss;
-            const data = {
+            const msg = {
                 ts: Date.now(),
                 sender: 'system',
-                content: 'websocket is connected'
+                is_group: this.isGroup,
+                roomid: this.isGroup ? this.chat.wxid : '',
+                content: 'websocket is connected',
             };
-            this.messages.push(data as IMessage);
+            this.storeMsg(msg as IMessage);
         };
         // 自动重连
         wss.onclose = () => {
-            const data = {
+            const msg = {
                 ts: Date.now(),
                 sender: 'system',
-                content: 'websocket is closed, retry in 5s'
+                is_group: this.isGroup,
+                roomid: this.isGroup ? this.chat.wxid : '',
+                content: 'websocket is closed, retry in 5s',
             };
-            this.messages.push(data as IMessage);
+            this.storeMsg(msg as IMessage);
             setTimeout(() => this.startSocket(), 5 * 1000);
         };
         // 捕获错误
         wss.onerror = (event) => {
-            const data = {
+            const msg = {
                 ts: Date.now(),
                 sender: 'system',
-                content: 'websocket error, details to console'
+                is_group: this.isGroup,
+                roomid: this.isGroup ? this.chat.wxid : '',
+                content: 'websocket error, details to console',
             };
-            this.messages.push(data as IMessage);
             console.log(event);
-        };
-        // 接收消息
-        wss.onmessage = (event) => {
-            const data = JSON.parse(event.data) as IMessage;
-            if (data && data.ts > 0) {
-                data.ts = data.ts * 1000;
-                this.messages.push(data);
-                // 获取头像
-                this.getAvatar(data.sender);
-                // 消息本地缓存
-                sessionStorage.setItem(sid, JSON.stringify(this.messages));
-            }
+            this.storeMsg(msg as IMessage);
+            setTimeout(() => this.startSocket(), 5 * 1000);
         };
     }
 
@@ -133,10 +169,8 @@ export class LayoutWechatComponent implements OnDestroy {
 
     public getChatroom(roomid: string) {
         return WrestApi.chatroomMembers({ roomid }).then((data) => {
+            data.map((v) => this.memberMap[v.wxid] = v);
             this.memberCount = data.length;
-            data.map((item) => {
-                this.memberMap[item.wxid] = item;
-            });
         });
     }
 
@@ -149,6 +183,7 @@ interface IMessage {
     ts: number;
     roomid: string;
     sender: string;
+    receiver: string;
     sign: string;
     content: string;
     xml?: {

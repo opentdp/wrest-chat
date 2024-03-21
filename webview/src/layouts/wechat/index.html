@@ -1,19 +1,23 @@
-<div class="card" *ngIf="chatroom">
+<div class="card" *ngIf="chat">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div class="text-truncate fs-5 me-2">
-            {{chatroom.name}}（{{memberCount}}）
+            {{chat.name}} {{memberCount ? '(' + memberCount + ')' : ''}}
         </div>
-        @if (subPanel) {
-        <i class="bi bi-box-arrow-in-right cursor-pointer" (click)="subPanel = false"></i>
+        @if (showPanel) {
+        <i class="bi bi-box-arrow-in-right cursor-pointer" (click)="showPanel = false"></i>
         } @else {
-        <i class="bi bi-box-arrow-in-left cursor-pointer" (click)="subPanel = true"></i>
+        <i class="bi bi-box-arrow-in-left cursor-pointer" (click)="showPanel = true"></i>
         }
     </div>
 
     <div class="list-group list-group-flush">
         @for (item of messages; track item.id) {
-        @if(item.roomid == chatroom.wxid) {
-        <div class="list-group-item" [class.system]="item.sender == 'system'">
+        @if (item.sender == 'system') {
+        <div class="list-group-item system-msg">
+            <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
+        </div>
+        } @else {
+        <div class="list-group-item">
             <div class="d-flex align-items-center">
                 <div class="avatar me-3">
                     <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
@@ -28,11 +32,6 @@
             <div class="mt-2">
                 {{item.content}}
             </div>
-        </div>
-        }
-        @if (item.sender == 'system') {
-        <div class="list-group-item system-msg">
-            <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
         </div>
         }
         }
