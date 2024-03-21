@@ -97,11 +97,11 @@ func helpCallback(msg *wcferry.WxMsg) string {
 	// 对话模型相关配置
 	llmCount, _ := llmodel.Count(&llmodel.CountParam{})
 	if llmCount > 0 {
-		model := aichat.UserModel(msg.Sender, msg.Roomid).Family
-		if len(model) > 1 {
-			text += fmt.Sprintf("对话模型 %s；", model)
+		uc := aichat.UserConfig(msg.Sender, msg.Roomid)
+		if len(uc.Family) > 1 {
+			text += fmt.Sprintf("对话模型 %s；", uc.Family)
 		}
-		text += fmt.Sprintf("上下文长度 %d/%d；", aichat.CountHistory(msg.Sender, msg.Roomid), setting.ModelHistory)
+		text += fmt.Sprintf("上下文长度 %d/%d；", len(uc.MsgHistorys), uc.MsgHistoryMax)
 	}
 
 	return text + "祝你好运！"

@@ -36,7 +36,7 @@ func aiHandler() []*Handler {
 		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
-			aichat.ResetHistory(msg.Sender, msg.Roomid)
+			aichat.UserConfig(msg.Sender, msg.Roomid).ResetHistory()
 			return "已重置上下文"
 		},
 	})
@@ -103,7 +103,7 @@ func aiCallback(msg *wcferry.WxMsg) string {
 		case 1:
 			if ref.Content != "" {
 				msg.Content += "\n内容如下:\n" + ref.Content
-				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+				return aichat.Text(msg.Content, msg.Sender, msg.Roomid)
 			}
 		// 图片
 		case 3:
@@ -113,12 +113,12 @@ func aiCallback(msg *wcferry.WxMsg) string {
 					return "提取消息图片失败"
 				}
 			}
-			return aichat.Vison(msg.Sender, msg.Roomid, msg.Content, ref.Remark)
+			return aichat.Vison(msg.Content, ref.Remark, msg.Sender, msg.Roomid)
 		// 混合类消息
 		case 49:
 			if ref.Content != "" {
 				msg.Content += "\nXML数据如下:\n" + ref.Content
-				return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+				return aichat.Text(msg.Content, msg.Sender, msg.Roomid)
 			}
 		// 默认提示
 		default:
@@ -126,6 +126,6 @@ func aiCallback(msg *wcferry.WxMsg) string {
 		}
 	}
 
-	return aichat.Text(msg.Sender, msg.Roomid, msg.Content)
+	return aichat.Text(msg.Content, msg.Sender, msg.Roomid)
 
 }

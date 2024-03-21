@@ -16,8 +16,6 @@ go build -ldflags="-s -w" -o %target% main.go
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-MD build\wcferry
-
 COPY README.md build\
 COPY config.yml build\
 

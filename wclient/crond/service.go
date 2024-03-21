@@ -62,7 +62,7 @@ func Execute(id uint) {
 				return
 			}
 			self := wc.CmdClient.GetSelfInfo()
-			data := aichat.Text(self.Wxid, "", job.Content)
+			data := aichat.Text(job.Content, self.Wxid, "")
 			MsgDeliver(job.Deliver, data)
 		}
 		return
