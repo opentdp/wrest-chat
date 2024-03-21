@@ -3,11 +3,7 @@
         <div class="text-truncate fs-5 me-2">
             {{chat.name}} {{memberCount ? '(' + memberCount + ')' : ''}}
         </div>
-        @if (showPanel) {
-        <i class="bi bi-box-arrow-in-right cursor-pointer" (click)="showPanel = false"></i>
-        } @else {
-        <i class="bi bi-box-arrow-in-left cursor-pointer" (click)="showPanel = true"></i>
-        }
+        <i class="bi bi-card-text cursor-pointer" (click)="showPanel = !showPanel"></i>
     </div>
 
     <div class="list-group list-group-flush">

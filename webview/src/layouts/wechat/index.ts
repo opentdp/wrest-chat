@@ -77,12 +77,12 @@ export class LayoutWechatComponent implements OnDestroy {
         if (!msg || !this.chat) {
             return false;
         }
+        this.getAvatar(msg.sender);
         // 群聊
         if (this.isGroup) {
             return this.chat.wxid === msg.roomid;
         }
         // 私聊
-        console.log(msg)
         return !msg.is_group && (
             msg.sender == 'system' ||
             msg.sender == this.chat.wxid ||
@@ -94,7 +94,6 @@ export class LayoutWechatComponent implements OnDestroy {
         this.wsMsg.push(msg);
         if (this.checkMsg(msg)) {
             this.messages.push(msg);
-            this.getAvatar(msg.sender);
         }
         sessionStorage.setItem('wx::message', JSON.stringify(this.wsMsg));
     }

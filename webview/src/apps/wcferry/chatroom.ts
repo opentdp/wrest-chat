@@ -16,9 +16,11 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
 
     public chat = {} as WcfrestContactPayload;
 
+    public conactsFilter = '';
+
     override getContacts() {
         return super.getContacts().then(() => {
-            this.contacts = this.contacts.filter((v) => v.type == '群聊' || v.type == '好友');
+            this.contacts = this.contacts.filter((v) => '群聊,好友'.includes(v.type));
             this.getAvatars(this.contacts.map((v) => v.wxid));
             this.chat = this.contacts[0];
         });
@@ -26,6 +28,7 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
 
     public changeChat(item: WcfrestContactPayload) {
         this.chat = item;
+        item.wxid = item.wxid.trim();
         if (item.wxid.indexOf('@chatroom') > 0) {
             this.getChatroom(item);
         }
