@@ -20,18 +20,19 @@ export class LayoutToastComponent {
         window.onerror = (message) => {
             this.show({ message: String(message), classname: 'bg-danger text-light' });
         };
-        // 处理 postMessage
-        window.addEventListener('message', e => {
-            const toast = { message: String(e.data.message || e.data), classname: '' };
-            if (e.data.type) {
-                toast.classname = `bg-${e.data.type} text-light`;
-            }
-            this.show(toast);
-        });
         // 处理 promise 未捕获的 rejection
         window.addEventListener("unhandledrejection", e => {
             this.show({ message: e.reason, classname: 'bg-danger text-light' });
             e.preventDefault && e.preventDefault();
+        });
+        // 处理 postMessage 信息
+        window.addEventListener('message', e => {
+            if (e && e.data && e.data.type) {
+                this.show({
+                    message: String(e.data.message),
+                    classname: `bg-${e.data.type} text-light`
+                });
+            }
         });
     }
 
