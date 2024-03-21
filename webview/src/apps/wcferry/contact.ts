@@ -16,6 +16,7 @@ export class WcferryContactComponent {
         '公众号': /^gh_/,
         '企业微信': /@openim$/,
         '内置服务': /^fmessage|filehelper|floatbottle|medianote|mphelper|newsapp$/,
+        '可能异常': /[\n\r]$/,
     };
 
     public contactType = '好友';

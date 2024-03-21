@@ -28,7 +28,6 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
 
     public changeChat(item: WcfrestContactPayload) {
         this.chat = item;
-        item.wxid = item.wxid.trim();
         if (item.wxid.indexOf('@chatroom') > 0) {
             this.getChatroom(item);
         }
