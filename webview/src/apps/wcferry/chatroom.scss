@@ -1,35 +1,14 @@
-.col>div.card {
+.col>* {
     height: calc(100vh - 128px);
     overflow: hidden;
+}
 
-    .list-group {
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        &.chatrooms {
-            height: 100%;
-        }
-
-        &.messages {
-            height: calc(100vh - 228px);
-        }
-
-        &.members {
-            height: calc(100vh - 174px);
-        }
-    }
-
+.list-group {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .avatar img {
     width: 40px;
     height: 40px;
-}
-
-.msg-system {
-    color: #999;
-
-    &+.msg-system {
-        display: none;
-    }
 }

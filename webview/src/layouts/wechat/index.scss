@@ -1,0 +1,25 @@
+:host,
+.card {
+    height: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+.list-group {
+    height: calc(100% - 100px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+}
+
+.system-msg {
+    color: #999;
+
+    &+.system-msg {
+        display: none;
+    }
+}
