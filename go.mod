@@ -10,7 +10,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.7.1
 	github.com/rehiy/one-llm v0.2.0
-	github.com/sashabaranov/go-openai v1.20.4
 	go.nanomsg.org/mangos/v3 v3.4.2
 	google.golang.org/protobuf v1.33.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -52,6 +51,7 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/sashabaranov/go-openai v1.20.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	golang.org/x/arch v0.7.0 // indirect
