@@ -27,6 +27,9 @@
             <div class="row g-3">
                 <div class="col col-md-8">
                     <select name="wxid" class="form-select" [(ngModel)]="formdata.wxid" [disabled]="conacts.length == 0" required>
+                        @if (conactsFilter.length > 0) {
+                        <option>选择筛选结果</option>
+                        }
                         @for (item of conacts | filter:'wxid,name':conactsFilter; track item.wxid) {
                         <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
                         }
