@@ -129,17 +129,6 @@ func (*Cronjob) delete(c *gin.Context) {
 
 }
 
-// @Summary 计划任务状态
-// @Produce json
-// @Tags API::计划任务
-// @Success 200
-// @Router /api/cronjob/status [post]
-func (*Cronjob) status(c *gin.Context) {
-
-	c.Set("Payload", crond.GetEntries())
-
-}
-
 // @Summary 触发计划任务
 // @Produce json
 // @Tags API::计划任务
@@ -152,14 +141,26 @@ func (*Cronjob) execute(c *gin.Context) {
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
-	}
-
-	if rq.Rd == 0 {
+	} else if rq.Rd == 0 {
 		c.Set("Error", "参数错误")
 		return
 	}
 
-	crond.Execute(rq.Rd)
-	c.Set("Message", "任务触发完成")
+	if err := crond.Execute(rq.Rd); err == nil {
+		c.Set("Message", "触发完成")
+	} else {
+		c.Set("Error", err)
+	}
+
+}
+
+// @Summary 计划任务状态
+// @Produce json
+// @Tags API::计划任务
+// @Success 200
+// @Router /api/cronjob/status [post]
+func (*Cronjob) status(c *gin.Context) {
+
+	c.Set("Payload", crond.GetEntries())
 
 }
