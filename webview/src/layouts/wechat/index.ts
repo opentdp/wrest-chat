@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, AfterViewChecked, Input, ViewChild, ElementRef } from '@angular/core';
 
 import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../openapi/wcfrest';
 
@@ -8,7 +8,10 @@ import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../o
     templateUrl: 'index.html',
     styleUrls: ['index.scss']
 })
-export class LayoutWechatComponent implements OnDestroy {
+export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
+
+    @ViewChild('scrollLayout')
+    private scrollLayout!: ElementRef;
 
     public wss!: WebSocket;
     public wsMsg: Array<IMessage> = [];
@@ -47,6 +50,10 @@ export class LayoutWechatComponent implements OnDestroy {
             this.self = data;
             this.startSocket();
         });
+    }
+
+    public ngAfterViewChecked() {
+        this.scrollToBottom();
     }
 
     public ngOnDestroy() {
@@ -177,6 +184,16 @@ export class LayoutWechatComponent implements OnDestroy {
             this.memberCount = data.length;
         });
     }
+
+    public scrollToBottom() {
+        try {
+            const el = this.scrollLayout.nativeElement;
+            el.scrollTop = el.scrollHeight;
+        } catch (err) {
+            //
+        }
+    }
+
 }
 
 interface IMessage {
