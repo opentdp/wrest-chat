@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col" [class.col-md-9]="!wechat.showPanel" [class.col-md-6]="wechat.showPanel">
-            <layout-wechat #wechat [value]="chat"></layout-wechat>
+            <layout-wechat #wechat [avatars]="avatars" [value]="chat"></layout-wechat>
         </div>
         <div class="col col-md-3" [class.d-none]="!wechat.showPanel">
             @if (chat.wxid && chat.wxid.includes('@chatroom')) {

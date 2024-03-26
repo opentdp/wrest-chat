@@ -14,7 +14,6 @@ export class LayoutWechatComponent implements OnDestroy {
     public wsMsg: Array<IMessage> = [];
 
     public messages: Array<IMessage> = [];
-    public avatars: Record<string, string> = {};
     public self = {} as WcfrestUserInfoPayload;
 
     public chat!: WcfrestContactPayload;
@@ -26,6 +25,9 @@ export class LayoutWechatComponent implements OnDestroy {
     public content = '';
 
     @Input()
+    public avatars: Record<string, string> = {};
+
+    @Input()
     public set value(val: WcfrestContactPayload) {
         if (!val || !val.wxid) {
             return;
@@ -34,12 +36,13 @@ export class LayoutWechatComponent implements OnDestroy {
         this.memberCount = 0;
         this.memberMap[val.wxid] = val;
         this.isGroup = val.wxid.includes('@chatroom');
-        this.isGroup ? this.getChatroom(val.wxid) : this.getAvatar(val.wxid);
+        this.isGroup ? this.getChatroom(val.wxid) : this.getAvatars([val.wxid]);
         this.messages = this.wsMsg.filter(v => this.checkMsg(v));
     }
 
     public constructor() {
         this.restoreMsg();
+        this.avatars['system'] = '/assets/icon.png';
         WrestApi.selfInfo().then((data) => {
             this.self = data;
             this.startSocket();
@@ -77,7 +80,11 @@ export class LayoutWechatComponent implements OnDestroy {
         if (!msg || !this.chat) {
             return false;
         }
-        this.getAvatar(msg.sender);
+        // 头像
+        if (this.avatars[msg.sender] === undefined) {
+            this.avatars[msg.sender] = '/assets/icon.png';
+            this.getAvatars([msg.sender]);
+        }
         // 群聊
         if (this.isGroup) {
             return this.chat.wxid === msg.roomid;
@@ -101,6 +108,7 @@ export class LayoutWechatComponent implements OnDestroy {
     public restoreMsg() {
         const str = sessionStorage.getItem('wx::message') || '[]';
         this.wsMsg = JSON.parse(str) as IMessage[];
+        this.getAvatars(this.wsMsg.map(v => v.sender));
     }
 
     public startSocket() {
@@ -154,15 +162,12 @@ export class LayoutWechatComponent implements OnDestroy {
         };
     }
 
-    public getAvatar(id: string) {
-        if (this.avatars[id]) {
-            return Promise.resolve(this.avatars[id]);
-        }
-        return WrestApi.avatars({ wxids: [id] }).then((data) => {
+    public getAvatars(ids: string[]) {
+        const wxids = [...new Set(ids)];
+        return WrestApi.avatars({ wxids }).then((data) => {
             data && data.forEach((item) => {
                 this.avatars[item.usr_name] = item.small_head_img_url;
             });
-            return this.avatars[id] || '/assets/icon.png';
         });
     }
 
@@ -172,7 +177,6 @@ export class LayoutWechatComponent implements OnDestroy {
             this.memberCount = data.length;
         });
     }
-
 }
 
 interface IMessage {

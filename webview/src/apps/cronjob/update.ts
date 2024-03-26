@@ -68,10 +68,11 @@ export class CronjobUpdateComponent implements OnInit {
         this.changeConacts();
     }
 
-    public async changeConacts() {
+    public changeConacts() {
         const id = this.deliver[1] || '-';
-        await this.getWcfRoomMembers(this.deliver[1]);
-        this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        return this.getWcfRoomMembers(this.deliver[1]).then(() => {
+            this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        });
     }
 
     public getWcfFriends() {
@@ -88,7 +89,7 @@ export class CronjobUpdateComponent implements OnInit {
 
     public getWcfRoomMembers(id: string) {
         if (this.wcfRoomMembers[id]) {
-            return; //已获取
+            return Promise.resolve(); //已获取
         }
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             this.wcfRoomMembers[id] = data || [];

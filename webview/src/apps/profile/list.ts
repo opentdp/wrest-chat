@@ -81,7 +81,8 @@ export class ProfileListComponent {
     }
 
     public getWcfAvatars(ids: string[]) {
-        return WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
+        const wxids = [...new Set(ids)];
+        return WrestApi.avatars({ wxids }).then((data) => {
             data && data.forEach((item) => {
                 this.wcfAvatars[item.usr_name] = item.small_head_img_url;
             });

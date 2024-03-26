@@ -11,26 +11,24 @@ import { WcferryContactComponent } from './contact';
 })
 export class WcferryChatroomComponent extends WcferryContactComponent {
 
-    public avatars: Record<string, string> = {};
     public roomMembers: Record<string, Array<WcfrestContactPayload>> = {};
 
     public chat = {} as WcfrestContactPayload;
 
     public conactsFilter = '';
 
-    override getContacts() {
-        return super.getContacts().then(() => {
-            this.contacts = this.contacts.filter((v) => '群聊,好友'.includes(v.type));
-            this.getAvatars(this.contacts.map((v) => v.wxid));
-            this.chat = this.contacts[0];
-        });
-    }
-
     public changeChat(item: WcfrestContactPayload) {
-        this.chat = item;
         if (item.wxid.indexOf('@chatroom') > 0) {
             this.getChatroom(item);
         }
+        this.chat = item;
+    }
+
+    override getContacts() {
+        return super.getContacts().then(() => {
+            this.contacts = this.contacts.filter((v) => '群聊,好友'.includes(v.type));
+            this.chat = this.contacts[0];
+        });
     }
 
     public getChatroom(room: WcfrestContactPayload) {
@@ -40,14 +38,6 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
         return WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = (data = data || []);
             this.getAvatars(data.map((v) => v.wxid));
-        });
-    }
-
-    public getAvatars(ids: string[]) {
-        return WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
-            data && data.forEach((item) => {
-                this.avatars[item.usr_name] = item.small_head_img_url;
-            });
         });
     }
 
