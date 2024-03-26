@@ -140,7 +140,7 @@ func (*Cronjob) status(c *gin.Context) {
 
 }
 
-// @Summary 执行计划任务
+// @Summary 触发计划任务
 // @Produce json
 // @Tags API::计划任务
 // @Success 200
@@ -155,11 +155,11 @@ func (*Cronjob) execute(c *gin.Context) {
 	}
 
 	if rq.Rd == 0 {
-		c.Set("Error", "请传入计划任务 Id")
+		c.Set("Error", "参数错误")
 		return
 	}
 
 	crond.Execute(rq.Rd)
-	c.Set("Message", "任务触发成功")
+	c.Set("Message", "任务触发完成")
 
 }

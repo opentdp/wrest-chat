@@ -107,7 +107,7 @@
                 "tags": [
                     "API::计划任务"
                 ],
-                "summary": "执行计划任务",
+                "summary": "触发计划任务",
                 "responses": {
                     "200": {
                         "description": "OK"
