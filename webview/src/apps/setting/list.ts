@@ -27,7 +27,7 @@ export class SettingListComponent {
     public deleteSetting(item: TablesSetting) {
         if (item.group === 'bot') {
             window.postMessage({ message: '系统配置不可删除', type: 'danger' });
-            return;
+            return Promise.resolve();
         }
         return RobotApi.settingDelete({ rd: item.rd }).then(() => {
             this.getSettings();

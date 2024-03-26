@@ -34,11 +34,10 @@ export class WelcomeComponent {
 
     public async checkLogin() {
         this.islogin = await WrestApi.isLogin();
-        if (!this.islogin) {
-            setTimeout(() => this.checkLogin(), 5 * 1000);
-            return;
+        if (this.islogin) {
+            return this.getSelfInfo();
         }
-        return this.getSelfInfo();
+        setTimeout(() => this.checkLogin(), 5 * 1000);
     }
 
     public async refreshQrcode() {

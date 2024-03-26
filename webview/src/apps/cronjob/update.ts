@@ -54,7 +54,7 @@ export class CronjobUpdateComponent implements OnInit {
         const time = data.second + data.minute + data.hour + data.day_of_month + data.month + data.day_of_week;
         if (time === '******') {
             window.postMessage({ message: '排程不可全为 *', type: 'danger' });
-            return;
+            return Promise.resolve();
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
         return SundryApi.cronjobUpdate(this.formdata).then(() => {

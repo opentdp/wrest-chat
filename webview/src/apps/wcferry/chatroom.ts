@@ -33,7 +33,7 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
 
     public getChatroom(room: WcfrestContactPayload) {
         if (this.roomMembers[room.wxid]) {
-            return; // 已获取
+            return Promise.resolve(); //已获取
         }
         return WrestApi.chatroomMembers({ roomid: room.wxid }).then((data) => {
             this.roomMembers[room.wxid] = (data = data || []);

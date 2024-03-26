@@ -70,7 +70,7 @@ export class ProfileListComponent {
 
     public getWcfRoomMembers(id: string) {
         if (this.wcfRoomMembers[id]) {
-            return; //已获取
+            return Promise.resolve(); //已获取
         }
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             this.wcfRoomMembers[id] = {};
