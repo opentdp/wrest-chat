@@ -18,6 +18,7 @@ func Route() {
 	rg.POST("cronjob/update", cronjob.update)
 	rg.POST("cronjob/delete", cronjob.delete)
 	rg.POST("cronjob/status", cronjob.status)
+	rg.POST("cronjob/execute", cronjob.execute)
 
 	rg.POST("handler/list", handlerList)
 

@@ -139,3 +139,27 @@ func (*Cronjob) status(c *gin.Context) {
 	c.Set("Payload", crond.GetEntries())
 
 }
+
+// @Summary 执行计划任务
+// @Produce json
+// @Tags API::计划任务
+// @Success 200
+// @Router /api/cronjob/execute [post]
+func (*Cronjob) execute(c *gin.Context) {
+
+	var rq *cronjob.FetchParam
+
+	if err := c.ShouldBind(&rq); err != nil {
+		c.Set("Error", err)
+		return
+	}
+
+	if rq.Rd == 0 {
+		c.Set("Error", "请传入计划任务 Id")
+		return
+	}
+
+	crond.Execute(rq.Rd)
+	c.Set("Message", "任务触发成功")
+
+}

@@ -36,6 +36,8 @@ func Daemon() {
 
 }
 
+// 执行计划任务
+
 func Execute(id uint) {
 
 	job, _ := cronjob.Fetch(&cronjob.FetchParam{Rd: id})
@@ -88,6 +90,8 @@ func Execute(id uint) {
 	}
 
 }
+
+// 激活计划任务
 
 func AttachJob(job *tables.Cronjob) error {
 
