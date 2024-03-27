@@ -6,7 +6,7 @@
         <i class="bi bi-card-text cursor-pointer" (click)="showPanel = !showPanel"></i>
     </div>
 
-    <div class="list-group list-group-flush">
+    <div #scrollLayout class="list-group list-group-flush">
         @for (item of messages; track item.id) {
         @if (item.sender == 'system') {
         <div class="list-group-item system-msg">

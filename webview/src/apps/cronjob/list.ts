@@ -13,7 +13,9 @@ export class CronjobListComponent {
     public cronjobTypes = CronjobTypes;
 
     public cronjobs: Array<TablesCronjob> = [];
-    public status: Record<number, CronjobStatusPayload> = [];
+    public status: Record<number, CronjobStatusPayload> = {};
+
+    public execStatus: Record<number, boolean> = {};
 
     constructor() {
         this.getCronjobs();
@@ -29,6 +31,14 @@ export class CronjobListComponent {
     public getCronStatus() {
         return SundryApi.cronjobStatus({}).then((data) => {
             this.status = data || [];
+        });
+    }
+
+    public executeCronjob(item: TablesCronjob) {
+        this.execStatus[item.rd] = true;
+        const rq = { rd: item.rd };
+        return SundryApi.cronjobExecute(rq).finally(() => {
+            this.execStatus[item.rd] = false;
         });
     }
 

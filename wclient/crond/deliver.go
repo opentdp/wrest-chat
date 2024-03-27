@@ -1,13 +1,14 @@
 package crond
 
 import (
+	"errors"
 	"strings"
 	"time"
 
 	"github.com/opentdp/wrest-chat/wclient"
 )
 
-func MsgDeliver(deliver, content string) {
+func MsgDeliver(deliver, content string) error {
 
 	content = strings.TrimSpace(content)
 	delivers := strings.Split(deliver, "\n")
@@ -17,7 +18,7 @@ func MsgDeliver(deliver, content string) {
 		// 解析参数
 		args := strings.Split(strings.TrimSpace(dr), ",")
 		if len(args) < 2 {
-			return
+			return errors.New("deliver is error")
 		}
 		// 分渠道投递
 		switch args[0] {
@@ -26,6 +27,8 @@ func MsgDeliver(deliver, content string) {
 			wechatMessage(args[1:], content)
 		}
 	}
+
+	return nil
 
 }
 

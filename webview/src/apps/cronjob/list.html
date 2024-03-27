@@ -51,6 +51,7 @@
                 </td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-primary" routerLink="/cronjob/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-success ms-2" (click)="executeCronjob(item)" [disabled]="execStatus[item.rd]">触发</button>
                     <button class="btn btn-sm btn-danger ms-2" (click)="deleteCronjob(item)">删除</button>
                 </td>
             </tr>

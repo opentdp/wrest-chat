@@ -129,6 +129,31 @@ func (*Cronjob) delete(c *gin.Context) {
 
 }
 
+// @Summary 触发计划任务
+// @Produce json
+// @Tags API::计划任务
+// @Success 200
+// @Router /api/cronjob/execute [post]
+func (*Cronjob) execute(c *gin.Context) {
+
+	var rq *cronjob.FetchParam
+
+	if err := c.ShouldBind(&rq); err != nil {
+		c.Set("Error", err)
+		return
+	} else if rq.Rd == 0 {
+		c.Set("Error", "参数错误")
+		return
+	}
+
+	if err := crond.Execute(rq.Rd); err == nil {
+		c.Set("Message", "触发完成")
+	} else {
+		c.Set("Error", err)
+	}
+
+}
+
 // @Summary 计划任务状态
 // @Produce json
 // @Tags API::计划任务

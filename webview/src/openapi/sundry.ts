@@ -65,6 +65,16 @@ export const SundryApi = {
         return httpRequest('/api/cronjob/status', options);
     },
     /**
+     * @summary 触发计划任务
+     * @param {CronjobFetchParam} body 触发计划任务参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    cronjobExecute(body: CronjobFetchParam, options: RequestInit = {}): Promise<Record<number, CronjobStatusPayload>> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/cronjob/execute', options);
+    },
+    /**
      * @summary 获取指令列表
      * @param {HandlerListParam} body 获取指令列表参数
      * @param {*} [options] Override http request option.

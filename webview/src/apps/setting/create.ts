@@ -16,6 +16,7 @@ export class SettingCreateComponent {
     public llmodels: Array<TablesLLModel> = [];
 
     public formdata: SettingCreateParam = {
+        group: 'custom',
         type: 'string',
         name: '',
     };

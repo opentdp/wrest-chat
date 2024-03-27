@@ -99,6 +99,22 @@
                 }
             }
         },
+        "/api/cronjob/execute": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::计划任务"
+                ],
+                "summary": "触发计划任务",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/cronjob/list": {
             "post": {
                 "produces": [

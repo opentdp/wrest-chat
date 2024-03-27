@@ -9,6 +9,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class WcferryContactComponent {
 
+    public avatars: Record<string, string> = {};
     public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 
     public contactTypes: Record<string, RegExp> = {
@@ -30,6 +31,7 @@ export class WcferryContactComponent {
             this.contacts = data.map(item => ({
                 ...item, type: this.getContactType(item)
             }));
+            this.getAvatars(this.contacts.map((v) => v.wxid));
         });
     }
 
@@ -41,6 +43,15 @@ export class WcferryContactComponent {
             }
         }
         return '好友';
+    }
+
+    public getAvatars(ids: string[]) {
+        const wxids = [...new Set(ids)];
+        return WrestApi.avatars({ wxids }).then((data) => {
+            data && data.forEach((item) => {
+                this.avatars[item.usr_name] = item.small_head_img_url;
+            });
+        });
     }
 
 }
