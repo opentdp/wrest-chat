@@ -6,28 +6,26 @@
         <i class="bi bi-card-text cursor-pointer" (click)="showPanel = !showPanel"></i>
     </div>
 
-    <div #scrollLayout class="list-group list-group-flush">
+    <div #scrollLayout class="content p-3">
         @for (item of messages; track item.id) {
         @if (item.sender == 'system') {
-        <div class="list-group-item system-msg">
+        <div class="system mb-4">
             <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
         </div>
         } @else {
-        <div class="list-group-item">
-            <div class="d-flex align-items-center">
-                <div class="avatar me-3">
-                    <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
-                </div>
-                <div class="text-truncate">
-                    <div class="fw-bold">
-                        {{memberMap[item.sender] && memberMap[item.sender].name || '-'}}
-                    </div>
-                    <small>{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+        <div class="d-flex mb-4" [class.self]="item.sender == self.wxid">
+            <div class="avatar">
+                <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
+            </div>
+            <div class="mx-3">
+                <small class="usrname">
+                    {{memberMap[item.sender] && memberMap[item.sender].name || '我是是-'}}
+                </small>
+                <div class="message" [ngbTooltip]="item.ts | date:'yyyy-MM-dd HH:mm:ss'">
+                    {{item.content}}
                 </div>
             </div>
-            <div class="mt-2">
-                {{item.content}}
-            </div>
+            <div class="mx-5"></div>
         </div>
         }
         }
