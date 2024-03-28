@@ -226,6 +226,42 @@ export const RobotApi = {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/bot/setting/update', options);
     },
+    /**
+     * @summary Webhook列表
+     * @param options
+     * @param {*} [options] Override http request option.
+     */
+    webhookList(options: RequestInit = {}) : Promise<Webhook[]> {
+        options = { method: 'POST',  ...options }
+        return httpRequest('/bot/webhook/list', options)
+    },
+    /**
+     * @summary 创建webhook
+     * @param {WebhookCreateWebHookParam} body 创建webhook参数
+     * @param {*} [options] Override http request option.
+     */
+    webhookCreate(body: WebhookCreateWebHookParam, options: RequestInit = {}) : Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
+        return httpRequest('/bot/webhook/create', options)
+    },
+    /**
+     * @summary webhook详情
+     * @param {WebhookFetchWebHookParam} body 参数
+     * @param {*} [options] Override http request option.
+     */
+    webhookDetail(body: WebhookFetchWebHookParam, options: RequestInit = {}) : Promise<Webhook> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
+        return httpRequest('/bot/webhook/detail', options)
+    },
+    /**
+     * @summary 删除webhook
+     * @param {WebhookDeleteWebHookParam} body 删除webhook参数
+     * @param {*} [options] Override http request option.
+     */
+    webhookDelete(body: WebhookDeleteWebHookParam, options: RequestInit = {}) : Promise<unknown> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
+        return httpRequest('/bot/webhook/delete', options)
+    },
 };
 
 export interface ChatroomCreateParam {
@@ -652,4 +688,38 @@ export interface TablesSetting {
     updatedAt: number;
     // 键值
     value: string;
+}
+
+export interface Webhook {
+    // 主键
+    rd: number;
+    // 目标ID， 用户或者是群聊ID
+    targetId: string;
+    // token
+    token: string;
+    // 备注
+    remark: string;
+    // 创建时间戳
+    createdAt: number;
+    // 最后更新时间戳
+    updatedAt: number;
+}
+
+export interface WebhookCreateWebHookParam {
+    // 备注
+    remark?: string;
+    // 目标ID：用户或者是群聊ID
+    targetId: string;
+    // 目标类型
+    target: string;
+}
+
+export interface WebhookFetchWebHookParam {
+    // 主键
+    rd: number;
+}
+
+export interface WebhookDeleteWebHookParam {
+    // 主键
+    rd: number;
 }
