@@ -985,6 +985,153 @@
                 }
             }
         },
+        "/bot/webhook/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::webhook"
+                ],
+                "summary": "添加webhook",
+                "parameters": [
+                    {
+                        "description": "添加webhook参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/webhook.CreateWebHookParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/webhook/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::webhook"
+                ],
+                "summary": "删除webhook",
+                "parameters": [
+                    {
+                        "description": "删除webhook",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/webhook.DeleteWebHookParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/webhook/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::webhook"
+                ],
+                "summary": "获取webhook",
+                "parameters": [
+                    {
+                        "description": "获取webhook参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/webhook.FetchWebHookParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Webhook"
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/webhook/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::webhook"
+                ],
+                "summary": "webhook列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Webhook"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/webhook/{token}/{app}": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::webhook"
+                ],
+                "summary": "接收webhook消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "webhook token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "webhook类型(例如： github, gitea)",
+                        "name": "app",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "event报文",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/wcf/accept_new_friend": {
             "post": {
                 "produces": [
@@ -2995,6 +3142,35 @@
                 }
             }
         },
+        "tables.Webhook": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间戳",
+                    "type": "integer"
+                },
+                "rd": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "target_id": {
+                    "description": "群聊/私聊ID",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "webhook的标识（GUID）",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "最后更新时间戳",
+                    "type": "integer"
+                }
+            }
+        },
         "wcfrest.AcceptNewFriendRequest": {
             "type": "object",
             "properties": {
@@ -3414,6 +3590,36 @@
                 "wxid": {
                     "description": "用户 id",
                     "type": "string"
+                }
+            }
+        },
+        "webhook.CreateWebHookParam": {
+            "type": "object",
+            "required": [
+                "target_id"
+            ],
+            "properties": {
+                "remark": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "webhook.DeleteWebHookParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
+                }
+            }
+        },
+        "webhook.FetchWebHookParam": {
+            "type": "object",
+            "properties": {
+                "rd": {
+                    "type": "integer"
                 }
             }
         }

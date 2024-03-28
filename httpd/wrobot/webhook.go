@@ -15,7 +15,6 @@ type Webhook struct {
 // @Summary webhook列表
 // @Produce json
 // @Tags BOT::webhook
-// @Param body body false "获取webhook列表参数"
 // @Success 200 {array} tables.Webhook
 // @Router /bot/webhook/list [post]
 func (*Webhook) list(c *gin.Context) {
@@ -101,9 +100,11 @@ func (*Webhook) delete(c *gin.Context) {
 // @Summary 接收webhook消息
 // @Produce json
 // @Tags BOT::webhook
+// @Param token path string true "webhook token"
+// @Param app path string true "webhook类型(例如： github, gitea)"
 // @Param body body interface{} true "event报文"
 // @Success 200
-// @Router /bot/webhook/:token/:app [post]
+// @Router /bot/webhook/{token}/{app} [post]
 func (w *Webhook) receive(c *gin.Context) {
 	token := c.Param("token")
 	app := c.Param("app")
@@ -126,5 +127,11 @@ func (w *Webhook) receive(c *gin.Context) {
 
 	// 根据app类型不同，调用不同的处理方式，参照handler的注册
 	sendMsg := webhookApp.Handler(app, msg)
-	w.CmdClient.SendTxt(sendMsg, hook.TargetId, "")
+	res := w.CmdClient.SendTxt(sendMsg, hook.TargetId, "")
+
+	if res == 0 {
+		c.Set("Message", "OK")
+	} else {
+		c.Set("Error", "消息处理失败")
+	}
 }
