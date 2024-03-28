@@ -15,36 +15,13 @@
         height: 40px;
     }
 
-    .system {
-        color: #999;
-        text-align: center;
-
-        &+.system {
-            display: none;
-        }
+    .system:not(:last-child) {
+        display: none;
     }
 
-    .usrname {
-        display: block;
-        margin-top: -10px;
-    }
-
-    .message {
-        padding: 10px;
-        border-radius: 10px;
-        background-color: #f0f0f0;
-    }
-
-    .self {
-        flex-direction: row-reverse;
-
-        .usrname {
-            text-align: right;
-        }
-
-        .message {
-            background-color: #77d259;
-        }
+    .alert {
+        --bs-alert-padding-x: .6rem;
+        --bs-alert-padding-y: .4rem;
     }
 }
 

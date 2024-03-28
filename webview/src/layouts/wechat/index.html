@@ -9,20 +9,20 @@
     <div #scrollLayout class="content p-3">
         @for (item of messages; track item.id) {
         @if (item.sender == 'system') {
-        <div class="system mb-4">
-            <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
+        <div class="system text-center text-secondary mb-3">
+            <small [ngbTooltip]="item.ts | date:'yyyy-MM-dd HH:mm:ss'">{{item.content}}</small>
         </div>
         } @else {
-        <div class="d-flex mb-4" [class.self]="item.sender == self.wxid">
-            <div class="avatar">
+        <div class="d-flex" [class.flex-row-reverse]="item.sender == self.wxid">
+            <div class="avatar pt-2">
                 <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
             </div>
-            <div class="mx-3">
-                <small class="usrname">
-                    {{memberMap[item.sender] && memberMap[item.sender].name || '我是是-'}}
-                </small>
-                <div class="message" [ngbTooltip]="item.ts | date:'yyyy-MM-dd HH:mm:ss'">
-                    {{item.content}}
+            <div class="mx-3" [ngbTooltip]="item.ts | date:'yyyy-MM-dd HH:mm:ss'">
+                <div [class.text-end]="item.sender == self.wxid">
+                    <small>{{memberMap[item.sender] && memberMap[item.sender].name || '我是是-'}}</small>
+                </div>
+                <div class="alert {{item.sender == self.wxid ? 'alert-success' : 'alert-secondary'}}">
+                    <div>{{item.content}}</div>
                 </div>
             </div>
             <div class="mx-5"></div>
