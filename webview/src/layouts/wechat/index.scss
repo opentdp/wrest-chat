@@ -5,7 +5,7 @@
     overflow: hidden;
 }
 
-.list-group {
+.content {
     height: calc(100% - 196px);
     overflow-x: hidden;
     overflow-y: auto;
@@ -15,12 +15,13 @@
         height: 40px;
     }
 
-    .system-msg {
-        color: #999;
+    .system:not(:last-child) {
+        display: none;
+    }
 
-        &+.system-msg {
-            display: none;
-        }
+    .alert {
+        --bs-alert-padding-x: .6rem;
+        --bs-alert-padding-y: .4rem;
     }
 }
 
