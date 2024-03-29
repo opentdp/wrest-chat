@@ -11,6 +11,9 @@ import (
 	"github.com/opentdp/go-helper/onquit"
 )
 
+const Wcf_Version = "39.0.14"
+const Wechat_Version = "3.9.2.23"
+
 type Client struct {
 	WcfBinary  string     // wcf.exe 路径
 	ListenAddr string     // wcf 监听地址

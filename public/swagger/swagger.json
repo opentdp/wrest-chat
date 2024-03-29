@@ -251,36 +251,6 @@
                 }
             }
         },
-        "/api/handler/list": {
-            "post": {
-                "tags": [
-                    "API::指令集"
-                ],
-                "summary": "获取所有可用指令",
-                "parameters": [
-                    {
-                        "description": "获取所有可用指令参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/sundry.HandlerListParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/sundry.Handler"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/plugin/cronjobs": {
             "post": {
                 "produces": [
@@ -320,6 +290,55 @@
                             "items": {
                                 "$ref": "#/definitions/plugin.KeywordPlugin"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/handlers": {
+            "post": {
+                "tags": [
+                    "API::系统"
+                ],
+                "summary": "获取可用指令",
+                "parameters": [
+                    {
+                        "description": "获取所有可用指令参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.HandlersParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/sundry.Handler"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/version": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::系统"
+                ],
+                "summary": "获取系统版本",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/sundry.SystemVersion"
                         }
                     }
                 }
@@ -2812,12 +2831,33 @@
                 }
             }
         },
-        "sundry.HandlerListParam": {
+        "sundry.HandlersParam": {
             "type": "object",
             "properties": {
                 "reset": {
                     "description": "是否重置机器人指令",
                     "type": "boolean"
+                }
+            }
+        },
+        "sundry.SystemVersion": {
+            "type": "object",
+            "properties": {
+                "build_version": {
+                    "description": "系统编译版本",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "系统版本",
+                    "type": "string"
+                },
+                "wcf_version": {
+                    "description": "wcferry 版本",
+                    "type": "string"
+                },
+                "wechat_version": {
+                    "description": "wechat 版本",
+                    "type": "string"
                 }
             }
         },

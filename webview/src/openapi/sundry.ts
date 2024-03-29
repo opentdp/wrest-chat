@@ -97,15 +97,6 @@ export const SundryApi = {
         return httpRequest('/api/cronjob/execute', options);
     },
     /**
-     * @summary 获取指令列表
-     * @param {HandlerListParam} body 获取指令列表参数
-     * @param {*} [options] Override http request option.
-     */
-    handlerList(body: HandlerListParam, options: RequestInit = {}): Promise<Handler[]> {
-        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/handler/list', options);
-    },
-    /**
      * @summary 获取计划任务插件
      * @param {*} body 获取计划任务插件参数
      * @param {*} [options] Override http request option.
@@ -122,6 +113,24 @@ export const SundryApi = {
     pluginKeywords(body = {}, options: RequestInit = {}): Promise<KeywordPlugin[]> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/api/plugin/keywords', options);
+    },
+    /**
+     * @summary 获取系统版本
+     * @param {*} body 获取外部指令插件参数
+     * @param {*} [options] Override http request option.
+     */
+    systemVersion(body = {}, options: RequestInit = {}): Promise<SystemVersion> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/system/version', options);
+    },
+    /**
+     * @summary 获取指令列表
+     * @param {HandlersParam} body 获取指令列表参数
+     * @param {*} [options] Override http request option.
+     */
+    systemHandlers(body: HandlersParam, options: RequestInit = {}): Promise<Handler[]> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/system/handlers', options);
     },
 };
 
@@ -281,24 +290,6 @@ export interface TablesCronjob {
     updated_at: number;
 }
 
-export interface Handler {
-    // 0:不限制 7:群管理 9:创始人
-    level: number;
-    // 排序，越小越靠前
-    order: number;
-    // 群聊 id
-    roomid: string;
-    // 指令
-    command: string;
-    // 指令的描述信息
-    describe: string;
-}
-
-export interface HandlerListParam {
-    // 重装指令
-    reset?: boolean;
-}
-
 export interface CronjobPlugin {
     // 插件信息
     config: CronjobUpdateParam;
@@ -315,4 +306,33 @@ export interface KeywordPlugin {
     error: string;
     // 插件文件
     file: string;
+}
+
+export interface SystemVersion {
+    // 系统版本
+    version: string;
+    // 系统编译版本
+    build_version: string;
+    // wcferry 版本
+    wcf_version: string;
+    // wechat 版本
+    wechat_version: string;
+}
+
+export interface Handler {
+    // 0:不限制 7:群管理 9:创始人
+    level: number;
+    // 排序，越小越靠前
+    order: number;
+    // 群聊 id
+    roomid: string;
+    // 指令
+    command: string;
+    // 指令的描述信息
+    describe: string;
+}
+
+export interface HandlersParam {
+    // 重装指令
+    reset?: boolean;
 }

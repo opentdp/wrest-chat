@@ -27,7 +27,7 @@ export class HandlerListComponent {
 
     public getRobotHandlers(reset?: boolean) {
         this.loading = true;
-        return SundryApi.handlerList({ reset }).then((data) => {
+        return SundryApi.systemHandlers({ reset }).then((data) => {
             setTimeout(() => this.loading = false, 300);
             this.robotHandler = data || [];
 

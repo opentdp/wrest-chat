@@ -23,9 +23,11 @@ func Route() {
 	rg.POST("cronjob/status", cronjob.status)
 	rg.POST("cronjob/execute", cronjob.execute)
 
-	rg.POST("handler/list", handlerList)
-
 	rg.POST("plugin/cronjobs", pluginCronjobs)
 	rg.POST("plugin/keywords", pluginKeywords)
+
+	system := System{}
+	rg.POST("system/version", system.version)
+	rg.POST("system/handlers", system.handlers)
 
 }

@@ -49,7 +49,7 @@ export class KeywordCreateComponent {
     }
 
     public getRobotHandlers() {
-        return SundryApi.handlerList({}).then((data) => {
+        return SundryApi.systemHandlers({}).then((data) => {
             this.robotHandler = data || [];
         });
     }
