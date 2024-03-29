@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 
-import { SundryApi, AiChatMsgHistory } from '../../openapi/sundry';
+import { SundryApi, AiChatMsgHistory, AiChatUserConfig } from '../../openapi/sundry';
 
 
 @Component({
@@ -13,22 +13,36 @@ export class LayoutAichatComponent implements OnDestroy {
     @ViewChild('scrollLayout')
     private scrollLayout!: ElementRef;
 
+    public config = {} as AiChatUserConfig;
     public messages: Array<AiChatMsgHistory> = [];
 
     public content = '';
 
     public constructor() {
+        this.getConfig();
     }
 
     public ngOnDestroy() {
         this.messages = [];
     }
 
+    public getConfig() {
+        return SundryApi.aichatConfig({ wxid: 'webui', message: '' }).then((data) => {
+            this.config = data || {};
+            this.messages = this.config.msgHistorys || [];
+        });
+    }
+
     public sendMessage() {
         this.scrollToBottom();
-        this.messages.push({ role: 'user', content: this.content });
-        SundryApi.aichatText({ wxid: 'webui', message: this.content }).then((data) => {
-            this.messages.push({ role: 'assistant', content: data });
+        const aiwait = { role: 'assistant', content: '正在思考...' };
+        this.messages.push({ role: 'user', content: this.content }, aiwait);
+        // 请求结果
+        return SundryApi.aichatText({ wxid: 'webui', message: this.content }).then((data) => {
+            aiwait.content = data || '未知错误';
+        }).catch((err) => {
+            aiwait.content = err || '未知错误';
+        }).finally(() => {
             this.scrollToBottom();
         });
     }

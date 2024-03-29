@@ -133,8 +133,8 @@ export interface AiChatParam {
 }
 
 export interface AiChatMsgHistory {
-    // 角色
-    role: 'user' | 'assistant';
+    // 角色, 'user' | 'assistant'
+    role: string;
     // 消息内容
     content: string;
 }
