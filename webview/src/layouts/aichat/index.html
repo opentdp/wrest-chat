@@ -22,6 +22,6 @@
 
     <div class="card-footer">
         <textarea class="form-control" rows="5" placeholder="输入消息" [(ngModel)]="content"></textarea>
-        <button class="btn btn-primary" (click)="sendMessage()">发送</button>
+        <button class="btn btn-primary" (click)="sendMessage()" [disabled]="loading">发送</button>
     </div>
 </div>

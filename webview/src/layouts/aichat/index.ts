@@ -16,6 +16,7 @@ export class LayoutAichatComponent implements OnDestroy {
     public config = {} as AiChatUserConfig;
     public messages: Array<AiChatMsgHistory> = [];
 
+    public loading = false;
     public content = '';
 
     public constructor() {
@@ -34,6 +35,7 @@ export class LayoutAichatComponent implements OnDestroy {
     }
 
     public sendMessage() {
+        this.loading = true;
         this.scrollToBottom();
         const aiwait = { role: 'assistant', content: '正在思考...' };
         this.messages.push({ role: 'user', content: this.content }, aiwait);
@@ -45,6 +47,7 @@ export class LayoutAichatComponent implements OnDestroy {
             aiwait.content = err || '未知错误';
         }).finally(() => {
             this.scrollToBottom();
+            this.loading = false;
         });
     }
 
