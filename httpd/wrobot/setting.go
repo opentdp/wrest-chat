@@ -17,7 +17,6 @@ type Setting struct{}
 func (*Setting) list(c *gin.Context) {
 
 	var rq *setting.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -40,7 +39,6 @@ func (*Setting) list(c *gin.Context) {
 func (*Setting) detail(c *gin.Context) {
 
 	var rq *setting.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -63,7 +61,6 @@ func (*Setting) detail(c *gin.Context) {
 func (*Setting) create(c *gin.Context) {
 
 	var rq *setting.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -88,7 +85,6 @@ func (*Setting) create(c *gin.Context) {
 func (*Setting) update(c *gin.Context) {
 
 	var rq *setting.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -112,7 +108,6 @@ func (*Setting) update(c *gin.Context) {
 func (*Setting) delete(c *gin.Context) {
 
 	var rq *setting.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

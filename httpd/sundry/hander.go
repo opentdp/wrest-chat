@@ -14,7 +14,6 @@ import (
 func handlerList(c *gin.Context) {
 
 	var rq *HandlerListParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -25,7 +24,6 @@ func handlerList(c *gin.Context) {
 	}
 
 	items := []Handler{}
-
 	for _, v := range robot.GetHandlers() {
 		items = append(items, Handler{
 			Level:    v.Level,

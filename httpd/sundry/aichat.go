@@ -20,14 +20,14 @@ type AiChatParam struct {
 func aiChatConfig(c *gin.Context) {
 
 	var rq *AiChatParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
 	}
 
 	config := aichat.UserConfig(rq.Wxid, "")
-	config.Secret = "***-***-***"
+	config.Secret = "***"
+
 	c.Set("Payload", config)
 
 }
@@ -41,13 +41,13 @@ func aiChatConfig(c *gin.Context) {
 func aiChatText(c *gin.Context) {
 
 	var rq *AiChatParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
 	}
 
-	msg := aichat.Text(rq.Message, rq.Wxid, "")
-	c.Set("Payload", msg)
+	text := aichat.Text(rq.Message, rq.Wxid, "")
+
+	c.Set("Payload", text)
 
 }
