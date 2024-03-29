@@ -2043,11 +2043,11 @@
                     "description": "模型",
                     "type": "string"
                 },
-                "msgHistoryMax": {
+                "msg_history_max": {
                     "description": "消息记录最大条数",
                     "type": "integer"
                 },
-                "msgHistorys": {
+                "msg_historys": {
                     "description": "消息历史记录",
                     "type": "array",
                     "items": {
@@ -2058,7 +2058,7 @@
                     "description": "供应商",
                     "type": "string"
                 },
-                "roleContext": {
+                "role_context": {
                     "description": "角色设定",
                     "type": "string"
                 },

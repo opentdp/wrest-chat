@@ -30,7 +30,7 @@ export class LayoutAichatComponent implements OnDestroy {
     public getConfig() {
         return SundryApi.aichatConfig({ wxid: 'webui', message: '' }).then((data) => {
             this.config = data || {};
-            this.messages = this.config.msgHistorys || [];
+            this.messages = this.config.msg_historys || [];
         });
     }
 

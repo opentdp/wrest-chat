@@ -149,11 +149,11 @@ export interface AiChatUserConfig {
     // 模型
     model: string;
     // 角色设定
-    roleContext: string;
+    role_context: string;
     // 消息历史记录
-    msgHistorys: AiChatMsgHistory[];
+    msg_historys: AiChatMsgHistory[];
     // 消息记录最大条数
-    msgHistoryMax: number;
+    msg_history_max: number;
 }
 
 export interface CronjobCreateParam {
@@ -185,7 +185,7 @@ export interface CronjobCreateParam {
 
 export interface CronjobDeleteParam {
     // 要删除的计划的 ID
-    entryId?: number;
+    entry_id?: number;
     // 要删除的计划的 ID
     rd?: number;
 }
@@ -197,7 +197,7 @@ export interface CronjobFetchAllParam {
 
 export interface CronjobFetchParam {
     // 要获取的计划的 ID
-    entryId?: number;
+    entry_id?: number;
     // 要获取的计划的 ID
     rd?: number;
 }
@@ -214,7 +214,7 @@ export interface CronjobUpdateParam {
     // 命令执行的工作目录
     directory: string;
     // 当前计划的 ID
-    entryId?: number;
+    entry_id?: number;
     // 执行计划的小时
     hour: string;
     // 执行计划的分钟
