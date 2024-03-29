@@ -25,7 +25,9 @@ func aiChatConfig(c *gin.Context) {
 		return
 	}
 
-	config := aichat.UserConfig(rq.Wxid, "")
+	uc := aichat.UserConfig(rq.Wxid, "")
+
+	config := *uc
 	config.Secret = "***"
 
 	c.Set("Payload", config)
