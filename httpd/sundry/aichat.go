@@ -13,7 +13,7 @@ type AiChatParam struct {
 
 // @Summary 获取模型配置
 // @Produce json
-// @Tags SUNDRY::智能聊天
+// @Tags API::智能聊天
 // @Param body body AiChatParam true "智能聊天参数"
 // @Success 200 {object} aichat.UserConfig
 // @Router /api/aichat/config [post]

@@ -33,6 +33,7 @@ func receiver(msg *wcferry.WxMsg) {
 // 复制消息
 // return 深拷贝后的消息
 func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
+
 	return &wcferry.WxMsg{
 		IsSelf:  msg.IsSelf,
 		IsGroup: msg.IsGroup,
@@ -46,6 +47,7 @@ func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
 		Extra:   msg.Extra,
 		Xml:     msg.Xml,
 	}
+
 }
 
 // 白名单限制

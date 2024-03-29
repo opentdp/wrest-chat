@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "SUNDRY::智能聊天"
+                    "API::智能聊天"
                 ],
                 "summary": "获取模型配置",
                 "parameters": [

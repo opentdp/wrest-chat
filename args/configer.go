@@ -3,6 +3,7 @@ package args
 import (
 	"os"
 
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 )
 
@@ -37,6 +38,12 @@ func init() {
 
 	if err := Configer.Load(); err != nil {
 		panic(err)
+	}
+
+	// 初始化存储
+
+	if !filer.Exists(Web.Storage) {
+		os.MkdirAll(Web.Storage, 0755)
 	}
 
 	// 初始化日志
