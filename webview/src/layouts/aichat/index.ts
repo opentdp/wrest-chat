@@ -40,6 +40,7 @@ export class LayoutAichatComponent implements OnDestroy {
         // 请求结果
         return SundryApi.aichatText({ wxid: 'webui', message: this.content }).then((data) => {
             aiwait.content = data || '未知错误';
+            this.content = '';
         }).catch((err) => {
             aiwait.content = err || '未知错误';
         }).finally(() => {
