@@ -9,7 +9,7 @@
 
 <div class="container-xl mb-3">
     <div class="row justify-content-between">
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getProfiles()">
                 <option value="">全部</option>
                 <option value="-">私聊</option>
@@ -18,7 +18,7 @@
                 }
             </select>
         </div>
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.level" (change)="getProfiles()">
                 <option value="0">全部</option>
                 @for (item of userLevels | keyvalue; track item.key) {
@@ -26,7 +26,7 @@
                 }
             </select>
         </div>
-        <div class="col text-end">
+        <div class="col-12 col-md-4 text-end">
             <button class="btn btn-primary" [routerLink]="['/profile/create']">添加</button>
         </div>
     </div>
