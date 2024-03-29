@@ -4,17 +4,17 @@
     <div class="main row g-3">
 
         <div class="col-md-5 col-lg-4">
-            <div class="card p-3 mb-3">
-                <form class="row gy-3" (ngSubmit)="submitForm()" #myform="ngForm">
-                    <div class="col-12">
-                        <label class="form-label">令牌</label>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="bi bi-bootstrap-reboot"></i> 令牌
+                </div>
+                <form class="m-3" (ngSubmit)="submitForm()" #myform="ngForm">
+                    <div class="input-group">
                         <input type="text" name="phrase" class="form-control" [(ngModel)]="formdata.token" />
-                        <div class="form-text">
-                            若服务端设置了 <b>Web.Token</b>，请在这里填写
-                        </div>
+                        <button type="submit" class="btn btn-secondary" [disabled]="myform.invalid">确认</button>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
+                    <div class="form-text">
+                        若服务端设置了 <b>Web.Token</b>，请在这里填写
                     </div>
                 </form>
             </div>
@@ -32,10 +32,10 @@
 
             @if (user) {
             <div class="card version mb-3">
+                <div class="card-header">
+                    <i class="bi bi-alexa"></i> 用户信息
+                </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-truncate">
-                        <i class="bi bi-info-square"></i> 用户信息
-                    </li>
                     <li class="list-group-item text-truncate">
                         <b>微信 ID</b> {{user.wxid}}
                     </li>
@@ -51,19 +51,23 @@
 
             @if (system) {
             <div class="card version mb-3">
+                <div class="card-header">
+                    <i class="bi bi-boxes"></i> 组件要求
+                </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-truncate">
-                        <i class="bi bi-boxes"></i> 组件要求
-                    </li>
                     <li class="list-group-item text-truncate">
                         <b>Wcferry</b> v{{system.wcf_version}}
                     </li>
                     <li class="list-group-item text-truncate">
                         <b>微信版本</b> v{{system.wechat_version}}
                     </li>
-                    <li class="list-group-item text-truncate">
-                        <i class="bi bi-columns-gap"></i> 系统信息
-                    </li>
+                </ul>
+            </div>
+            <div class="card version">
+                <div class="card-header">
+                    <i class="bi bi-columns-gap"></i> 系统版本
+                </div>
+                <ul class="list-group list-group-flush">
                     <li class="list-group-item text-truncate">
                         <b>当前版本</b> v{{system.version}}
                     </li>
