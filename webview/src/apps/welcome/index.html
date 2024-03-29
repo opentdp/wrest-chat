@@ -2,8 +2,9 @@
 
 <div class="container-xl mb-3">
     <div class="row g-3">
-        <div class="col-md-6">
-            <div class="card p-3">
+
+        <div class="col-md-4">
+            <div class="card p-3 mb-3">
                 <form class="row gy-3" (ngSubmit)="submitForm()" #myform="ngForm">
                     <div class="col-12">
                         <label class="form-label">令牌</label>
@@ -17,8 +18,7 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="col-md-6">
+
             @if (!islogin && loginqr) {
             <div class="container-xl mb-3">
                 @if (loginqr.result) {
@@ -29,25 +29,31 @@
                 }
             </div>
             }
+
             @if (islogin && user && avatar) {
-            <div class="card">
+            <div class="card mb-3">
                 <img [src]="avatar.big_head_img_url" class="card-img-top" />
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                    <li class="list-group-item text-truncate">
                         <b>Wxid</b> {{user.wxid}}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item text-truncate">
                         <b>昵称</b> {{user.name}}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item text-truncate">
                         <b>手机</b> {{user.mobile}}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item text-truncate">
                         <b>目录</b> {{user.home}}
                     </li>
                 </ul>
             </div>
             }
         </div>
+
+        <div class="col-md-8 mb-3">
+            <layout-aichat></layout-aichat>
+        </div>
+
     </div>
 </div>

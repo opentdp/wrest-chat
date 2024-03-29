@@ -5,6 +5,28 @@ import { KeywordUpdateParam } from "./wrobot";
 export const SundryApi = {
     /**
      * 
+     * @summary 获取模型配置
+     * @param {AiChatParam} body 获取模型配置参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    aichatConfig(body: AiChatParam, options: RequestInit = {}): Promise<AiChatUserConfig> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/aichat/config', options);
+    },
+    /**
+     * 
+     * @summary 发起文本聊天
+     * @param {AiChatParam} body 发起文本聊天参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    aichatText(body: AiChatParam, options: RequestInit = {}): Promise<string> {
+        options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
+        return httpRequest('/api/aichat/text', options);
+    },
+    /**
+     * 
      * @summary 添加计划任务
      * @param {CronjobCreateParam} body 添加计划任务参数
      * @param {*} [options] Override http request option.
@@ -102,6 +124,37 @@ export const SundryApi = {
         return httpRequest('/api/plugin/keywords', options);
     },
 };
+
+export interface AiChatParam {
+    // 微信 ID
+    wxid: string;
+    // 聊天内容
+    message: string;
+}
+
+export interface AiChatMsgHistory {
+    // 角色
+    role: 'user' | 'assistant';
+    // 消息内容
+    content: string;
+}
+
+export interface AiChatUserConfig {
+    // 族类描述
+    family: string;
+    // 供应商
+    provider: string;
+    // 接口地址
+    endpoint: string;
+    // 模型
+    model: string;
+    // 角色设定
+    roleContext: string;
+    // 消息历史记录
+    msgHistorys: AiChatMsgHistory[];
+    // 消息记录最大条数
+    msgHistoryMax: number;
+}
 
 export interface CronjobCreateParam {
     // 要执行的命令内容

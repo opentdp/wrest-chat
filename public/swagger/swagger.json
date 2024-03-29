@@ -15,6 +15,66 @@
     },
     "basePath": "/",
     "paths": {
+        "/api/aichat/config": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SUNDRY::智能聊天"
+                ],
+                "summary": "获取模型配置",
+                "parameters": [
+                    {
+                        "description": "智能聊天参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.AiChatParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aichat.UserConfig"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aichat/text": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::智能聊天"
+                ],
+                "summary": "发起文本聊天",
+                "parameters": [
+                    {
+                        "description": "智能聊天参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.AiChatParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/cronjob/create": {
             "post": {
                 "produces": [
@@ -1955,6 +2015,59 @@
         }
     },
     "definitions": {
+        "aichat.MsgHistory": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "消息内容",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "user,assistant",
+                    "type": "string"
+                }
+            }
+        },
+        "aichat.UserConfig": {
+            "type": "object",
+            "properties": {
+                "endpoint": {
+                    "description": "接口地址",
+                    "type": "string"
+                },
+                "family": {
+                    "description": "族类描述",
+                    "type": "string"
+                },
+                "model": {
+                    "description": "模型",
+                    "type": "string"
+                },
+                "msgHistoryMax": {
+                    "description": "消息记录最大条数",
+                    "type": "integer"
+                },
+                "msgHistorys": {
+                    "description": "消息历史记录",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/aichat.MsgHistory"
+                    }
+                },
+                "provider": {
+                    "description": "供应商",
+                    "type": "string"
+                },
+                "roleContext": {
+                    "description": "角色设定",
+                    "type": "string"
+                },
+                "secret": {
+                    "description": "密钥格式\n科大讯飞 APP-ID,API-KEY,API-SECRET\n文心一言 API-KEY,API-SECRET\n腾讯混元 APP-ID,API-KEY,API-SECRET\n阿里百炼（通义千问） APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET\n其他服务商 API-KEY",
+                    "type": "string"
+                }
+            }
+        },
         "chatroom.CreateParam": {
             "type": "object",
             "required": [
@@ -2659,6 +2772,17 @@
                     "type": "string"
                 },
                 "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "sundry.AiChatParam": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "wxid": {
                     "type": "string"
                 }
             }
