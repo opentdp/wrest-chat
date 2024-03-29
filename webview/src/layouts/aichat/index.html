@@ -8,7 +8,7 @@
         @for (item of messages; track item) {
         <div class="d-flex" [class.flex-row-reverse]="item.role == 'user'">
             <div class="avatar">
-                <img class="rounded" [src]="'/assets/icon.png'" />
+                <img class="rounded" [src]="item.role == 'user' ? avatar : '/assets/icon.png'" />
             </div>
             <div class="mx-3">
                 <div class="alert {{item.role == 'user' ? 'alert-success' : 'alert-secondary'}}">

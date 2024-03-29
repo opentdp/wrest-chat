@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { SundryApi, SystemVersion } from '../../openapi/sundry';
 import { WrestApi, WcfrestCommonPayload, WcfrestUserInfoPayload, WcfrestAvatarPayload } from '../../openapi/wcfrest';
 
 
@@ -16,6 +17,11 @@ export class WelcomeComponent {
     public user!: WcfrestUserInfoPayload;
     public avatar!: WcfrestAvatarPayload;
 
+    public system!: SystemVersion;
+    public upgrade = {
+        url: '', version: ''
+    };
+
     public formdata = {
         token: '',
     };
@@ -23,6 +29,7 @@ export class WelcomeComponent {
     constructor() {
         this.checkLogin();
         this.refreshQrcode();
+        this.getSystemVersion();
         // 获取会话存储的令牌
         this.formdata.token = sessionStorage.getItem('token') || '';
     }
@@ -56,6 +63,49 @@ export class WelcomeComponent {
                 this.avatar = avatars[0];
             }
         }
+    }
+
+    public async getSystemVersion() {
+        await SundryApi.systemVersion({}).then((data) => {
+            this.system = data;
+        });
+        // 新版检查
+        const ghApi = 'https://api.github.com/repos/opentdp/wrest-chat/releases/latest';
+        fetch(ghApi).then(r => r.json()).then(data => {
+            if (!data || !data.created_at) {
+                return;
+            }
+            if (this.compareVersions(this.system.version, data.tag_name) <= 0) {
+                this.upgrade.url = data.assets[0].browser_download_url;
+                this.upgrade.version = data.tag_name;
+            }
+        });
+
+    }
+
+    public compareVersions(v1: string, v2: string) {
+        const v1s = v1.replace(/^[a-zA-Z]+/, '').split('.');
+        const v2s = v2.replace(/^[a-zA-Z]+/, '').split('.');
+        const len = Math.min(v1s.length, v2s.length);
+        // 逐级比较
+        for (let i = 0; i < len; i++) {
+            const n1 = parseInt(v1s[i], 10);
+            const n2 = parseInt(v2s[i], 10);
+            if (n1 > n2) {
+                return 1;
+            }
+            if (n1 < n2) {
+                return -1;
+            }
+        }
+        // 版本号长度不同
+        if (v1s.length > v2s.length) {
+            return 1;
+        }
+        if (v1s.length < v2s.length) {
+            return -1;
+        }
+        return 0;
     }
 
 }

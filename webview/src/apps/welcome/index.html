@@ -30,31 +30,58 @@
             </div>
             }
 
-            @if (islogin && user) {
-            <div class="card">
-                @if (avatar) {
-                <img [src]="avatar.big_head_img_url" class="card-img-top" />
-                }
+            @if (user) {
+            <div class="card version mb-3">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-truncate">
-                        <b>Wxid</b> {{user.wxid}}
+                        <i class="bi bi-info-square"></i> 用户信息
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>昵称</b> {{user.name}}
+                        <b>微信 ID</b> {{user.wxid}}
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>手机</b> {{user.mobile}}
+                        <b>微信昵称</b> {{user.name}}
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>目录</b> {{user.home}}
+                        <b>绑定手机</b> {{user.mobile}}
                     </li>
+                </ul>
+            </div>
+            }
+
+            @if (system) {
+            <div class="card version mb-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-truncate">
+                        <i class="bi bi-boxes"></i> 组件要求
+                    </li>
+                    <li class="list-group-item text-truncate">
+                        <b>Wcferry</b> v{{system.wcf_version}}
+                    </li>
+                    <li class="list-group-item text-truncate">
+                        <b>微信版本</b> v{{system.wechat_version}}
+                    </li>
+                    <li class="list-group-item text-truncate">
+                        <i class="bi bi-columns-gap"></i> 系统信息
+                    </li>
+                    <li class="list-group-item text-truncate">
+                        <b>当前版本</b> v{{system.version}}
+                    </li>
+                    <li class="list-group-item text-truncate">
+                        <b>编译次序</b> b{{system.build_version}}
+                    </li>
+                    @if (upgrade.url) {
+                    <li class="list-group-item text-truncate">
+                        <b>发现更新</b> 下载 <a [href]="upgrade.url" target="_blank">{{upgrade.version}}</a>
+                    </li>
+                    }
                 </ul>
             </div>
             }
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <layout-aichat></layout-aichat>
+            <layout-aichat [avatar]="avatar &&avatar.big_head_img_url"></layout-aichat>
         </div>
 
     </div>
