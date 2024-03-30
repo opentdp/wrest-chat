@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserLevels } from '../../openapi/const';
 import {RobotApi, WebhookCreateWebHookParam} from '../../openapi/wrobot';
 import {WcfrestContactPayload, WrestApi} from "../../openapi/wcfrest";
 
@@ -18,7 +17,7 @@ export class WebhookCreateComponent {
 
     public formdata: WebhookCreateWebHookParam = {
         remark: "",
-        targetId: "",
+        target_id: "",
         target: "friend",
     }
 

@@ -694,22 +694,22 @@ export interface Webhook {
     // 主键
     rd: number;
     // 目标ID， 用户或者是群聊ID
-    targetId: string;
+    target_id: string;
     // token
     token: string;
     // 备注
     remark: string;
     // 创建时间戳
-    createdAt: number;
+    created_at: number;
     // 最后更新时间戳
-    updatedAt: number;
+    updated_at: number;
 }
 
 export interface WebhookCreateWebHookParam {
     // 备注
     remark?: string;
     // 目标ID：用户或者是群聊ID
-    targetId: string;
+    target_id: string;
     // 目标类型
     target: string;
 }

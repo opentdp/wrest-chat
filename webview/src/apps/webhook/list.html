@@ -25,7 +25,7 @@
             @for (item of list; track item.rd) {
             <tr>
                 <th scope="row">{{item.rd}}</th>
-                <td>{{item.targetId}}</td>
+                <td>{{item.target_id}}</td>
                 <td class="d-none d-xl-table-cell">{{item.token}}</td>
                 <td class="text-nowrap">
                     <button class="btn btn-sm btn-danger ms-2" (click)="deleteWebhook(item)">删除</button>

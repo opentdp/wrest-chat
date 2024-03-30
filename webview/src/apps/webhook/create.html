@@ -22,7 +22,7 @@
             <label class="form-label">目标</label>
             @switch (formdata.target) {
             @case ("chatroom") {
-            <select name="targetId" class="form-select" [(ngModel)]="formdata.targetId" required>
+            <select name="targetId" class="form-select" [(ngModel)]="formdata.target_id" required>
                 @for (item of wcfChatrooms; track item.wxid) {
                 <option [value]="item.wxid">{{item.name}}</option>
                 }
@@ -31,7 +31,7 @@
             @case ("friend") {
             <div class="row g-3">
                 <div class="col col-md-8">
-                    <select name="targetId" class="form-select" [(ngModel)]="formdata.targetId" [disabled]="conacts.length == 0" required>
+                    <select name="targetId" class="form-select" [(ngModel)]="formdata.target_id" [disabled]="wcfFriends.length == 0" required>
                         @if (filter.length > 0) {
                         <option>选择筛选结果</option>
                         }
