@@ -3,7 +3,8 @@
     overflow: hidden;
 }
 
-.list-group-item b {
-    width: 60px;
+.user b,
+.version b {
+    min-width: 80px;
     display: inline-block;
 }

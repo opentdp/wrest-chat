@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, Input } from '@angular/core';
 
 import { SundryApi, AiChatMsgHistory, AiChatUserConfig } from '../../openapi/sundry';
 
@@ -12,6 +12,9 @@ export class LayoutAichatComponent implements OnDestroy {
 
     @ViewChild('scrollLayout')
     private scrollLayout!: ElementRef;
+
+    @Input()
+    public avatar = '/assets/icon.png';
 
     public config = {} as AiChatUserConfig;
     public messages: Array<AiChatMsgHistory> = [];
@@ -30,7 +33,7 @@ export class LayoutAichatComponent implements OnDestroy {
     public getConfig() {
         return SundryApi.aichatConfig({ wxid: 'webui', message: '' }).then((data) => {
             this.config = data || {};
-            this.messages = this.config.msgHistorys || [];
+            this.messages = this.config.msg_historys || [];
         });
     }
 
