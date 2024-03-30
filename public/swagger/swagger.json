@@ -15,6 +15,66 @@
     },
     "basePath": "/",
     "paths": {
+        "/api/aichat/config": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::智能聊天"
+                ],
+                "summary": "获取模型配置",
+                "parameters": [
+                    {
+                        "description": "智能聊天参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.AiChatParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aichat.UserConfig"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aichat/text": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::智能聊天"
+                ],
+                "summary": "发起文本聊天",
+                "parameters": [
+                    {
+                        "description": "智能聊天参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.AiChatParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/cronjob/create": {
             "post": {
                 "produces": [
@@ -191,36 +251,6 @@
                 }
             }
         },
-        "/api/handler/list": {
-            "post": {
-                "tags": [
-                    "API::指令集"
-                ],
-                "summary": "获取所有可用指令",
-                "parameters": [
-                    {
-                        "description": "获取所有可用指令参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/sundry.HandlerListParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/sundry.Handler"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/plugin/cronjobs": {
             "post": {
                 "produces": [
@@ -260,6 +290,55 @@
                             "items": {
                                 "$ref": "#/definitions/plugin.KeywordPlugin"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/handlers": {
+            "post": {
+                "tags": [
+                    "API::系统"
+                ],
+                "summary": "获取可用指令",
+                "parameters": [
+                    {
+                        "description": "获取所有可用指令参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sundry.HandlersParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/sundry.Handler"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/version": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API::系统"
+                ],
+                "summary": "获取系统版本",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/sundry.SystemVersion"
                         }
                     }
                 }
@@ -2102,6 +2181,59 @@
         }
     },
     "definitions": {
+        "aichat.MsgHistory": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "消息内容",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "user,assistant",
+                    "type": "string"
+                }
+            }
+        },
+        "aichat.UserConfig": {
+            "type": "object",
+            "properties": {
+                "endpoint": {
+                    "description": "接口地址",
+                    "type": "string"
+                },
+                "family": {
+                    "description": "族类描述",
+                    "type": "string"
+                },
+                "model": {
+                    "description": "模型",
+                    "type": "string"
+                },
+                "msg_history_max": {
+                    "description": "消息记录最大条数",
+                    "type": "integer"
+                },
+                "msg_historys": {
+                    "description": "消息历史记录",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/aichat.MsgHistory"
+                    }
+                },
+                "provider": {
+                    "description": "供应商",
+                    "type": "string"
+                },
+                "role_context": {
+                    "description": "角色设定",
+                    "type": "string"
+                },
+                "secret": {
+                    "description": "密钥格式\n科大讯飞 APP-ID,API-KEY,API-SECRET\n文心一言 API-KEY,API-SECRET\n腾讯混元 APP-ID,API-KEY,API-SECRET\n阿里百炼（通义千问） APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET\n其他服务商 API-KEY",
+                    "type": "string"
+                }
+            }
+        },
         "chatroom.CreateParam": {
             "type": "object",
             "required": [
@@ -2810,6 +2942,17 @@
                 }
             }
         },
+        "sundry.AiChatParam": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "wxid": {
+                    "type": "string"
+                }
+            }
+        },
         "sundry.Handler": {
             "type": "object",
             "properties": {
@@ -2835,12 +2978,33 @@
                 }
             }
         },
-        "sundry.HandlerListParam": {
+        "sundry.HandlersParam": {
             "type": "object",
             "properties": {
                 "reset": {
                     "description": "是否重置机器人指令",
                     "type": "boolean"
+                }
+            }
+        },
+        "sundry.SystemVersion": {
+            "type": "object",
+            "properties": {
+                "build_version": {
+                    "description": "系统编译版本",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "系统版本",
+                    "type": "string"
+                },
+                "wcf_version": {
+                    "description": "wcferry 版本",
+                    "type": "string"
+                },
+                "wechat_version": {
+                    "description": "wechat 版本",
+                    "type": "string"
                 }
             }
         },

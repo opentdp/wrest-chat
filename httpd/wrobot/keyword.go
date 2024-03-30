@@ -18,7 +18,6 @@ type Keyword struct{}
 func (*Keyword) list(c *gin.Context) {
 
 	var rq *keyword.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -41,7 +40,6 @@ func (*Keyword) list(c *gin.Context) {
 func (*Keyword) detail(c *gin.Context) {
 
 	var rq *keyword.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -64,7 +62,6 @@ func (*Keyword) detail(c *gin.Context) {
 func (*Keyword) create(c *gin.Context) {
 
 	var rq *keyword.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -89,7 +86,6 @@ func (*Keyword) create(c *gin.Context) {
 func (*Keyword) update(c *gin.Context) {
 
 	var rq *keyword.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -113,7 +109,6 @@ func (*Keyword) update(c *gin.Context) {
 func (*Keyword) delete(c *gin.Context) {
 
 	var rq *keyword.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

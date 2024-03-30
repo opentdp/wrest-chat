@@ -18,7 +18,6 @@ type Cronjob struct{}
 func (*Cronjob) list(c *gin.Context) {
 
 	var rq *cronjob.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -41,7 +40,6 @@ func (*Cronjob) list(c *gin.Context) {
 func (*Cronjob) detail(c *gin.Context) {
 
 	var rq *cronjob.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -64,7 +62,6 @@ func (*Cronjob) detail(c *gin.Context) {
 func (*Cronjob) create(c *gin.Context) {
 
 	var rq *cronjob.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -89,7 +86,6 @@ func (*Cronjob) create(c *gin.Context) {
 func (*Cronjob) update(c *gin.Context) {
 
 	var rq *cronjob.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -113,7 +109,6 @@ func (*Cronjob) update(c *gin.Context) {
 func (*Cronjob) delete(c *gin.Context) {
 
 	var rq *cronjob.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -137,7 +132,6 @@ func (*Cronjob) delete(c *gin.Context) {
 func (*Cronjob) execute(c *gin.Context) {
 
 	var rq *cronjob.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

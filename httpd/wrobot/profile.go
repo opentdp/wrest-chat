@@ -18,7 +18,6 @@ type Profile struct{}
 func (*Profile) list(c *gin.Context) {
 
 	var rq *profile.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -41,7 +40,6 @@ func (*Profile) list(c *gin.Context) {
 func (*Profile) detail(c *gin.Context) {
 
 	var rq *profile.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -64,7 +62,6 @@ func (*Profile) detail(c *gin.Context) {
 func (*Profile) create(c *gin.Context) {
 
 	var rq *profile.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -89,7 +86,6 @@ func (*Profile) create(c *gin.Context) {
 func (*Profile) update(c *gin.Context) {
 
 	var rq *profile.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -113,7 +109,6 @@ func (*Profile) update(c *gin.Context) {
 func (*Profile) delete(c *gin.Context) {
 
 	var rq *profile.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, AfterViewChecked, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
 
 import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../openapi/wcfrest';
 
@@ -8,7 +8,7 @@ import { WrestApi, WcfrestContactPayload, WcfrestUserInfoPayload } from '../../o
     templateUrl: 'index.html',
     styleUrls: ['index.scss']
 })
-export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
+export class LayoutWechatComponent implements OnDestroy {
 
     @ViewChild('scrollLayout')
     private scrollLayout!: ElementRef;
@@ -40,7 +40,7 @@ export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
         this.memberMap[val.wxid] = val;
         this.isGroup = val.wxid.includes('@chatroom');
         this.isGroup ? this.getChatroom(val.wxid) : this.getAvatars([val.wxid]);
-        this.messages = this.wsMsg.filter(v => this.checkMsg(v));
+        this.messages = this.wsMsg.filter(v => this.pickupMsg(v));
     }
 
     public constructor() {
@@ -50,10 +50,6 @@ export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
             this.self = data;
             this.startSocket();
         });
-    }
-
-    public ngAfterViewChecked() {
-        this.scrollToBottom();
     }
 
     public ngOnDestroy() {
@@ -83,10 +79,29 @@ export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
         });
     }
 
-    public checkMsg(msg: IMessage) {
+    public storeMsg(msg: IMessage) {
+        this.wsMsg.push(msg);
+        if (this.pickupMsg(msg)) {
+            this.messages.push(msg);
+        }
+        sessionStorage.setItem('wx::message', JSON.stringify(this.wsMsg));
+    }
+
+    public restoreMsg() {
+        const str = sessionStorage.getItem('wx::message') || '[]';
+        this.wsMsg = JSON.parse(str) as IMessage[];
+        this.getAvatars(this.wsMsg.map(v => v.sender));
+    }
+
+    public pickupMsg(msg: IMessage) {
         if (!msg || !this.chat) {
             return false;
         }
+        // 滚动
+        setTimeout(() => {
+            const el = this.scrollLayout.nativeElement;
+            el.scrollTop = el.scrollHeight;
+        }, 100);
         // 头像
         if (this.avatars[msg.sender] === undefined) {
             this.avatars[msg.sender] = '/assets/icon.png';
@@ -102,20 +117,6 @@ export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
             msg.sender == this.chat.wxid ||
             msg.receiver == this.chat.wxid
         );
-    }
-
-    public storeMsg(msg: IMessage) {
-        this.wsMsg.push(msg);
-        if (this.checkMsg(msg)) {
-            this.messages.push(msg);
-        }
-        sessionStorage.setItem('wx::message', JSON.stringify(this.wsMsg));
-    }
-
-    public restoreMsg() {
-        const str = sessionStorage.getItem('wx::message') || '[]';
-        this.wsMsg = JSON.parse(str) as IMessage[];
-        this.getAvatars(this.wsMsg.map(v => v.sender));
     }
 
     public startSocket() {
@@ -183,15 +184,6 @@ export class LayoutWechatComponent implements OnDestroy, AfterViewChecked {
             data.map((v) => this.memberMap[v.wxid] = v);
             this.memberCount = data.length;
         });
-    }
-
-    public scrollToBottom() {
-        try {
-            const el = this.scrollLayout.nativeElement;
-            el.scrollTop = el.scrollHeight;
-        } catch (err) {
-            //
-        }
     }
 
 }

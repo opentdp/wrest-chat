@@ -26,7 +26,9 @@ export class WcferryChatroomComponent extends WcferryContactComponent {
 
     override getContacts() {
         return super.getContacts().then(() => {
-            this.contacts = this.contacts.filter((v) => '群聊,好友'.includes(v.type));
+            const c1 = this.contacts.filter((v) => '群聊'.includes(v.type));
+            const c2 = this.contacts.filter((v) => '好友'.includes(v.type));
+            this.contacts = [...c1, ...c2];
             this.chat = this.contacts[0];
         });
     }

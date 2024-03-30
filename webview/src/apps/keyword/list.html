@@ -9,7 +9,7 @@
 
 <div class="container-xl mb-3">
     <div class="row justify-content-between">
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
                 <option value="">全部</option>
                 @for (item of specialRooms | keyvalue; track item.key) {
@@ -20,7 +20,7 @@
                 }
             </select>
         </div>
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.group" (change)="getKeywords()">
                 <option value="">全部</option>
                 @for (item of keywordGroups | keyvalue; track item.key) {
@@ -28,7 +28,8 @@
                 }
             </select>
         </div>
-        <div class="col text-end">
+        <div class="col-12 col-md-4 text-end">
+            <a class="btn btn-secondary me-2" href="https://github.com/opentdp/wrest-plugin/tree/master/keyword" target="_blank">插件市场</a>
             <button class="btn btn-primary" [routerLink]="['/keyword/create']">添加</button>
         </div>
     </div>

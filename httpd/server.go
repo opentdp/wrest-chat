@@ -35,6 +35,9 @@ func Server() {
 	// Swagger 守卫
 	httpd.Use(middle.SwaggerGuard)
 
+	// 静态文件路径
+	httpd.Static("/storage", args.Web.Storage)
+
 	// 前端文件路由
 	httpd.StaticEmbed("/", "public", args.Efs)
 

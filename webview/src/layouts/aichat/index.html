@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="text-truncate fs-5 me-2">AI 聊天</div>
+        <span>{{config.model}}</span>
+    </div>
+
+    <div #scrollLayout class="content p-3">
+        @for (item of messages; track item) {
+        <div class="d-flex" [class.flex-row-reverse]="item.role == 'user'">
+            <div class="avatar">
+                <img class="rounded" [src]="item.role == 'user' ? avatar : '/assets/icon.png'" />
+            </div>
+            <div class="mx-3">
+                <div class="alert {{item.role == 'user' ? 'alert-success' : 'alert-secondary'}}">
+                    <div>{{item.content}}</div>
+                </div>
+            </div>
+            <div class="mx-5"></div>
+        </div>
+        }
+    </div>
+
+    <div class="card-footer">
+        <textarea class="form-control" rows="5" placeholder="输入消息" [(ngModel)]="content"></textarea>
+        <button class="btn btn-primary" (click)="sendMessage()" [disabled]="loading">发送</button>
+    </div>
+</div>

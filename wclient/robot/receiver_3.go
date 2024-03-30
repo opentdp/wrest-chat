@@ -1,6 +1,10 @@
 package robot
 
 import (
+	"os"
+	"path/filepath"
+
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 
 	"github.com/opentdp/wrest-chat/args"
@@ -29,8 +33,18 @@ func msgImage(id uint64, extra string) string {
 		extra = res.Extra
 	}
 
+	// 获取存储路径
+	target, err := filepath.Abs(args.Web.Storage)
+	if err != nil {
+		target = filepath.Dir(os.Args[0])
+	}
+	target = filepath.Join(target, "chat-images")
+	if !filer.Exists(target) {
+		os.MkdirAll(target, 0755)
+	}
+
 	// 从消息中获取
-	fp, err := wc.CmdClient.DownloadImage(id, extra, "", 15)
+	fp, err := wc.CmdClient.DownloadImage(id, extra, target, 15)
 	if err != nil || fp == "" {
 		logman.Error("image save failed", "err", err)
 		return ""
