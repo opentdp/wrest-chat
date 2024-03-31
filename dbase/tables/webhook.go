@@ -1,6 +1,6 @@
 package tables
 
-// WebHook
+// Webhook
 
 type Webhook struct {
 	Rd        uint   `json:"rd" gorm:"primaryKey"`                          // 主键

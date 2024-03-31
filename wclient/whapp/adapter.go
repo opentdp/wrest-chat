@@ -1,8 +1,11 @@
-package webhookApp
+package whapp
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func Handler(header http.Header, app string, msg string) string {
+
 	var res string
 	var err error
 
@@ -22,4 +25,5 @@ func Handler(header http.Header, app string, msg string) string {
 	}
 
 	return res
+
 }
