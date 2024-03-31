@@ -36,6 +36,9 @@ import { WcferryContactComponent } from './wcferry/contact';
 import { WcferryDbqueryComponent } from './wcferry/dbquery';
 import { WcferryReceiverComponent } from './wcferry/receiver';
 
+import { WebhookCreateComponent } from './webhook/create'
+import { WebhookListComponent} from "./webhook/list";
+
 
 export const AppComponents = [
     WelcomeComponent,
@@ -73,6 +76,9 @@ export const AppComponents = [
     WcferryContactComponent,
     WcferryDbqueryComponent,
     WcferryReceiverComponent,
+
+    WebhookCreateComponent,
+    WebhookListComponent
 ];
 
 //////////////////////////////////////////////////////////////////
@@ -114,6 +120,9 @@ export const AppRoutes: Routes = [
     { path: 'wcferry/contact', component: WcferryContactComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/dbquery', component: WcferryDbqueryComponent, canActivate: [LoginGuard] },
     { path: 'wcferry/receiver', component: WcferryReceiverComponent, canActivate: [LoginGuard] },
+
+    { path: 'webhook/list', component: WebhookListComponent, canActivate: [LoginGuard] },
+    { path: 'webhook/create', component: WebhookCreateComponent, canActivate: [LoginGuard] },
 
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
     { path: '**', component: Alert404Component },

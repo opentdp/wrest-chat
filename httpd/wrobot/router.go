@@ -46,4 +46,11 @@ func Route() {
 	rg.POST("setting/update", setting.update)
 	rg.POST("setting/delete", setting.delete)
 
+	webhook := &Webhook{}
+	rg.POST("webhook/list", webhook.list)
+	rg.POST("webhook/detail", webhook.detail)
+	rg.POST("webhook/create", webhook.create)
+	rg.POST("webhook/delete", webhook.delete)
+	rg.POST("webhook/:token/:app", webhook.receive)
+
 }

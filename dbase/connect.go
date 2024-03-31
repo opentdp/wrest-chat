@@ -30,6 +30,7 @@ func Connect() {
 		&tables.Message{},
 		&tables.Profile{},
 		&tables.Setting{},
+		&tables.Webhook{},
 	)
 
 	// 加载全局配置
