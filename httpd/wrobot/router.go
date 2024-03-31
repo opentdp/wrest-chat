@@ -2,7 +2,6 @@ package wrobot
 
 import (
 	"github.com/opentdp/go-helper/httpd"
-	"github.com/opentdp/wrest-chat/wclient"
 
 	"github.com/opentdp/wrest-chat/httpd/middle"
 )
@@ -47,7 +46,7 @@ func Route() {
 	rg.POST("setting/update", setting.update)
 	rg.POST("setting/delete", setting.delete)
 
-	webhook := &Webhook{wclient.Register()}
+	webhook := &Webhook{}
 	rg.POST("webhook/list", webhook.list)
 	rg.POST("webhook/detail", webhook.detail)
 	rg.POST("webhook/create", webhook.create)

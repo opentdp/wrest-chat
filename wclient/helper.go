@@ -95,7 +95,6 @@ func ImageTop10(roomid string, day int64) []*TopItem {
 }
 
 // 获取群管理信息
-
 func ChatRoomInfo(roomid string) map[string]string {
 
 	info := map[string]string{}
@@ -121,7 +120,9 @@ func ChatRoomInfo(roomid string) map[string]string {
 // 查找消息数据库
 // return string 消息数据库
 func FindMsgDb() string {
+
 	maxIndex, maxDbName := -1, ""
+
 	dbList := wc.CmdClient.GetDbNames()
 	for _, dbName := range dbList {
 		if strings.HasPrefix(dbName, "MSG") && strings.HasSuffix(dbName, ".db") {
@@ -135,5 +136,7 @@ func FindMsgDb() string {
 			}
 		}
 	}
+
 	return maxDbName
+
 }
