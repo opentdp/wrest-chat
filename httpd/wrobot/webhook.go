@@ -1,16 +1,16 @@
 package wrobot
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/opentdp/wrest-chat/dbase/webhook"
-	"github.com/opentdp/wrest-chat/wcferry"
-	"github.com/opentdp/wrest-chat/wclient/webhookApp"
 	"io"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/opentdp/wrest-chat/dbase/webhook"
+	"github.com/opentdp/wrest-chat/wclient"
+	"github.com/opentdp/wrest-chat/wclient/webhookApp"
 )
 
-type Webhook struct {
-	*wcferry.Client
-}
+type Webhook struct{}
 
 // @Summary webhook列表
 // @Produce json
@@ -106,32 +106,32 @@ func (*Webhook) delete(c *gin.Context) {
 // @Success 200
 // @Router /bot/webhook/{token}/{app} [post]
 func (w *Webhook) receive(c *gin.Context) {
+
 	token := c.Param("token")
 	app := c.Param("app")
 
 	hook, err := webhook.FindByToken(token)
-
 	if err != nil {
 		c.Set("Error", err)
 		return
 	}
 
 	request, err := io.ReadAll(c.Request.Body)
-
 	if err != nil {
 		c.Set("Error", err)
 		return
 	}
 
-	msg := string(request)
+	wc := wclient.Register()
 
 	// 根据app类型不同，调用不同的处理方式，参照handler的注册
-	sendMsg := webhookApp.Handler(c.Request.Header, app, msg)
-	res := w.CmdClient.SendTxt(sendMsg, hook.TargetId, "")
+	msg := webhookApp.Handler(c.Request.Header, app, string(request))
+	res := wc.CmdClient.SendTxt(msg, hook.TargetId, "")
 
 	if res == 0 {
 		c.Set("Message", "OK")
 	} else {
 		c.Set("Error", "消息处理失败")
 	}
+
 }
