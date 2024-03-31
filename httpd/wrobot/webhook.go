@@ -126,7 +126,7 @@ func (w *Webhook) receive(c *gin.Context) {
 	msg := string(request)
 
 	// 根据app类型不同，调用不同的处理方式，参照handler的注册
-	sendMsg := webhookApp.Handler(app, msg)
+	sendMsg := webhookApp.Handler(c.Request.Header, app, msg)
 	res := w.CmdClient.SendTxt(sendMsg, hook.TargetId, "")
 
 	if res == 0 {

@@ -17,6 +17,10 @@ type CreateWebHookParam struct {
 }
 
 func Create(data *CreateWebHookParam) (uint, string, error) {
+	if exist(data.TargetId) {
+		return 0, "", errors.New("已存在webhook")
+	}
+
 	token := generateGUID()
 	item := &tables.Webhook{
 		TargetId: data.TargetId,
@@ -27,6 +31,18 @@ func Create(data *CreateWebHookParam) (uint, string, error) {
 	result := dborm.Db.Create(item)
 
 	return item.Rd, token, result.Error
+}
+
+func exist(id string) bool {
+	var item *tables.Webhook
+
+	result := dborm.Db.Where(&tables.Webhook{TargetId: id}).First(&item)
+
+	if result.Error != nil {
+		return false
+	}
+
+	return item != nil
 }
 
 // 查询webhook
@@ -65,6 +81,14 @@ func Delete(data *DeleteWebHookParam) error {
 		Delete(&item)
 
 	return result.Error
+}
+
+func DeleteByTargetId(targetId string) bool {
+	var item *tables.Webhook
+
+	result := dborm.Db.Where(&tables.Webhook{TargetId: targetId}).Delete(&item)
+
+	return result.Error == nil
 }
 
 // 获取全部webhook
