@@ -36,6 +36,7 @@ func cmddHandler() []*Handler {
 					CommandType:   "EXEC",
 					WorkDirectory: ".",
 					Content:       exec,
+					Gb18030ToUtf8: true,
 				})
 				if err != nil {
 					logman.Error("cmd: "+v.Phrase, "error", err)
