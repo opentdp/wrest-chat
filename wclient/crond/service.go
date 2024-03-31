@@ -12,6 +12,7 @@ import (
 	"github.com/opentdp/wrest-chat/dbase/tables"
 	"github.com/opentdp/wrest-chat/wclient"
 	"github.com/opentdp/wrest-chat/wclient/aichat"
+	"github.com/opentdp/wrest-chat/wclient/deliver"
 )
 
 var crontab *cron.Cron
@@ -54,7 +55,7 @@ func Execute(id uint) error {
 
 	// 发送文本内容
 	if job.Type == "TEXT" {
-		return MsgDeliver(job.Deliver, job.Content)
+		return deliver.Send(job.Deliver, job.Content)
 	}
 
 	// 发送AI生成的文本
@@ -66,7 +67,7 @@ func Execute(id uint) error {
 		}
 		self := wc.CmdClient.GetSelfInfo()
 		data := aichat.Text(job.Content, self.Wxid, "")
-		return MsgDeliver(job.Deliver, data)
+		return deliver.Send(job.Deliver, data)
 	}
 
 	// 执行命令获取结果
@@ -85,7 +86,7 @@ func Execute(id uint) error {
 	// 发送命令执行结果
 	logger.Warn("cron:run "+job.Name, "output", output)
 	if output != "" {
-		return MsgDeliver(job.Deliver, output)
+		return deliver.Send(job.Deliver, output)
 	}
 
 	return nil
