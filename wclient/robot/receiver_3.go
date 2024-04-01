@@ -36,7 +36,9 @@ func msgImage(id uint64, extra string) string {
 	// 获取存储路径
 	target, err := filepath.Abs(args.Web.Storage)
 	if err != nil {
-		target = filepath.Dir(os.Args[0])
+		if self, err := os.Executable(); err == nil {
+			target = filepath.Dir(self)
+		}
 	}
 	target = filepath.Join(target, "chat-images")
 	if !filer.Exists(target) {
