@@ -15,7 +15,7 @@ Wcf:
 # Web 服务
 Web:
     Address: 127.0.0.1:7600 # 监听地址，外网访问修改为 0.0.0.0:7600
+    PushUrl: "" # 消息推送地址，一行一个，留空则不启用
     Storage: storage # 附件存储路径，非必要不修改
     Swagger: true # 是否启用内置接口文档和调试工具
     Token: "" # 使用 Token 验证请求，留空则不验证
-    Webhook: "" # 消息推送地址，留空则不启用

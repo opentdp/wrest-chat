@@ -32,10 +32,10 @@ var Wcf = &IWcf{
 
 type IWeb struct {
 	Address string `yaml:"Address"` // Web 监听地址
+	PushUrl string `yaml:"PushUrl"` // 消息推送地址
 	Storage string `yaml:"Storage"` // 附件存储路径
 	Swagger bool   `yaml:"Swagger"` // 是否启用 Api 文档
 	Token   string `yaml:"Token"`   // 使用 Token 验证请求
-	Webhook string `yaml:"Webhook"` // 消息推送地址
 }
 
 var Web = &IWeb{

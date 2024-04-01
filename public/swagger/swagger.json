@@ -1080,7 +1080,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/webhook.CreateWebHookParam"
+                            "$ref": "#/definitions/webhook.CreateWebhookParam"
                         }
                     }
                 ],
@@ -1107,7 +1107,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/webhook.DeleteWebHookParam"
+                            "$ref": "#/definitions/webhook.DeleteWebhookParam"
                         }
                     }
                 ],
@@ -1134,7 +1134,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/webhook.FetchWebHookParam"
+                            "$ref": "#/definitions/webhook.FetchWebhookParam"
                         }
                     }
                 ],
@@ -3757,7 +3757,7 @@
                 }
             }
         },
-        "webhook.CreateWebHookParam": {
+        "webhook.CreateWebhookParam": {
             "type": "object",
             "required": [
                 "target_id"
@@ -3771,7 +3771,7 @@
                 }
             }
         },
-        "webhook.DeleteWebHookParam": {
+        "webhook.DeleteWebhookParam": {
             "type": "object",
             "properties": {
                 "rd": {
@@ -3779,7 +3779,7 @@
                 }
             }
         },
-        "webhook.FetchWebHookParam": {
+        "webhook.FetchWebhookParam": {
             "type": "object",
             "properties": {
                 "rd": {

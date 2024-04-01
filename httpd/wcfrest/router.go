@@ -62,8 +62,8 @@ func Route() {
 
 	// 启用 HTTP 消息推送
 
-	if args.Web.Webhook != "" {
-		for _, url := range strings.Split(args.Web.Webhook, "\n") {
+	if args.Web.PushUrl != "" {
+		for _, url := range strings.Split(args.Web.PushUrl, "\n") {
 			ctrl.EnrollReceiver(true, urlReciever(url))
 		}
 	}

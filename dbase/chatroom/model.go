@@ -10,7 +10,7 @@ import (
 
 type CreateParam struct {
 	Rd           uint   `json:"rd"`
-	Roomid       string `binding:"required" json:"roomid"`
+	Roomid       string `json:"roomid" binding:"required"`
 	Name         string `json:"name"`
 	Level        int32  `json:"level"`
 	Remark       string `json:"remark"`

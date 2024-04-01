@@ -237,28 +237,28 @@ export const RobotApi = {
     },
     /**
      * @summary 创建webhook
-     * @param {WebhookCreateWebHookParam} body 创建webhook参数
+     * @param {WebhookCreateWebhookParam} body 创建webhook参数
      * @param {*} [options] Override http request option.
      */
-    webhookCreate(body: WebhookCreateWebHookParam, options: RequestInit = {}) : Promise<unknown> {
+    webhookCreate(body: WebhookCreateWebhookParam, options: RequestInit = {}) : Promise<unknown> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
         return httpRequest('/bot/webhook/create', options)
     },
     /**
      * @summary webhook详情
-     * @param {WebhookFetchWebHookParam} body 参数
+     * @param {WebhookFetchWebhookParam} body 参数
      * @param {*} [options] Override http request option.
      */
-    webhookDetail(body: WebhookFetchWebHookParam, options: RequestInit = {}) : Promise<Webhook> {
+    webhookDetail(body: WebhookFetchWebhookParam, options: RequestInit = {}) : Promise<Webhook> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
         return httpRequest('/bot/webhook/detail', options)
     },
     /**
      * @summary 删除webhook
-     * @param {WebhookDeleteWebHookParam} body 删除webhook参数
+     * @param {WebhookDeleteWebhookParam} body 删除webhook参数
      * @param {*} [options] Override http request option.
      */
-    webhookDelete(body: WebhookDeleteWebHookParam, options: RequestInit = {}) : Promise<unknown> {
+    webhookDelete(body: WebhookDeleteWebhookParam, options: RequestInit = {}) : Promise<unknown> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options }
         return httpRequest('/bot/webhook/delete', options)
     },
@@ -705,7 +705,7 @@ export interface Webhook {
     updated_at: number;
 }
 
-export interface WebhookCreateWebHookParam {
+export interface WebhookCreateWebhookParam {
     // 备注
     remark?: string;
     // 目标ID：用户或者是群聊ID
@@ -714,12 +714,12 @@ export interface WebhookCreateWebHookParam {
     target: string;
 }
 
-export interface WebhookFetchWebHookParam {
+export interface WebhookFetchWebhookParam {
     // 主键
     rd: number;
 }
 
-export interface WebhookDeleteWebHookParam {
+export interface WebhookDeleteWebhookParam {
     // 主键
     rd: number;
 }
