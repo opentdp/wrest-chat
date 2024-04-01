@@ -59,9 +59,9 @@ func webhookHandler() []*Handler {
 			}
 			res := webhook.Delete(&webhook.DeleteWebhookParam{TargetId: target})
 			if res != nil {
-				return "删除失败，" + res.Error()
+				return "webhook 删除失败，" + res.Error()
 			}
-			return "删除成功"
+			return "webhook 删除成功"
 		},
 	})
 
