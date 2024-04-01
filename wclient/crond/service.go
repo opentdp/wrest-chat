@@ -77,6 +77,7 @@ func Execute(id uint) error {
 		WorkDirectory: job.Directory,
 		Content:       job.Content,
 		Timeout:       job.Timeout,
+		Gb18030ToUtf8: true,
 	})
 	if err != nil {
 		logger.Warn("cron:run "+job.Name, "error", err)
