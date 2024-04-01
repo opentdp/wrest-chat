@@ -7,7 +7,7 @@ import (
 
 	"github.com/opentdp/wrest-chat/dbase/webhook"
 	"github.com/opentdp/wrest-chat/wclient"
-	"github.com/opentdp/wrest-chat/wclient/webhookApp"
+	"github.com/opentdp/wrest-chat/wclient/whapp"
 )
 
 type Webhook struct{}
@@ -30,13 +30,12 @@ func (*Webhook) list(c *gin.Context) {
 // @Summary 获取webhook
 // @Produce json
 // @Tags BOT::webhook
-// @Param body body webhook.FetchWebHookParam true "获取webhook参数"
+// @Param body body webhook.FetchWebhookParam true "获取webhook参数"
 // @Success 200 {object} tables.Webhook
 // @Router /bot/webhook/detail [post]
 func (*Webhook) detail(c *gin.Context) {
 
-	var rq *webhook.FetchWebHookParam
-
+	var rq *webhook.FetchWebhookParam
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -53,21 +52,20 @@ func (*Webhook) detail(c *gin.Context) {
 // @Summary 添加webhook
 // @Produce json
 // @Tags BOT::webhook
-// @Param body body webhook.CreateWebHookParam true "添加webhook参数"
+// @Param body body webhook.CreateWebhookParam true "添加webhook参数"
 // @Success 200
 // @Router /bot/webhook/create [post]
 func (*Webhook) create(c *gin.Context) {
 
-	var rq *webhook.CreateWebHookParam
-
+	var rq *webhook.CreateWebhookParam
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
 	}
 
-	if id, _, err := webhook.Create(rq); err == nil {
+	if token, err := webhook.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
-		c.Set("Payload", id)
+		c.Set("Payload", token)
 	} else {
 		c.Set("Error", err)
 	}
@@ -77,13 +75,12 @@ func (*Webhook) create(c *gin.Context) {
 // @Summary 删除webhook
 // @Produce json
 // @Tags BOT::webhook
-// @Param body body webhook.DeleteWebHookParam true "删除webhook"
+// @Param body body webhook.DeleteWebhookParam true "删除webhook"
 // @Success 200
 // @Router /bot/webhook/delete [post]
 func (*Webhook) delete(c *gin.Context) {
 
-	var rq *webhook.DeleteWebHookParam
-
+	var rq *webhook.DeleteWebhookParam
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -110,7 +107,7 @@ func (w *Webhook) receive(c *gin.Context) {
 	token := c.Param("token")
 	app := c.Param("app")
 
-	hook, err := webhook.FindByToken(token)
+	hook, err := webhook.Fetch(&webhook.FetchWebhookParam{Token: token})
 	if err != nil {
 		c.Set("Error", err)
 		return
@@ -125,7 +122,7 @@ func (w *Webhook) receive(c *gin.Context) {
 	wc := wclient.Register()
 
 	// 根据app类型不同，调用不同的处理方式，参照handler的注册
-	msg := webhookApp.Handler(c.Request.Header, app, string(request))
+	msg := whapp.Handler(c.Request.Header, app, string(request))
 	res := wc.CmdClient.SendTxt(msg, hook.TargetId, "")
 
 	if res == 0 {

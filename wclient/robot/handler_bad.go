@@ -45,7 +45,7 @@ func badHandler() []*Handler {
 		Level:    7,
 		Order:    311,
 		Roomid:   "*",
-		Command:  "/unbad",
+		Command:  "/bad:rm",
 		Describe: "删除违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			err := keyword.Delete(&keyword.DeleteParam{

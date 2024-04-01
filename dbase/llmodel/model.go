@@ -10,12 +10,12 @@ import (
 
 type CreateParam struct {
 	Rd       uint   `json:"rd"`
-	Mid      string `binding:"required" json:"mid"`
+	Mid      string `json:"mid" binding:"required"`
 	Level    int32  `json:"level"`
-	Family   string `binding:"required" json:"family"`
-	Provider string `binding:"required" json:"provider"`
-	Model    string `binding:"required" json:"model"`
-	Secret   string `binding:"required" json:"secret"`
+	Family   string `json:"family" binding:"required"`
+	Provider string `json:"provider" binding:"required"`
+	Model    string `json:"model" binding:"required"`
+	Secret   string `json:"secret" binding:"required"`
 	Endpoint string `json:"endpoint"`
 }
 

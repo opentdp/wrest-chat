@@ -59,7 +59,7 @@ func banHandler() []*Handler {
 		Level:    7,
 		Order:    321,
 		Roomid:   "+",
-		Command:  "/unban",
+		Command:  "/ban:rm",
 		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.MsgXmlAtUser{}

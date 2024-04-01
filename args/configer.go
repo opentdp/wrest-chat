@@ -10,9 +10,9 @@ import (
 var Configer *Config
 
 type ConfigData struct {
-	Log *ILog `yaml:"Log"`
-	Wcf *IWcf `yaml:"Wcf"`
-	Web *IWeb `yaml:"Web"`
+	Log *ILog `yaml:"Log"` // 日志
+	Wcf *IWcf `yaml:"Wcf"` // Wcf 服务
+	Web *IWeb `yaml:"Web"` // Web 服务
 }
 
 func init() {

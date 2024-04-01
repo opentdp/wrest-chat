@@ -1,6 +1,8 @@
 package event
 
-import "time"
+import (
+	"time"
+)
 
 type GithubPushEvent struct {
 	Ref        string `json:"ref"`

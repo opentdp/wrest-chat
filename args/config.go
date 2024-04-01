@@ -8,8 +8,8 @@ import (
 )
 
 type Config struct {
-	File string
-	Data any
+	File string `yaml:"File"`
+	Data any    `yaml:"Data"`
 }
 
 func (c *Config) Load() error {

@@ -10,17 +10,17 @@ import (
 
 type CreateParam struct {
 	Rd         uint   `json:"rd"`
-	Name       string `binding:"required" json:"name"`
-	Second     string `binding:"required" json:"second"`
-	Minute     string `binding:"required" json:"minute"`
-	Hour       string `binding:"required" json:"hour"`
-	DayOfMonth string `binding:"required" json:"day_of_month"`
-	Month      string `binding:"required" json:"month"`
-	DayOfWeek  string `binding:"required" json:"day_of_week"`
-	Type       string `binding:"required" json:"type"`
-	Timeout    uint   `binding:"required" json:"timeout"`
-	Directory  string `binding:"required" json:"directory"`
-	Content    string `binding:"required" json:"content"`
+	Name       string `json:"name" binding:"required"`
+	Second     string `json:"second" binding:"required"`
+	Minute     string `json:"minute" binding:"required"`
+	Hour       string `json:"hour" binding:"required"`
+	DayOfMonth string `json:"day_of_month" binding:"required"`
+	Month      string `json:"month" binding:"required"`
+	DayOfWeek  string `json:"day_of_week" binding:"required"`
+	Type       string `json:"type" binding:"required"`
+	Timeout    uint   `json:"timeout" binding:"required"`
+	Directory  string `json:"directory" binding:"required"`
+	Content    string `json:"content" binding:"required"`
 	Deliver    string `json:"deliver"`
 	EntryId    int64  `json:"entry_id"`
 }

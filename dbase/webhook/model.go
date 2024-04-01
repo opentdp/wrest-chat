@@ -1,25 +1,20 @@
 package webhook
 
 import (
-	"crypto/rand"
-	"encoding/hex"
 	"errors"
+
 	"github.com/opentdp/go-helper/dborm"
 	"github.com/opentdp/wrest-chat/dbase/tables"
-	"io"
 )
 
-// 创建webhook
+// 创建 webhook
 
-type CreateWebHookParam struct {
-	TargetId string `binding:"required" json:"target_id"`
+type CreateWebhookParam struct {
+	TargetId string `json:"target_id" binding:"required"`
 	Remark   string `json:"remark"`
 }
 
-func Create(data *CreateWebHookParam) (uint, string, error) {
-	if exist(data.TargetId) {
-		return 0, "", errors.New("已存在webhook")
-	}
+func Create(data *CreateWebhookParam) (string, error) {
 
 	token := generateGUID()
 	item := &tables.Webhook{
@@ -30,33 +25,27 @@ func Create(data *CreateWebHookParam) (uint, string, error) {
 
 	result := dborm.Db.Create(item)
 
-	return item.Rd, token, result.Error
+	return token, result.Error
+
 }
 
-func exist(id string) bool {
-	var item *tables.Webhook
+// 获取 webhook
 
-	result := dborm.Db.Where(&tables.Webhook{TargetId: id}).First(&item)
-
-	if result.Error != nil {
-		return false
-	}
-
-	return item != nil
+type FetchWebhookParam struct {
+	Rd       uint   `json:"rd"`
+	TargetId string `json:"target_id"`
+	Token    string `json:"token"`
 }
 
-// 查询webhook
+func Fetch(data *FetchWebhookParam) (*tables.Webhook, error) {
 
-type FetchWebHookParam struct {
-	Rd uint `json:"rd"`
-}
-
-func Fetch(data *FetchWebHookParam) (*tables.Webhook, error) {
 	var item *tables.Webhook
 
 	result := dborm.Db.
 		Where(&tables.Webhook{
-			Rd: data.Rd,
+			Rd:       data.Rd,
+			TargetId: data.TargetId,
+			Token:    data.Token,
 		}).
 		First(&item)
 
@@ -65,81 +54,51 @@ func Fetch(data *FetchWebHookParam) (*tables.Webhook, error) {
 	}
 
 	return item, result.Error
+
 }
 
-// 删除webhook
+// 删除 webhook
 
-type DeleteWebHookParam = FetchWebHookParam
+type DeleteWebhookParam = FetchWebhookParam
 
-func Delete(data *DeleteWebHookParam) error {
+func Delete(data *DeleteWebhookParam) error {
+
 	var item *tables.Webhook
 
 	result := dborm.Db.
 		Where(&tables.Webhook{
-			Rd: data.Rd,
+			Rd:       data.Rd,
+			TargetId: data.TargetId,
+			Token:    data.Token,
 		}).
 		Delete(&item)
 
 	return result.Error
+
 }
 
-func DeleteByTargetId(targetId string) bool {
-	var item *tables.Webhook
-
-	result := dborm.Db.Where(&tables.Webhook{TargetId: targetId}).Delete(&item)
-
-	return result.Error == nil
-}
-
-// 获取全部webhook
+// 获取 webhook 列表
 
 func FetchAll() ([]*tables.Webhook, error) {
+
 	var items []*tables.Webhook
 
 	result := dborm.Db.Find(&items)
 
 	return items, result.Error
+
 }
 
-// 通过token查询webhook
+// 获取 webhook 总数
 
-func FindByToken(token string) (*tables.Webhook, error) {
-	var item *tables.Webhook
+func Count() (int64, error) {
+
+	var count int64
 
 	result := dborm.Db.
-		Where(&tables.Webhook{
-			Token: token,
-		}).
-		First(&item)
+		Model(&tables.LLModel{}).
+		Count(&count)
 
-	if result.Error != nil {
-		return nil, result.Error
-	}
+	return count, result.Error
 
-	return item, nil
-}
-
-// 生成GUID
-
-func generateGUID() string {
-	// 创建一个16字节的切片用于存储随机数据
-	byteGUID := make([]byte, 16)
-	// 使用加密的随机数源生成随机数填充切片
-	_, err := io.ReadFull(rand.Reader, byteGUID)
-	if err != nil {
-		panic("无法生成GUID")
-	}
-
-	// 设置版本号和变体以符合GUID版本4的标准
-	byteGUID[8] = byteGUID[8]&^0xc0 | 0x80
-	byteGUID[6] = byteGUID[6]&^0xf0 | 0x40
-
-	// 将16字节的字节切片转换为32字节的字节切片
-	guidBytes := append(byteGUID[0:4], byteGUID[4:6]...)
-	guidBytes = append(guidBytes, byteGUID[6:8]...)
-	guidBytes = append(guidBytes, byteGUID[8:10]...)
-	guidBytes = append(guidBytes, byteGUID[10:16]...)
-
-	// 使用十六进制编码32字节的字节切片
-	return hex.EncodeToString(guidBytes)
 }

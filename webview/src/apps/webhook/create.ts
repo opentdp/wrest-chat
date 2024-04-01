@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {RobotApi, WebhookCreateWebHookParam} from '../../openapi/wrobot';
+import {RobotApi, WebhookCreateWebhookParam} from '../../openapi/wrobot';
 import {WcfrestContactPayload, WrestApi} from "../../openapi/wcfrest";
 
 
@@ -15,7 +15,7 @@ export class WebhookCreateComponent {
     public wcfChatrooms: Array<WcfrestContactPayload> = [];
     public filter = '';
 
-    public formdata: WebhookCreateWebHookParam = {
+    public formdata: WebhookCreateWebhookParam = {
         remark: "",
         target_id: "",
         target: "friend",
