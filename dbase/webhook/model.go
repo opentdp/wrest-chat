@@ -10,7 +10,7 @@ import (
 // 创建 webhook
 
 type CreateWebhookParam struct {
-	TargetId string `binding:"required" json:"target_id"`
+	TargetId string `json:"target_id" binding:"required"`
 	Remark   string `json:"remark"`
 }
 

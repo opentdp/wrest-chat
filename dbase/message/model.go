@@ -9,7 +9,7 @@ import (
 // 创建消息
 
 type CreateParam struct {
-	Id      uint64 `binding:"required" json:"id"`
+	Id      uint64 `json:"id" binding:"required"`
 	IsSelf  bool   `json:"is_self"`
 	IsGroup bool   `json:"is_group"`
 	Type    uint32 `json:"type"`
@@ -101,7 +101,7 @@ func Replace(data *ReplaceParam) error {
 // 获取消息
 
 type FetchParam struct {
-	Id uint64 `binding:"required" json:"id"`
+	Id uint64 `json:"id" binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Message, error) {
