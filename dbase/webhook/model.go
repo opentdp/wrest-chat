@@ -14,11 +14,7 @@ type CreateWebhookParam struct {
 	Remark   string `json:"remark"`
 }
 
-func Create(data *CreateWebhookParam) (uint, string, error) {
-
-	if exist(data.TargetId) {
-		return 0, "", errors.New("已存在webhook")
-	}
+func Create(data *CreateWebhookParam) (string, error) {
 
 	token := generateGUID()
 	item := &tables.Webhook{
@@ -29,28 +25,16 @@ func Create(data *CreateWebhookParam) (uint, string, error) {
 
 	result := dborm.Db.Create(item)
 
-	return item.Rd, token, result.Error
+	return token, result.Error
 
 }
 
-func exist(id string) bool {
-
-	var item *tables.Webhook
-
-	result := dborm.Db.Where(&tables.Webhook{TargetId: id}).First(&item)
-
-	if result.Error != nil {
-		return false
-	}
-
-	return item != nil
-
-}
-
-// 查询 webhook
+// 获取 webhook
 
 type FetchWebhookParam struct {
-	Rd uint `json:"rd"`
+	Rd       uint   `json:"rd"`
+	TargetId string `json:"target_id"`
+	Token    string `json:"token"`
 }
 
 func Fetch(data *FetchWebhookParam) (*tables.Webhook, error) {
@@ -59,7 +43,9 @@ func Fetch(data *FetchWebhookParam) (*tables.Webhook, error) {
 
 	result := dborm.Db.
 		Where(&tables.Webhook{
-			Rd: data.Rd,
+			Rd:       data.Rd,
+			TargetId: data.TargetId,
+			Token:    data.Token,
 		}).
 		First(&item)
 
@@ -81,7 +67,9 @@ func Delete(data *DeleteWebhookParam) error {
 
 	result := dborm.Db.
 		Where(&tables.Webhook{
-			Rd: data.Rd,
+			Rd:       data.Rd,
+			TargetId: data.TargetId,
+			Token:    data.Token,
 		}).
 		Delete(&item)
 
@@ -89,17 +77,7 @@ func Delete(data *DeleteWebhookParam) error {
 
 }
 
-func DeleteByTargetId(targetId string) bool {
-
-	var item *tables.Webhook
-
-	result := dborm.Db.Where(&tables.Webhook{TargetId: targetId}).Delete(&item)
-
-	return result.Error == nil
-
-}
-
-// 获取全部 webhook
+// 获取 webhook 列表
 
 func FetchAll() ([]*tables.Webhook, error) {
 
@@ -111,22 +89,16 @@ func FetchAll() ([]*tables.Webhook, error) {
 
 }
 
-// 通过 token 查询 webhook
+// 获取 webhook 总数
 
-func FindByToken(token string) (*tables.Webhook, error) {
+func Count() (int64, error) {
 
-	var item *tables.Webhook
+	var count int64
 
 	result := dborm.Db.
-		Where(&tables.Webhook{
-			Token: token,
-		}).
-		First(&item)
+		Model(&tables.LLModel{}).
+		Count(&count)
 
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return item, nil
+	return count, result.Error
 
 }

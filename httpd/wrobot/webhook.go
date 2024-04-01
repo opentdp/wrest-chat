@@ -63,9 +63,9 @@ func (*Webhook) create(c *gin.Context) {
 		return
 	}
 
-	if id, _, err := webhook.Create(rq); err == nil {
+	if token, err := webhook.Create(rq); err == nil {
 		c.Set("Message", "添加成功")
-		c.Set("Payload", id)
+		c.Set("Payload", token)
 	} else {
 		c.Set("Error", err)
 	}
@@ -107,7 +107,7 @@ func (w *Webhook) receive(c *gin.Context) {
 	token := c.Param("token")
 	app := c.Param("app")
 
-	hook, err := webhook.FindByToken(token)
+	hook, err := webhook.Fetch(&webhook.FetchWebhookParam{Token: token})
 	if err != nil {
 		c.Set("Error", err)
 		return
