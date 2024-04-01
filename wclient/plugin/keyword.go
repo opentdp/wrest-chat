@@ -26,26 +26,33 @@ func KeywordPluginSetup() []*KeywordPlugin {
 		return nil
 	}
 
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		return nil
+	}
+
 	configs := []*KeywordPlugin{}
 	checker := NewCache(dir + ".txt")
 
-	filepath.Walk(dir, func(rp string, info os.FileInfo, err error) error {
-		// 忽略原则错误
-		if err != nil || info.IsDir() {
-			logman.Error("invalid keyword plugin", "name", info.Name(), "error", err)
-			return nil
+	for _, info := range files {
+		name := info.Name()
+		// 忽略目录和隐藏文件
+		if info.IsDir() || strings.HasPrefix(name, ".") {
+			logman.Error("invalid keyword plugin", "name", name, "error", err)
+			continue
 		}
 		// 获取绝对路径
+		rp := filepath.Join(dir, name)
 		fp, err := filepath.Abs(rp)
 		if err != nil {
-			logman.Error("invalid keyword plugin", "name", info.Name(), "error", err)
-			return nil
+			logman.Error("invalid keyword plugin", "name", name, "error", err)
+			continue
 		}
 		// 提取插件参数
 		config, err := KeywordPluginParser(fp)
 		if err != nil {
-			configs = append(configs, &KeywordPlugin{config, err.Error(), info.Name()})
-			return nil
+			configs = append(configs, &KeywordPlugin{config, err.Error(), name})
+			continue
 		}
 		// 更新插件信息
 		errstr := ""
@@ -58,9 +65,8 @@ func KeywordPluginSetup() []*KeywordPlugin {
 				errstr = err.Error()
 			}
 		}
-		configs = append(configs, &KeywordPlugin{config, errstr, info.Name()})
-		return err
-	})
+		configs = append(configs, &KeywordPlugin{config, errstr, name})
+	}
 
 	return configs
 
