@@ -79,3 +79,30 @@ func whiteLimit(msg *wcferry.WxMsg) bool {
 	return true
 
 }
+
+// 组策略限制
+// return 验证结果 [true 受限, false 忽略]
+func groupLimit(msg *wcferry.WxMsg, level int32, roomid string) bool {
+
+	// 验证权限
+	if level > 0 {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if up.Level < level {
+			return true
+		}
+	}
+
+	// 验证场景
+	if msg.IsGroup {
+		if roomid != "*" && roomid != "+" && roomid != msg.Roomid {
+			return true
+		}
+	} else {
+		if roomid != "*" && roomid != "-" {
+			return true
+		}
+	}
+
+	return false
+
+}
