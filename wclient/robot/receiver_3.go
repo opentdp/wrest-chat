@@ -24,7 +24,7 @@ func receiver3(msg *wcferry.WxMsg) {
 	}
 
 	// 外部图片处理插件
-	keywords, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "imager"})
+	keywords, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "imagefn"})
 	if err == nil && len(keywords) > 0 {
 		img := msgImage(msg.Id, msg.Extra)
 		for _, v := range keywords {

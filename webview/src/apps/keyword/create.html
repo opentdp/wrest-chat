@@ -47,12 +47,22 @@
             <label class="form-label">命令 *</label>
             <textarea name="target" class="form-control" rows="3" [(ngModel)]="formdata.target" required></textarea>
             <div class="form-text">
-                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i><br />
+                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i>。指令收到的最后一个参数为聊天内容<br />
                 输出的内容将作为回复，发送文件或图片请输出 <b>http://</b> 开头的链接
             </div>
         </div>
         }
-        @if (formdata.group == 'handler') {
+        @else if (formdata.group == 'imagefn') {
+        <div class="col-12">
+            <label class="form-label">命令 *</label>
+            <textarea name="target" class="form-control" rows="3" [(ngModel)]="formdata.target" required></textarea>
+            <div class="form-text">
+                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i>。指令收到的最后一个参数为图片路径<br />
+                输出的内容将作为回复，发送文件或图片请输出 <b>http://</b> 开头的链接
+            </div>
+        </div>
+        }
+        @else if (formdata.group == 'handler') {
         <div class="col-12">
             <label class="form-label">指令 *</label>
             <select name="target" class="form-select" [(ngModel)]="formdata.target" (change)="changeHandler()" required>
