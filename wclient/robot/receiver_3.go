@@ -4,20 +4,44 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
 
 	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
 	"github.com/opentdp/wrest-chat/dbase/message"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
-// 自动保存图片
 func receiver3(msg *wcferry.WxMsg) {
 
+	// 自动保存图片
 	if setting.AutoSaveImage && msg.Extra != "" {
 		msgImage(msg.Id, msg.Extra)
+	}
+
+	// 外部图片处理插件
+	keywords, err := keyword.FetchAll(&keyword.FetchAllParam{Group: "imager"})
+	if err == nil && len(keywords) > 0 {
+		img := msgImage(msg.Id, msg.Extra)
+		for _, v := range keywords {
+			if groupLimit(msg, v.Level, v.Roomid) {
+				continue
+			}
+			output, err := command.Exec(&command.ExecPayload{
+				Name:          "Imager:" + v.Phrase,
+				CommandType:   "EXEC",
+				WorkDirectory: ".",
+				Content:       v.Target + " " + img,
+			})
+			if err != nil {
+				logman.Error("cmd: "+v.Phrase, "error", err)
+			}
+			wclient.SendFlexMsg(output, msg.Sender, msg.Roomid)
+		}
 	}
 
 }
