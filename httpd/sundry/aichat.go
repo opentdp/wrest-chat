@@ -6,6 +6,8 @@ import (
 	"github.com/opentdp/wrest-chat/wclient/aichat"
 )
 
+type AiChat struct{}
+
 type AiChatParam struct {
 	Wxid    string `json:"wxid"`
 	Message string `json:"message"`
@@ -17,7 +19,7 @@ type AiChatParam struct {
 // @Param body body AiChatParam true "智能聊天参数"
 // @Success 200 {object} aichat.UserConfig
 // @Router /api/aichat/config [post]
-func aiChatConfig(c *gin.Context) {
+func (*AiChat) config(c *gin.Context) {
 
 	var rq *AiChatParam
 	if err := c.ShouldBind(&rq); err != nil {
@@ -40,7 +42,7 @@ func aiChatConfig(c *gin.Context) {
 // @Param body body AiChatParam true "智能聊天参数"
 // @Success 200 {string} string
 // @Router /api/aichat/text [post]
-func aiChatText(c *gin.Context) {
+func (*AiChat) text(c *gin.Context) {
 
 	var rq *AiChatParam
 	if err := c.ShouldBind(&rq); err != nil {

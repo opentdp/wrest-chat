@@ -11,8 +11,9 @@ func Route() {
 	rg := httpd.Group("/api")
 	rg.Use(middle.OutputHandle, middle.ApiGuard)
 
-	rg.POST("aichat/config", aiChatConfig)
-	rg.POST("aichat/text", aiChatText)
+	aichat := AiChat{}
+	rg.POST("aichat/config", aichat.config)
+	rg.POST("aichat/text", aichat.text)
 
 	cronjob := Cronjob{}
 	rg.POST("cronjob/list", cronjob.list)
@@ -23,8 +24,9 @@ func Route() {
 	rg.POST("cronjob/status", cronjob.status)
 	rg.POST("cronjob/execute", cronjob.execute)
 
-	rg.POST("plugin/cronjobs", pluginCronjobs)
-	rg.POST("plugin/keywords", pluginKeywords)
+	plugin := Plugin{}
+	rg.POST("plugin/cronjobs", plugin.cronjobs)
+	rg.POST("plugin/keywords", plugin.keywords)
 
 	system := System{}
 	rg.POST("system/version", system.version)

@@ -3326,7 +3326,7 @@
                     "type": "string"
                 },
                 "token": {
-                    "description": "webhook的标识（GUID）",
+                    "description": "webhook 标识（GUID）",
                     "type": "string"
                 },
                 "updated_at": {
@@ -3776,6 +3776,12 @@
             "properties": {
                 "rd": {
                     "type": "integer"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },
@@ -3784,6 +3790,12 @@
             "properties": {
                 "rd": {
                     "type": "integer"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         }
