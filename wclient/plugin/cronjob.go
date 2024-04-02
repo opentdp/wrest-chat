@@ -91,9 +91,6 @@ func CronjobPluginParser(fp string) (*cronjob.CreateParam, error) {
 	for _, match := range matches {
 		match[3] = strings.TrimSpace(match[3])
 		switch match[2] {
-		case "Rd":
-			n, _ := strconv.ParseInt(match[3], 10, 32)
-			plugin.Rd = uint(n)
 		case "Name":
 			plugin.Name = match[3]
 		case "Second":
