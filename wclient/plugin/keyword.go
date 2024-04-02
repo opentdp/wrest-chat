@@ -80,7 +80,7 @@ func KeywordPluginParser(fp string) (*keyword.CreateParam, error) {
 	}
 
 	// 提取插件参数
-	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Roomid|Phrase|Level|Target|Remark):\s*(.*)$`)
+	re := regexp.MustCompile(`(?m)^(//|::|#)\s*@(Group|Roomid|Phrase|Level|Target|Remark):\s*(.*)$`)
 	matches := re.FindAllStringSubmatch(string(content), -1)
 	if matches == nil {
 		return nil, fmt.Errorf("keyword config not found")
@@ -91,9 +91,8 @@ func KeywordPluginParser(fp string) (*keyword.CreateParam, error) {
 	for _, match := range matches {
 		match[3] = strings.TrimSpace(match[3])
 		switch match[2] {
-		case "Rd":
-			n, _ := strconv.ParseInt(match[3], 10, 32)
-			plugin.Rd = uint(n)
+		case "Group":
+			plugin.Group = match[3]
 		case "Roomid":
 			plugin.Roomid = match[3]
 		case "Phrase":

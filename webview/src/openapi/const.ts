@@ -20,8 +20,9 @@ export const CronjobTypes: Record<string, OptionData> = {
 
 export const KeywordGroups: Record<string, OptionData> = {
     badword: { name: '违禁词' },
-    command: { name: '外部指令' },
     handler: { name: '指令别名' },
+    command: { name: '外部指令' },
+    imagefn: { name: '图片处理' },
 };
 
 export const BadwordLevels: Record<number, OptionData> = {

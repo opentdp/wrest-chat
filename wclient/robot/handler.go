@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/opentdp/wrest-chat/dbase/keyword"
-	"github.com/opentdp/wrest-chat/dbase/profile"
 	"github.com/opentdp/wrest-chat/dbase/setting"
 	"github.com/opentdp/wrest-chat/wcferry"
 )
@@ -109,8 +108,8 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 		} else { // 私聊
 			handler = handlerMap[params[0]+"@-"]
 		}
-		if handler == nil {
-			handler = handlerMap[params[0]+"@*"] // 全局
+		if handler == nil { // 全局
+			handler = handlerMap[params[0]+"@*"]
 			if handler == nil {
 				if content[0] == '/' {
 					return setting.InvalidHandler
@@ -121,22 +120,8 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 验证权限
-	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.Level < handler.Level {
-			return setting.InvalidHandler
-		}
-	}
-
-	// 验证场景
-	if msg.IsGroup {
-		if handler.Roomid != "*" && handler.Roomid != "+" && handler.Roomid != msg.Roomid {
-			return setting.InvalidHandler
-		}
-	} else {
-		if handler.Roomid != "*" && handler.Roomid != "-" {
-			return setting.InvalidHandler
-		}
+	if groupLimit(msg, handler.Level, handler.Roomid) {
+		return setting.InvalidHandler
 	}
 
 	// 重写消息
