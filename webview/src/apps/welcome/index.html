@@ -37,13 +37,16 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-truncate">
-                        <b>微信 ID</b> {{user.wxid}}
+                        <b>微信 ID</b>
+                        <span>{{user.wxid}}</span>
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>微信昵称</b> {{user.name}}
+                        <b>微信昵称</b>
+                        <span>{{user.name}}</span>
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>绑定手机</b> {{user.mobile}}
+                        <b>绑定手机</b>
+                        <span>{{user.mobile}}</span>
                     </li>
                 </ul>
             </div>
@@ -56,10 +59,12 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-truncate">
-                        <b>Wcferry</b> v{{system.wcf_version}}
+                        <b>Wcferry</b>
+                        <span>v{{system.wcf_version}}</span>
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>微信版本</b> v{{system.wechat_version}}
+                        <b>微信版本</b>
+                        <span>v{{system.wechat_version}}</span>
                     </li>
                 </ul>
             </div>
@@ -69,14 +74,17 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item text-truncate">
-                        <b>当前版本</b> v{{system.version}}
+                        <b>当前版本</b>
+                        <span>v{{system.version}}</span>
                     </li>
                     <li class="list-group-item text-truncate">
-                        <b>编译次序</b> b{{system.build_version}}
+                        <b>编译次序</b>
+                        <span>b{{system.build_version}}</span>
                     </li>
                     @if (upgrade.url) {
                     <li class="list-group-item text-truncate">
-                        <b>发现更新</b> 下载 <a [href]="upgrade.url" target="_blank">{{upgrade.version}}</a>
+                        <b>发现更新</b>
+                        <a [href]="upgrade.url" target="_blank" class="text-decoration-none">下载 {{upgrade.version}}</a>
                     </li>
                     }
                 </ul>
@@ -85,7 +93,7 @@
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <layout-aichat [avatar]="avatar &&avatar.big_head_img_url"></layout-aichat>
+            <layout-aichat [avatar]="avatar && avatar.big_head_img_url"></layout-aichat>
         </div>
 
     </div>
