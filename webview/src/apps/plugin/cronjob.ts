@@ -1,40 +1,31 @@
 import { Component } from '@angular/core';
 
 import { UserLevels, SpecialRooms } from '../../openapi/const';
-import { SundryApi, CronjobPlugin, KeywordPlugin } from '../../openapi/sundry';
+import { SundryApi, CronjobPlugin } from '../../openapi/sundry';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
 @Component({
-    selector: 'page-plugin-list',
-    templateUrl: 'list.html'
+    selector: 'page-plugin-cronjob',
+    templateUrl: 'cronjob.html'
 })
-export class PluginListComponent {
+export class PluginCronjobComponent {
 
     public userLevels = UserLevels;
     public specialRooms = SpecialRooms;
 
-    public type = 'cronjob';
     public cronjobPlugins: Array<CronjobPlugin> = [];
-    public keywordPlugins: Array<KeywordPlugin> = [];
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
     constructor() {
         this.getWcfChatrooms();
         this.getCronjobPlugins();
-        this.getKeywordPlugins();
     }
 
     public getCronjobPlugins() {
         return SundryApi.pluginCronjobs({}).then((data) => {
             this.cronjobPlugins = data || [];
-        });
-    }
-
-    public getKeywordPlugins() {
-        return SundryApi.pluginKeywords({}).then((data) => {
-            this.keywordPlugins = data || [];
         });
     }
 

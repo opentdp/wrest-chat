@@ -1,0 +1,38 @@
+<layout-header></layout-header>
+
+<nav class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">插件</li>
+        <li class="breadcrumb-item active">计划任务</li>
+    </ol>
+</nav>
+
+<div class="container-xl mb-3">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">文件</th>
+                <th scope="col">名称</th>
+                <th scope="col" class="d-none d-sm-table-cell">计划</th>
+                <th scope="col">状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of cronjobPlugins; track item.file) {
+            <tr>
+                <th scope="row">{{item.file}}</th>
+                @if (item.config) {
+                <td>{{item.config.name}}</td>
+                <td class="d-none d-sm-table-cell">
+                    {{item.config.second}} {{item.config.minute}} {{item.config.hour}} {{item.config.day_of_month}} {{item.config.month}} {{item.config.day_of_week}}
+                </td>
+                <td>{{item.config.rd > 0 ? '已激活': '未激活'}}</td>
+                } @else {
+                <td colspan="3" class="text-body-tertiary">{{item.error}}</td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

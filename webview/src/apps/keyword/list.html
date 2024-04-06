@@ -42,6 +42,7 @@
                 <th scope="col">#</th>
                 <th scope="col">短语</th>
                 <th scope="col" class="d-none d-md-table-cell">分组</th>
+                <th scope="col" class="d-none d-md-table-cell">场景</th>
                 <th scope="col" class="d-none d-md-table-cell">用途</th>
                 <th scope="col" class="d-none d-lg-table-cell">级别</th>
                 <th scope="col">操作</th>
@@ -54,6 +55,13 @@
                 <td>{{item.phrase}}</td>
                 <td class="d-none d-md-table-cell">
                     {{keywordGroups[item.group] && keywordGroups[item.group].name || '-'}}
+                </td>
+                <td>
+                    @if (specialRooms[item.roomid]) {
+                    {{specialRooms[item.roomid].name || '-'}}
+                    } @else {
+                    {{wcfChatrooms[item.roomid] && wcfChatrooms[item.roomid].name || '-'}}
+                    }
                 </td>
                 <td class="d-none d-md-table-cell">
                     {{item.target}}
