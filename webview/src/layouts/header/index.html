@@ -53,7 +53,9 @@
                     </a>
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <a ngbDropdownItem routerLink="/handler/list" routerLinkActive="active">可用指令</a>
-                        <a ngbDropdownItem routerLink="/plugin/list" routerLinkActive="active">插件状态</a>
+                        <a ngbDropdownItem [disabled]="true">插件状态</a>
+                        <a ngbDropdownItem routerLink="/plugin/keyword" routerLinkActive="active">&nbsp; 关键词</a>
+                        <a ngbDropdownItem routerLink="/plugin/cronjob" routerLinkActive="active">&nbsp; 计划任务</a>
                     </div>
                 </li>
             </ul>
