@@ -86,6 +86,7 @@ export class ProfileUpdateComponent implements OnInit {
         if (this.wcfRoomMembers[id]) {
             return Promise.resolve(); //已获取
         }
+        this.wcfRoomMembers[id] = []; //初始化
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             this.wcfRoomMembers[id] = data || [];
         });

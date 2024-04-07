@@ -35,15 +35,6 @@ export class ChatroomListComponent {
         });
     }
 
-    public getWcfAvatars(ids: string[]) {
-        const wxids = [...new Set(ids)];
-        return WrestApi.avatars({ wxids }).then((data) => {
-            data && data.forEach((item) => {
-                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
-            });
-        });
-    }
-
     public getWcfChatrooms() {
         return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
