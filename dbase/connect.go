@@ -15,10 +15,8 @@ func Connect() {
 		DbName: "wrest.db3",
 	})
 
-	// 设置默认参数
+	// 开启外键约束
 	db.Exec("PRAGMA foreign_keys=ON;")
-	db.Exec("PRAGMA journal_mode=WAL;")
-	db.Exec("PRAGMA busy_timeout=5000;")
 
 	// 实施自动迁移
 	db.AutoMigrate(
