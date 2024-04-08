@@ -57,7 +57,7 @@ jobs:
       - name: Copy files to docker
         run:  |
             cp -av ./linux/* ./docker/
-            chmod +x ./docker/
+            chmod +x ./docker/entrypoint
 
       - name: Docker build and push
         uses: docker/build-push-action@v4
