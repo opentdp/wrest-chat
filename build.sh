@@ -43,9 +43,6 @@ echo "build info - tag: $last_tag, version: $version, build: $build_version"
 sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' README.md
 
 if [ -f webview/public/browser/index.html ]; then
-    ls -al webview
-    ls -al webview/public
-    ls -al webview/public/browser
     cp -av webview/public/browser/. public/
 fi
 
@@ -63,8 +60,8 @@ mv linux/wrest-linux-amd64 linux/wrest
 cp README.md linux/
 cp config.yml linux/
 
-sed -i '/WcfBinary/d' linux/config.yml
-sed -i 's/127.0.0.1:7601.*$/192.168.1.1:7601/g' linux/config.yml
+sed -i 's/127.0.0.1:7601.*$/192.168.1.2:7601/g' linux/config.yml
+sed -i '/WcfBinary:/d' linux/config.yml
 
 cd linux
 zip -r ../wrest-linux-v$version.zip .
