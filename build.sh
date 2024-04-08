@@ -62,8 +62,9 @@ rm -rf linux/starter.bat
 rm -rf linux/wrest-windows-amd64.exe
 mv linux/wrest-linux-amd64 linux/wrest
 
-sed -i 's/127.0.0.1:7601.*$/192.168.1.2:7601/g' linux/config.yml
 sed -i '/WcfBinary:/d' linux/config.yml
+sed -i 's/127.0.0.1:7601/192.168.1.2:7601/g' linux/config.yml
+sed -i 's/127.0.0.1:7600/0.0.0.0:7600/g' linux/config.yml
 
 cd linux
 zip -r ../wrest-linux-v$version.zip .
