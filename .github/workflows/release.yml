@@ -42,4 +42,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            ./wrest-chat.zip
+            ./wrest-*.zip

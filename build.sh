@@ -9,10 +9,19 @@ set -o noglob
 export CGO_ENABLED=0
 export GO111MODULE=on
 
-export GOOS=windows
-export GOARCH=amd64
+build() {
+    local GOOS=${1:-linux}
+    local GOARCH=${2:-amd64}
+    local TARGET=build/${3:-wrest}-$GOOS-$GOARCH
+    if [ x"$1" = x"windows" ]; then
+        TARGET="${TARGET}.exe"
+    fi
+    echo building for $GOOS/$GOARCH
+    go build -ldflags="-s -w" -o $TARGET main.go
+}
 
 ####################################################################
+# fix version
 
 RUN_NUMBER=${GITHUB_RUN_NUMBER:-0}
 
@@ -29,7 +38,9 @@ sed -i "s/^const BuildVersion = \".*\"/const BuildVersion = \"$build_version\"/"
 echo "build info - tag: $last_tag, version: $version, build: $build_version"
 
 ####################################################################
+# build binary
 
+sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' README.md
 
 if [ -f webview/public/browser/index.html ]; then
     ls -al webview
@@ -38,20 +49,41 @@ if [ -f webview/public/browser/index.html ]; then
     cp -av webview/public/browser/. public/
 fi
 
-echo building for $GOOS/$GOARCH
-
-target=build/wrest.exe
-go build -ldflags="-s -w" -o $target main.go
+build linux amd64
+build windows amd64
 
 ####################################################################
+# package for linux
 
-cp README.md build/
-cp config.yml build/
-sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' build/README.md
+cp -av build linux
+rm -rf linux/starter.bat
+rm -rf linux/wrest-windows-amd64.exe
+mv linux/wrest-linux-amd64 linux/wrest
 
-mkdir -p build/wcferry
+cp README.md linux/
+cp config.yml linux/
+
+sed -i '/WcfBinary/d' linux/config.yml
+sed -i 's/127.0.0.1:7601.*$/192.168.1.1:7601/g' linux/config.yml
+
+cd linux
+zip -r ../wrest-linux-v$version.zip .
+cd ..
+
+####################################################################
+# package for windows
+
+cp -av build windows
+rm -rf windows/wrest-linux-amd64
+mv windows/wrest-windows-amd64.exe windows/wrest.exe
+
+cp README.md windows/
+cp config.yml windows/
+
+mkdir -p windows/wcferry
 wget https://github.com/lich0821/WeChatFerry/releases/download/v39.0.14/v39.0.14.zip
-unzip -d build/wcferry v39.0.14.zip && rm -f v39.0.14.zip
+unzip -d windows/wcferry v39.0.14.zip && rm -f v39.0.14.zip
 
-mv build wrest-chat
-zip -r wrest-chat.zip wrest-chat/
+cd windows
+zip -r ../wrest-windows-v$version.zip .
+cd 
