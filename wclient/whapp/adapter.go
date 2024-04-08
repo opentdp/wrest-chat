@@ -1,6 +1,9 @@
 package whapp
 
 import (
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea"
+	"github.com/opentdp/wrest-chat/wclient/whapp/github"
+	"github.com/opentdp/wrest-chat/wclient/whapp/text"
 	"net/http"
 )
 
@@ -11,11 +14,11 @@ func Handler(header http.Header, app string, msg string) string {
 
 	switch app {
 	case "github":
-		res, err = GithubWebhook(header, msg)
+		res, err = github.HandleWebhook(header, msg)
 	case "gitea":
-		res, err = GiteaWebhook(msg)
+		res, err = gitea.HandleWebhook(header, msg)
 	case "text":
-		res, err = TextWebhook(msg)
+		res, err = text.HandleWebhook(msg)
 	default:
 		res = "暂不支持该应用的 webhook"
 	}
