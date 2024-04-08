@@ -6,7 +6,7 @@ Log:
 
 # Wcf 服务
 Wcf:
-    Address: 127.0.0.1:7601 # 监听地址，仅支持修改端口
+    Address: 127.0.0.1:7601 # 监听地址，若使用外部地址，请设置WcfBinary为空
     MsgPrint: false # 是否将消息输出到控制台，可用于调试
     MsgStore: true # 是否将消息写入数据库，用于防撤回和统计
     MsgStoreDays: 7 # 启动时清理n天前的消息，0 表示不清理
