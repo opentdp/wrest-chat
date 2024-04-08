@@ -17,6 +17,8 @@ export class WcferryDbqueryComponent {
     public sql = 'SELECT * FROM {TABLE} LIMIT 10';
     public result = '';
 
+    public loading = false;
+
     constructor() {
         this.getDbList();
     }
@@ -36,10 +38,13 @@ export class WcferryDbqueryComponent {
     }
 
     public getDbTableRecords() {
+        this.loading = true;
         const db = this.dbName;
         const sql = this.sql.replace(/\{TABLE\}/, this.tableName);
         return WrestApi.dbQuerySql({ db, sql }).then((data) => {
             this.result = JSON.stringify(data, null, 4);
+        }).finally(() => {
+            this.loading = false;
         });
     }
 

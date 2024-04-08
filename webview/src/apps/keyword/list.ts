@@ -22,7 +22,7 @@ export class KeywordListComponent {
 
     public formdata: KeywordFetchAllParam = {
         group: '',
-        roomid: '*',
+        roomid: '',
     };
 
     constructor() {

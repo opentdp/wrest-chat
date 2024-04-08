@@ -21,7 +21,7 @@ export class ProfileListComponent {
     public profiles: Array<TablesProfile> = [];
 
     public formdata: ProfileFetchAllParam = {
-        roomid: '-',
+        roomid: '',
         level: 0,
     };
 
@@ -35,18 +35,17 @@ export class ProfileListComponent {
     }
 
     public getProfiles() {
-        if (this.formdata.roomid) {
-            this.getWcfRoomMembers(this.formdata.roomid);
-        } else {
-            Object.keys(this.wcfChatrooms).forEach((id) => {
-                this.getWcfRoomMembers(id);
-            });
-        }
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
         return RobotApi.profileList(this.formdata).then((data) => {
             this.profiles = data || [];
+            // 获取群成员
+            this.profiles.forEach((item) => {
+                if (item.roomid && item.roomid.indexOf('@chatroom') > 0) {
+                    this.getWcfRoomMembers(item.roomid);
+                }
+            });
         });
     }
 
@@ -72,19 +71,10 @@ export class ProfileListComponent {
         if (this.wcfRoomMembers[id]) {
             return Promise.resolve(); //已获取
         }
+        this.wcfRoomMembers[id] = {}; //初始化
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-            this.wcfRoomMembers[id] = {};
             data && data.forEach((item) => {
                 this.wcfRoomMembers[id][item.wxid] = item;
-            });
-        });
-    }
-
-    public getWcfAvatars(ids: string[]) {
-        const wxids = [...new Set(ids)];
-        return WrestApi.avatars({ wxids }).then((data) => {
-            data && data.forEach((item) => {
-                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
             });
         });
     }
