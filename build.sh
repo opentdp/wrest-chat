@@ -13,11 +13,13 @@ build() {
     local GOOS=${1:-linux}
     local GOARCH=${2:-amd64}
     local TARGET=build/${3:-wrest}-$GOOS-$GOARCH
-    if [ x"$1" = x"windows" ]; then
-        TARGET="${TARGET}.exe"
-    fi
     echo building for $GOOS/$GOARCH
     go build -ldflags="-s -w" -o $TARGET main.go
+    if [ x"$GOOS" = x"windows" ]; then
+        mv $TARGET "${TARGET}.exe"
+    else
+        chmod +x $TARGET
+    fi
 }
 
 ####################################################################
@@ -53,12 +55,12 @@ build windows amd64
 # package for linux
 
 cp -av build linux
+cp README.md linux/
+cp config.yml linux/
+
 rm -rf linux/starter.bat
 rm -rf linux/wrest-windows-amd64.exe
 mv linux/wrest-linux-amd64 linux/wrest
-
-cp README.md linux/
-cp config.yml linux/
 
 sed -i 's/127.0.0.1:7601.*$/192.168.1.2:7601/g' linux/config.yml
 sed -i '/WcfBinary:/d' linux/config.yml
@@ -71,11 +73,11 @@ cd ..
 # package for windows
 
 cp -av build windows
-rm -rf windows/wrest-linux-amd64
-mv windows/wrest-windows-amd64.exe windows/wrest.exe
-
 cp README.md windows/
 cp config.yml windows/
+
+rm -rf windows/wrest-linux-amd64
+mv windows/wrest-windows-amd64.exe windows/wrest.exe
 
 mkdir -p windows/wcferry
 wget https://github.com/lich0821/WeChatFerry/releases/download/v39.0.14/v39.0.14.zip

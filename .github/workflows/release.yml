@@ -43,3 +43,26 @@ jobs:
           prerelease: false
           files: |
             ./wrest-*.zip
+
+      ###
+
+      - name: Login to dockerhub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      ###
+
+      - name: Copy files to docker
+        run:  |
+            cp -av ./linux/* ./docker/
+            chmod +x ./docker/
+
+      - name: Docker build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker
+          push: true
+          platforms: linux/amd64
+          tags: rehiy/wrest-chat:latest
