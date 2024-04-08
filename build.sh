@@ -10,16 +10,14 @@ export CGO_ENABLED=0
 export GO111MODULE=on
 
 build() {
-    local GOOS=${1:-linux}
-    local GOARCH=${2:-amd64}
-    local TARGET=build/${3:-wrest}-$GOOS-$GOARCH
-    echo building for $GOOS/$GOARCH
-    go build -ldflags="-s -w" -o $TARGET main.go
-    if [ x"$GOOS" = x"windows" ]; then
-        mv $TARGET "${TARGET}.exe"
-    else
-        chmod +x $TARGET
+    local os=${2:-linux}
+    local arch=${3:-amd64}
+    local sbin=build/${1:-bin}-$os-$arch
+    if [ x"$os" = x"windows" ]; then
+        sbin="${sbin}.exe"
     fi
+    echo building for $os/$arch
+    GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o $sbin main.go
 }
 
 ####################################################################
@@ -48,8 +46,8 @@ if [ -f webview/public/browser/index.html ]; then
     cp -av webview/public/browser/. public/
 fi
 
-build linux amd64
-build windows amd64
+build wrest linux amd64
+build wrest windows amd64
 
 ####################################################################
 # package for linux
