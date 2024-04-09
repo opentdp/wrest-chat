@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+
+PATH=.:$PATH
+
+cd /srv
+
+yml=${1:-config.yml}
+
+sed -i "s/192.168.1.2:7601/$WCF_ADDRESS/" $yml
+sed -i "s/127.0.0.1:7601/$WCF_ADDRESS/" $yml
+sed -i "/WcfBinary:/d" $yml
+
+exec wrest $yml
