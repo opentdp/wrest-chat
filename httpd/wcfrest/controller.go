@@ -1,6 +1,8 @@
 package wcfrest
 
 import (
+	"encoding/base64"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -403,6 +405,19 @@ func (wc *Controller) sendImg(c *gin.Context) {
 		c.Set("Error", err)
 		return
 	}
+	// 判断 ImageBase64Data非null
+	if req.ImageBase64Data != "" {
+		decodedData, err := base64.StdEncoding.DecodeString(req.ImageBase64Data)
+		if err != nil {
+			// 解码失败
+		} else {
+			// 写入到文件中
+			err = ioutil.WriteFile(req.Path, decodedData, 0644)
+			if err != nil {
+				// 写入失败
+			}
+		}
+	}
 
 	status := wc.CmdClient.SendImg(req.Path, req.Receiver)
 
@@ -415,6 +430,8 @@ func (wc *Controller) sendImg(c *gin.Context) {
 type SendImgRequest struct {
 	// 图片路径
 	Path string `json:"path"`
+	// 图片base64之后的数据
+	ImageBase64Data string `json:"imageBase64Data"`
 	// 接收人或群的 id
 	Receiver string `json:"receiver"`
 }
