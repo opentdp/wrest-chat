@@ -111,7 +111,7 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 
 }
 
-// 将接口返回内容发到指定接收人
+// 使用接口回复消息
 // param url string 待请求的接口地址
 // param wxid string 消息接收人，如果 roomid 存在则为 at 此人
 // param roomid string 消息接收群，空则为私聊
@@ -119,6 +119,12 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 func ApiRequestMsg(url, wxid, roomid string) int32 {
 
 	self := wc.CmdClient.GetSelfInfo()
+
+	// 验证参数
+	if self == nil {
+		logman.Error("ApiRequestMsg::GetSelfInfo failed")
+		return -1
+	}
 
 	// 获取结果
 	res, err := request.TextGet(url, request.H{
