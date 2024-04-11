@@ -2026,7 +2026,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/wcfrest.SendImgRequest"
+                            "$ref": "#/definitions/wcfrest.SendFileRequest"
                         }
                     }
                 ],
@@ -3647,21 +3647,12 @@
         "wcfrest.SendFileRequest": {
             "type": "object",
             "properties": {
-                "path": {
-                    "description": "文件路径",
+                "base64": {
+                    "description": "文件 base64 数据",
                     "type": "string"
                 },
-                "receiver": {
-                    "description": "接收人或群的 id",
-                    "type": "string"
-                }
-            }
-        },
-        "wcfrest.SendImgRequest": {
-            "type": "object",
-            "properties": {
                 "path": {
-                    "description": "图片路径",
+                    "description": "文件路径，若提供 base64 则写入此路径",
                     "type": "string"
                 },
                 "receiver": {

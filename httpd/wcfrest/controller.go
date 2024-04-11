@@ -2,8 +2,8 @@ package wcfrest
 
 import (
 	"encoding/base64"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -395,7 +395,7 @@ type SendTxtRequest struct {
 // @Summary 发送图片消息
 // @Produce json
 // @Tags WCF::消息发送
-// @Param body body SendImgRequest true "发送图片消息参数"
+// @Param body body SendFileRequest true "发送图片消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /wcf/send_img [post]
 func (wc *Controller) sendImg(c *gin.Context) {
@@ -405,17 +405,17 @@ func (wc *Controller) sendImg(c *gin.Context) {
 		c.Set("Error", err)
 		return
 	}
-	// 判断 ImageBase64Data非null
-	if req.ImageBase64Data != "" {
-		decodedData, err := base64.StdEncoding.DecodeString(req.ImageBase64Data)
+
+	// 将 Base64 写入文件
+	if req.Base64 != "" {
+		fileData, err := base64.StdEncoding.DecodeString(req.Base64)
 		if err != nil {
-			// 解码失败
-		} else {
-			// 写入到文件中
-			err = ioutil.WriteFile(req.Path, decodedData, 0644)
-			if err != nil {
-				// 写入失败
-			}
+			c.Set("Error", err)
+			return
+		}
+		if err := os.WriteFile(req.Path, fileData, 0644); err != nil {
+			c.Set("Error", err)
+			return
 		}
 	}
 
@@ -427,14 +427,7 @@ func (wc *Controller) sendImg(c *gin.Context) {
 
 }
 
-type SendImgRequest struct {
-	// 图片路径
-	Path string `json:"path"`
-	// 图片base64之后的数据
-	ImageBase64Data string `json:"imageBase64Data"`
-	// 接收人或群的 id
-	Receiver string `json:"receiver"`
-}
+type SendImgRequest = SendFileRequest
 
 // @Summary 发送文件消息
 // @Produce json
@@ -450,6 +443,19 @@ func (wc *Controller) sendFile(c *gin.Context) {
 		return
 	}
 
+	// 将 Base64 数据写入文件
+	if req.Base64 != "" {
+		fileData, err := base64.StdEncoding.DecodeString(req.Base64)
+		if err != nil {
+			c.Set("Error", err)
+			return
+		}
+		if err := os.WriteFile(req.Path, fileData, 0644); err != nil {
+			c.Set("Error", err)
+			return
+		}
+	}
+
 	status := wc.CmdClient.SendFile(req.Path, req.Receiver)
 
 	c.Set("Payload", CommonPayload{
@@ -459,8 +465,10 @@ func (wc *Controller) sendFile(c *gin.Context) {
 }
 
 type SendFileRequest struct {
-	// 文件路径
+	// 文件路径，若提供 base64 则写入此路径
 	Path string `json:"path"`
+	// 文件 base64 数据
+	Base64 string `json:"base64"`
 	// 接收人或群的 id
 	Receiver string `json:"receiver"`
 }
