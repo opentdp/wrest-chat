@@ -264,10 +264,10 @@ export const WrestApi = {
     },
     /**
      * @summary 发送图片消息
-     * @param {WcfrestSendImgRequest} body 发送图片消息参数
+     * @param {WcfrestSendFileRequest} body 发送图片消息参数
      * @param {*} [options] Override http request option.
      */
-    sendImg(body: WcfrestSendImgRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
+    sendImg(body: WcfrestSendFileRequest, options: RequestInit = {}): Promise<WcfrestCommonPayload> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
         return httpRequest('/wcf/send_img', options);
     },
@@ -471,14 +471,9 @@ export interface WcfrestRevokeMsgRequest {
 }
 
 export interface WcfrestSendFileRequest {
-    // 文件路径
-    path: string;
-    // 接收人或群的 id
-    receiver: string;
-}
-
-export interface WcfrestSendImgRequest {
-    // 图片路径
+    // 文件 base64 数据
+    base64?: string;
+    // 文件路径，若提供 base64 则写入此路径
     path: string;
     // 接收人或群的 id
     receiver: string;

@@ -1,7 +1,9 @@
 package wcfrest
 
 import (
+	"encoding/base64"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -393,7 +395,7 @@ type SendTxtRequest struct {
 // @Summary 发送图片消息
 // @Produce json
 // @Tags WCF::消息发送
-// @Param body body SendImgRequest true "发送图片消息参数"
+// @Param body body SendFileRequest true "发送图片消息参数"
 // @Success 200 {object} CommonPayload
 // @Router /wcf/send_img [post]
 func (wc *Controller) sendImg(c *gin.Context) {
@@ -404,6 +406,19 @@ func (wc *Controller) sendImg(c *gin.Context) {
 		return
 	}
 
+	// 将 Base64 写入文件
+	if req.Base64 != "" {
+		fileData, err := base64.StdEncoding.DecodeString(req.Base64)
+		if err != nil {
+			c.Set("Error", err)
+			return
+		}
+		if err := os.WriteFile(req.Path, fileData, 0644); err != nil {
+			c.Set("Error", err)
+			return
+		}
+	}
+
 	status := wc.CmdClient.SendImg(req.Path, req.Receiver)
 
 	c.Set("Payload", CommonPayload{
@@ -412,12 +427,7 @@ func (wc *Controller) sendImg(c *gin.Context) {
 
 }
 
-type SendImgRequest struct {
-	// 图片路径
-	Path string `json:"path"`
-	// 接收人或群的 id
-	Receiver string `json:"receiver"`
-}
+type SendImgRequest = SendFileRequest
 
 // @Summary 发送文件消息
 // @Produce json
@@ -433,6 +443,19 @@ func (wc *Controller) sendFile(c *gin.Context) {
 		return
 	}
 
+	// 将 Base64 数据写入文件
+	if req.Base64 != "" {
+		fileData, err := base64.StdEncoding.DecodeString(req.Base64)
+		if err != nil {
+			c.Set("Error", err)
+			return
+		}
+		if err := os.WriteFile(req.Path, fileData, 0644); err != nil {
+			c.Set("Error", err)
+			return
+		}
+	}
+
 	status := wc.CmdClient.SendFile(req.Path, req.Receiver)
 
 	c.Set("Payload", CommonPayload{
@@ -442,8 +465,10 @@ func (wc *Controller) sendFile(c *gin.Context) {
 }
 
 type SendFileRequest struct {
-	// 文件路径
+	// 文件路径，若提供 base64 则写入此路径
 	Path string `json:"path"`
+	// 文件 base64 数据
+	Base64 string `json:"base64"`
 	// 接收人或群的 id
 	Receiver string `json:"receiver"`
 }
