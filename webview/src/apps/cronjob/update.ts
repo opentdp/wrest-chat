@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { CronjobTypes } from '../../openapi/const';
-import { SundryApi, CronjobUpdateParam } from '../../openapi/sundry';
+import { RobotApi, CronjobUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -39,7 +39,7 @@ export class CronjobUpdateComponent implements OnInit {
     }
 
     public getCronjob(rd: number) {
-        return SundryApi.cronjobDetail({ rd }).then((data) => {
+        return RobotApi.cronjobDetail({ rd }).then((data) => {
             this.formdata = data;
             const dataDeliver = data.deliver.split(',');
             for (const [k, v] of dataDeliver.entries()) {
@@ -57,7 +57,7 @@ export class CronjobUpdateComponent implements OnInit {
             return Promise.resolve();
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
-        return SundryApi.cronjobUpdate(this.formdata).then(() => {
+        return RobotApi.cronjobUpdate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
     }

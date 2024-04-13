@@ -15,15 +15,6 @@ func Route() {
 	rg.POST("aichat/config", aichat.config)
 	rg.POST("aichat/text", aichat.text)
 
-	cronjob := Cronjob{}
-	rg.POST("cronjob/list", cronjob.list)
-	rg.POST("cronjob/detail", cronjob.detail)
-	rg.POST("cronjob/create", cronjob.create)
-	rg.POST("cronjob/update", cronjob.update)
-	rg.POST("cronjob/delete", cronjob.delete)
-	rg.POST("cronjob/status", cronjob.status)
-	rg.POST("cronjob/execute", cronjob.execute)
-
 	plugin := Plugin{}
 	rg.POST("plugin/cronjobs", plugin.cronjobs)
 	rg.POST("plugin/keywords", plugin.keywords)

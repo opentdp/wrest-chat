@@ -75,182 +75,6 @@
                 }
             }
         },
-        "/api/cronjob/create": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "添加计划任务",
-                "parameters": [
-                    {
-                        "description": "添加计划任务参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cronjob.CreateParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/cronjob/delete": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "删除计划任务",
-                "parameters": [
-                    {
-                        "description": "删除计划任务参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cronjob.DeleteParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/cronjob/detail": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "获取计划任务",
-                "parameters": [
-                    {
-                        "description": "获取计划任务参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cronjob.FetchParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/tables.Cronjob"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/cronjob/execute": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "触发计划任务",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/cronjob/list": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "计划任务列表",
-                "parameters": [
-                    {
-                        "description": "获取计划任务列表参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cronjob.FetchAllParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/tables.Cronjob"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/cronjob/status": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "计划任务状态",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/cronjob/update": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "API::计划任务"
-                ],
-                "summary": "修改计划任务",
-                "parameters": [
-                    {
-                        "description": "修改计划任务参数",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cronjob.UpdateParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/api/plugin/cronjobs": {
             "post": {
                 "produces": [
@@ -478,6 +302,182 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/chatroom.UpdateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/create": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "添加计划任务",
+                "parameters": [
+                    {
+                        "description": "添加计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.CreateParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "删除计划任务",
+                "parameters": [
+                    {
+                        "description": "删除计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.DeleteParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/detail": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "获取计划任务",
+                "parameters": [
+                    {
+                        "description": "获取计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.FetchParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tables.Cronjob"
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/execute": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "触发计划任务",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "计划任务列表",
+                "parameters": [
+                    {
+                        "description": "获取计划任务列表参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.FetchAllParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Cronjob"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/status": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "计划任务状态",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/bot/cronjob/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BOT::计划任务"
+                ],
+                "summary": "修改计划任务",
+                "parameters": [
+                    {
+                        "description": "修改计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.UpdateParam"
                         }
                     }
                 ],

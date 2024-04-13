@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CronjobTypes } from '../../openapi/const';
-import { SundryApi, CronjobCreateParam } from '../../openapi/sundry';
+import { RobotApi, CronjobCreateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -51,7 +51,7 @@ export class CronjobCreateComponent {
             return Promise.resolve();
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
-        return SundryApi.cronjobCreate(this.formdata).then(() => {
+        return RobotApi.cronjobCreate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
     }

@@ -18,6 +18,15 @@ func Route() {
 	rg.POST("chatroom/update", chatroom.update)
 	rg.POST("chatroom/delete", chatroom.delete)
 
+	cronjob := Cronjob{}
+	rg.POST("cronjob/list", cronjob.list)
+	rg.POST("cronjob/detail", cronjob.detail)
+	rg.POST("cronjob/create", cronjob.create)
+	rg.POST("cronjob/update", cronjob.update)
+	rg.POST("cronjob/delete", cronjob.delete)
+	rg.POST("cronjob/status", cronjob.status)
+	rg.POST("cronjob/execute", cronjob.execute)
+
 	keyword := Keyword{}
 	rg.POST("keyword/list", keyword.list)
 	rg.POST("keyword/create", keyword.create)
@@ -46,7 +55,7 @@ func Route() {
 	rg.POST("setting/update", setting.update)
 	rg.POST("setting/delete", setting.delete)
 
-	webhook := &Webhook{}
+	webhook := Webhook{}
 	rg.POST("webhook/list", webhook.list)
 	rg.POST("webhook/detail", webhook.detail)
 	rg.POST("webhook/create", webhook.create)
