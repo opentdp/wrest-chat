@@ -64,7 +64,7 @@
         </div>
         <div class="col-12">
             <label class="form-label">备注</label>
-            <input type="text" name="remark" class="form-control" [(ngModel)]="formdata.remark" required />
+            <textarea name="remark" class="form-control" rows="3" [(ngModel)]="formdata.remark" required></textarea>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">确认</button>
