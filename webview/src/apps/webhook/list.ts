@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import {RobotApi, Webhook} from '../../openapi/wrobot';
-import {WcfrestContactPayload, WrestApi} from "../../openapi/wcfrest";
+import { RobotApi, Webhook } from '../../openapi/wrobot';
+import { WcfrestContactPayload, WrestApi } from "../../openapi/wcfrest";
 
 
 @Component({
