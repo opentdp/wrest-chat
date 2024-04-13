@@ -5,6 +5,7 @@ interface OptionData {
 interface AiOptionData extends OptionData {
     endpoint: string;
     keystyle: string;
+    models: Record<string, string>;
 }
 
 export const FieldTypes: Record<string, OptionData> = {
@@ -27,34 +28,55 @@ export const FieldTypes: Record<string, OptionData> = {
 
 export const AiModels: Record<string, AiOptionData> = {
     aliyun: {
-        name: '阿里通义千问',
+        name: '阿里灵积（通义千问）',
         endpoint: 'https://dashscope.aliyuncs.com',
-        keystyle: '阿里百炼（通义千问）填写 APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET',
+        keystyle: '密钥格式 APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET',
+        models: {
+            'qwen-max': 'qwen-max',
+            'qwen-plus': 'qwen-plus',
+        },
     },
     baidu: {
-        name: '百度文心',
+        name: '百度千帆（文心)',
         endpoint: 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop',
-        keystyle: '文心一言填写 API-KEY,API-SECRET',
+        keystyle: '密钥格式 API-KEY,API-SECRET',
+        models: {
+            'completions_pro': 'ERNIE 4.0',
+            'completions': 'ERNIE-3.5-8K',
+        },
     },
     google: {
         name: 'Google Gemini',
         endpoint: 'https://generativelanguage.googleapis.com',
         keystyle: '',
+        models: {
+            'gemini-pro': 'gemini-pro',
+        },
     },
     openai: {
-        name: 'OpenAI GPT',
+        name: 'OpenAI ChatGPT',
         endpoint: 'https://api.openai.com/v1',
         keystyle: '',
+        models: {
+            'gpt-4': 'gpt-4',
+            'gpt-4-32k': 'gpt-4-32k',
+            'gpt-3.5-turbo': 'gpt-3.5-turbo',
+        },
     },
     tencent: {
-        name: '腾讯混元',
+        name: '腾讯（混元）',
         endpoint: 'https://hunyuan.cloud.tencent.com/hyllm/v1',
-        keystyle: '腾讯混元填写 APP-ID,API-KEY,API-SECRET',
+        keystyle: '密钥格式 APP-ID,API-KEY,API-SECRET',
+        models: {},
     },
     xunfei: {
-        name: '科大讯飞',
+        name: '科大讯飞（星火）',
         endpoint: 'wss://spark-api.xf-yun.com',
-        keystyle: '科大讯飞填写 APP-ID,API-KEY,API-SECRET',
+        keystyle: '密钥格式 APP-ID,API-KEY,API-SECRET',
+        models: {
+            'v3.5': '星火 v3.5',
+            'v3': '星火 v3',
+        },
     },
 };
 
