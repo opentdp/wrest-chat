@@ -72,8 +72,8 @@
                     {{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary" routerLink="/profile/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteProfile(item)">删除</button>
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/profile/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteProfile(item)">删除</button>
                 </td>
             </tr>
             }
