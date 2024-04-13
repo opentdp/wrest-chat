@@ -41,7 +41,7 @@ func banHandler() []*Handler {
 					}
 					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
-					if up.Level >= 7 {
+					if up.Level > 6 {
 						return "禁止操作管理员"
 					}
 					// 拉黑用户
@@ -72,7 +72,7 @@ func banHandler() []*Handler {
 					}
 					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
-					if up.Level >= 7 {
+					if up.Level > 6 {
 						return "禁止操作管理员"
 					}
 					// 解封用户
@@ -92,7 +92,7 @@ func banPreCheck(msg *wcferry.WxMsg) string {
 
 	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return ""
 	}
 

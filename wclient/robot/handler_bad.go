@@ -72,7 +72,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return ""
 	}
 

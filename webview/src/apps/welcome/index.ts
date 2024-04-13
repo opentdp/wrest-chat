@@ -75,7 +75,7 @@ export class WelcomeComponent {
             if (!data || !data.created_at) {
                 return;
             }
-            if (this.compareVersions(this.system.version, data.tag_name) <= 0) {
+            if (this.compareVersions(this.system.version, data.tag_name) < 1) {
                 this.upgrade.url = data.assets[0].browser_download_url;
                 this.upgrade.version = data.tag_name;
             }

@@ -96,7 +96,7 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 
 	// 发送卡片信息
 	if strings.HasPrefix(msg, "card\n") {
-		if p := strings.Split(msg, "\n")[1:]; len(p) >= 6 {
+		if p := strings.Split(msg, "\n")[1:]; len(p) > 5 {
 			return wc.CmdClient.SendRichText(p[0], p[1], p[2], p[3], p[4], p[5], receiver)
 		}
 	}

@@ -55,28 +55,30 @@ func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
 func whiteLimit(msg *wcferry.WxMsg) bool {
 
 	// 无需验证
-	if !setting.WhiteLimit {
+	if !setting.WhiteLimit1 && !setting.WhiteLimit2 {
 		return false
 	}
 
-	// 管理豁免
+	// 管理员豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return false
 	}
 
-	// 已注册用户
+	// 白名单验证
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		if room.Level > 1 {
-			return false
+		if setting.WhiteLimit1 {
+			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+			return room.Level < 2
 		}
-	} else if up.Level > 1 {
-		return false
+	} else {
+		if setting.WhiteLimit2 {
+			return up.Level < 2
+		}
 	}
 
-	// 受限制用户
-	return true
+	// 默认不受限
+	return false
 
 }
 
