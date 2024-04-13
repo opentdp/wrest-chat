@@ -55,7 +55,7 @@ export const RobotApi = {
      */
     cronjobCreate(body: CronjobCreateParam, options: RequestInit = {}): Promise<number> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/create', options);
+        return httpRequest('/bot/cronjob/create', options);
     },
     /**
      * @summary 删除计划任务
@@ -65,7 +65,7 @@ export const RobotApi = {
      */
     cronjobDelete(body: CronjobDeleteParam, options: RequestInit = {}): Promise<unknown> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/delete', options);
+        return httpRequest('/bot/cronjob/delete', options);
     },
     /**
      * @summary 获取计划任务
@@ -75,7 +75,7 @@ export const RobotApi = {
      */
     cronjobDetail(body: CronjobFetchParam, options: RequestInit = {}): Promise<TablesCronjob> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/detail', options);
+        return httpRequest('/bot/cronjob/detail', options);
     },
     /**
      * @summary 计划任务列表
@@ -85,7 +85,7 @@ export const RobotApi = {
      */
     cronjobList(body: CronjobFetchAllParam, options: RequestInit = {}): Promise<TablesCronjob[]> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/list', options);
+        return httpRequest('/bot/cronjob/list', options);
     },
     /**
      * @summary 修改计划任务
@@ -95,7 +95,7 @@ export const RobotApi = {
      */
     cronjobUpdate(body: CronjobUpdateParam, options: RequestInit = {}): Promise<unknown> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/update', options);
+        return httpRequest('/bot/cronjob/update', options);
     },
     /**
      * @summary 获取计划任务状态
@@ -105,7 +105,7 @@ export const RobotApi = {
      */
     cronjobStatus(body: CronjobStatusParam, options: RequestInit = {}): Promise<Record<number, CronjobStatusPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/status', options);
+        return httpRequest('/bot/cronjob/status', options);
     },
     /**
      * @summary 触发计划任务
@@ -115,7 +115,7 @@ export const RobotApi = {
      */
     cronjobExecute(body: CronjobFetchParam, options: RequestInit = {}): Promise<Record<number, CronjobStatusPayload>> {
         options = { method: 'POST', body: JSON.stringify(body || {}), ...options };
-        return httpRequest('/api/cronjob/execute', options);
+        return httpRequest('/bot/cronjob/execute', options);
     },
     /**
      * @summary 添加关键词
