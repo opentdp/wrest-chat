@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserLevels } from '../../openapi/const';
+import { AiModels, UserLevels } from '../../openapi/const';
 import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 
 
@@ -11,6 +11,7 @@ import { RobotApi, LlmodelCreateParam } from '../../openapi/wrobot';
 })
 export class LLModelCreateComponent {
 
+    public aiModels = AiModels;
     public userLevels = UserLevels;
 
     public formdata: LlmodelCreateParam = {

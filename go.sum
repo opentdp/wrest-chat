@@ -104,8 +104,8 @@ github.com/pelletier/go-toml/v2 v2.2.0 h1:QLgLl2yMN7N+ruc31VynXs1vhMZa7CeHHejIeB
 github.com/pelletier/go-toml/v2 v2.2.0/go.mod h1:1t835xjRzz80PqgE6HHgN2JOsmgYu/h4qDAS4n929Rs=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/rehiy/one-llm v0.2.1-0.20240329113024-83b57b0c6b06 h1:FlSq860LN3qSoQvJVSS73wB9eFDSNTNIriwZMEi2pr4=
-github.com/rehiy/one-llm v0.2.1-0.20240329113024-83b57b0c6b06/go.mod h1:Hvz5KUo9hy+fkwIDwG2ZtZtlHZzVrUhvAau+4/0oZZI=
+github.com/rehiy/one-llm v0.3.0 h1:3mr7IZ+TtGaH2EiPiMSa4bJ3INiyVeP4FxSHw38z3CE=
+github.com/rehiy/one-llm v0.3.0/go.mod h1:Hvz5KUo9hy+fkwIDwG2ZtZtlHZzVrUhvAau+4/0oZZI=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec h1:W09IVJc94icq4NjY3clb7Lk8O1qJ8BdBEF8z0ibU0rE=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=

@@ -17,8 +17,6 @@ var (
 	FriendAccept = true
 	// 添加好友后的响应内容，留空则忽略
 	FriendHello = "群主去修仙了，请留言"
-	// 自动下载消息中的文件
-	AutoSaveFile = true
 	// 自动下载消息中的图片
 	AutoSaveImage = true
 	// 群聊撤回消息时响应的内容，留空则忽略
@@ -60,8 +58,6 @@ func Laod() {
 			FriendAccept = item.Value == "true"
 		case "FriendHello":
 			FriendHello = item.Value
-		case "AutoSaveFile":
-			AutoSaveImage = item.Value == "true"
 		case "AutoSaveImage":
 			AutoSaveImage = item.Value == "true"
 		case "RevokeMsg":
@@ -94,7 +90,6 @@ func DataMigrate() {
 		{0, "InvalidHandler", "text", "bot", InvalidHandler, "指令未注册", "未注册指令时响应的内容，仅对\"/\"开头的指令有效"},
 		{0, "FriendAccept", "bool", "bot", strconv.FormatBool(FriendAccept), "自动确认好友", "是否自动同意新的好友请求"},
 		{0, "FriendHello", "string", "bot", FriendHello, "好友打招呼", "添加好友后的响应内容"},
-		{0, "AutoSaveFile", "bool", "bot", strconv.FormatBool(AutoSaveFile), "自动保存文件", "是否自动下载消息中的文件"},
 		{0, "AutoSaveImage", "bool", "bot", strconv.FormatBool(AutoSaveImage), "自动保存图片", "是否自动下载消息中的图片"},
 		{0, "RevokeMsg", "string", "bot", RevokeMsg, "防撤回提醒", "群聊检测到撤回消息时响应的内容前缀"},
 		{0, "ModelDefault", "lmodel", "bot", ModelDefault, "默认 AI 模型", "/ai 指令默认使用的模型 Id"},

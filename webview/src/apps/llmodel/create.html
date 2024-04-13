@@ -50,12 +50,9 @@
         <div class="col-12">
             <label class="form-label">服务商 *</label>
             <select name="provider" class="form-select" [(ngModel)]="formdata.provider" required>
-                <option value="aliyun">阿里通义千问</option>
-                <option value="baidu">百度文心</option>
-                <option value="google">Google Gemini</option>
-                <option value="openai">OpenAI GPT</option>
-                <option value="tencent">腾讯混元</option>
-                <option value="xunfei">科大讯飞</option>
+                @for (item of aiModels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
             </select>
             <div class="form-text">
                 未支持的服务商，可尝试使用协议兼容代理
@@ -65,25 +62,27 @@
             <label class="form-label">模型 *</label>
             <select name="model" class="form-select" [(ngModel)]="formdata.model" required>
                 <option value="-">不指定</option>
-                @if (formdata.provider === 'aliyun') {
+                @switch (formdata.provider) {
+                @case ('aliyun') {
                 <option value="qwen-max">qwen-max</option>
                 <option value="qwen-plus">qwen-plus</option>
                 }
-                @if (formdata.provider === 'baidu') {
+                @case ('baidu') {
                 <option value="completions_pro">ERNIE 4.0</option>
                 <option value="completions">ERNIE-3.5-8K</option>
                 }
-                @if (formdata.provider === 'google') {
+                @case('google') {
                 <option value="gemini-pro">gemini-pro</option>
                 }
-                @if (formdata.provider === 'openai') {
+                @case('openai') {
                 <option value="gpt-4">gpt-4</option>
                 <option value="gpt-4-32k">gpt-4-32k</option>
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
                 }
-                @if (formdata.provider === 'xunfei') {
+                @case ('xunfei') {
                 <option value="v3.5">星火 v3.5</option>
                 <option value="v3">星火 v3</option>
+                }
                 }
             </select>
             <div class="form-text">
@@ -94,30 +93,14 @@
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
             <div class="form-text">
-                @switch (formdata.provider) {
-                @case ('xunfei') {
-                科大讯飞填写 APP-ID,API-KEY,API-SECRET
-                }
-                @case ('baidu') {
-                文心一言填写 API-KEY,API-SECRET
-                }
-                @case ('tencent') {
-                腾讯混元填写 APP-ID,API-KEY,API-SECRET
-                }
-                @case ('ali') {
-                阿里百炼（通义千问）填写 APP-ID,AGENT-KEY,ACCESS_KEY_ID,ACCESS_KEY_SECRET
-                }
-                @default {
-                请填写从服务商获取的 API-KEY
-                }
-                }
+                {{aiModels[formdata.provider].keystyle || '请填写从服务商获取的 API-KEY'}}
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">接入点</label>
             <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
             <div class="form-text">
-                自定义接口地址，留空则使用官方接口
+                自定义接口地址，留空则使用官方接口：{{aiModels[formdata.provider].endpoint}}
             </div>
         </div>
         <div class="col-12">
