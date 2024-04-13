@@ -93,14 +93,14 @@
             <label class="form-label">密钥 *</label>
             <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.secret" required />
             <div class="form-text">
-                {{aiModels[formdata.provider].keystyle || '请填写从服务商获取的 API-KEY'}}
+                {{formdata.provider && aiModels[formdata.provider].keystyle || '请填写从服务商获取的 API-KEY'}}
             </div>
         </div>
         <div class="col-12">
             <label class="form-label">接入点</label>
             <input type="text" name="endpoint" class="form-control" [(ngModel)]="formdata.endpoint" />
             <div class="form-text">
-                自定义接口地址，留空则使用官方接口：{{aiModels[formdata.provider].endpoint}}
+                自定义接口地址，留空则使用官方接口：{{formdata.provider && aiModels[formdata.provider].endpoint}}
             </div>
         </div>
         <div class="col-12">
