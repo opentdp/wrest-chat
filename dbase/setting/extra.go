@@ -83,7 +83,7 @@ func DataMigrate() {
 		{0, "BotEnable", "bool", "bot", strconv.FormatBool(BotEnable), "机器人开关", "是否启用内置机器人，需重启生效"},
 		{0, "WhiteLimit", "bool", "bot", strconv.FormatBool(WhiteLimit), "白名单模式", "开启后仅已注册的群和用户可以使用机器人"},
 		{0, "InvalidHandler", "text", "bot", InvalidHandler, "指令未注册", "未注册指令时响应的内容，仅对\"/\"开头的指令有效"},
-		{0, "FriendAccept", "bool", "bot", strconv.FormatBool(FriendAccept), "字段确认好友", "是否自动同意新的好友请求"},
+		{0, "FriendAccept", "bool", "bot", strconv.FormatBool(FriendAccept), "自动确认好友", "是否自动同意新的好友请求"},
 		{0, "FriendHello", "string", "bot", FriendHello, "好友打招呼", "添加好友后的响应内容"},
 		{0, "AutoSaveImage", "bool", "bot", strconv.FormatBool(AutoSaveImage), "自动保存图片", "是否自动下载消息中的图片"},
 		{0, "RevokeMsg", "string", "bot", RevokeMsg, "防撤回提醒", "群聊检测到撤回消息时响应的内容前缀"},
