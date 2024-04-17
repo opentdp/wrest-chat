@@ -9,7 +9,7 @@ require (
 	github.com/importcjj/sensitive v0.0.0-20200106142752-42d1c505be7b
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/opentdp/go-helper v0.7.2
-	github.com/rehiy/one-llm v0.3.0
+	github.com/rehiy/one-llm v0.3.1-0.20240417125530-aa8fc354d906
 	github.com/robfig/cron/v3 v3.0.1
 	go.nanomsg.org/mangos/v3 v3.4.2
 	google.golang.org/protobuf v1.33.0
