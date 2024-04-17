@@ -1,6 +1,6 @@
 # Wrest Chat
 
-智能聊天助手，是一个通用的聊天辅助程序，通过 [Nanomsg 协议](wcferry/proto/wcferry.proto) 与聊天软件互通，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。目前已适配 *PC微信*，更多聊天软件适配中，敬请期待！
+智能聊天助手，是一个通用的聊天辅助程序，通过 **Nanomsg 协议** 与聊天软件互通，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。目前已适配 *PC微信*，更多聊天软件适配中，敬请期待！
 
 > 本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
 
@@ -9,9 +9,9 @@
 - 使用 Go 语言编写，无运行时依赖
 - 提供 HTTP 接口，便于对接各类编程语言
 - 提供 Websocket 接口，接收推送的新消息
-- 支持 HTTP/WS 接口授权，参见 [配置说明](#配置说明)
-- 支持作为 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
-- 内置 AI 机器人，参见 [wclient/README.md](./wclient/README.md)
+- 支持 HTTP/WS 接口授权，参见 [配置文件解析](https://docs.opentdp.org/#/wrest/配置文件解析)
+- 支持作为 SDK 使用，参见 [SDK模块说明](https://docs.opentdp.org/#/wrest/开发指南/SDK模块)
+- 内置 AI 机器人，参见 [BOT模块说明](https://docs.opentdp.org/#/wrest/开发指南/BOT模块)
 - 内置 Web 管理界面，可以管理机器人各项配置
 - 内置 Api 调试工具，所有接口都可以在线调试
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
@@ -19,7 +19,9 @@
 
 ## 快速开始
 
-请仔细阅读[免责声明](#免责声明)和[常见问题](#常见问题)后再开始使用，首次使用可参照下面的步骤开始：
+> 参考文档 <https://docs.opentdp.org/#/wrest>
+
+请仔细阅读[免责声明](https://docs.opentdp.org/#/wrest/免责声明)和[常见问题](https://docs.opentdp.org/#/wrest/常见问题)后再开始使用，首次使用可参照下面的步骤开始：
 
 - 下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wrest-chat/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wrest-chat.zip](https://github.com/opentdp/wrest-chat/releases)
 
@@ -34,39 +36,6 @@
   - 写入禁止微信自动更新的注册表配置
   - 在 `wrest.exe` 崩溃后自动重启
 
-## 配置说明
-
-机器人相关参数均已支持从 WEB 界面管理，[config.yml](./config.yml) 用来配置一些核心能力，一般情况下保持默认即可。
-
-- 修改 `config.yml` 中的参数，需重启 **wrest.exe** 才能生效
-
-  - 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
-  - 重启时，提示端口被占用，请退出微信后重试
-
-- 设置 `Web.Token` 后，请求接口时必须携带 **header** 信息: `Authorization: Bearer $token`
-
-## 开发指南
-
-模块依赖示意：`WEB ---> API ---> BOT ---> SDK ---> Wcferry ---> WeChat`。其中 `BOT` 模块并非必须的，可根据自己的需求选择是否开启，`Wcferry` 模块为第三方开源依赖，必须和 `WeChat` 版本匹配使用。
-
-查看和调试 *HTTP/WS* 接口，可使用浏览器访问 `http://localhost:7600/swagger/`。更多插件开发资源请查阅 [wrest-plugin](https://github.com/opentdp/wrest-plugin) 项目。
-
-### API 模块
-
-实现了 HTTP/WS 接口，详情查看 [httpd/README.md](./httpd/README.md)
-
-### BOT 模块
-
-实现了群聊机器人，详情查看 [wclient/README.md](./wclient/README.md)
-
-### SDK 模块
-
-实现了 WCF 客户端，详情查看 [wcferry/README.md](./wcferry/README.md)
-
-### WEB 模块
-
-实现了 WEB 控制台，详情查看 [webview/README.md](./webview/README.md)
-
 ## 代码提交
 
 提交代码时请使用 `feat: something` 作为说明，支持的标识如下
@@ -80,42 +49,6 @@
 - `test` 测试（添加缺失的测试或更正现有测试）
 - `chore` 构建过程或辅助工具的变动
 - `revert` 还原以前的提交
-
-## 常见问题
-
-### Q1、提示注入失败
-
-当前分支兼容的**PC微信**版本是 `3.9.2.23`，请在  [快速开始](#快速开始) 中点击下载。
-
-### Q2、如何在群内 `@` 其他人
-
-首先要在消息中添加 `@昵称`，然后在 `aters` 参数添加此人的 `wxid`。相关接口 `/wcf/send_txt`。
-
-### Q3、如何更新机器人程序
-
-从 [快速开始](#快速开始) 中下载新版本。关闭机器人后，将解压出来的文件覆盖过去。若修改过 `config.yml` 请排除，防止配置被重置。
-
-### Q4、常用 AI 密钥获取地址
-
-- 阿里 通义千问 <https://dashscope.console.aliyun.com/apiKey>
-- 讯飞 星火 <https://console.xfyun.cn/services/bm3>
-- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
-
-### Q5、更改系统内置指令参数
-
-登录控制台 `http://localhost:7600/#/keyword/list`，添加一个**指令别名**，修改需要的参数，保存后生效。
-
-- 场景选择`全局`，修改级别为需要的值，可**覆盖内置指令级别**
-- 所有内置指令修改级别为管理员以上的值，相当于在全局**禁用内置指令**
-- 添加一个名为 `@xxx` 的指令别名，目标选择 `/ai`，可实现使用 `@xxx` 唤醒
-
-### Q6、消息不推送或管理页卡住
-
-点击CMD窗口的左上角，选择`属性`，取消`快速编辑模式`，保存后关闭。在窗口中按下任意键（理论上应该无反应），检查下机器人是否恢复正常，否则请重启机器人。
-
-### Q7、无法自动保存图片（Timeout）
-
-检查安装及存储路径是否包含中文或其他特殊字符。建议仅使用英文作为目录名，且中间目录名不能有中文或其他特殊字符。
 
 ## 免责声明
 
