@@ -113,6 +113,17 @@
 
 点击CMD窗口的左上角，选择`属性`，取消`快速编辑模式`，保存后关闭。在窗口中按下任意键（理论上应该无反应），检查下机器人是否恢复正常，否则请重启机器人。
 
+### Q7、最低配置是什么
+#### 1. Windows 平台
+##### 1.1 Windows PC
+- Windows 10，CPU 1 核，内存 4GB
+##### 1.2 Windows Server
+- Windows Server 2012，CPU 1 核，内存 4GB
+#### 2. Linux 平台
+- Todo
+#### 3. macOS 平台
+- Todo
+
 ## 免责声明
 
 [WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 是供学习交流的开源项目，代码及其制品仅供参考，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
