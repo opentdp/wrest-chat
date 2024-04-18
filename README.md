@@ -4,7 +4,9 @@
 
 > 本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
 
-## 主要特性
+## 功能特性
+
+这里仅列举了一些主要的特性，其他信息请参阅[项目文档](https://docs.opentdp.org/#/wrest)（by [KincaidYang](https://github.com/KincaidYang)）
 
 - 使用 Go 语言编写，无运行时依赖
 - 提供 HTTP 接口，便于对接各类编程语言
@@ -16,25 +18,6 @@
 - 内置 Api 调试工具，所有接口都可以在线调试
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
 - 支持计划任务、外部指令、指令插件等扩展功能，详见 [wrest-plugin](https://github.com/opentdp/wrest-plugin)
-
-## 快速开始
-
-> 参考文档 <https://docs.opentdp.org/#/wrest>
-
-请仔细阅读[免责声明](https://docs.opentdp.org/#/wrest/免责声明)和[常见问题](https://docs.opentdp.org/#/wrest/常见问题)后再开始使用，首次使用可参照下面的步骤开始：
-
-- 下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wrest-chat/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wrest-chat.zip](https://github.com/opentdp/wrest-chat/releases)
-
-  - 非开发者请直接下载编译好的二进制文件，不要下载源码
-
-- 双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
-
-  - 启动成功后，浏览器访问 `http://localhost:7600` 配置机器人
-
-- 若无人值守，可选择使用 `starter.bat` 启动服务，实现如下能力：
-  
-  - 写入禁止微信自动更新的注册表配置
-  - 在 `wrest.exe` 崩溃后自动重启
 
 ## 代码提交
 
