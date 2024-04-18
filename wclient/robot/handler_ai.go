@@ -20,6 +20,8 @@ func aiHandler() []*Handler {
 		return cmds
 	}
 
+	aichat.UserReset("", "") // 重置
+
 	cmds = append(cmds, &Handler{
 		Level:    -1,
 		Order:    100,
@@ -36,7 +38,7 @@ func aiHandler() []*Handler {
 		Command:  "/ai:new",
 		Describe: "重置上下文内容",
 		Callback: func(msg *wcferry.WxMsg) string {
-			aichat.UserConfig(msg.Sender, msg.Roomid).ResetHistory()
+			aichat.UserReset(msg.Sender, msg.Roomid)
 			return "已重置上下文"
 		},
 	})
@@ -59,6 +61,7 @@ func aiHandler() []*Handler {
 				if len(ks) > 0 {
 					v := models[ks[rand.Intn(len(ks))]]
 					profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
+					aichat.UserReset(msg.Sender, msg.Roomid) // 重置用户模型参数
 					return "对话模型已切换为 " + v.Family + " [" + v.Model + "]"
 				}
 				return fmt.Sprintf("没有可用的模型（Level ≤ %d）", up.Level)
@@ -77,6 +80,7 @@ func aiHandler() []*Handler {
 			Describe: v.Family,
 			Callback: func(msg *wcferry.WxMsg) string {
 				profile.Replace(&profile.ReplaceParam{Wxid: msg.Sender, Roomid: prid(msg), AiModel: v.Mid})
+				aichat.UserReset(msg.Sender, msg.Roomid) // 重置用户模型参数
 				return "对话模型已切换为 " + v.Family + " [" + v.Model + "]"
 			},
 		})
