@@ -76,7 +76,7 @@ export class WelcomeComponent {
                 return;
             }
             if (this.compareVersions(this.system.version, data.tag_name) < 1) {
-                this.upgrade.url = data.assets[0].browser_download_url;
+                this.upgrade.url = data.assets[1].browser_download_url;
                 this.upgrade.version = data.tag_name;
             }
         });
