@@ -405,6 +405,17 @@
                     "BOT::计划任务"
                 ],
                 "summary": "触发计划任务",
+                 "parameters": [
+                    {
+                        "description": "触发计划任务参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cronjob.FetchParam"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
