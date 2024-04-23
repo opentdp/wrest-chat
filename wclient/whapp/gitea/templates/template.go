@@ -44,8 +44,7 @@ var (
 `)
 
 	TemplateCreateIssueComment = NewTemplate("CREATE_ISSUE_COMMENT", `🗨️ {{ .Repository.Name }}#{{ .Issue.Number }} 有新评论
-📦 {{ .Repository.FullName }}
-🏷️ {{ .Ref }}
+📦 {{ .Repository.FullName }}#{{ .Issue.Number }}
 👤 {{ .Sender.FullName }}（{{ .Sender.Email }}）
 `)
 )
