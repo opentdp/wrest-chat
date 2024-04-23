@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/events"
 	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/templates"
 )
 

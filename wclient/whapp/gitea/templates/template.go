@@ -36,14 +36,14 @@ var (
 🏷️ {{ .Ref }}
 👤 {{ .Sender.FullName }}（{{ .Sender.Email }}）
 `)
-	TemplateOpenIssue = NewTemplate("GITEA_CREATE_TAG", `✨ 有人提Issue了
+	TemplateOpenIssue = NewTemplate("OPEN_ISSUE", `✨ 有人提Issue了
 📦 {{ .Repository.FullName }}#{{ .Issue.Number }}
 💡 {{ .Issue.Title }}
 👤 {{ .Sender.FullName }}（{{ .Sender.Email }}）
-🏷️ {{ range _, $val := .Issue.Labels }}{{ $val.Name }} {{ end }} 
+🏷️ {{ range $index, $val := .Issue.Labels }}{{ $val.Name }} {{ end }} 
 `)
 
-	TemplateCreateIssueComment = NewTemplate("GITEA_CREATE_TAG", `🗨️ {{ .Repository.Name }}#{{ .Issue.Number }} 有新评论
+	TemplateCreateIssueComment = NewTemplate("CREATE_ISSUE_COMMENT", `🗨️ {{ .Repository.Name }}#{{ .Issue.Number }} 有新评论
 📦 {{ .Repository.FullName }}
 🏷️ {{ .Ref }}
 👤 {{ .Sender.FullName }}（{{ .Sender.Email }}）

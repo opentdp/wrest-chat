@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/events"
 	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/templates"
 )
 
