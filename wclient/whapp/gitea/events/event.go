@@ -1,4 +1,4 @@
-package gitea
+package events
 
 import "time"
 

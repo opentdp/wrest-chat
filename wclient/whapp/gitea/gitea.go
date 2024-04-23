@@ -3,6 +3,7 @@ package gitea
 import (
 	"fmt"
 	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/handlers"
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/templates"
 	"net/http"
 )
 
@@ -23,6 +24,6 @@ func HandleWebhook(header http.Header, msg string) (string, error) {
 		return handlers.IssuesEventHandler(msg)
 	}
 
-	return fmt.Sprintf(TemplateUnsupport, name), nil
+	return fmt.Sprintf(templates.TemplateUnsupport, name), nil
 
 }

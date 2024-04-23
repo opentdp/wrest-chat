@@ -3,12 +3,11 @@ package handlers
 import (
 	"errors"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/opentdp/wrest-chat/wclient/whapp"
-	"github.com/opentdp/wrest-chat/wclient/whapp/gitea"
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/templates"
 )
 
 func IssueCommentEventHandler(msg string) (string, error) {
-	data := &gitea.GiteaIssueCommentEvent{}
+	data := &events.GiteaIssueCommentEvent{}
 
 	err := jsoniter.UnmarshalFromString(msg, &data)
 
@@ -18,7 +17,7 @@ func IssueCommentEventHandler(msg string) (string, error) {
 
 	switch data.Action {
 	case "created":
-		return whapp.Render(gitea.TemplateCreateIssueComment, data)
+		return templates.Render(templates.TemplateCreateIssueComment, data)
 	}
 
 	return "", errors.New("解析Gitea IssueComment事件失败")

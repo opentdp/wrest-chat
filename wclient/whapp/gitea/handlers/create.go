@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/opentdp/wrest-chat/wclient/whapp"
-	"github.com/opentdp/wrest-chat/wclient/whapp/gitea"
+	"github.com/opentdp/wrest-chat/wclient/whapp/gitea/templates"
 )
 
 func CreateEventHandler(msg string) (string, error) {
-	data := &gitea.GiteaCreateEvent{}
+	data := &events.GiteaCreateEvent{}
 	err := json.Unmarshal([]byte(msg), &data)
 
 	if err != nil {
@@ -18,7 +17,7 @@ func CreateEventHandler(msg string) (string, error) {
 
 	switch data.Ref {
 	case "tag":
-		return whapp.Render(gitea.TemplateCreateTag, data)
+		return templates.Render(templates.TemplateCreateTag, data)
 	}
 
 	return fmt.Sprintf("暂时不支持的 Create 事件 Ref 类型： %s", data.Ref), nil
