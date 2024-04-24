@@ -16,7 +16,7 @@ func CreateEventHandler(msg string) (string, error) {
 		return "", errors.New("解析Gitea Create事件失败")
 	}
 
-	switch data.Ref {
+	switch data.RefType {
 	case "tag":
 		return templates.Render(templates.TemplateCreateTag, data)
 	}
