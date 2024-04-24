@@ -28,5 +28,4 @@ func Handler(header http.Header, app string, msg string) string {
 	}
 
 	return res
-
 }
