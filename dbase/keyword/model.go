@@ -3,16 +3,16 @@ package keyword
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建关键词
 
 type CreateParam struct {
 	Rd     uint   `json:"rd"`
-	Group  string `binding:"required" json:"group"`
-	Roomid string `binding:"required" json:"roomid"`
-	Phrase string `binding:"required" json:"phrase"`
+	Group  string `json:"group" binding:"required"`
+	Roomid string `json:"roomid" binding:"required"`
+	Phrase string `json:"phrase" binding:"required"`
 	Level  int32  `json:"level"`
 	Target string `json:"target"`
 	Remark string `json:"remark"`

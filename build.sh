@@ -9,10 +9,19 @@ set -o noglob
 export CGO_ENABLED=0
 export GO111MODULE=on
 
-export GOOS=windows
-export GOARCH=amd64
+build() {
+    local os=${2:-linux}
+    local arch=${3:-amd64}
+    local sbin=build/${1:-bin}-$os-$arch
+    if [ x"$os" = x"windows" ]; then
+        sbin="${sbin}.exe"
+    fi
+    echo building for $os/$arch
+    GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o $sbin main.go
+}
 
 ####################################################################
+# fix version
 
 RUN_NUMBER=${GITHUB_RUN_NUMBER:-0}
 
@@ -29,31 +38,50 @@ sed -i "s/^const BuildVersion = \".*\"/const BuildVersion = \"$build_version\"/"
 echo "build info - tag: $last_tag, version: $version, build: $build_version"
 
 ####################################################################
+# build binary
 
+sed -i 's#](./#](https://github.com/opentdp/wrest-chat/blob/master/#g' README.md
 
 if [ -f webview/public/browser/index.html ]; then
-    ls -al webview
-    ls -al webview/public
-    ls -al webview/public/browser
     cp -av webview/public/browser/. public/
 fi
 
-echo building for $GOOS/$GOARCH
-
-target=build/wrest.exe
-go build -ldflags="-s -w" -o $target main.go
+build wrest linux amd64
+build wrest windows amd64
 
 ####################################################################
+# package for linux
 
-mkdir build/wcferry
+cp -av build linux
+cp README.md linux/
+cp config.yml linux/
 
-cp README.md build/
-cp config.yml build/
-cp wcferry/bin/sdk.dll build/wcferry/
-cp wcferry/bin/spy.dll build/wcferry/
-cp wcferry/bin/wcf.exe build/wcferry/
+rm -rf linux/starter.bat
+rm -rf linux/wrest-windows-amd64.exe
+mv linux/wrest-linux-amd64 linux/wrest
 
-sed -i 's#](./#](https://github.com/opentdp/wechat-rest/blob/master/#g' build/README.md
+sed -i '/WcfBinary:/d' linux/config.yml
+sed -i 's/127.0.0.1:7601/192.168.1.2:7601/g' linux/config.yml
+sed -i 's/127.0.0.1:7600/0.0.0.0:7600/g' linux/config.yml
 
-mv build wechat-rest
-zip -r wechat-rest.zip wechat-rest/
+cd linux
+zip -r ../wrest-linux-v$version.zip .
+cd ..
+
+####################################################################
+# package for windows
+
+cp -av build windows
+cp README.md windows/
+cp config.yml windows/
+
+rm -rf windows/wrest-linux-amd64
+mv windows/wrest-windows-amd64.exe windows/wrest.exe
+
+mkdir -p windows/wcferry
+wget https://github.com/lich0821/WeChatFerry/releases/download/v39.0.14/v39.0.14.zip
+unzip -d windows/wcferry v39.0.14.zip && rm -f v39.0.14.zip
+
+cd windows
+zip -r ../wrest-windows-v$version.zip .
+cd 

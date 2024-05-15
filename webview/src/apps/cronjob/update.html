@@ -1,6 +1,6 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item"><a routerLink="/cronjob/list">计划任务</a></li>
@@ -8,7 +8,7 @@
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <form class="row gy-3" (ngSubmit)="updateCronjob()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">名称 *</label>
@@ -82,9 +82,10 @@
             <label class="form-label">投递渠道 *</label>
             <div class="row g-3">
                 <div class="col col-md-2">
-                    <select name="deliver[0]" class="form-select" [(ngModel)]="deliver[0]" required>
+                    <select name="deliver[0]" class="form-select" [(ngModel)]="deliver[0]" (change)="changeDeliver()" required>
+                        <option value="-">不投递</option>
                         <option value="wechat">微信</option>
-                        <option value="email" disabled>电子邮件</option>
+                        <option value="email" disabled>邮件</option>
                     </select>
                 </div>
                 @if (deliver[0] == 'wechat') {
@@ -98,7 +99,7 @@
                 </div>
                 <div class="col col-md-4">
                     <select name="deliver[2]" class="form-select" [(ngModel)]="deliver[2]" [disabled]="conacts.length == 0" required>
-                        <option value="-" [class.d-none]="deliver[1] == '-'">所有人</option>
+                        <option value="-">{{deliver[1] == '-' ? '选择联系人' : '不指定@的用户'}}</option>
                         @for (item of conacts | filter:'wxid,name':conactsFilter; track item.wxid) {
                         <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
                         }
@@ -109,7 +110,7 @@
                 </div>
                 } @else {
                 <div class="col col-md-10">
-                    <input type="text" name="deliver[1]" class="form-control" rows="5" [(ngModel)]="deliver[1]" required />
+                    <input type="text" name="deliver[1]" class="form-control" rows="5" [(ngModel)]="deliver[1]" required [disabled]="deliver[0] == '-'" />
                 </div>
                 }
             </div>

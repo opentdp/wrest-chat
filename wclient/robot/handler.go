@@ -4,10 +4,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var handlers = []*Handler{}
@@ -48,6 +47,7 @@ func ResetHandlers() {
 	hlst = append(hlst, revokeHandler()...)
 	hlst = append(hlst, roomHandler()...)
 	hlst = append(hlst, topHandler()...)
+	hlst = append(hlst, webhookHandler()...)
 
 	// 指令列表排序
 	sort.Slice(hlst, func(i, j int) bool {
@@ -68,6 +68,9 @@ func ResetHandlers() {
 		for _, v := range kws {
 			if hmap[v.Target] != nil {
 				hmap[v.Phrase+"@"+v.Roomid] = hmap[v.Target]
+				if v.Roomid == "*" {
+					hmap[v.Target].Level = v.Level
+				}
 			}
 		}
 	}
@@ -105,8 +108,8 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 		} else { // 私聊
 			handler = handlerMap[params[0]+"@-"]
 		}
-		if handler == nil {
-			handler = handlerMap[params[0]+"@*"] // 全局
+		if handler == nil { // 全局
+			handler = handlerMap[params[0]+"@*"]
 			if handler == nil {
 				if content[0] == '/' {
 					return setting.InvalidHandler
@@ -117,22 +120,8 @@ func ApplyHandlers(msg *wcferry.WxMsg) string {
 	}
 
 	// 验证权限
-	if handler.Level > 0 {
-		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-		if up.Level < handler.Level {
-			return setting.InvalidHandler
-		}
-	}
-
-	// 验证场景
-	if msg.IsGroup {
-		if handler.Roomid != "*" && handler.Roomid != "+" && handler.Roomid != msg.Roomid {
-			return setting.InvalidHandler
-		}
-	} else {
-		if handler.Roomid != "*" && handler.Roomid != "-" {
-			return setting.InvalidHandler
-		}
+	if groupLimit(msg, handler.Level, handler.Roomid) {
+		return setting.InvalidHandler
 	}
 
 	// 重写消息

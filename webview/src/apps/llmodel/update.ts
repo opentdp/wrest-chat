@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UserLevels } from '../../openapi/const';
+import { AiModels, UserLevels } from '../../openapi/const';
 import { RobotApi, LlmodelUpdateParam } from '../../openapi/wrobot';
 
 
@@ -11,6 +11,7 @@ import { RobotApi, LlmodelUpdateParam } from '../../openapi/wrobot';
 })
 export class LLModelUpdateComponent implements OnInit {
 
+    public aiModels = AiModels;
     public userLevels = UserLevels;
 
     public formdata: LlmodelUpdateParam = {} as LlmodelUpdateParam;
@@ -26,7 +27,7 @@ export class LLModelUpdateComponent implements OnInit {
     }
 
     public getLLModel(rd: number) {
-        RobotApi.llmodelDetail({ rd }).then((data) => {
+        return RobotApi.llmodelDetail({ rd }).then((data) => {
             this.formdata = data;
         });
     }
@@ -35,7 +36,7 @@ export class LLModelUpdateComponent implements OnInit {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.llmodelUpdate(this.formdata).then(() => {
+        return RobotApi.llmodelUpdate(this.formdata).then(() => {
             this.router.navigate(['llmodel/list']);
         });
     }

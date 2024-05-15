@@ -4,9 +4,9 @@ import (
 	"github.com/opentdp/go-helper/command"
 	"github.com/opentdp/go-helper/logman"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wclient"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wclient"
 )
 
 func cmddHandler() []*Handler {
@@ -40,10 +40,8 @@ func cmddHandler() []*Handler {
 				if err != nil {
 					logman.Error("cmd: "+v.Phrase, "error", err)
 				}
-				if wclient.SendFlexMsg(output, msg.Sender, msg.Roomid) != 0 {
-					return ""
-				}
-				return output
+				wclient.SendFlexMsg(output, msg.Sender, msg.Roomid)
+				return ""
 			},
 		})
 	}

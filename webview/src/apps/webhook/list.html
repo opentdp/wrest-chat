@@ -1,0 +1,54 @@
+<layout-header></layout-header>
+
+<nav class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item active">Webhook</li>
+    </ol>
+</nav>
+
+<div class="container-xl mb-3">
+    <div class="text-end mb-3">
+        <button class="btn btn-primary" [routerLink]="['/webhook/create']">添加</button>
+    </div>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">目标</th>
+                <th scope="col">目标类型</th>
+                <th scope="col" class="d-none d-md-table-cell">Token</th>
+                <th scope="col" class="d-none d-md-table-cell">备注</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of list; track item.rd) {
+            <tr>
+                <th scope="row">{{item.rd}}</th>
+                <td>
+                    @if (!item.target_id.endsWith("@chatroom") && wcfContacts[item.target_id]) {
+                    {{wcfContacts[item.target_id].name}}
+                    }
+                    @if (item.target_id.endsWith("@chatroom") && wcfChatrooms[item.target_id]) {
+                    {{ wcfChatrooms[item.target_id].name }}
+                    }
+                </td>
+                <td>
+                    @if (item.target_id.endsWith("@chatroom")) {
+                    群聊
+                    } @else {
+                    私聊
+                    }
+                </td>
+                <td class="d-none d-xl-table-cell">{{item.token}}</td>
+                <td class="d-none d-xl-table-cell">{{item.remark}}</td>
+                <td class="text-nowrap">
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteWebhook(item)">删除</button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

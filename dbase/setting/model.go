@@ -3,14 +3,14 @@ package setting
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建配置
 
 type CreateParam struct {
 	Rd     uint   `json:"rd"`
-	Name   string `binding:"required" json:"name"`
+	Name   string `json:"name" binding:"required"`
 	Type   string `json:"type"`
 	Group  string `json:"group"`
 	Value  string `json:"value"`

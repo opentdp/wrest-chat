@@ -9,6 +9,7 @@ import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 })
 export class WcferryContactComponent {
 
+    public avatars: Record<string, string> = {};
     public contacts: Array<WcfrestContactPayload & { type: string }> = [];
 
     public contactTypes: Record<string, RegExp> = {
@@ -16,6 +17,7 @@ export class WcferryContactComponent {
         '公众号': /^gh_/,
         '企业微信': /@openim$/,
         '内置服务': /^fmessage|filehelper|floatbottle|medianote|mphelper|newsapp$/,
+        '可能异常': /[\n\r]$/,
     };
 
     public contactType = '好友';
@@ -25,10 +27,11 @@ export class WcferryContactComponent {
     }
 
     public getContacts() {
-        WrestApi.contacts().then((data) => {
+        return WrestApi.contacts().then((data) => {
             this.contacts = data.map(item => ({
                 ...item, type: this.getContactType(item)
             }));
+            this.getAvatars(this.contacts.map((v) => v.wxid));
         });
     }
 
@@ -40,6 +43,15 @@ export class WcferryContactComponent {
             }
         }
         return '好友';
+    }
+
+    public getAvatars(ids: string[]) {
+        const wxids = [...new Set(ids)];
+        return WrestApi.avatars({ wxids }).then((data) => {
+            data && data.forEach((item) => {
+                this.avatars[item.usr_name] = item.small_head_img_url;
+            });
+        });
     }
 
 }

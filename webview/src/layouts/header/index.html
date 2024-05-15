@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
-    <div class="container-lg">
+<nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary mb-3">
+    <div class="container-xl">
 
         <a routerLink="/" class="navbar-brand">
             <img src="/assets/icon.png" class="align-top" width="30" height="30">
-            <span>&nbsp; 微助手</span>
+            <span>&nbsp; Wrest</span>
         </a>
 
         <button type="button" class="navbar-toggler" (click)="collapse = !collapse">
@@ -33,24 +33,29 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/cronjob/list" routerLinkActive="active">计划任务</a>
                 </li>
-                <li ngbDropdown class="nav-item" routerLinkActive="active">
-                    <a class="nav-link" ngbDropdownToggle>
-                        杂项
-                    </a>
-                    <div class="dropdown-menu" ngbDropdownMenu>
-                        <a ngbDropdownItem routerLink="/handler/list" routerLinkActive="active">可用指令</a>
-                        <a ngbDropdownItem routerLink="/plugin/list" routerLinkActive="active">插件状态</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/webhook/list" routerLinkActive="active">Webhook</a>
                 </li>
                 <li ngbDropdown class="nav-item" routerLinkActive="active">
                     <a class="nav-link" ngbDropdownToggle>
                         Wcferry
                     </a>
                     <div class="dropdown-menu" ngbDropdownMenu>
-                        <a ngbDropdownItem routerLink="/wcferry/chatroom" routerLinkActive="active">群聊</a>
+                        <a ngbDropdownItem routerLink="/wcferry/chatroom" routerLinkActive="active">聊天</a>
                         <a ngbDropdownItem routerLink="/wcferry/contact" routerLinkActive="active">通讯录</a>
                         <a ngbDropdownItem routerLink="/wcferry/dbquery" routerLinkActive="active">数据库</a>
                         <a ngbDropdownItem routerLink="/wcferry/receiver" routerLinkActive="active">消息监听</a>
+                    </div>
+                </li>
+                <li ngbDropdown class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" ngbDropdownToggle>
+                        其他
+                    </a>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a ngbDropdownItem routerLink="/handler/list" routerLinkActive="active">可用指令</a>
+                        <a ngbDropdownItem [disabled]="true">插件状态</a>
+                        <a ngbDropdownItem routerLink="/plugin/keyword" routerLinkActive="active">&nbsp; 关键词</a>
+                        <a ngbDropdownItem routerLink="/plugin/cronjob" routerLinkActive="active">&nbsp; 计划任务</a>
                     </div>
                 </li>
             </ul>
@@ -58,12 +63,12 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="/swagger/" target="_blank" title="接口文档">
-                        <i class="bi bi-broadcast d-none d-lg-inline"></i>
+                        <i class="bi bi-book-half d-none d-lg-inline"></i>
                         <span class="d-lg-none">接口文档</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/opentdp/wechat-rest" target="_blank" title="源代码">
+                    <a class="nav-link" href="https://github.com/opentdp/wrest-chat" target="_blank" title="源代码">
                         <i class="bi bi-github d-none d-lg-inline"></i>
                         <span class="d-lg-none">源代码</span>
                     </a>

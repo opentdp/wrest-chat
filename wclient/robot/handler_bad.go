@@ -6,9 +6,9 @@ import (
 
 	"github.com/importcjj/sensitive"
 
-	"github.com/opentdp/wechat-rest/dbase/keyword"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/keyword"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var badMember = map[string]int{}
@@ -45,7 +45,7 @@ func badHandler() []*Handler {
 		Level:    7,
 		Order:    311,
 		Roomid:   "*",
-		Command:  "/unbad",
+		Command:  "/bad:rm",
 		Describe: "删除违禁词",
 		Callback: func(msg *wcferry.WxMsg) string {
 			err := keyword.Delete(&keyword.DeleteParam{
@@ -72,7 +72,7 @@ func badPreCheck(msg *wcferry.WxMsg) string {
 
 	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return ""
 	}
 

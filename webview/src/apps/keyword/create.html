@@ -1,6 +1,6 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item"><a routerLink="/keyword/list">词库管理</a></li>
@@ -8,7 +8,7 @@
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <form class="row gy-3" (ngSubmit)="createKeyword()" #myform="ngForm">
         <div class="col-12">
             <label class="form-label">短语 *</label>
@@ -18,8 +18,8 @@
             </div>
         </div>
         <div class="col-12">
-            <label class="form-label">分组</label>
-            <select name="group" class="form-select" [(ngModel)]="formdata.group">
+            <label class="form-label">分组 *</label>
+            <select name="group" class="form-select" [(ngModel)]="formdata.group" required>
                 @for (item of keywordGroups | keyvalue; track item.key) {
                 <option [value]="item.key">{{item.value.name}}</option>
                 }
@@ -28,31 +28,6 @@
                 关键词分组，标记短语的作用
             </div>
         </div>
-        @if (formdata.group == 'badword') {
-        <div class="col-12">
-            <label class="form-label">级别</label>
-            <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                @for (item of badwordLevels | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
-                }
-            </select>
-            <div class="form-text">
-                用于违规积分累计，当前计 {{formdata.level}} 分
-            </div>
-        </div>
-        } @else {
-        <div class="col-12">
-            <label class="form-label">级别</label>
-            <select name="level" class="form-select" [(ngModel)]="formdata.level">
-                @for (item of userLevels | keyvalue; track item.key) {
-                <option [value]="item.key">{{item.value.name}}</option>
-                }
-            </select>
-            <div class="form-text">
-                用于限制指令使用权限，对指令别名无效
-            </div>
-        </div>
-        }
         <div class="col-12">
             <label class="form-label">场景 *</label>
             <select name="roomid" class="form-select" [(ngModel)]="formdata.roomid" required>
@@ -69,24 +44,63 @@
         </div>
         @if (formdata.group == 'command') {
         <div class="col-12">
-            <label class="form-label">命令</label>
+            <label class="form-label">命令 *</label>
             <textarea name="target" class="form-control" rows="3" [(ngModel)]="formdata.target" required></textarea>
             <div class="form-text">
-                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i><br />
+                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i>。指令收到的最后一个参数为聊天内容<br />
                 输出的内容将作为回复，发送文件或图片请输出 <b>http://</b> 开头的链接
             </div>
         </div>
         }
-        @if (formdata.group == 'handler') {
+        @else if (formdata.group == 'imagefn') {
         <div class="col-12">
-            <label class="form-label">指令</label>
-            <select name="target" class="form-select" [(ngModel)]="formdata.target">
+            <label class="form-label">命令 *</label>
+            <textarea name="target" class="form-control" rows="3" [(ngModel)]="formdata.target" required></textarea>
+            <div class="form-text">
+                填写可执行程序的绝对路径及参数，如：<i>node.exe D:\wrest\app.js</i>。指令收到的最后一个参数为图片路径<br />
+                输出的内容将作为回复，发送文件或图片请输出 <b>http://</b> 开头的链接
+            </div>
+        </div>
+        }
+        @else if (formdata.group == 'handler') {
+        <div class="col-12">
+            <label class="form-label">指令 *</label>
+            <select name="target" class="form-select" [(ngModel)]="formdata.target" (change)="changeHandler()" required>
                 @for (item of robotHandler; track item.command) {
                 <option [value]="item.command">{{item.command}} {{item.describe}}</option>
                 }
             </select>
             <div class="form-text">
                 以<b>{{formdata.phrase || '短语'}}</b>开头的内容，将重定向到<b>{{formdata.target || '选中的指令'}}</b>
+            </div>
+        </div>
+        }
+        @if (formdata.group == 'badword') {
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
+                @for (item of badwordLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                用于违规积分累计，当前计 {{formdata.level}} 分
+            </div>
+        </div>
+        } @else {
+        <div class="col-12">
+            <label class="form-label">级别 *</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.level" required>
+                @for (item of userLevels | keyvalue; track item.key) {
+                <option [value]="item.key">{{item.value.name}}</option>
+                }
+            </select>
+            <div class="form-text">
+                @if (formdata.group == 'handler') {
+                全局级别重写原指令级别，其他级别暂忽略
+                } @else {
+                用于限制外部指令的使用权限
+                }
             </div>
         </div>
         }

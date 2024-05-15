@@ -10,10 +10,10 @@ import (
 	"github.com/opentdp/go-helper/request"
 	"github.com/opentdp/go-helper/strutil"
 
-	"github.com/opentdp/wechat-rest/args"
-	"github.com/opentdp/wechat-rest/dbase/message"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/args"
+	"github.com/opentdp/wrest-chat/dbase/message"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 var wc *wcferry.Client
@@ -44,14 +44,17 @@ func Register() *wcferry.Client {
 		logman.Fatal("wcf start failed", "error", err)
 	}
 
-	// 存储收到的消息
-	if args.Wcf.MsgStore {
-		wc.EnrollReceiver(true, msgToDatabase)
-	}
-
 	// 打印收到的消息
 	if args.Wcf.MsgPrint {
 		wc.EnrollReceiver(true, wcferry.WxMsgPrinter)
+	}
+
+	// 存储收到的消息
+	if args.Wcf.MsgStore {
+		wc.EnrollReceiver(true, msgToDatabase)
+		if (args.Wcf.MsgStoreDays) > 0 {
+			message.Shrink(args.Wcf.MsgStoreDays)
+		}
 	}
 
 	return wc
@@ -93,7 +96,7 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 
 	// 发送卡片信息
 	if strings.HasPrefix(msg, "card\n") {
-		if p := strings.Split(msg, "\n")[1:]; len(p) >= 6 {
+		if p := strings.Split(msg, "\n")[1:]; len(p) > 5 {
 			return wc.CmdClient.SendRichText(p[0], p[1], p[2], p[3], p[4], p[5], receiver)
 		}
 	}
@@ -108,7 +111,7 @@ func SendFlexMsg(msg, wxid, roomid string) int32 {
 
 }
 
-// 将接口返回内容发到指定接收人
+// 使用接口回复消息
 // param url string 待请求的接口地址
 // param wxid string 消息接收人，如果 roomid 存在则为 at 此人
 // param roomid string 消息接收群，空则为私聊
@@ -117,11 +120,18 @@ func ApiRequestMsg(url, wxid, roomid string) int32 {
 
 	self := wc.CmdClient.GetSelfInfo()
 
+	// 验证参数
+	if self == nil {
+		logman.Error("ApiRequestMsg::GetSelfInfo failed")
+		return -1
+	}
+
 	// 获取结果
 	res, err := request.TextGet(url, request.H{
 		"User-Agent": args.AppName + "/" + args.Version,
 		"Client-Uid": self.Wxid + "," + wxid,
 	})
+
 	if err != nil {
 		if res == "" {
 			res = err.Error()
@@ -179,7 +189,7 @@ type ApiResponse struct {
 		Link    string `json:"link"`    // 点击后跳转的链接
 		Icon    string `json:"icon"`    // 右侧缩略图的链接，可选
 	} `json:"card,omitempty"`
-	Link string `json:"file,omitempty"` // 当 type 为 file 或 image 时有效
+	Link string `json:"link,omitempty"` // 当 type 为 file 或 image 时有效
 	Text string `json:"text,omitempty"` // 当 type 为 text 或 error 时有效
 }
 

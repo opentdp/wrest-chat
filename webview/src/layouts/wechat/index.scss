@@ -1,0 +1,38 @@
+:host,
+.card {
+    height: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+.content {
+    height: calc(100% - 196px);
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .avatar img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .system:not(:last-child) {
+        display: none;
+    }
+
+    .alert {
+        --bs-alert-padding-x: .6rem;
+        --bs-alert-padding-y: .4rem;
+    }
+}
+
+.card-footer {
+    textarea {
+        resize: none;
+    }
+
+    button {
+        position: absolute;
+        bottom: 14px;
+        right: 24px;
+    }
+}

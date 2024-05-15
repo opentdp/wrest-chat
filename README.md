@@ -1,69 +1,25 @@
-# WeChat Rest
+# Wrest Chat
 
-微信智能助手，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
+[![Wrest Chat Builder](https://github.com/opentdp/wrest-chat/actions/workflows/release.yml/badge.svg)](https://github.com/opentdp/wrest-chat/actions/workflows/release.yml)
 
-## 主要特性
+智能聊天助手，是一个通用的聊天辅助程序，通过 **Nanomsg 协议** 与聊天软件互通，内置 WEB 管理界面，可接入GPT、Gemini、星火、文心、混元、通义千问等大语言模型。目前已适配 *PC微信*，更多聊天软件适配中，敬请期待！
+
+> 本项目**未对微信程序进行任何破解或修改**，与微信互操作的能力均基于开源项目 [WeChatFerry RPC](https://github.com/lich0821/WeChatFerry/tree/master/WeChatFerry) 实现，感谢各位开源贡献者。
+
+## 功能特性
+
+这里仅列举了一些主要的特性，其他信息请参阅[项目文档](https://docs.opentdp.org/#/wrest/)（by [KincaidYang](https://github.com/KincaidYang)）
 
 - 使用 Go 语言编写，无运行时依赖
 - 提供 HTTP 接口，便于对接各类编程语言
 - 提供 Websocket 接口，接收推送的新消息
-- 支持 HTTP/WS 接口授权，参见 [配置说明](#配置说明)
-- 支持作为 SDK 使用，参见 [wcferry/README.md](./wcferry/README.md)
-- 内置 AI 机器人，参见 [wclient/README.md](./wclient/README.md)
+- 支持 HTTP/WS 接口授权，参见 [配置文件解析](https://docs.opentdp.org/#/wrest/配置文件解析)
+- 支持作为 SDK 使用，参见 [SDK模块说明](https://docs.opentdp.org/#/wrest/开发指南/SDK模块)
+- 内置 AI 机器人，参见 [BOT模块说明](https://docs.opentdp.org/#/wrest/开发指南/BOT模块)
 - 内置 Web 管理界面，可以管理机器人各项配置
 - 内置 Api 调试工具，所有接口都可以在线调试
 - 尽可能将消息中的 Xml 转为 Object，便于前端解析
-- 支持计划任务、外部指令、指令插件等扩展功能（开发语言不限）
-
-## 快速开始
-
-请仔细阅读本文档和[常见问题](#常见问题)后再开始使用；首次使用可参照下面的步骤开始：
-
-- 下载并安装 [WeChatSetup-3.9.2.23.exe](https://github.com/opentdp/wechat-rest/releases/download/v0.0.1/WeChatSetup-3.9.2.23.exe) 和 [wechat-rest.zip](https://github.com/opentdp/wechat-rest/releases)
-
-  - 非开发者请直接下载编译好的二进制文件，不要下载源码
-
-- 双击 `wrest.exe` 将自动启动微信和接口服务，扫码登录微信
-
-  - 启动成功后，浏览器访问 `http://localhost:7600` 配置机器人
-
-- 若无人值守，可选择使用 `starter.bat` 启动服务，实现如下能力：
-  
-  - 写入禁止微信自动更新的注册表配置
-  - 在 `wrest.exe` 崩溃后自动重启
-
-## 配置文件
-
-机器人相关参数均已支持从 WEB 界面管理，[config.yml](./config.yml) 用来配置一些核心能力，一般情况下保持默认即可。
-
-- 修改 `config.yml` 中的参数，需重启 **wrest.exe** 才能生效
-
-  - 请使用 `Ctrl + C` 终止 **wrest.exe**，切勿直接关闭任务窗口
-  - 重启时，提示端口被占用，请退出微信后重试
-
-- 设置 `Web.Token` 后，请求接口时必须携带 **header** 信息: `Authorization: Bearer $token`
-
-## 开发指南
-
-模块依赖示意：`WEB ---> API ---> BOT ---> SDK ---> Wcferry ---> WeChat`。其中 `BOT` 模块并非必须的，可根据自己的需求选择是否开启，`Wcferry` 模块为第三方开源依赖，必须和 `WeChat` 版本匹配使用。
-
-查看和调试 *HTTP/WS* 接口，请使用浏览器访问 `http://localhost:7600/swagger/`
-
-### API 模块
-
-实现了 HTTP/WS 接口，详情查看 [httpd/README.md](./httpd/README.md)
-
-### BOT 模块
-
-实现了群聊机器人，详情查看 [wclient/README.md](./wclient/README.md)
-
-### SDK 模块
-
-实现了 WCF 客户端，详情查看 [wcferry/README.md](./wcferry/README.md)
-
-### WEB 模块
-
-实现了 WEB 控制台，详情查看 [webview/README.md](./webview/README.md)
+- 支持计划任务、外部指令、指令插件等扩展功能，详见 [wrest-plugin](https://github.com/opentdp/wrest-plugin)
 
 ## 代码提交
 
@@ -79,26 +35,12 @@
 - `chore` 构建过程或辅助工具的变动
 - `revert` 还原以前的提交
 
-## 常见问题
-
-### Q1 注入失败
-
-当前分支兼容的 PC 微信版本是 `3.9.2.23`，请在  [快速开始](#快速开始) 中点击下载
-
-### Q2 如何在群内 `@` 其他人
-
-首先要在消息中添加 `@昵称`，然后在 `aters` 参数添加此人的 `wxid`。相关接口 `/wcf/send_txt`
-
-### Q3 如何更新机器人，并保留配置信息
-
-从 [快速开始](#快速开始) 中下载新版本。关闭机器人后，将解压出来的 `wrest.exe` 和 `wcferry` 覆盖过去即可
-
-### Q4 常用 AI 密钥获取地址
-
-- 阿里 通义千问 <https://dashscope.console.aliyun.com/apiKey>
-- 讯飞 星火 <https://console.xfyun.cn/services/bm3>
-- 谷歌 Gemini <https://aistudio.google.com/app/apikey?hl=zh-cn>
-
 ## 免责声明
 
-[Wechat-Rest](https://github.com/opentdp/wechat-rest) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 均仅供学习交流，不保证代码质量，不得用于商业用途。非法用途导致的后果自行承担。
+[WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 是供学习交流的开源项目，代码及其制品仅供参考，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
+
+## 其他
+
+License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
+
+Copyright (c) 2022 - 2024 OpenTDP

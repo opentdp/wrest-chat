@@ -3,8 +3,8 @@ package wrobot
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/dbase/llmodel"
-	"github.com/opentdp/wechat-rest/wclient/robot"
+	"github.com/opentdp/wrest-chat/dbase/llmodel"
+	"github.com/opentdp/wrest-chat/wclient/robot"
 )
 
 type LLModel struct{}
@@ -18,7 +18,6 @@ type LLModel struct{}
 func (*LLModel) list(c *gin.Context) {
 
 	var rq *llmodel.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -41,7 +40,6 @@ func (*LLModel) list(c *gin.Context) {
 func (*LLModel) detail(c *gin.Context) {
 
 	var rq *llmodel.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -64,7 +62,6 @@ func (*LLModel) detail(c *gin.Context) {
 func (*LLModel) create(c *gin.Context) {
 
 	var rq *llmodel.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -89,7 +86,6 @@ func (*LLModel) create(c *gin.Context) {
 func (*LLModel) update(c *gin.Context) {
 
 	var rq *llmodel.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -113,7 +109,6 @@ func (*LLModel) update(c *gin.Context) {
 func (*LLModel) delete(c *gin.Context) {
 
 	var rq *llmodel.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

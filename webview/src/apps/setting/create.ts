@@ -15,7 +15,11 @@ export class SettingCreateComponent {
 
     public llmodels: Array<TablesLLModel> = [];
 
-    public formdata = {} as SettingCreateParam;
+    public formdata: SettingCreateParam = {
+        group: 'custom',
+        type: 'string',
+        name: '',
+    };
 
     constructor(private router: Router) {
         this.getLLModels();
@@ -23,13 +27,13 @@ export class SettingCreateComponent {
 
     public createSetting() {
         this.formdata.value = String(this.formdata.value);
-        RobotApi.settingCreate(this.formdata).then(() => {
+        return RobotApi.settingCreate(this.formdata).then(() => {
             this.router.navigate(['setting/list']);
         });
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }

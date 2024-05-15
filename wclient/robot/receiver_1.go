@@ -3,7 +3,7 @@ package robot
 import (
 	"strings"
 
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 // 处理新消息

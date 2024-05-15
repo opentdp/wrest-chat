@@ -19,13 +19,13 @@ export class LLModelListComponent {
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }
 
     public deleteLLModel(item: TablesLLModel) {
-        RobotApi.llmodelDelete({ rd: item.rd }).then(() => {
+        return RobotApi.llmodelDelete({ rd: item.rd }).then(() => {
             this.getLLModels();
         });
     }

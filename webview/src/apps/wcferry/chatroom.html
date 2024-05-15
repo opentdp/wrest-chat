@@ -1,22 +1,27 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item active">Wcferry</li>
-        <li class="breadcrumb-item active">群聊</li>
+        <li class="breadcrumb-item active">聊天</li>
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <div class="row g-3">
         <div class="col col-md-3">
             <div class="card">
-                <div class="list-group list-group-flush chatrooms">
-                    @for (item of chatrooms; track item.wxid) {
-                    <a class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer" [class.active]="chatroom && chatroom.wxid == item.wxid" (click)="getChatroom(item)">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" placeholder="搜索" [(ngModel)]="conactsFilter" />
+                    </div>
+                </div>
+                <div class="list-group list-group-flush">
+                    @for (item of contacts | filter:'wxid,name':conactsFilter;; track item.wxid) {
+                    <a class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer" [class.active]="chat.wxid == item.wxid" (click)="changeChat(item)">
                         <div class="avatar me-3">
-                            <img class="rounded" [src]="avatars[item.wxid]" />
+                            <img class="rounded" [src]="avatars[item.wxid] || '/assets/icon.png'" />
                         </div>
                         <div class="text-truncate">
                             <div class="fw-bold text-truncate">{{item.remark || item.name || '-'}}</div>
@@ -27,62 +32,19 @@
                 </div>
             </div>
         </div>
-        <div class="col" [class.col-md-9]="!showMember" [class.col-md-6]="showMember">
-            <div class="card" *ngIf="chatroom">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="text-truncate fs-5 me-2">
-                        {{chatroom.name}}（{{members.length}}）
-                    </div>
-                    @if (showMember) {
-                    <i class="bi bi-box-arrow-in-right cursor-pointer" (click)="showMember = false"></i>
-                    } @else {
-                    <i class="bi bi-box-arrow-in-left cursor-pointer" (click)="showMember = true"></i>
-                    }
-                </div>
-                <div class="list-group list-group-flush messages">
-                    @for (item of messages; track item.id) {
-                    @if(item.roomid == chatroom.wxid) {
-                    <div class="list-group-item" [class.system]="item.sender == 'system'">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar me-3">
-                                <img class="rounded" [src]="avatars[item.sender] || '/assets/icon.png'" />
-                            </div>
-                            <div class="text-truncate">
-                                <div class="fw-bold">
-                                    {{memberMap[item.sender] && memberMap[item.sender].name || '-'}}
-                                </div>
-                                <small>{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}</small>
-                            </div>
-                        </div>
-                        <div class="mt-2">
-                            {{item.content}}
-                        </div>
-                    </div>
-                    }
-                    @if (item.sender == 'system') {
-                    <div class="list-group-item msg-system">
-                        <small>[{{item.ts | date:'yyyy-MM-dd HH:mm:ss'}}] {{item.content}}</small>
-                    </div>
-                    }
-                    }
-                </div>
-                <div class="card-footer">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="输入消息" [(ngModel)]="content">
-                        <button class="btn btn-primary" (click)="sendTxt()">发送</button>
-                    </div>
-                </div>
-            </div>
+        <div class="col" [class.col-md-9]="!wechat.showPanel" [class.col-md-6]="wechat.showPanel">
+            <layout-wechat #wechat [avatars]="avatars" [value]="chat"></layout-wechat>
         </div>
-        <div class="col col-md-3" [class.d-none]="!showMember">
+        <div class="col col-md-3" [class.d-none]="!wechat.showPanel">
+            @if (chat.wxid && chat.wxid.includes('@chatroom')) {
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="fs-5">
                         群成员
                     </div>
                 </div>
-                <div class="list-group list-group-flush members">
-                    @for (item of members; track item.wxid) {
+                <div class="list-group list-group-flush">
+                    @for (item of roomMembers[chat.wxid]; track item.wxid) {
                     <a class="list-group-item d-flex align-items-center">
                         <div class="avatar me-3">
                             <img class="rounded" [src]="avatars[item.wxid] || '/assets/icon.png'" />
@@ -95,6 +57,23 @@
                     }
                 </div>
             </div>
+            } @else {
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="fs-5">
+                        用户资料
+                    </div>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        {{chat.name}}
+                    </div>
+                    <div class="list-group-item">
+                        {{chat.wxid}}
+                    </div>
+                </div>
+            </div>
+            }
         </div>
     </div>
 </div>

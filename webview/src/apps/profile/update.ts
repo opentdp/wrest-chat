@@ -42,7 +42,7 @@ export class ProfileUpdateComponent implements OnInit {
     }
 
     public getProfile(rd: number) {
-        RobotApi.profileDetail({ rd }).then((data) => {
+        return RobotApi.profileDetail({ rd }).then((data) => {
             this.formdata = data;
             this.changeConacts();
         });
@@ -52,39 +52,41 @@ export class ProfileUpdateComponent implements OnInit {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.profileUpdate(this.formdata).then(() => {
+        return RobotApi.profileUpdate(this.formdata).then(() => {
             this.router.navigate(['profile/list']);
         });
     }
 
-    public async changeConacts() {
+    public changeConacts() {
         const id = this.formdata.roomid || '-';
-        await this.getWcfRoomMembers(this.formdata.roomid);
-        this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        return this.getWcfRoomMembers(this.formdata.roomid).then(() => {
+            this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        });
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }
 
     public getWcfRoomMembers(id: string) {
         if (this.wcfRoomMembers[id]) {
-            return; //已获取
+            return Promise.resolve(); //已获取
         }
+        this.wcfRoomMembers[id] = []; //初始化
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             this.wcfRoomMembers[id] = data || [];
         });

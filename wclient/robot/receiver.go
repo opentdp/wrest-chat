@@ -1,10 +1,10 @@
 package robot
 
 import (
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/dbase/setting"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/dbase/setting"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 func receiver(msg *wcferry.WxMsg) {
@@ -33,6 +33,7 @@ func receiver(msg *wcferry.WxMsg) {
 // 复制消息
 // return 深拷贝后的消息
 func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
+
 	return &wcferry.WxMsg{
 		IsSelf:  msg.IsSelf,
 		IsGroup: msg.IsGroup,
@@ -46,6 +47,7 @@ func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
 		Extra:   msg.Extra,
 		Xml:     msg.Xml,
 	}
+
 }
 
 // 白名单限制
@@ -53,24 +55,54 @@ func copyMsg(msg *wcferry.WxMsg) *wcferry.WxMsg {
 func whiteLimit(msg *wcferry.WxMsg) bool {
 
 	// 无需验证
-	if !setting.WhiteLimit {
+	if !setting.WhiteLimit1 && !setting.WhiteLimit2 {
 		return false
 	}
 
-	// 管理豁免
+	// 管理员豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return false
 	}
 
-	// 验证名单
+	// 白名单验证
 	if msg.IsGroup {
-		room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
-		if room.Level < 2 {
+		if setting.WhiteLimit1 {
+			room, _ := chatroom.Fetch(&chatroom.FetchParam{Roomid: msg.Roomid})
+			return room.Level < 2
+		}
+	} else {
+		if setting.WhiteLimit2 {
+			return up.Level < 2
+		}
+	}
+
+	// 默认不受限
+	return false
+
+}
+
+// 组策略限制
+// return 验证结果 [true 受限, false 忽略]
+func groupLimit(msg *wcferry.WxMsg, level int32, roomid string) bool {
+
+	// 验证权限
+	if level > 0 {
+		up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
+		if up.Level < level {
 			return true
 		}
-	} else if up.Level < 2 {
-		return true
+	}
+
+	// 验证场景
+	if msg.IsGroup {
+		if roomid != "*" && roomid != "+" && roomid != msg.Roomid {
+			return true
+		}
+	} else {
+		if roomid != "*" && roomid != "-" {
+			return true
+		}
 	}
 
 	return false

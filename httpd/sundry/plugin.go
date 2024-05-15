@@ -3,15 +3,17 @@ package sundry
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/wclient/plugin"
+	"github.com/opentdp/wrest-chat/wclient/plugin"
 )
+
+type Plugin struct{}
 
 // @Summary 计划任务插件列表
 // @Tags API::插件管理
 // @Produce json
 // @Success 200 {array} plugin.CronjobPlugin
 // @Router /api/plugin/cronjobs [post]
-func pluginCronjobs(c *gin.Context) {
+func (*Plugin) cronjobs(c *gin.Context) {
 
 	plugins := plugin.CronjobPluginSetup()
 
@@ -24,7 +26,7 @@ func pluginCronjobs(c *gin.Context) {
 // @Produce json
 // @Success 200 {array} plugin.KeywordPlugin
 // @Router /api/plugin/keywords [post]
-func pluginKeywords(c *gin.Context) {
+func (*Plugin) keywords(c *gin.Context) {
 
 	plugins := plugin.KeywordPluginSetup()
 

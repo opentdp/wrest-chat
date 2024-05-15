@@ -16,30 +16,12 @@ export class LayoutToastComponent {
     public items: Toast[] = [];
 
     constructor() {
-        // 处理 js 异常
-        window.onerror = (message) => {
-            this.show({ message: String(message), classname: 'bg-danger text-light' });
-        };
-        // 处理 postMessage
-        window.addEventListener('message', e => {
-            const toast = { message: String(e.data.message || e.data), classname: '' };
-            if (e.data.type) {
-                toast.classname = `bg-${e.data.type} text-light`;
-            }
-            this.show(toast);
-        });
-        // 处理 promise 未捕获的 rejection
-        window.addEventListener("unhandledrejection", e => {
-            this.show({ message: e.reason, classname: 'bg-danger text-light' });
-            e.preventDefault && e.preventDefault();
-        });
+        this.register();
     }
 
-    public show(toast: Toast) {
+    public create(toast: Toast) {
+        toast.classname = `bg-${toast.classname || 'success'} text-light`;
         this.items.push(toast);
-        if (typeof toast.message !== 'string') {
-            console.log(toast.message);
-        }
     }
 
     public remove(toast: Toast) {
@@ -50,10 +32,28 @@ export class LayoutToastComponent {
         this.items.splice(0, this.items.length);
     }
 
+    private register() {
+        // 处理 js 异常
+        window.onerror = (message) => {
+            this.create({ message: String(message), classname: 'danger' });
+        };
+        // 处理 promise 未捕获的 rejection
+        window.addEventListener('unhandledrejection', e => {
+            this.create({ message: String(e.reason), classname: 'danger' });
+            e.preventDefault && e.preventDefault();
+        });
+        // 处理 postMessage 信息
+        window.addEventListener('message', e => {
+            if (e && e.data && e.data.type) {
+                this.create({ message: String(e.data.message), classname: e.data.type });
+            }
+        });
+    }
+
 }
 
 export interface Toast {
-    classname?: string;
+    classname: string;
     message: string;
     delay?: number;
 }

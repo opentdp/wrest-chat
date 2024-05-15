@@ -24,27 +24,19 @@ export class ChatroomListComponent {
     }
 
     public getChatrooms() {
-        RobotApi.chatroomList({}).then((data) => {
+        return RobotApi.chatroomList({}).then((data) => {
             this.chatrooms = data || [];
         });
     }
 
     public deleteChatroom(item: TablesChatroom) {
-        RobotApi.chatroomDelete({ rd: item.rd }).then(() => {
+        return RobotApi.chatroomDelete({ rd: item.rd }).then(() => {
             this.getChatrooms();
         });
     }
 
-    public getWcfAvatars(ids: string[]) {
-        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
-            data && data.forEach((item) => {
-                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
-            });
-        });
-    }
-
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }

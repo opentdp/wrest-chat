@@ -18,19 +18,24 @@ export class HandlerListComponent {
 
     public wcfChatrooms: Record<string, WcfrestContactPayload> = {};
 
+    public loading = true;
+
     constructor() {
         this.getWcfChatrooms();
         this.getRobotHandlers();
     }
 
     public getRobotHandlers(reset?: boolean) {
-        SundryApi.handlerList({ reset }).then((data) => {
+        this.loading = true;
+        return SundryApi.systemHandlers({ reset }).then((data) => {
+            setTimeout(() => this.loading = false, 300);
             this.robotHandler = data || [];
+
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }

@@ -8,8 +8,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/opentdp/go-helper/filer"
 	"github.com/opentdp/go-helper/logman"
-	"github.com/opentdp/wechat-rest/dbase/cronjob"
+	"github.com/opentdp/wrest-chat/dbase/cronjob"
 )
 
 type CronjobPlugin struct {
@@ -20,26 +21,38 @@ type CronjobPlugin struct {
 
 func CronjobPluginSetup() []*CronjobPlugin {
 
-	configs := []*CronjobPlugin{}
-	checker := NewCache("./plugin/cronjob.txt")
+	dir := "./plugin/cronjob"
+	if !filer.Exists(dir) {
+		return nil
+	}
 
-	filepath.Walk("./plugin/cronjob", func(rp string, info os.FileInfo, err error) error {
-		// 忽略原则错误
-		if err != nil || info.IsDir() {
-			logman.Error("invalid cronjob plugin", "name", info.Name(), "error", err)
-			return nil
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		return nil
+	}
+
+	configs := []*CronjobPlugin{}
+	checker := NewCache(dir + ".txt")
+
+	for _, info := range files {
+		name := info.Name()
+		// 忽略目录和隐藏文件
+		if info.IsDir() || strings.HasPrefix(name, ".") {
+			logman.Error("invalid cronjob plugin", "name", name, "error", err)
+			continue
 		}
 		// 获取绝对路径
+		rp := filepath.Join(dir, name)
 		fp, err := filepath.Abs(rp)
 		if err != nil {
-			logman.Error("invalid cronjob plugin", "name", info.Name(), "error", err)
-			return nil
+			logman.Error("invalid cronjob plugin", "name", name, "error", err)
+			continue
 		}
 		// 提取插件参数
 		config, err := CronjobPluginParser(fp)
 		if err != nil {
-			configs = append(configs, &CronjobPlugin{config, err.Error(), info.Name()})
-			return nil
+			configs = append(configs, &CronjobPlugin{config, err.Error(), name})
+			continue
 		}
 		// 更新插件信息
 		errstr := ""
@@ -52,9 +65,8 @@ func CronjobPluginSetup() []*CronjobPlugin {
 				errstr = err.Error()
 			}
 		}
-		configs = append(configs, &CronjobPlugin{config, errstr, info.Name()})
-		return nil
-	})
+		configs = append(configs, &CronjobPlugin{config, errstr, name})
+	}
 
 	return configs
 
@@ -79,9 +91,6 @@ func CronjobPluginParser(fp string) (*cronjob.CreateParam, error) {
 	for _, match := range matches {
 		match[3] = strings.TrimSpace(match[3])
 		switch match[2] {
-		case "Rd":
-			n, _ := strconv.ParseInt(match[3], 10, 32)
-			plugin.Rd = uint(n)
 		case "Name":
 			plugin.Name = match[3]
 		case "Second":

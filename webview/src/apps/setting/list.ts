@@ -19,7 +19,7 @@ export class SettingListComponent {
     }
 
     public getSettings() {
-        RobotApi.settingList({}).then((data) => {
+        return RobotApi.settingList({}).then((data) => {
             this.settings = data || [];
         });
     }
@@ -27,9 +27,9 @@ export class SettingListComponent {
     public deleteSetting(item: TablesSetting) {
         if (item.group === 'bot') {
             window.postMessage({ message: '系统配置不可删除', type: 'danger' });
-            return;
+            return Promise.resolve();
         }
-        RobotApi.settingDelete({ rd: item.rd }).then(() => {
+        return RobotApi.settingDelete({ rd: item.rd }).then(() => {
             this.getSettings();
         });
     }

@@ -3,8 +3,8 @@ package wrobot
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/wclient/robot"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/wclient/robot"
 )
 
 type Chatroom struct{}
@@ -18,7 +18,6 @@ type Chatroom struct{}
 func (*Chatroom) list(c *gin.Context) {
 
 	var rq *chatroom.FetchAllParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -41,7 +40,6 @@ func (*Chatroom) list(c *gin.Context) {
 func (*Chatroom) detail(c *gin.Context) {
 
 	var rq *chatroom.FetchParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -64,7 +62,6 @@ func (*Chatroom) detail(c *gin.Context) {
 func (*Chatroom) create(c *gin.Context) {
 
 	var rq *chatroom.CreateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -89,7 +86,6 @@ func (*Chatroom) create(c *gin.Context) {
 func (*Chatroom) update(c *gin.Context) {
 
 	var rq *chatroom.UpdateParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return
@@ -113,7 +109,6 @@ func (*Chatroom) update(c *gin.Context) {
 func (*Chatroom) delete(c *gin.Context) {
 
 	var rq *chatroom.DeleteParam
-
 	if err := c.ShouldBind(&rq); err != nil {
 		c.Set("Error", err)
 		return

@@ -14,3 +14,4 @@ build/
 docs/
 logs/
 *.exe
+*.dll

@@ -1,13 +1,13 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item active">群聊配置</li>
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <div class="text-end mb-3">
         <button class="btn btn-primary" [routerLink]="['/chatroom/create']">添加</button>
     </div>
@@ -38,8 +38,8 @@
                 <td class="d-none d-xxl-table-cell w-max150 text-truncate">{{item.revoke_msg}}</td>
                 <td class="d-none d-xl-table-cell">{{item.model_default}}</td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary" routerLink="/chatroom/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteChatroom(item)">删除</button>
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/chatroom/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteChatroom(item)">删除</button>
                 </td>
             </tr>
             }

@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/dbase/profile"
-	"github.com/opentdp/wechat-rest/wcferry"
-	"github.com/opentdp/wechat-rest/wcferry/types"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/dbase/profile"
+	"github.com/opentdp/wrest-chat/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry/types"
 )
 
 func banHandler() []*Handler {
@@ -41,7 +41,7 @@ func banHandler() []*Handler {
 					}
 					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
-					if up.Level >= 7 {
+					if up.Level > 6 {
 						return "禁止操作管理员"
 					}
 					// 拉黑用户
@@ -59,7 +59,7 @@ func banHandler() []*Handler {
 		Level:    7,
 		Order:    321,
 		Roomid:   "+",
-		Command:  "/unban",
+		Command:  "/ban:rm",
 		Describe: "解封拉黑的用户",
 		Callback: func(msg *wcferry.WxMsg) string {
 			ret := &types.MsgXmlAtUser{}
@@ -72,7 +72,7 @@ func banHandler() []*Handler {
 					}
 					// 管理豁免
 					up, _ := profile.Fetch(&profile.FetchParam{Wxid: v, Roomid: prid(msg)})
-					if up.Level >= 7 {
+					if up.Level > 6 {
 						return "禁止操作管理员"
 					}
 					// 解封用户
@@ -92,7 +92,7 @@ func banPreCheck(msg *wcferry.WxMsg) string {
 
 	// 管理豁免
 	up, _ := profile.Fetch(&profile.FetchParam{Wxid: msg.Sender, Roomid: prid(msg)})
-	if up.Level >= 7 {
+	if up.Level > 6 {
 		return ""
 	}
 

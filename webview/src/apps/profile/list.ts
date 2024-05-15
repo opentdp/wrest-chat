@@ -21,7 +21,7 @@ export class ProfileListComponent {
     public profiles: Array<TablesProfile> = [];
 
     public formdata: ProfileFetchAllParam = {
-        roomid: '-',
+        roomid: '',
         level: 0,
     };
 
@@ -38,52 +38,43 @@ export class ProfileListComponent {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.profileList(this.formdata).then((data) => {
+        return RobotApi.profileList(this.formdata).then((data) => {
             this.profiles = data || [];
-        });
-        if (this.formdata.roomid) {
-            this.getWcfRoomMembers(this.formdata.roomid);
-        } else {
-            Object.keys(this.wcfChatrooms).forEach((id) => {
-                this.getWcfRoomMembers(id);
+            // 获取群成员
+            this.profiles.forEach((item) => {
+                if (item.roomid && item.roomid.indexOf('@chatroom') > 0) {
+                    this.getWcfRoomMembers(item.roomid);
+                }
             });
-        }
+        });
     }
 
     public deleteProfile(item: TablesProfile) {
-        RobotApi.profileDelete({ rd: item.rd }).then(() => {
+        return RobotApi.profileDelete({ rd: item.rd }).then(() => {
             this.getProfiles();
         });
     }
 
     public getWcfContacts() {
-        WrestApi.contacts().then((data) => {
+        return WrestApi.contacts().then((data) => {
             data.forEach((item) => this.wcfContacts[item.wxid] = item);
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             data.forEach((item) => this.wcfChatrooms[item.wxid] = item);
         });
     }
 
     public getWcfRoomMembers(id: string) {
         if (this.wcfRoomMembers[id]) {
-            return; //已获取
+            return Promise.resolve(); //已获取
         }
-        WrestApi.chatroomMembers({ roomid: id }).then((data) => {
-            this.wcfRoomMembers[id] = {};
+        this.wcfRoomMembers[id] = {}; //初始化
+        return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             data && data.forEach((item) => {
                 this.wcfRoomMembers[id][item.wxid] = item;
-            });
-        });
-    }
-
-    public getWcfAvatars(ids: string[]) {
-        WrestApi.avatars({ wxids: [...new Set(ids)] }).then((data) => {
-            data && data.forEach((item) => {
-                this.wcfAvatars[item.usr_name] = item.small_head_img_url;
             });
         });
     }

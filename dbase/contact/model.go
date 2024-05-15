@@ -3,13 +3,13 @@ package contact
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建联系人
 
 type CreateParam struct {
-	Wxid     string `binding:"required" json:"wxid"`
+	Wxid     string `json:"wxid" binding:"required"`
 	Code     string `json:"code"`
 	Remark   string `json:"remark"`
 	Name     string `json:"name"`
@@ -84,7 +84,7 @@ func Replace(data *ReplaceParam) error {
 // 获取联系人
 
 type FetchParam struct {
-	Wxid string `binding:"required" json:"wxid"`
+	Wxid string `json:"wxid" binding:"required"`
 }
 
 func Fetch(data *FetchParam) (*tables.Contact, error) {

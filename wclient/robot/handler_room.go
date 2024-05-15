@@ -1,8 +1,8 @@
 package robot
 
 import (
-	"github.com/opentdp/wechat-rest/dbase/chatroom"
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/dbase/chatroom"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 func roomHandler() []*Handler {
@@ -23,7 +23,7 @@ func roomHandler() []*Handler {
 				Order:    510 + int32(k),
 				Roomid:   "-",
 				Command:  cmdkey,
-				Describe: "加群聊 " + v.Name,
+				Describe: v.Name,
 				Callback: func(msg *wcferry.WxMsg) string {
 					resp := wc.CmdClient.InviteChatroomMembers(v.Roomid, msg.Sender)
 					if resp == 1 {

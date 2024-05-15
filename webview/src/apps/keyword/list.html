@@ -1,15 +1,15 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item active">词库管理</li>
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <div class="row justify-content-between">
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getKeywords()">
                 <option value="">全部</option>
                 @for (item of specialRooms | keyvalue; track item.key) {
@@ -20,7 +20,7 @@
                 }
             </select>
         </div>
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.group" (change)="getKeywords()">
                 <option value="">全部</option>
                 @for (item of keywordGroups | keyvalue; track item.key) {
@@ -28,19 +28,21 @@
                 }
             </select>
         </div>
-        <div class="col text-end">
+        <div class="col-12 col-md-4 text-end">
+            <a class="btn btn-secondary me-2" href="https://github.com/opentdp/wrest-plugin/tree/master/keyword" target="_blank">插件市场</a>
             <button class="btn btn-primary" [routerLink]="['/keyword/create']">添加</button>
         </div>
     </div>
 </div>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">短语</th>
                 <th scope="col" class="d-none d-md-table-cell">分组</th>
+                <th scope="col">场景</th>
                 <th scope="col" class="d-none d-md-table-cell">用途</th>
                 <th scope="col" class="d-none d-lg-table-cell">级别</th>
                 <th scope="col">操作</th>
@@ -54,6 +56,13 @@
                 <td class="d-none d-md-table-cell">
                     {{keywordGroups[item.group] && keywordGroups[item.group].name || '-'}}
                 </td>
+                <td>
+                    @if (specialRooms[item.roomid]) {
+                    {{specialRooms[item.roomid].name || '-'}}
+                    } @else {
+                    {{wcfChatrooms[item.roomid] && wcfChatrooms[item.roomid].name || '-'}}
+                    }
+                </td>
                 <td class="d-none d-md-table-cell">
                     {{item.target}}
                 </td>
@@ -65,8 +74,8 @@
                     }
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary" routerLink="/keyword/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteKeyword(item)">删除</button>
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/keyword/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteKeyword(item)">删除</button>
                 </td>
             </tr>
             }

@@ -1,15 +1,15 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item active">用户配置</li>
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <div class="row justify-content-between">
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.roomid" (change)="getProfiles()">
                 <option value="">全部</option>
                 <option value="-">私聊</option>
@@ -18,7 +18,7 @@
                 }
             </select>
         </div>
-        <div class="col-5 col-md-4">
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
             <select class="form-select" [(ngModel)]="formdata.level" (change)="getProfiles()">
                 <option value="0">全部</option>
                 @for (item of userLevels | keyvalue; track item.key) {
@@ -26,13 +26,13 @@
                 }
             </select>
         </div>
-        <div class="col text-end">
+        <div class="col-12 col-md-4 text-end">
             <button class="btn btn-primary" [routerLink]="['/profile/create']">添加</button>
         </div>
     </div>
 </div>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <table class="table table-hover align-middle">
         <thead class="table-light">
             <tr>
@@ -72,8 +72,8 @@
                     {{item.ban_expire > timestamp ? getLocalTime(item.ban_expire) : '-'}}
                 </td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary" routerLink="/profile/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteProfile(item)">删除</button>
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/profile/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteProfile(item)">删除</button>
                 </td>
             </tr>
             }

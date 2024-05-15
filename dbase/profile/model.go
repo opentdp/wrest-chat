@@ -3,14 +3,14 @@ package profile
 import (
 	"github.com/opentdp/go-helper/dborm"
 
-	"github.com/opentdp/wechat-rest/dbase/tables"
+	"github.com/opentdp/wrest-chat/dbase/tables"
 )
 
 // 创建配置
 
 type CreateParam struct {
 	Rd        uint   `json:"rd"`
-	Wxid      string `binding:"required" json:"wxid"`
+	Wxid      string `json:"wxid" binding:"required"`
 	Roomid    string `json:"roomid"`
 	Level     int32  `json:"level"`
 	Remark    string `json:"remark"`

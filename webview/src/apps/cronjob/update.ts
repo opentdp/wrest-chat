@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { CronjobTypes } from '../../openapi/const';
-import { SundryApi, CronjobUpdateParam } from '../../openapi/sundry';
+import { RobotApi, CronjobUpdateParam } from '../../openapi/wrobot';
 import { WrestApi, WcfrestContactPayload } from '../../openapi/wcfrest';
 
 
@@ -39,7 +39,7 @@ export class CronjobUpdateComponent implements OnInit {
     }
 
     public getCronjob(rd: number) {
-        SundryApi.cronjobDetail({ rd }).then((data) => {
+        return RobotApi.cronjobDetail({ rd }).then((data) => {
             this.formdata = data;
             const dataDeliver = data.deliver.split(',');
             for (const [k, v] of dataDeliver.entries()) {
@@ -54,36 +54,44 @@ export class CronjobUpdateComponent implements OnInit {
         const time = data.second + data.minute + data.hour + data.day_of_month + data.month + data.day_of_week;
         if (time === '******') {
             window.postMessage({ message: '排程不可全为 *', type: 'danger' });
-            return;
+            return Promise.resolve();
         }
         this.formdata.deliver = Object.values(this.deliver).join(',');
-        SundryApi.cronjobUpdate(this.formdata).then(() => {
+        return RobotApi.cronjobUpdate(this.formdata).then(() => {
             this.router.navigate(['cronjob/list']);
         });
     }
 
-    public async changeConacts() {
+    public changeDeliver() {
+        this.deliver[1] = '-';
+        this.deliver[2] = '-';
+        this.changeConacts();
+    }
+
+    public changeConacts() {
         const id = this.deliver[1] || '-';
-        await this.getWcfRoomMembers(this.deliver[1]);
-        this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        return this.getWcfRoomMembers(this.deliver[1]).then(() => {
+            this.conacts = id == '-' ? this.wcfFriends : this.wcfRoomMembers[id] || [];
+        });
     }
 
     public getWcfFriends() {
-        WrestApi.friends().then((data) => {
+        return WrestApi.friends().then((data) => {
             this.wcfFriends = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }
 
     public getWcfRoomMembers(id: string) {
         if (this.wcfRoomMembers[id]) {
-            return; //已获取
+            return Promise.resolve(); //已获取
         }
+        this.wcfRoomMembers[id] = []; //初始化
         return WrestApi.chatroomMembers({ roomid: id }).then((data) => {
             this.wcfRoomMembers[id] = data || [];
         });

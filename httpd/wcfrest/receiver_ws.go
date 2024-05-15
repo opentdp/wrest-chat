@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/opentdp/go-helper/logman"
 
-	"github.com/opentdp/wechat-rest/wcferry"
+	"github.com/opentdp/wrest-chat/wcferry"
 )
 
 func socketReceiver(ws *websocket.Conn) wcferry.MsgConsumer {

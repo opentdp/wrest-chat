@@ -33,19 +33,19 @@ export class ChatroomCreateComponent {
         if (this.formdata.level) {
             this.formdata.level = +this.formdata.level;
         }
-        RobotApi.chatroomCreate(this.formdata).then(() => {
+        return RobotApi.chatroomCreate(this.formdata).then(() => {
             this.router.navigate(['chatroom/list']);
         });
     }
 
     public getLLModels() {
-        RobotApi.llmodelList({}).then((data) => {
+        return RobotApi.llmodelList({}).then((data) => {
             this.llmodels = data || [];
         });
     }
 
     public getWcfChatrooms() {
-        WrestApi.chatrooms().then((data) => {
+        return WrestApi.chatrooms().then((data) => {
             this.wcfChatrooms = data || [];
         });
     }

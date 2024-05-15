@@ -1,13 +1,13 @@
 <layout-header></layout-header>
 
-<nav class="container-lg mb-3">
+<nav class="container-xl mb-3">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
         <li class="breadcrumb-item active">全局配置</li>
     </ol>
 </nav>
 
-<div class="container-lg mb-3">
+<div class="container-xl mb-3">
     <div class="text-end mb-3">
         <button class="btn btn-primary" [routerLink]="['/setting/create']">添加</button>
     </div>
@@ -36,8 +36,8 @@
                 <td class="w-max150 text-truncate">{{item.value}}</td>
                 <td class="d-none d-xxl-table-cell w-max150 text-truncate">{{item.remark}}</td>
                 <td class="text-nowrap">
-                    <button class="btn btn-sm btn-primary" routerLink="/setting/update/{{item.rd}}">编辑</button>
-                    <button class="btn btn-sm btn-danger ms-2" (click)="deleteSetting(item)" [disabled]="item.group == 'bot'">删除</button>
+                    <button class="btn btn-sm btn-primary me-2" routerLink="/setting/update/{{item.rd}}">编辑</button>
+                    <button class="btn btn-sm btn-danger me-2" (click)="deleteSetting(item)" [disabled]="item.group == 'bot'">删除</button>
                 </td>
             </tr>
             }

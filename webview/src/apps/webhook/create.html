@@ -1,0 +1,58 @@
+<layout-header></layout-header>
+
+<nav class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/welcome">首页</a></li>
+        <li class="breadcrumb-item"><a routerLink="/webhook/list">Webhook</a></li>
+        <li class="breadcrumb-item active">添加</li>
+    </ol>
+</nav>
+
+<div class="container-xl mb-3">
+    <form class="row gy-3" (ngSubmit)="createWebhook()" #myform="ngForm">
+        <div class="col-12">
+            <label class="form-label">场景</label>
+            <select name="level" class="form-select" [(ngModel)]="formdata.target">
+                <option value="chatroom">群聊</option>
+                <option value="friend">私聊</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">目标</label>
+            @switch (formdata.target) {
+            @case ("chatroom") {
+            <select name="targetId" class="form-select" [(ngModel)]="formdata.target_id" required>
+                @for (item of wcfChatrooms; track item.wxid) {
+                <option [value]="item.wxid">{{item.name}}</option>
+                }
+            </select>
+            }
+            @case ("friend") {
+            <div class="row g-3">
+                <div class="col col-md-8">
+                    <select name="targetId" class="form-select" [(ngModel)]="formdata.target_id" [disabled]="wcfFriends.length == 0" required>
+                        @if (filter.length > 0) {
+                        <option>选择筛选结果</option>
+                        }
+                        @for (item of wcfFriends | filter:'wxid,name':filter; track item.wxid) {
+                        <option [value]="item.wxid">{{item.wxid}}（{{item.name}}）</option>
+                        }
+                    </select>
+                </div>
+                <div class="d-none d-md-block col-md-4">
+                    <input type="text" class="form-control" placeholder="过滤条件" [(ngModel)]="filter" [disabled]="wcfFriends.length == 0" />
+                </div>
+            </div>
+            }
+            }
+        </div>
+        <div class="col-12">
+            <label class="form-label">备注</label>
+            <input type="text" name="secret" class="form-control" [(ngModel)]="formdata.remark" required />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="myform.invalid">添加</button>
+        </div>
+    </form>
+</div>
