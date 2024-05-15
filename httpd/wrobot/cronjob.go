@@ -127,6 +127,7 @@ func (*Cronjob) delete(c *gin.Context) {
 // @Summary 触发计划任务
 // @Produce json
 // @Tags BOT::计划任务
+// @Param body body cronjob.FetchParam true "触发计划任务参数"
 // @Success 200
 // @Router /bot/cronjob/execute [post]
 func (*Cronjob) execute(c *gin.Context) {

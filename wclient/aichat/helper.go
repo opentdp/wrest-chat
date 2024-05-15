@@ -28,6 +28,17 @@ func Vison(msg, img, id, rid string) string {
 
 var UserConfigs = map[string]*aichat.UserConfig{}
 
+func UserReset(id, rid string) {
+
+	if id == "" {
+		UserConfigs = map[string]*aichat.UserConfig{}
+	} else {
+		delete(UserConfigs, id+"/"+rid)
+		UserConfig(id, rid)
+	}
+
+}
+
 func UserConfig(id, rid string) *aichat.UserConfig {
 
 	k := id + "/" + rid
