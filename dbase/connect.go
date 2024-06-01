@@ -21,9 +21,6 @@ func Connect() {
 		Type: "sqlite", DbName: dbname,
 	})
 
-	// 开启外键约束
-	db.Exec("PRAGMA foreign_keys=ON;")
-
 	// 实施自动迁移
 	db.AutoMigrate(
 		&tables.Chatroom{},
@@ -36,6 +33,9 @@ func Connect() {
 		&tables.Setting{},
 		&tables.Webhook{},
 	)
+
+	// 开启外键约束
+	db.Exec("PRAGMA foreign_keys=ON;")
 
 	// 加载全局配置
 	setting.DataMigrate()
