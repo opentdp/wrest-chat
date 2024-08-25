@@ -117,7 +117,9 @@ func (c *Client) wxInitSDK() error {
 		c.SdkLibrary = "wcferry/" + c.SdkLibrary
 	}
 	// 打开 wcf 服务程序
-	return c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+	time.Sleep(5 * time.Second)
+	return err
 }
 
 // 关闭 wcf 服务
