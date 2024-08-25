@@ -2,8 +2,7 @@ package wcferry
 
 import (
 	"errors"
-	"os/exec"
-	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/opentdp/go-helper/filer"
@@ -11,11 +10,11 @@ import (
 	"github.com/opentdp/go-helper/onquit"
 )
 
-const Wcf_Version = "39.0.14"
-const Wechat_Version = "3.9.2.23"
+const Wcf_Version = "39.2.4.0"
+const Wechat_Version = "3.9.10.27"
 
 type Client struct {
-	WcfBinary  string     // wcf.exe 路径
+	SdkLibrary string     // sdk.dll 路径
 	ListenAddr string     // wcf 监听地址
 	ListenPort int        // wcf 监听端口
 	CmdClient  *CmdClient // 命令客户端
@@ -79,34 +78,51 @@ func (c *Client) DisableReceiver(ks ...string) error {
 	return err
 }
 
+// 调用 sdk.dll 中的函数
+// return error 错误信息
+func (c *Client) sdkCall(fn string, a ...uintptr) error {
+	// 加载 sdk.dll
+	sdk, err := syscall.LoadDLL(c.SdkLibrary)
+	if err != nil {
+		logman.Info("failed to load sdk.dll", "error", err)
+		return err
+	}
+	defer sdk.Release()
+	// 查找 fn 函数
+	proc, err := sdk.FindProc(fn)
+	if err != nil {
+		logman.Info("failed to call "+fn, "error", err)
+		return err
+	}
+	// 执行 fn(a...)
+	r1, r2, err := proc.Call(a...)
+	logman.Warn("call dll:"+fn, "r1", r1, "r2", r2, "error", err)
+	return err
+}
+
 // 启动 wcf 服务
 // return error 错误信息
 func (c *Client) wxInitSDK() error {
-	if c.WcfBinary == "" {
+	if c.SdkLibrary == "" {
 		return nil
 	}
 	// 尝试在子目录查找
-	if !filer.Exists(c.WcfBinary) {
-		if !filer.Exists("wcferry/" + c.WcfBinary) {
-			return errors.New(c.WcfBinary + " not found")
+	if !filer.Exists(c.SdkLibrary) {
+		if !filer.Exists("wcferry/" + c.SdkLibrary) {
+			return errors.New(c.SdkLibrary + " not found")
 		}
-		c.WcfBinary = "wcferry/" + c.WcfBinary
+		c.SdkLibrary = "wcferry/" + c.SdkLibrary
 	}
 	// 打开 wcf 服务程序
-	port := strconv.Itoa(c.ListenPort)
-	logman.Warn(c.WcfBinary + " start " + port)
-	cmd := exec.Command(c.WcfBinary, "start", port)
-	return cmd.Run()
+	return c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
 }
 
 // 关闭 wcf 服务
 // return error 错误信息
 func (c *Client) wxDestroySDK() error {
-	if c.WcfBinary == "" {
+	if c.SdkLibrary == "" {
 		return nil
 	}
 	// 关闭 wcf 服务
-	logman.Warn(c.WcfBinary + " stop")
-	cmd := exec.Command(c.WcfBinary, "stop")
-	return cmd.Run()
+	return c.sdkCall("WxDestroySDK")
 }

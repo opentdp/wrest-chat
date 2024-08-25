@@ -21,7 +21,7 @@ type IWcf struct {
 	MsgPrint     bool   `yaml:"MsgPrint"`     // 是否打印收到的消息
 	MsgStore     bool   `yaml:"MsgStore"`     // 是否存储收到的消息
 	MsgStoreDays int    `yaml:"MsgStoreDays"` // 消息留存天数
-	WcfBinary    string `yaml:"WcfBinary"`    // 留空则不注入微信
+	SdkLibrary   string `yaml:"SdkLibrary"`   // 留空则不注入微信
 }
 
 var Wcf = &IWcf{

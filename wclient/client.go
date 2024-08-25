@@ -35,7 +35,7 @@ func Register() *wcferry.Client {
 	wc = &wcferry.Client{
 		ListenAddr: host,
 		ListenPort: strutil.ToInt(port),
-		WcfBinary:  args.Wcf.WcfBinary,
+		SdkLibrary: args.Wcf.SdkLibrary,
 	}
 
 	// 初始化连接

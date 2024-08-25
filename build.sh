@@ -60,7 +60,7 @@ rm -rf linux/starter.bat
 rm -rf linux/wrest-windows-amd64.exe
 mv linux/wrest-linux-amd64 linux/wrest
 
-sed -i '/WcfBinary:/d' linux/config.yml
+sed -i '/SdkLibrary:/d' linux/config.yml
 sed -i 's/127.0.0.1:7601/192.168.1.2:7601/g' linux/config.yml
 sed -i 's/127.0.0.1:7600/0.0.0.0:7600/g' linux/config.yml
 
@@ -79,8 +79,8 @@ rm -rf windows/wrest-linux-amd64
 mv windows/wrest-windows-amd64.exe windows/wrest.exe
 
 mkdir -p windows/wcferry
-wget https://github.com/lich0821/WeChatFerry/releases/download/v39.0.14/v39.0.14.zip
-unzip -d windows/wcferry v39.0.14.zip && rm -f v39.0.14.zip
+wget https://github.com/lich0821/WeChatFerry/releases/download/v39.2.4/v39.2.4.zip
+unzip -d windows/wcferry v39.2.4.zip && rm -f v39.2.4.zip
 
 cd windows
 zip -r ../wrest-windows-v$version.zip .

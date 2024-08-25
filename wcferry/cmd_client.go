@@ -27,7 +27,7 @@ func (c *CmdClient) IsLogin() bool {
 	return recv.GetStatus() == 1
 }
 
-// 刷新登录二维码
+// 刷新登录二维码【not implemented】
 // return string 登录二维码
 func (c *CmdClient) RefreshQrcode() string {
 	req := &Request{Func: Functions_FUNC_REFRESH_QRCODE}
@@ -558,7 +558,7 @@ func (c *CmdClient) GetFriends() []*RpcContact {
 	return friends
 }
 
-// 通过 wxid 查询微信号昵称等信息
+// 通过 wxid 查询微信号昵称等信息【not implemented】
 // param wxid (str): 联系人 wxid
 // return *RpcContact
 func (c *CmdClient) GetInfoByWxid(wxid string) *RpcContact {
@@ -589,7 +589,7 @@ func (c *CmdClient) RefreshPyq(id uint64) int32 {
 	return recv.GetStatus()
 }
 
-// 接受好友申请
+// 接受好友申请【not implemented】
 // param v3 string 加密用户名 (好友申请消息里 v3 开头的字符串)
 // param v4 string Ticket (好友申请消息里 v4 开头的字符串)
 // param scene int32 申请方式 (好友申请消息里的 scene); 为了兼容旧接口，默认为扫码添加 (30)
