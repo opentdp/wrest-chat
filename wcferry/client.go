@@ -2,6 +2,7 @@ package wcferry
 
 import (
 	"errors"
+	"runtime"
 	"syscall"
 	"time"
 
@@ -78,20 +79,46 @@ func (c *Client) DisableReceiver(ks ...string) error {
 	return err
 }
 
+// 启动 wcf 服务
+// return error 错误信息
+func (c *Client) wxInitSDK() error {
+	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
+	time.Sleep(5 * time.Second)
+	return err
+}
+
+// 关闭 wcf 服务
+// return error 错误信息
+func (c *Client) wxDestroySDK() error {
+	return c.sdkCall("WxDestroySDK")
+}
+
 // 调用 sdk.dll 中的函数
 // return error 错误信息
 func (c *Client) sdkCall(fn string, a ...uintptr) error {
+	dll := c.SdkLibrary
+	if dll == "" || runtime.GOOS != "windows" {
+		logman.Warn("skip to load sdk.dll")
+		return nil
+	}
+	// 查找 sdk.dll
+	if !filer.Exists(dll) {
+		dll = "wcferry/" + dll
+		if !filer.Exists(dll) {
+			return errors.New(dll + " not found")
+		}
+	}
 	// 加载 sdk.dll
-	sdk, err := syscall.LoadDLL(c.SdkLibrary)
+	sdk, err := syscall.LoadDLL(dll)
 	if err != nil {
-		logman.Info("failed to load sdk.dll", "error", err)
+		logman.Warn("failed to load sdk.dll", "error", err)
 		return err
 	}
 	defer sdk.Release()
 	// 查找 fn 函数
 	proc, err := sdk.FindProc(fn)
 	if err != nil {
-		logman.Info("failed to call "+fn, "error", err)
+		logman.Warn("failed to call "+fn, "error", err)
 		return err
 	}
 	// 执行 fn(a...)
@@ -101,33 +128,4 @@ func (c *Client) sdkCall(fn string, a ...uintptr) error {
 		err = nil // 忽略已知问题
 	}
 	return err
-}
-
-// 启动 wcf 服务
-// return error 错误信息
-func (c *Client) wxInitSDK() error {
-	if c.SdkLibrary == "" {
-		return nil
-	}
-	// 尝试在子目录查找
-	if !filer.Exists(c.SdkLibrary) {
-		if !filer.Exists("wcferry/" + c.SdkLibrary) {
-			return errors.New(c.SdkLibrary + " not found")
-		}
-		c.SdkLibrary = "wcferry/" + c.SdkLibrary
-	}
-	// 打开 wcf 服务程序
-	err := c.sdkCall("WxInitSDK", uintptr(0), uintptr(c.ListenPort))
-	time.Sleep(5 * time.Second)
-	return err
-}
-
-// 关闭 wcf 服务
-// return error 错误信息
-func (c *Client) wxDestroySDK() error {
-	if c.SdkLibrary == "" {
-		return nil
-	}
-	// 关闭 wcf 服务
-	return c.sdkCall("WxDestroySDK")
 }
