@@ -21,7 +21,7 @@ type Client struct {
 	MsgClient  *MsgClient // 消息客户端
 }
 
-// 启动 wcf 服务
+// 注册消息服务
 // return error 错误信息
 func (c *Client) Connect() error {
 	if c.ListenAddr == "" {
@@ -30,21 +30,21 @@ func (c *Client) Connect() error {
 	if c.ListenPort == 0 {
 		c.ListenPort = 10086
 	}
-	// 注册 wcf 服务
+	// 启动 rpc
+	if err := c.wxInitSDK(); err != nil {
+		return err
+	}
+	// 配置客户端
 	c.CmdClient = &CmdClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort),
 	}
 	c.MsgClient = &MsgClient{
 		pbSocket: newPbSocket(c.ListenAddr, c.ListenPort+1),
 	}
-	// 启动 wcf 服务
-	if err := c.wxInitSDK(); err != nil {
-		return err
-	}
-	// 自动注销 wcf
+	// 退出时注销
 	onquit.Register(func() {
-		c.CmdClient.Destroy()
 		c.MsgClient.Destroy()
+		c.CmdClient.Destroy()
 		c.wxDestroySDK()
 	})
 	// 返回连接结果
