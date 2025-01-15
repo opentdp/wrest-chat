@@ -37,7 +37,7 @@
 
 ## 免责声明
 
-[WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 是供学习交流的开源项目，代码及其制品仅供参考，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
+[WrestChat](https://github.com/opentdp/wrest-chat) 和 [WeChatFerry](https://github.com/lich0821/WeChatFerry) 是供学习交流的开源项目，代码及其制品仅供学习与研究，不保证质量，不构成任何商业承诺或担保，不得用于商业或非法用途，使用者自行承担后果。
 
 ## 其他
 
